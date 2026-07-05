@@ -1,0 +1,193 @@
+{
+  "navbar": {
+      "findProfile": "Trouver un profil",
+      "candidates": "Trouver une offre",
+      "resources": "Guide d'utilisation",
+
+      "findProfileBtn": "Se connecter",
+      "findProfileBtn2": "S'inscrire",
+
+      "search" : {
+        "placeholder": "Mots-clés: Ménage, servante, nounou, chauffeure, jardinier..."
+      }
+  },
+
+  "firstModuleHome": {
+    "card_title1": "Nounou",
+    "card_description1": "Partez l'esprit tranquille. Nos nounous certifiées prennent soin de vos enfants comme si c'était les leurs.",
+    "card_title2":"Jardinier",
+    "card_description2":"Des jardiniers qualifiés, disponibles près de chez vous, pour un extérieur toujours impeccable.",
+    "card_title3":"Chauffeur",
+    "card_description3": "Trouvez un chauffeur de confiance près de chez vous, disponible quand vous en avez besoin.",
+    "card_title4":"Assistance senior",
+    "card_description4":"Parce que vieillir mérite d'être accompagné avec amour et dignité.",
+    "H1_title": "Le bon personnel à domicile, trouvé par l'IA",
+    "P1_title":"La plateforme N°1 du personnel à domicile en Côte d'Ivoire !!!",
+    "btn_1":"Depuis 2024"
+ },
+ "secondModuleHome": {
+  "H2_title": "Agence de recrutement de premier plan",
+  "description1": "Les offres d'emplois pour lesquelles un profil a déjà été trouvé ne sont  pas affichées ou  pour lesquelles l'utilisateur ne s'est pas encore connecté.",
+   "Card_Item": {
+    "title1": "Libre fixation des tarifs",
+    "description1":"Fixez votre prix ou convenez d'un tarif à l'amiable avant de réserver.",
+    "title2": "L'excellence de nos experts",
+    "description2":"Nos professionnels hautement qualifiés bénéficient d'une solide expertise de terrain.",
+    "title3": "Parfaitement outillés",
+    "description3":"Des intervenants dotés d'un équipement de pointe et adaptés à toutes les situations."
+   }
+},
+
+"footer": {
+  "links": {
+    "heading": "Annonces",
+    "all": "Tous >",
+    "smsWarning": "Méfiez-vous de ce genre de SMS !",
+    "privacyPolicy": "Politique de confidentialité"
+  },
+  "hours": "Horaire : lun-sam 08h-18h",
+  "location": "Lieu : Côte d'Ivoire, Cocody-Dokui",
+  "contactBtn": "Nous contacter",
+  "downloadApp": "Télécharger l'application",
+  "copyright": "© {years} TOCTOC. Tous droits réservés.",
+  "alt": {
+    "numberIcon": "Numéro",
+    "qrCode": "Code QR de téléchargement",
+    "womanPhone": "Utilisatrice sur téléphone"
+  }
+},
+  "intro": {
+    "slogan": {
+      "subtitle": "Une nouvelle façon de",
+      "title": "RECRUTER DU PERSONNEL",
+      "titleBreak": "À DOMICILE",
+      "titleHighlight": "GRÂCE À L'IA",
+      "aiBadge": "IA pour tous"
+    },
+    "brand": {
+      "name": "TOCTOC"
+    },
+    "map": {
+      "badge": "Accessible & Instantané",
+      "description": "Trouvez votre personnel en fonction de votre géolocalisation.",
+      "alt": {
+        "avatar": "Avatar TOCTOC intelligent"
+      }
+    }
+  },
+    "home": {
+      "quote": {
+        "text": "En Côte d'Ivoire, on recrute désormais son personnel de maison",
+        "highlight": "grâce à l'IA."
+      }
+    },
+      "profileCard": {
+        "title": "Exemples de profil",
+        "urgent": "URGENT",
+        "tocer": "Tocer",
+        "salaryNegotiable": "Salaire à négocier",
+        "workArrangement": {
+          "NAVETTE": "Navette",
+          "LOGE_SUR_PLACE": "Logé sur place"
+        },
+        "days": {
+          "LUN": "Lun",
+          "MAR": "Mar",
+          "MER": "Mer",
+          "JEU": "Jeu",
+          "VEN": "Ven",
+          "SAM": "Sam",
+          "DIM": "Dim"
+        },
+        "contract": {
+          "TEMPORAIRE": "Temp",
+          "PERMANENT": "Perm"
+        },
+        "aria": {
+          "contact": "Contacter {name}"
+        }
+      },
+        "announcementCard": {
+          "title":"Exemples de profil",
+          "description":"Les offres d'emplois pour lesquelles un profil a déjà été trouvé ne sont  pas affichées ou  pour lesquelles l'utilisateur ne s'est pas encore connecté.",
+          "salaryPeriod": "mois",
+          "salaryNegotiable": "Salaire à négocier",
+          "noTransport": "Sans transport",
+          "transportNotSpecified": "Transport non précisé",
+          "verifiedIdentity": "Identité vérifiée",
+          "urgent": "URGENT",
+          "top": "TOP",
+          "contract": {
+            "TEMPORAIRE": "Temporaire",
+            "PERMANENT": "Permanent"
+          },
+          "contractStart": {
+            "TEMPORAIRE": "Début: à négocier",
+            "PERMANENT": "Début: immédiat"
+          },
+          "experience": {
+            "required": "Expérience {years} an(s) min.",
+            "notRequired": "Expérience non exigée"
+          },
+          "viewCount": "{count} vues",
+          "type": {
+            "OFFER": "Contact via annonce",
+            "PROFILE": "Profil candidat"
+          },
+          "workArrangement": {
+            "NAVETTE": "Navette",
+            "LOGE_SUR_PLACE": "Logé sur place"
+          },
+          "days": {
+            "LUN": "Lun",
+            "MAR": "Mar",
+            "MER": "Mer",
+            "JEU": "Jeu",
+            "VEN": "Ven",
+            "SAM": "Sam",
+            "DIM": "Dim"
+          }
+        },
+          "fourModuleHome": {
+            "title": "Faîtes un choix",
+            "items": [
+              {
+                "title": "Baby-sitter"
+              },
+              {
+                "title": "Garde périscolaire"
+              },
+              {
+                "title": "Ménage / Entretien"
+              },
+              {
+                "title": "Aide aux personnes âgées"
+              },
+              {
+                "title": "Résidentiel (vit sur place)"
+              },
+              {
+                "title": "Court terme"
+              }
+            ],
+            "btnTocer": "Tocer"
+          },
+          "thirdModuleHome": {
+            "title1": "Recherchez rapidement en fonction de vos critères",
+            "btnAdvancedSearch": "Recherche Avancée",
+            "title2": "Retrouvez des offres d'autres agences ainsi que la notre"
+          },
+          "mapComponent": {
+            "loading": "Chargement de la carte...",
+            "categories": {
+              "NOUNOU": "Nounou",
+              "MENAGERE": "Aide ménagère",
+              "CUISINIER": "Cuisinier·ère",
+              "CHAUFFEUR": "Chauffeur",
+              "JARDINIER": "Jardinier",
+              "GARDIEN": "Gardien",
+              "AIDE_PERSONNE_AGEE": "Aide personne âgée",
+              "MAJORDOME": "Majordome / Gouvernante"
+            }
+          }
+    }

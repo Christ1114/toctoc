@@ -1,0 +1,194 @@
+{
+  "navbar": {
+      "findProfile": "Find a profile",
+      "candidates": "Find a job offer",
+      "resources": "User guide",
+
+    
+
+      "findProfileBtn": "Log in",
+      "findProfileBtn2": "Sign up",
+      "search" : {
+        "placeholder": "Search keywords:Housekeeping / Cleanin, Maid / Housemaid, Nanny,Chauffeur / Driver, Gardener"
+      }
+  },
+
+  "firstModuleHome": {
+    "card_title1": "Nanny",
+    "card_description1": "Leave with peace of mind. Our certified nannies take care of your children as if they were their own.",
+    "card_title2": "Gardener",
+    "card_description2": "Qualified gardeners, available near you, for an always impeccable outdoor space.",
+    "card_title3": "Driver",
+    "card_description3": "Find a trusted driver near you, available whenever you need one.",
+    "card_title4": "Senior assistance",
+    "card_description4": "Because growing older deserves to be accompanied with love and dignity.",
+    "H1_title": "The right household staff, found by AI",
+    "P1_title":"The N°1 platform for household staff in Ivory Coast !!!",
+    "btn_1":"Since 2024"
+ },
+  "secondModuleHome": {
+    "H2_title": "Leading recruitment agency",
+    "description1": "Job offers for which a profile has already been found are not displayed, or for which the user has not yet logged in.",
+    "Card_Item": {
+      "title1": "Free price setting",
+      "description1": "Set your price or agree on a rate amicably before booking.",
+      "title2": "Excellence of our experts",
+      "description2": "Our highly qualified professionals benefit from solid field expertise.",
+      "title3": "Perfectly equipped",
+      "description3": "Interventionists equipped with state-of-the-art equipment adapted to all situations."
+    }
+  },
+  "footer": {
+    "links": {
+      "heading": "Announcements",
+      "all": "All >",
+      "smsWarning": "Beware of this type of SMS!",
+      "privacyPolicy": "Privacy Policy"
+    },
+    "hours": "Hours: Mon-Sat 08:00-18:00",
+    "location": "Location: Côte d'Ivoire, Cocody-Dokui",
+    "contactBtn": "Contact us",
+    "downloadApp": "Download the app",
+    "copyright": "© {years} TOCTOC. All rights reserved.",
+    "alt": {
+      "numberIcon": "Phone number",
+      "qrCode": "Download QR code",
+      "womanPhone": "User on phone"
+    }
+  },
+    "intro": {
+      "slogan": {
+        "subtitle": "A new way to",
+        "title": "RECRUIT STAFF",
+        "titleBreak": "AT HOME",
+        "titleHighlight": "WITH AI",
+        "aiBadge": "AI for everyone"
+      },
+      "brand": {
+        "name": "TOCTOC"
+      },
+      "map": {
+        "badge": "Accessible & Instant",
+        "description": "Find your staff based on your geolocation.",
+        "alt": {
+          "avatar": "Smart TOCTOC avatar"
+        }
+      }
+    },
+    "home": {
+      "quote": {
+        "text": "In Côte d'Ivoire, we now recruit domestic staff",
+        "highlight": "thanks to AI."
+      }
+    },
+      "profileCard": {
+        "title": "Profile examples",
+        "urgent": "URGENT",
+        "tocer": "Tocer",
+        "salaryNegotiable": "Salary negotiable",
+        "workArrangement": {
+          "NAVETTE": "Shuttle",
+          "LOGE_SUR_PLACE": "Live-in"
+        },
+        "days": {
+          "LUN": "Mon",
+          "MAR": "Tue",
+          "MER": "Wed",
+          "JEU": "Thu",
+          "VEN": "Fri",
+          "SAM": "Sat",
+          "DIM": "Sun"
+        },
+        "contract": {
+          "TEMPORAIRE": "Temp",
+          "PERMANENT": "Perm"
+        },
+        "aria": {
+          "contact": "Contact {name}"
+        }
+      },
+        "announcementCard": {
+         
+              "title": "Profile examples",
+              "description": "Job offers for which a profile has already been found are not displayed, or for which the user has not yet logged in.",
+          "salaryPeriod": "month",
+          "salaryNegotiable": "Salary negotiable",
+          "noTransport": "No transport",
+          "transportNotSpecified": "Transport not specified",
+          "verifiedIdentity": "Verified identity",
+          "urgent": "URGENT",
+          "top": "TOP",
+          "contract": {
+            "TEMPORAIRE": "Temporary",
+            "PERMANENT": "Permanent"
+          },
+          "contractStart": {
+            "TEMPORAIRE": "Start: to be negotiated",
+            "PERMANENT": "Start: immediate"
+          },
+          "experience": {
+            "required": "Experience {years} year(s) min.",
+            "notRequired": "Experience not required"
+          },
+          "viewCount": "{count} views",
+          "type": {
+            "OFFER": "Contact via ad",
+            "PROFILE": "Candidate profile"
+          },
+          "workArrangement": {
+            "NAVETTE": "Shuttle",
+            "LOGE_SUR_PLACE": "Live-in"
+          },
+          "days": {
+            "LUN": "Mon",
+            "MAR": "Tue",
+            "MER": "Wed",
+            "JEU": "Thu",
+            "VEN": "Fri",
+            "SAM": "Sat",
+            "DIM": "Sun"
+          }
+        },
+          "fourModuleHome": {
+            "title": "Make a choice",
+            "items": [
+              {
+                "title": "Babysitter"
+              },
+              {
+                "title": "After-school care"
+              },
+              {
+                "title": "Cleaning / Maintenance"
+              },
+              {
+                "title": "Elderly care"
+              },
+              {
+                "title": "Residential (live-in)"
+              },
+              {
+                "title": "Short term"
+              }
+            ],
+            "btnTocer": "Tocer"
+          },
+          "thirdModuleHome": {
+            "title1": "Quickly search according to your criteria",
+            "btnAdvancedSearch": "Advanced Search",
+            "title2": "Find offers from other agencies as well as ours"
+          },
+          "mapComponent": {
+            "loading": "Loading map...",
+            "categories": {
+              "NOUNOU": "Nanny",
+              "MENAGERE": "Housekeeper",
+              "CUISINIER": "Cook",
+              "CHAUFFEUR": "Driver",
+              "JARDINIER": "Gardener",
+              "GARDIEN": "Security guard",
+              "AIDE_PERSONNE_AGEE": "Elderly caregiver",
+              "MAJORDOME": "Butler / Housekeeper"
+            }
+          }
+        }

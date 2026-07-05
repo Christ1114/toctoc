@@ -1,0 +1,191 @@
+{
+  "navbar": {
+      "findProfile": "寻找档案",
+      "candidates": "查找职位",
+      "resources": "用户指南",
+      "findProfileBtn": "登录",
+      "findProfileBtn2": "注册",
+      "search" : {
+        "placeholder": "搜索关键词：家务、女佣、保姆、司机、园丁等..."
+      }
+  },
+  "firstModuleHome": {
+    "card_title1": "保姆",
+    "card_description1": "放心出门，我们经过认证的保姆会像对待自己的孩子一样照顾您的孩子。",
+    "card_title2": "园丁",
+    "card_description2": "专业园丁随时为您服务，让您的户外空间始终保持完美状态。",
+    "card_title3": "司机",
+    "card_description3": "在您附近找到一位值得信赖的司机，随时满足您的出行需求。",
+    "card_title4": "老年人护理",
+    "card_description4": "因为变老值得被温柔以待，我们陪伴每一位老人走过有尊严的晚年。",
+    "H1_title": "由AI为您找到合适的家政人员",
+    "P1_title":"科特迪瓦第一家政人员平台 !!!",
+    "btn_1":"自2024年起"
+ },
+  "secondModuleHome": {
+    "H2_title": "领先的招聘机构",
+    "description1": "已找到人选的职位空缺不予显示，或者用户尚未登录的职位空缺也不予显示。",
+    "Card_Item": {
+      "title1": "自由定价",
+      "description1": "在预订前自行设定价格或友好协商达成一致。",
+      "title2": "我们专家的卓越服务",
+      "description2": "我们的高素质专业人士拥有扎实的现场经验。",
+      "title3": "装备精良",
+      "description3": "配备最先进设备，适应各种情况的专业人员。"
+    }
+},
+  "footer": {
+    "links": {
+      "heading": "公告",
+      "all": "全部 >",
+      "smsWarning": "警惕此类短信！",
+      "privacyPolicy": "隐私政策"
+    },
+    "hours": "营业时间：周一至周六 08:00-18:00",
+    "location": "地点：科特迪瓦，科科迪-多库伊",
+    "contactBtn": "联系我们",
+    "downloadApp": "下载应用程序",
+    "copyright": "© {years} TOCTOC。保留所有权利。",
+    "alt": {
+      "numberIcon": "电话号码",
+      "qrCode": "下载二维码",
+      "womanPhone": "手机用户"
+    }
+  },
+    "intro": {
+      "slogan": {
+        "subtitle": "一种全新的方式",
+        "title": "招聘员工",
+        "titleBreak": "在家工作",
+        "titleHighlight": "借助人工智能",
+        "aiBadge": "人人可用的人工智能"
+      },
+      "brand": {
+        "name": "TOCTOC"
+      },
+      "map": {
+        "badge": "便捷 & 即时",
+        "description": "根据您的地理位置寻找员工。",
+        "alt": {
+          "avatar": "智能TOCTOC头像"
+        }
+      }
+    },
+    "home": {
+      "quote": {
+        "text": "在科特迪瓦，我们现在招聘家政人员",
+        "highlight": "借助人工智能。"
+      }
+    },
+      "profileCard": {
+        "title": "个人资料示例",
+        "urgent": "紧急",
+        "tocer": "Tocer",
+        "salaryNegotiable": "薪资面议",
+        "workArrangement": {
+          "NAVETTE": "通勤",
+          "LOGE_SUR_PLACE": "住家"
+        },
+        "days": {
+          "LUN": "周一",
+          "MAR": "周二",
+          "MER": "周三",
+          "JEU": "周四",
+          "VEN": "周五",
+          "SAM": "周六",
+          "DIM": "周日"
+        },
+        "contract": {
+          "TEMPORAIRE": "临时",
+          "PERMANENT": "长期"
+        },
+        "aria": {
+          "contact": "联系 {name}"
+        }
+      },
+        "announcementCard": {
+              "title": "个人资料示例",
+              "description": "已找到人选的职位空缺不予显示，或者用户尚未登录的职位空缺也不予显示。",
+          "salaryPeriod": "月",
+          "salaryNegotiable": "薪资面议",
+          "noTransport": "无交通补贴",
+          "transportNotSpecified": "交通补贴未说明",
+          "verifiedIdentity": "已验证身份",
+          "urgent": "紧急",
+          "top": "置顶",
+          "contract": {
+            "TEMPORAIRE": "临时",
+            "PERMANENT": "长期"
+          },
+          "contractStart": {
+            "TEMPORAIRE": "开始: 面议",
+            "PERMANENT": "开始: 立即"
+          },
+          "experience": {
+            "required": "经验 {years} 年最低",
+            "notRequired": "经验不限"
+          },
+          "viewCount": "{count} 次浏览",
+          "type": {
+            "OFFER": "通过广告联系",
+            "PROFILE": "候选人资料"
+          },
+          "workArrangement": {
+            "NAVETTE": "通勤",
+            "LOGE_SUR_PLACE": "住家"
+          },
+          "days": {
+            "LUN": "周一",
+            "MAR": "周二",
+            "MER": "周三",
+            "JEU": "周四",
+            "VEN": "周五",
+            "SAM": "周六",
+            "DIM": "周日"
+          }
+        },
+          "fourModuleHome": {
+            "title": "做出选择",
+            "items": [
+              {
+                "title": "保姆"
+              },
+              {
+                "title": "课后托管"
+              },
+              {
+                "title": "清洁 / 维护"
+              },
+              {
+                "title": "老人看护"
+              },
+              {
+                "title": "住家服务"
+              },
+              {
+                "title": "短期"
+              }
+            ],
+            "btnTocer": "Tocer"
+          },
+          "thirdModuleHome": {
+            "title1": "根据您的标准快速搜索",
+            "btnAdvancedSearch": "高级搜索",
+            "title2": "查找其他机构以及我们自己的报价"
+          },
+          "mapComponent": {
+            "loading": "地图加载中...",
+            "categories": {
+              "NOUNOU": "保姆",
+              "MENAGERE": "清洁工",
+              "CUISINIER": "厨师",
+              "CHAUFFEUR": "司机",
+              "JARDINIER": "园丁",
+              "GARDIEN": "保安",
+              "AIDE_PERSONNE_AGEE": "老人看护",
+              "MAJORDOME": "管家 / 女管家"
+            }
+          }
+}
+  
+  

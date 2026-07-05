@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Region {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  latitude    Float?
+  longitude   Float?
+  announcements Announcement[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model JobType {
+  id            String   @id @default(cuid())
+  name          String   @unique
+  slug          String   @unique
+  category      String
+  announcements Announcement[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Source {
+  id      String  @id @default(cuid())
+  name    String  @unique
+  baseUrl String
+  active  Boolean @default(true)
+
+  lastScraped   DateTime?
+  announcements Announcement[]
+
+  createdAt DateTime @default(now())
+}
+
+enum ListingType {
+  OFFER
+  PROFILE
+}
+
+// 출퇴근형 (navette) vs 입주 (logé sur place), vu sur sitter.net
+enum WorkArrangement {
+  NAVETTE
+  LOGE_SUR_PLACE
+}
+
+enum WorkShift {
+  JOUR
+  NUIT
+}
+
+enum ContractDuration {
+  TEMPORAIRE
+  PERMANENT
+}
+
+model Announcement {
+  id   String      @id @default(cuid())
+  type ListingType
+
+  source     Source  @relation(fields: [sourceId], references: [id])
+  sourceId   String
+  externalId String?
+
+  title       String
+  description String?
+
+  salaryMin    Float?
+  salaryMax    Float?
+  salaryPeriod String?
+  salaryRaw    String?
+
+  isUrgent Boolean @default(false)
+
+  // --- Ajouts inspirés de sitter.net ---
+
+  workArrangement WorkArrangement? // navette ou logé sur place
+  shift           WorkShift?       // jour ou nuit
+  contractDuration ContractDuration? // temporaire ou permanent
+
+  transportAllowance Float? // montant FCFA ; null = non précisé, 0 = explicitement aucune
+
+  isVerified Boolean @default(false) // identité vérifiée (badge 본인인증)
+  isFeatured Boolean @default(false) // annonce mise en avant / payante (badge TOP)
+  viewCount  Int     @default(0)
+
+  // Jours travaillés, ex: ["LUN","MAR","MER","JEU","VEN"]
+  workDays      String[] @default([])
+  workStartTime String?  // ex: "09:00"
+  workEndTime   String?  // ex: "18:00"
+
+  desiredStartDate DateTime? // date de début souhaitée ; null = "à négocier"
+  experienceYearsRequired Int? // null = pas d'exigence précisée
+
+  city String? // ville en texte libre (ex: "Abidjan"), en plus de la Region normalisée
+
+  language String @default("fr") // "fr" | "en" | "ar" | "zh" — langue de rédaction de l'annonce
+
+  region   Region  @relation(fields: [regionId], references: [id])
+  regionId String
+
+  jobType   JobType @relation(fields: [jobTypeId], references: [id])
+  jobTypeId String
+
+  location String? // quartier/adresse précise en texte libre (ex: "Angré, Rue des Jardins")
+  contact  String?
+
+  postedAt DateTime?
+  url      String?
+  rawData  Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([sourceId, externalId])
+  @@index([type, jobTypeId, regionId])
+  @@index([type, isUrgent])
+  @@index([sourceId])
+  @@index([postedAt])
+  @@index([isFeatured])
+  @@index([city])
+  @@index([language])
+}
+
+model DailyStats {
+  id   String   @id @default(cuid())
+  date DateTime @unique
+
+  totalAnnouncements Int @default(0)
+  newAnnouncements   Int @default(0)
+
+  regionStats  Json?
+  jobTypeStats Json?
+
+  createdAt DateTime @default(now())
+}
+
+model GlobalCounter {
+  id                 String   @id @default("global")
+  totalAnnouncements Int      @default(0)
+  lastUpdated        DateTime @updatedAt
+}
