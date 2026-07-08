@@ -189,5 +189,73 @@
               "AIDE_PERSONNE_AGEE": "Aide personne âgée",
               "MAJORDOME": "Majordome / Gouvernante"
             }
+          },
+          "policy": {
+            "table": {
+              "titleHeader": "Titre",
+              "dateHeader": "Date écrite",
+              "title": "Avis de modification de la politique de confidentialité",
+              "date": "08-07-24"
+            },
+            "content": {
+              "intro": "Bonjour, nous avons ajouté une politique de traitement des données pour les utilisateurs permanents de nos services à notre politique de confidentialité.",
+              "modifiedDateLabel": "Date de modification :",
+              "modifiedDate": "29 janvier 2026.",
+              "detailsLabel": "Détails des modifications :",
+              "detailsText": "L'article 2, paragraphe 4), relatif à la conservation des informations pour restreindre la réinscription des membres dont le service est définitivement suspendu, a été ajouté. Les modifications sont les suivantes :",
+              "articleTitle": "Article 2, paragraphe 4) Conservation des informations pour restreindre la réinscription des membres dont le service est définitivement suspendu",
+              "point1": "① La Société peut conserver un minimum d'informations afin d'empêcher la réinscription d'une même personne pour les membres dont l'utilisation du Service a été définitivement restreinte pour violation des Conditions générales d'utilisation, utilisation frauduleuse, atteinte au bon fonctionnement du Service, etc.",
+              "point2": "② Dans ce cas, la Société ne stocke pas directement les numéros de téléphone mobile ; elle génère et conserve uniquement une valeur d'identification chiffrée de manière unidirectionnelle (hachage) en combinant le numéro de téléphone mobile avec la valeur d'identification unique de la Société (sel).",
+              "point3Label": "③ La valeur d'identification susmentionnée est utilisée uniquement aux fins suivantes :",
+              "point3Item1": "Vérification du statut de réinscription des membres dont le service est suspendu définitivement",
+              "point3Item2": "Prévention de l'utilisation frauduleuse",
+              "point4": "④ La Société ne peut pas identifier les personnes physiques grâce à la valeur d'identification ci-dessus et n'utilise pas les informations à d'autres fins que la restriction de la réinscription."
+            }
+          },
+          "warning": {
+            "table": {
+              "titleHeader": "Titre",
+              "dateHeader": "Date écrite",
+              "title": "Avis de modification du message d'alerte contre les SMS frauduleux",
+              "date": "08-07-24"
+            },
+            "content": {
+              "intro": "Bonjour, ici c'est l'administrateur de TocToc.",
+              "modifiedDateLabel": "Date de modification :",
+              "modifiedDate": "29 janvier 2026.",
+              "detailsLabel": "Détails du message d'alerte :",
+              "detailsText": "Nous avons mis à jour notre message d'alerte concernant les SMS frauduleux. Veuillez ne pas répondre à ces genres de messages. Les modifications sont les suivantes :",
+              "articleTitle": "Message d'alerte contre les SMS frauduleux",
+              "point1": "① TocToc ne vous enverra jamais de SMS vous demandant vos informations personnelles (mot de passe, code de vérification, coordonnées bancaires, etc.).",
+              "point2": "② Si vous recevez un SMS suspect prétendant provenir de TocToc, ne cliquez sur aucun lien et ne répondez pas au message.",
+              "point3Label": "③ Les SMS frauduleux peuvent inclure :",
+              "point3Item1": "Des demandes de paiement ou de remboursement inattendues",
+              "point3Item2": "Des menaces de suspension de compte si vous ne répondez pas immédiatement",
+              "point4": "④ En cas de doute, contactez directement le service client de TocToc via l'application officielle ou le site web. Ne passez jamais par les coordonnées fournies dans le SMS suspect."
+            }
+          },
+          "contact": {
+            "category": "Catégorie",
+            "categories": {
+              "usageQuestion": "Question d'utilisation",
+              "signupRequest": "Demande d'inscription",
+              "passwordRequest": "Mot de passe temporaire",
+              "paymentRequest": "Confirmation de paiement"
+            },
+            "categoryDescriptions": {
+              "usageQuestion": "Une question sur le fonctionnement de la plateforme ? Décrivez-la ci-dessous, notre équipe vous répondra rapidement.",
+              "signupRequest": "Besoin d'aide pour créer votre compte ? Précisez votre demande, nous vous accompagnons.",
+              "passwordRequest": "Vous n'arrivez pas à vous connecter ? Indiquez votre email de compte, nous vous enverrons une procédure de réinitialisation.",
+              "paymentRequest": "Une question sur un paiement ou un remboursement ? Détaillez la transaction concernée."
+            },
+            "contact": "Email",
+            "emailPlaceholder": "Entrez votre adresse email",
+            "name": "Nom",
+            "namePlaceholder": "Entrez votre nom",
+            "message": "Message",
+            "submitBtn": "Envoyer"
+          },
+          "auth": {
+            "loading": "Chargement..."
           }
-    }
+          }

@@ -1,6 +1,6 @@
 "use client";
 import React from 'react';
-import Link from 'next/link';
+import { Link, useRouter  } from '@/i18n/navigation';
 import Image from "next/image";
 import { orbitron } from '@/fonts/font';
 import { useTranslations } from 'next-intl';
@@ -16,12 +16,12 @@ interface FooterProps {
 
 export default function FooterComponent() {
     const t = useTranslations("footer");
+    const router = useRouter();
 
     const FooterItem: FooterProps[] = [
         { id: 1, title: t("links.heading") },
-        { id: 2, title: t("links.all"), href: "" },
-        { id: 3, title: t("links.smsWarning"), href: "" },
-        { id: 4, title: t("links.privacyPolicy"), href: "" },
+        { id: 3, title: t("links.smsWarning"), href: "/warning" },
+        { id: 4, title: t("links.privacyPolicy"), href: "/policy" },
     ];
 
     const [heading, ...links] = FooterItem;
@@ -72,7 +72,9 @@ export default function FooterComponent() {
                             {t("location")}
                         </p>
                     </div>
-                    <button className="w-full max-w-50 cursor-pointer bg-zinc-500 p-2 text-[9px] font-bold text-white transition-all duration-300 hover:scale-110">
+                    <button
+                    onClick={() => router.push('/contact')}
+                    className="w-full max-w-50 cursor-pointer bg-zinc-500 p-2 text-[9px] font-bold text-white transition-all duration-300 hover:scale-110">
                         {t("contactBtn")}
                     </button>
                 </div>

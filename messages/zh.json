@@ -185,6 +185,74 @@
               "AIDE_PERSONNE_AGEE": "老人看护",
               "MAJORDOME": "管家 / 女管家"
             }
+          },
+          "policy": {
+            "table": {
+              "titleHeader": "标题",
+              "dateHeader": "编写日期",
+              "title": "隐私政策修订通知",
+              "date": "24-07-08"
+            },
+            "content": {
+              "intro": "您好，我们在隐私政策中新增了针对服务永久用户的个人信息处理政策。",
+              "modifiedDateLabel": "修订日期：",
+              "modifiedDate": "2026年1月29日。",
+              "detailsLabel": "修订详情：",
+              "detailsText": "新增了第2条第4款，关于为限制被永久停止服务的会员重新注册而保留信息的规定。具体修订内容如下：",
+              "articleTitle": "第2条第4款 为限制被永久停止服务的会员重新注册而保留信息",
+              "point1": "① 对于因违反使用条款、不当使用、妨碍服务正常运行等原因被永久限制使用服务的会员，公司可能会保留最少量的信息，以防止同一人重新注册。",
+              "point2": "② 在此情况下，公司不会直接存储手机号码；仅通过将手机号码与公司唯一标识值（盐）相结合，生成并存储单向加密的标识值（哈希值）。",
+              "point3Label": "③ 上述标识值仅用于以下目的：",
+              "point3Item1": "验证被永久停止服务的会员的重新注册状态",
+              "point3Item2": "防止不当使用",
+              "point4": "④ 公司无法通过上述标识值识别特定个人，且不会将此信息用于限制重新注册以外的任何目的。"
+            }  
+          },
+          "warning": {
+            "table": {
+              "titleHeader": "标题",
+              "dateHeader": "编写日期",
+              "title": "关于修改欺诈短信预警通知的公告",
+              "date": "24-07-08"
+            },
+            "content": {
+              "intro": "您好，这里是TocToc管理员。",
+              "modifiedDateLabel": "修改日期：",
+              "modifiedDate": "2026年1月29日。",
+              "detailsLabel": "预警信息详情：",
+              "detailsText": "我们已更新关于欺诈短信的预警信息。请勿回复此类信息。修改内容如下：",
+              "articleTitle": "欺诈短信预警信息",
+              "point1": "① TocToc绝不会通过短信要求您提供个人信息（密码、验证码、银行卡信息等）。",
+              "point2": "② 如果您收到声称来自TocToc的可疑短信，请勿点击任何链接，也不要回复该信息。",
+              "point3Label": "③ 欺诈短信可能包括：",
+              "point3Item1": "意外的付款或退款要求",
+              "point3Item2": "如不立即回复将冻结账户的威胁",
+              "point4": "④ 如有疑问，请通过官方应用或网站直接联系TocToc客服。切勿使用可疑短信中提供的联系方式。"
+            }
+          },
+          "contact": {
+            "category": "分类",
+            "categories": {
+              "usageQuestion": "使用咨询",
+              "signupRequest": "注册申请",
+              "passwordRequest": "临时密码",
+              "paymentRequest": "付款确认"
+            },
+            "categoryDescriptions": {
+              "usageQuestion": "对平台的使用方式有疑问吗？请在下方描述，我们的团队将尽快回复您。",
+              "signupRequest": "注册账户需要帮助吗？请说明您的需求，我们将为您提供协助。",
+              "passwordRequest": "无法登录？请输入您账户的邮箱地址，我们将发送重置流程给您。",
+              "paymentRequest": "对付款或退款有疑问吗？请详细说明相关交易信息。"
+            },
+            "contact": "电子邮箱",
+            "emailPlaceholder": "请输入您的电子邮箱",
+            "name": "姓名",
+            "namePlaceholder": "请输入您的姓名",
+            "message": "留言内容",
+            "submitBtn": "提交"
+          },
+          "auth": {
+            "loading": "加载中..."
           }
 }
   

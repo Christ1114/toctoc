@@ -190,5 +190,73 @@
               "AIDE_PERSONNE_AGEE": "Elderly caregiver",
               "MAJORDOME": "Butler / Housekeeper"
             }
+          },
+          "policy": {
+            "table": {
+              "titleHeader": "Title",
+              "dateHeader": "Date Written",
+              "title": "Notice of Privacy Policy Amendment",
+              "date": "08-07-24"
+            },
+            "content": {
+              "intro": "Hello, we have added a data processing policy for permanent users of our services to our privacy policy.",
+              "modifiedDateLabel": "Date of modification:",
+              "modifiedDate": "January 29, 2026.",
+              "detailsLabel": "Details of changes:",
+              "detailsText": "Article 2, paragraph 4) regarding the retention of information to restrict the re-registration of members whose service is permanently suspended has been added. The changes are as follows:",
+              "articleTitle": "Article 2, paragraph 4) Retention of information to restrict re-registration of members whose service is permanently suspended",
+              "point1": "① The Company may retain a minimum amount of information in order to prevent the re-registration of the same person for members whose use of the Service has been permanently restricted due to violation of the General Terms of Use, fraudulent use, disruption of the smooth operation of the Service, etc.",
+              "point2": "② In this case, the Company does not directly store mobile phone numbers; it generates and retains only a one-way encrypted identification value (hash) by combining the mobile phone number with the Company's unique identification value (salt).",
+              "point3Label": "③ The above identification value is used only for the following purposes:",
+              "point3Item1": "Verification of re-registration status of permanently suspended members",
+              "point3Item2": "Prevention of fraudulent use",
+              "point4": "④ The Company cannot identify individuals through the above identification value and does not use the information for any purpose other than restricting re-registration."
+            }
+          },
+          "warning": {
+            "table": {
+              "titleHeader": "Title",
+              "dateHeader": "Date Written",
+              "title": "Notice of Modification of the Fraudulent SMS Warning Message",
+              "date": "08-07-24"
+            },
+            "content": {
+              "intro": "Hello, this is the TocToc administrator.",
+              "modifiedDateLabel": "Date of modification:",
+              "modifiedDate": "January 29, 2026.",
+              "detailsLabel": "Warning message details:",
+              "detailsText": "We have updated our warning message regarding fraudulent SMS. Please do not respond to these types of messages. The changes are as follows:",
+              "articleTitle": "Fraudulent SMS Warning Message",
+              "point1": "① TocToc will never send you an SMS asking for your personal information (password, verification code, bank details, etc.).",
+              "point2": "② If you receive a suspicious SMS claiming to be from TocToc, do not click on any links and do not respond to the message.",
+              "point3Label": "③ Fraudulent SMS may include:",
+              "point3Item1": "Unexpected payment or refund requests",
+              "point3Item2": "Threats of account suspension if you do not respond immediately",
+              "point4": "④ If in doubt, contact TocToc customer service directly via the official app or website. Never use the contact details provided in the suspicious SMS."
+            }
+          },
+          "contact": {
+            "category": "Category",
+            "categories": {
+              "usageQuestion": "Usage question",
+              "signupRequest": "Signup request",
+              "passwordRequest": "Temporary password",
+              "paymentRequest": "Payment confirmation"
+            },
+            "categoryDescriptions": {
+              "usageQuestion": "Have a question about how the platform works? Describe it below and our team will get back to you quickly.",
+              "signupRequest": "Need help creating your account? Let us know the details and we'll assist you.",
+              "passwordRequest": "Can't log in? Enter your account email and we'll send you a reset procedure.",
+              "paymentRequest": "Question about a payment or a refund? Please detail the transaction concerned."
+            },
+            "contact": "Email",
+            "emailPlaceholder": "Enter your email address",
+            "name": "Name",
+            "namePlaceholder": "Enter your name",
+            "message": "Message",
+            "submitBtn": "Send"
+          },
+          "auth": {
+            "loading": "Loading..."
           }
         }
