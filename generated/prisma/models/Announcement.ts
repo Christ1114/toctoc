@@ -51,7 +51,7 @@ export type AnnouncementMinAggregateOutputType = {
   description: string | null
   salaryMin: number | null
   salaryMax: number | null
-  salaryPeriod: string | null
+  salaryPeriod: $Enums.SalaryPeriod | null
   salaryRaw: string | null
   isUrgent: boolean | null
   workArrangement: $Enums.WorkArrangement | null
@@ -70,7 +70,8 @@ export type AnnouncementMinAggregateOutputType = {
   regionId: string | null
   jobTypeId: string | null
   location: string | null
-  contact: string | null
+  contactPhone: string | null
+  contactWhatsapp: string | null
   postedAt: Date | null
   url: string | null
   createdAt: Date | null
@@ -86,7 +87,7 @@ export type AnnouncementMaxAggregateOutputType = {
   description: string | null
   salaryMin: number | null
   salaryMax: number | null
-  salaryPeriod: string | null
+  salaryPeriod: $Enums.SalaryPeriod | null
   salaryRaw: string | null
   isUrgent: boolean | null
   workArrangement: $Enums.WorkArrangement | null
@@ -105,7 +106,8 @@ export type AnnouncementMaxAggregateOutputType = {
   regionId: string | null
   jobTypeId: string | null
   location: string | null
-  contact: string | null
+  contactPhone: string | null
+  contactWhatsapp: string | null
   postedAt: Date | null
   url: string | null
   createdAt: Date | null
@@ -141,7 +143,8 @@ export type AnnouncementCountAggregateOutputType = {
   regionId: number
   jobTypeId: number
   location: number
-  contact: number
+  contactPhone: number
+  contactWhatsapp: number
   postedAt: number
   url: number
   rawData: number
@@ -195,7 +198,8 @@ export type AnnouncementMinAggregateInputType = {
   regionId?: true
   jobTypeId?: true
   location?: true
-  contact?: true
+  contactPhone?: true
+  contactWhatsapp?: true
   postedAt?: true
   url?: true
   createdAt?: true
@@ -230,7 +234,8 @@ export type AnnouncementMaxAggregateInputType = {
   regionId?: true
   jobTypeId?: true
   location?: true
-  contact?: true
+  contactPhone?: true
+  contactWhatsapp?: true
   postedAt?: true
   url?: true
   createdAt?: true
@@ -266,7 +271,8 @@ export type AnnouncementCountAggregateInputType = {
   regionId?: true
   jobTypeId?: true
   location?: true
-  contact?: true
+  contactPhone?: true
+  contactWhatsapp?: true
   postedAt?: true
   url?: true
   rawData?: true
@@ -365,12 +371,12 @@ export type AnnouncementGroupByOutputType = {
   id: string
   type: $Enums.ListingType
   sourceId: string
-  externalId: string | null
+  externalId: string
   title: string
   description: string | null
   salaryMin: number | null
   salaryMax: number | null
-  salaryPeriod: string | null
+  salaryPeriod: $Enums.SalaryPeriod | null
   salaryRaw: string | null
   isUrgent: boolean
   workArrangement: $Enums.WorkArrangement | null
@@ -387,10 +393,11 @@ export type AnnouncementGroupByOutputType = {
   experienceYearsRequired: number | null
   city: string | null
   language: string
-  regionId: string
+  regionId: string | null
   jobTypeId: string
   location: string | null
-  contact: string | null
+  contactPhone: string | null
+  contactWhatsapp: string | null
   postedAt: Date | null
   url: string | null
   rawData: runtime.JsonValue | null
@@ -425,12 +432,12 @@ export type AnnouncementWhereInput = {
   id?: Prisma.StringFilter<"Announcement"> | string
   type?: Prisma.EnumListingTypeFilter<"Announcement"> | $Enums.ListingType
   sourceId?: Prisma.StringFilter<"Announcement"> | string
-  externalId?: Prisma.StringNullableFilter<"Announcement"> | string | null
+  externalId?: Prisma.StringFilter<"Announcement"> | string
   title?: Prisma.StringFilter<"Announcement"> | string
   description?: Prisma.StringNullableFilter<"Announcement"> | string | null
   salaryMin?: Prisma.FloatNullableFilter<"Announcement"> | number | null
   salaryMax?: Prisma.FloatNullableFilter<"Announcement"> | number | null
-  salaryPeriod?: Prisma.StringNullableFilter<"Announcement"> | string | null
+  salaryPeriod?: Prisma.EnumSalaryPeriodNullableFilter<"Announcement"> | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.StringNullableFilter<"Announcement"> | string | null
   isUrgent?: Prisma.BoolFilter<"Announcement"> | boolean
   workArrangement?: Prisma.EnumWorkArrangementNullableFilter<"Announcement"> | $Enums.WorkArrangement | null
@@ -447,17 +454,18 @@ export type AnnouncementWhereInput = {
   experienceYearsRequired?: Prisma.IntNullableFilter<"Announcement"> | number | null
   city?: Prisma.StringNullableFilter<"Announcement"> | string | null
   language?: Prisma.StringFilter<"Announcement"> | string
-  regionId?: Prisma.StringFilter<"Announcement"> | string
+  regionId?: Prisma.StringNullableFilter<"Announcement"> | string | null
   jobTypeId?: Prisma.StringFilter<"Announcement"> | string
   location?: Prisma.StringNullableFilter<"Announcement"> | string | null
-  contact?: Prisma.StringNullableFilter<"Announcement"> | string | null
+  contactPhone?: Prisma.StringNullableFilter<"Announcement"> | string | null
+  contactWhatsapp?: Prisma.StringNullableFilter<"Announcement"> | string | null
   postedAt?: Prisma.DateTimeNullableFilter<"Announcement"> | Date | string | null
   url?: Prisma.StringNullableFilter<"Announcement"> | string | null
   rawData?: Prisma.JsonNullableFilter<"Announcement">
   createdAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
   source?: Prisma.XOR<Prisma.SourceScalarRelationFilter, Prisma.SourceWhereInput>
-  region?: Prisma.XOR<Prisma.RegionScalarRelationFilter, Prisma.RegionWhereInput>
+  region?: Prisma.XOR<Prisma.RegionNullableScalarRelationFilter, Prisma.RegionWhereInput> | null
   jobType?: Prisma.XOR<Prisma.JobTypeScalarRelationFilter, Prisma.JobTypeWhereInput>
 }
 
@@ -465,7 +473,7 @@ export type AnnouncementOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   type?: Prisma.SortOrder
   sourceId?: Prisma.SortOrder
-  externalId?: Prisma.SortOrderInput | Prisma.SortOrder
+  externalId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   salaryMin?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -487,10 +495,11 @@ export type AnnouncementOrderByWithRelationInput = {
   experienceYearsRequired?: Prisma.SortOrderInput | Prisma.SortOrder
   city?: Prisma.SortOrderInput | Prisma.SortOrder
   language?: Prisma.SortOrder
-  regionId?: Prisma.SortOrder
+  regionId?: Prisma.SortOrderInput | Prisma.SortOrder
   jobTypeId?: Prisma.SortOrder
   location?: Prisma.SortOrderInput | Prisma.SortOrder
-  contact?: Prisma.SortOrderInput | Prisma.SortOrder
+  contactPhone?: Prisma.SortOrderInput | Prisma.SortOrder
+  contactWhatsapp?: Prisma.SortOrderInput | Prisma.SortOrder
   postedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   url?: Prisma.SortOrderInput | Prisma.SortOrder
   rawData?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -509,12 +518,12 @@ export type AnnouncementWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.AnnouncementWhereInput | Prisma.AnnouncementWhereInput[]
   type?: Prisma.EnumListingTypeFilter<"Announcement"> | $Enums.ListingType
   sourceId?: Prisma.StringFilter<"Announcement"> | string
-  externalId?: Prisma.StringNullableFilter<"Announcement"> | string | null
+  externalId?: Prisma.StringFilter<"Announcement"> | string
   title?: Prisma.StringFilter<"Announcement"> | string
   description?: Prisma.StringNullableFilter<"Announcement"> | string | null
   salaryMin?: Prisma.FloatNullableFilter<"Announcement"> | number | null
   salaryMax?: Prisma.FloatNullableFilter<"Announcement"> | number | null
-  salaryPeriod?: Prisma.StringNullableFilter<"Announcement"> | string | null
+  salaryPeriod?: Prisma.EnumSalaryPeriodNullableFilter<"Announcement"> | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.StringNullableFilter<"Announcement"> | string | null
   isUrgent?: Prisma.BoolFilter<"Announcement"> | boolean
   workArrangement?: Prisma.EnumWorkArrangementNullableFilter<"Announcement"> | $Enums.WorkArrangement | null
@@ -531,17 +540,18 @@ export type AnnouncementWhereUniqueInput = Prisma.AtLeast<{
   experienceYearsRequired?: Prisma.IntNullableFilter<"Announcement"> | number | null
   city?: Prisma.StringNullableFilter<"Announcement"> | string | null
   language?: Prisma.StringFilter<"Announcement"> | string
-  regionId?: Prisma.StringFilter<"Announcement"> | string
+  regionId?: Prisma.StringNullableFilter<"Announcement"> | string | null
   jobTypeId?: Prisma.StringFilter<"Announcement"> | string
   location?: Prisma.StringNullableFilter<"Announcement"> | string | null
-  contact?: Prisma.StringNullableFilter<"Announcement"> | string | null
+  contactPhone?: Prisma.StringNullableFilter<"Announcement"> | string | null
+  contactWhatsapp?: Prisma.StringNullableFilter<"Announcement"> | string | null
   postedAt?: Prisma.DateTimeNullableFilter<"Announcement"> | Date | string | null
   url?: Prisma.StringNullableFilter<"Announcement"> | string | null
   rawData?: Prisma.JsonNullableFilter<"Announcement">
   createdAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
   source?: Prisma.XOR<Prisma.SourceScalarRelationFilter, Prisma.SourceWhereInput>
-  region?: Prisma.XOR<Prisma.RegionScalarRelationFilter, Prisma.RegionWhereInput>
+  region?: Prisma.XOR<Prisma.RegionNullableScalarRelationFilter, Prisma.RegionWhereInput> | null
   jobType?: Prisma.XOR<Prisma.JobTypeScalarRelationFilter, Prisma.JobTypeWhereInput>
 }, "id" | "sourceId_externalId">
 
@@ -549,7 +559,7 @@ export type AnnouncementOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   type?: Prisma.SortOrder
   sourceId?: Prisma.SortOrder
-  externalId?: Prisma.SortOrderInput | Prisma.SortOrder
+  externalId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   salaryMin?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -571,10 +581,11 @@ export type AnnouncementOrderByWithAggregationInput = {
   experienceYearsRequired?: Prisma.SortOrderInput | Prisma.SortOrder
   city?: Prisma.SortOrderInput | Prisma.SortOrder
   language?: Prisma.SortOrder
-  regionId?: Prisma.SortOrder
+  regionId?: Prisma.SortOrderInput | Prisma.SortOrder
   jobTypeId?: Prisma.SortOrder
   location?: Prisma.SortOrderInput | Prisma.SortOrder
-  contact?: Prisma.SortOrderInput | Prisma.SortOrder
+  contactPhone?: Prisma.SortOrderInput | Prisma.SortOrder
+  contactWhatsapp?: Prisma.SortOrderInput | Prisma.SortOrder
   postedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   url?: Prisma.SortOrderInput | Prisma.SortOrder
   rawData?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -594,12 +605,12 @@ export type AnnouncementScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Announcement"> | string
   type?: Prisma.EnumListingTypeWithAggregatesFilter<"Announcement"> | $Enums.ListingType
   sourceId?: Prisma.StringWithAggregatesFilter<"Announcement"> | string
-  externalId?: Prisma.StringNullableWithAggregatesFilter<"Announcement"> | string | null
+  externalId?: Prisma.StringWithAggregatesFilter<"Announcement"> | string
   title?: Prisma.StringWithAggregatesFilter<"Announcement"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Announcement"> | string | null
   salaryMin?: Prisma.FloatNullableWithAggregatesFilter<"Announcement"> | number | null
   salaryMax?: Prisma.FloatNullableWithAggregatesFilter<"Announcement"> | number | null
-  salaryPeriod?: Prisma.StringNullableWithAggregatesFilter<"Announcement"> | string | null
+  salaryPeriod?: Prisma.EnumSalaryPeriodNullableWithAggregatesFilter<"Announcement"> | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.StringNullableWithAggregatesFilter<"Announcement"> | string | null
   isUrgent?: Prisma.BoolWithAggregatesFilter<"Announcement"> | boolean
   workArrangement?: Prisma.EnumWorkArrangementNullableWithAggregatesFilter<"Announcement"> | $Enums.WorkArrangement | null
@@ -616,10 +627,11 @@ export type AnnouncementScalarWhereWithAggregatesInput = {
   experienceYearsRequired?: Prisma.IntNullableWithAggregatesFilter<"Announcement"> | number | null
   city?: Prisma.StringNullableWithAggregatesFilter<"Announcement"> | string | null
   language?: Prisma.StringWithAggregatesFilter<"Announcement"> | string
-  regionId?: Prisma.StringWithAggregatesFilter<"Announcement"> | string
+  regionId?: Prisma.StringNullableWithAggregatesFilter<"Announcement"> | string | null
   jobTypeId?: Prisma.StringWithAggregatesFilter<"Announcement"> | string
   location?: Prisma.StringNullableWithAggregatesFilter<"Announcement"> | string | null
-  contact?: Prisma.StringNullableWithAggregatesFilter<"Announcement"> | string | null
+  contactPhone?: Prisma.StringNullableWithAggregatesFilter<"Announcement"> | string | null
+  contactWhatsapp?: Prisma.StringNullableWithAggregatesFilter<"Announcement"> | string | null
   postedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Announcement"> | Date | string | null
   url?: Prisma.StringNullableWithAggregatesFilter<"Announcement"> | string | null
   rawData?: Prisma.JsonNullableWithAggregatesFilter<"Announcement">
@@ -630,12 +642,12 @@ export type AnnouncementScalarWhereWithAggregatesInput = {
 export type AnnouncementCreateInput = {
   id?: string
   type: $Enums.ListingType
-  externalId?: string | null
+  externalId: string
   title: string
   description?: string | null
   salaryMin?: number | null
   salaryMax?: number | null
-  salaryPeriod?: string | null
+  salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
@@ -653,14 +665,15 @@ export type AnnouncementCreateInput = {
   city?: string | null
   language?: string
   location?: string | null
-  contact?: string | null
+  contactPhone?: string | null
+  contactWhatsapp?: string | null
   postedAt?: Date | string | null
   url?: string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   source: Prisma.SourceCreateNestedOneWithoutAnnouncementsInput
-  region: Prisma.RegionCreateNestedOneWithoutAnnouncementsInput
+  region?: Prisma.RegionCreateNestedOneWithoutAnnouncementsInput
   jobType: Prisma.JobTypeCreateNestedOneWithoutAnnouncementsInput
 }
 
@@ -668,12 +681,12 @@ export type AnnouncementUncheckedCreateInput = {
   id?: string
   type: $Enums.ListingType
   sourceId: string
-  externalId?: string | null
+  externalId: string
   title: string
   description?: string | null
   salaryMin?: number | null
   salaryMax?: number | null
-  salaryPeriod?: string | null
+  salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
@@ -690,10 +703,11 @@ export type AnnouncementUncheckedCreateInput = {
   experienceYearsRequired?: number | null
   city?: string | null
   language?: string
-  regionId: string
+  regionId?: string | null
   jobTypeId: string
   location?: string | null
-  contact?: string | null
+  contactPhone?: string | null
+  contactWhatsapp?: string | null
   postedAt?: Date | string | null
   url?: string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -704,12 +718,12 @@ export type AnnouncementUncheckedCreateInput = {
 export type AnnouncementUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumListingTypeFieldUpdateOperationsInput | $Enums.ListingType
-  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryPeriod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
@@ -727,14 +741,15 @@ export type AnnouncementUpdateInput = {
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.StringFieldUpdateOperationsInput | string
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactWhatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   source?: Prisma.SourceUpdateOneRequiredWithoutAnnouncementsNestedInput
-  region?: Prisma.RegionUpdateOneRequiredWithoutAnnouncementsNestedInput
+  region?: Prisma.RegionUpdateOneWithoutAnnouncementsNestedInput
   jobType?: Prisma.JobTypeUpdateOneRequiredWithoutAnnouncementsNestedInput
 }
 
@@ -742,12 +757,12 @@ export type AnnouncementUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumListingTypeFieldUpdateOperationsInput | $Enums.ListingType
   sourceId?: Prisma.StringFieldUpdateOperationsInput | string
-  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryPeriod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
@@ -764,10 +779,11 @@ export type AnnouncementUncheckedUpdateInput = {
   experienceYearsRequired?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.StringFieldUpdateOperationsInput | string
-  regionId?: Prisma.StringFieldUpdateOperationsInput | string
+  regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactWhatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -779,12 +795,12 @@ export type AnnouncementCreateManyInput = {
   id?: string
   type: $Enums.ListingType
   sourceId: string
-  externalId?: string | null
+  externalId: string
   title: string
   description?: string | null
   salaryMin?: number | null
   salaryMax?: number | null
-  salaryPeriod?: string | null
+  salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
@@ -801,10 +817,11 @@ export type AnnouncementCreateManyInput = {
   experienceYearsRequired?: number | null
   city?: string | null
   language?: string
-  regionId: string
+  regionId?: string | null
   jobTypeId: string
   location?: string | null
-  contact?: string | null
+  contactPhone?: string | null
+  contactWhatsapp?: string | null
   postedAt?: Date | string | null
   url?: string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -815,12 +832,12 @@ export type AnnouncementCreateManyInput = {
 export type AnnouncementUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumListingTypeFieldUpdateOperationsInput | $Enums.ListingType
-  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryPeriod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
@@ -838,7 +855,8 @@ export type AnnouncementUpdateManyMutationInput = {
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.StringFieldUpdateOperationsInput | string
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactWhatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -850,12 +868,12 @@ export type AnnouncementUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumListingTypeFieldUpdateOperationsInput | $Enums.ListingType
   sourceId?: Prisma.StringFieldUpdateOperationsInput | string
-  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryPeriod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
@@ -872,10 +890,11 @@ export type AnnouncementUncheckedUpdateManyInput = {
   experienceYearsRequired?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.StringFieldUpdateOperationsInput | string
-  regionId?: Prisma.StringFieldUpdateOperationsInput | string
+  regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactWhatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -935,7 +954,8 @@ export type AnnouncementCountOrderByAggregateInput = {
   regionId?: Prisma.SortOrder
   jobTypeId?: Prisma.SortOrder
   location?: Prisma.SortOrder
-  contact?: Prisma.SortOrder
+  contactPhone?: Prisma.SortOrder
+  contactWhatsapp?: Prisma.SortOrder
   postedAt?: Prisma.SortOrder
   url?: Prisma.SortOrder
   rawData?: Prisma.SortOrder
@@ -979,7 +999,8 @@ export type AnnouncementMaxOrderByAggregateInput = {
   regionId?: Prisma.SortOrder
   jobTypeId?: Prisma.SortOrder
   location?: Prisma.SortOrder
-  contact?: Prisma.SortOrder
+  contactPhone?: Prisma.SortOrder
+  contactWhatsapp?: Prisma.SortOrder
   postedAt?: Prisma.SortOrder
   url?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -1014,7 +1035,8 @@ export type AnnouncementMinOrderByAggregateInput = {
   regionId?: Prisma.SortOrder
   jobTypeId?: Prisma.SortOrder
   location?: Prisma.SortOrder
-  contact?: Prisma.SortOrder
+  contactPhone?: Prisma.SortOrder
+  contactWhatsapp?: Prisma.SortOrder
   postedAt?: Prisma.SortOrder
   url?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -1167,6 +1189,10 @@ export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
+export type NullableEnumSalaryPeriodFieldUpdateOperationsInput = {
+  set?: $Enums.SalaryPeriod | null
+}
+
 export type NullableEnumWorkArrangementFieldUpdateOperationsInput = {
   set?: $Enums.WorkArrangement | null
 }
@@ -1203,12 +1229,12 @@ export type NullableIntFieldUpdateOperationsInput = {
 export type AnnouncementCreateWithoutRegionInput = {
   id?: string
   type: $Enums.ListingType
-  externalId?: string | null
+  externalId: string
   title: string
   description?: string | null
   salaryMin?: number | null
   salaryMax?: number | null
-  salaryPeriod?: string | null
+  salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
@@ -1226,7 +1252,8 @@ export type AnnouncementCreateWithoutRegionInput = {
   city?: string | null
   language?: string
   location?: string | null
-  contact?: string | null
+  contactPhone?: string | null
+  contactWhatsapp?: string | null
   postedAt?: Date | string | null
   url?: string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1240,12 +1267,12 @@ export type AnnouncementUncheckedCreateWithoutRegionInput = {
   id?: string
   type: $Enums.ListingType
   sourceId: string
-  externalId?: string | null
+  externalId: string
   title: string
   description?: string | null
   salaryMin?: number | null
   salaryMax?: number | null
-  salaryPeriod?: string | null
+  salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
@@ -1264,7 +1291,8 @@ export type AnnouncementUncheckedCreateWithoutRegionInput = {
   language?: string
   jobTypeId: string
   location?: string | null
-  contact?: string | null
+  contactPhone?: string | null
+  contactWhatsapp?: string | null
   postedAt?: Date | string | null
   url?: string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1305,12 +1333,12 @@ export type AnnouncementScalarWhereInput = {
   id?: Prisma.StringFilter<"Announcement"> | string
   type?: Prisma.EnumListingTypeFilter<"Announcement"> | $Enums.ListingType
   sourceId?: Prisma.StringFilter<"Announcement"> | string
-  externalId?: Prisma.StringNullableFilter<"Announcement"> | string | null
+  externalId?: Prisma.StringFilter<"Announcement"> | string
   title?: Prisma.StringFilter<"Announcement"> | string
   description?: Prisma.StringNullableFilter<"Announcement"> | string | null
   salaryMin?: Prisma.FloatNullableFilter<"Announcement"> | number | null
   salaryMax?: Prisma.FloatNullableFilter<"Announcement"> | number | null
-  salaryPeriod?: Prisma.StringNullableFilter<"Announcement"> | string | null
+  salaryPeriod?: Prisma.EnumSalaryPeriodNullableFilter<"Announcement"> | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.StringNullableFilter<"Announcement"> | string | null
   isUrgent?: Prisma.BoolFilter<"Announcement"> | boolean
   workArrangement?: Prisma.EnumWorkArrangementNullableFilter<"Announcement"> | $Enums.WorkArrangement | null
@@ -1327,10 +1355,11 @@ export type AnnouncementScalarWhereInput = {
   experienceYearsRequired?: Prisma.IntNullableFilter<"Announcement"> | number | null
   city?: Prisma.StringNullableFilter<"Announcement"> | string | null
   language?: Prisma.StringFilter<"Announcement"> | string
-  regionId?: Prisma.StringFilter<"Announcement"> | string
+  regionId?: Prisma.StringNullableFilter<"Announcement"> | string | null
   jobTypeId?: Prisma.StringFilter<"Announcement"> | string
   location?: Prisma.StringNullableFilter<"Announcement"> | string | null
-  contact?: Prisma.StringNullableFilter<"Announcement"> | string | null
+  contactPhone?: Prisma.StringNullableFilter<"Announcement"> | string | null
+  contactWhatsapp?: Prisma.StringNullableFilter<"Announcement"> | string | null
   postedAt?: Prisma.DateTimeNullableFilter<"Announcement"> | Date | string | null
   url?: Prisma.StringNullableFilter<"Announcement"> | string | null
   rawData?: Prisma.JsonNullableFilter<"Announcement">
@@ -1341,12 +1370,12 @@ export type AnnouncementScalarWhereInput = {
 export type AnnouncementCreateWithoutJobTypeInput = {
   id?: string
   type: $Enums.ListingType
-  externalId?: string | null
+  externalId: string
   title: string
   description?: string | null
   salaryMin?: number | null
   salaryMax?: number | null
-  salaryPeriod?: string | null
+  salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
@@ -1364,26 +1393,27 @@ export type AnnouncementCreateWithoutJobTypeInput = {
   city?: string | null
   language?: string
   location?: string | null
-  contact?: string | null
+  contactPhone?: string | null
+  contactWhatsapp?: string | null
   postedAt?: Date | string | null
   url?: string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   source: Prisma.SourceCreateNestedOneWithoutAnnouncementsInput
-  region: Prisma.RegionCreateNestedOneWithoutAnnouncementsInput
+  region?: Prisma.RegionCreateNestedOneWithoutAnnouncementsInput
 }
 
 export type AnnouncementUncheckedCreateWithoutJobTypeInput = {
   id?: string
   type: $Enums.ListingType
   sourceId: string
-  externalId?: string | null
+  externalId: string
   title: string
   description?: string | null
   salaryMin?: number | null
   salaryMax?: number | null
-  salaryPeriod?: string | null
+  salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
@@ -1400,9 +1430,10 @@ export type AnnouncementUncheckedCreateWithoutJobTypeInput = {
   experienceYearsRequired?: number | null
   city?: string | null
   language?: string
-  regionId: string
+  regionId?: string | null
   location?: string | null
-  contact?: string | null
+  contactPhone?: string | null
+  contactWhatsapp?: string | null
   postedAt?: Date | string | null
   url?: string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1439,12 +1470,12 @@ export type AnnouncementUpdateManyWithWhereWithoutJobTypeInput = {
 export type AnnouncementCreateWithoutSourceInput = {
   id?: string
   type: $Enums.ListingType
-  externalId?: string | null
+  externalId: string
   title: string
   description?: string | null
   salaryMin?: number | null
   salaryMax?: number | null
-  salaryPeriod?: string | null
+  salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
@@ -1462,25 +1493,26 @@ export type AnnouncementCreateWithoutSourceInput = {
   city?: string | null
   language?: string
   location?: string | null
-  contact?: string | null
+  contactPhone?: string | null
+  contactWhatsapp?: string | null
   postedAt?: Date | string | null
   url?: string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  region: Prisma.RegionCreateNestedOneWithoutAnnouncementsInput
+  region?: Prisma.RegionCreateNestedOneWithoutAnnouncementsInput
   jobType: Prisma.JobTypeCreateNestedOneWithoutAnnouncementsInput
 }
 
 export type AnnouncementUncheckedCreateWithoutSourceInput = {
   id?: string
   type: $Enums.ListingType
-  externalId?: string | null
+  externalId: string
   title: string
   description?: string | null
   salaryMin?: number | null
   salaryMax?: number | null
-  salaryPeriod?: string | null
+  salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
@@ -1497,10 +1529,11 @@ export type AnnouncementUncheckedCreateWithoutSourceInput = {
   experienceYearsRequired?: number | null
   city?: string | null
   language?: string
-  regionId: string
+  regionId?: string | null
   jobTypeId: string
   location?: string | null
-  contact?: string | null
+  contactPhone?: string | null
+  contactWhatsapp?: string | null
   postedAt?: Date | string | null
   url?: string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1538,12 +1571,12 @@ export type AnnouncementCreateManyRegionInput = {
   id?: string
   type: $Enums.ListingType
   sourceId: string
-  externalId?: string | null
+  externalId: string
   title: string
   description?: string | null
   salaryMin?: number | null
   salaryMax?: number | null
-  salaryPeriod?: string | null
+  salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
@@ -1562,7 +1595,8 @@ export type AnnouncementCreateManyRegionInput = {
   language?: string
   jobTypeId: string
   location?: string | null
-  contact?: string | null
+  contactPhone?: string | null
+  contactWhatsapp?: string | null
   postedAt?: Date | string | null
   url?: string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1573,12 +1607,12 @@ export type AnnouncementCreateManyRegionInput = {
 export type AnnouncementUpdateWithoutRegionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumListingTypeFieldUpdateOperationsInput | $Enums.ListingType
-  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryPeriod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
@@ -1596,7 +1630,8 @@ export type AnnouncementUpdateWithoutRegionInput = {
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.StringFieldUpdateOperationsInput | string
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactWhatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1610,12 +1645,12 @@ export type AnnouncementUncheckedUpdateWithoutRegionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumListingTypeFieldUpdateOperationsInput | $Enums.ListingType
   sourceId?: Prisma.StringFieldUpdateOperationsInput | string
-  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryPeriod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
@@ -1634,7 +1669,8 @@ export type AnnouncementUncheckedUpdateWithoutRegionInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   jobTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactWhatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1646,12 +1682,12 @@ export type AnnouncementUncheckedUpdateManyWithoutRegionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumListingTypeFieldUpdateOperationsInput | $Enums.ListingType
   sourceId?: Prisma.StringFieldUpdateOperationsInput | string
-  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryPeriod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
@@ -1670,7 +1706,8 @@ export type AnnouncementUncheckedUpdateManyWithoutRegionInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   jobTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactWhatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1682,12 +1719,12 @@ export type AnnouncementCreateManyJobTypeInput = {
   id?: string
   type: $Enums.ListingType
   sourceId: string
-  externalId?: string | null
+  externalId: string
   title: string
   description?: string | null
   salaryMin?: number | null
   salaryMax?: number | null
-  salaryPeriod?: string | null
+  salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
@@ -1704,9 +1741,10 @@ export type AnnouncementCreateManyJobTypeInput = {
   experienceYearsRequired?: number | null
   city?: string | null
   language?: string
-  regionId: string
+  regionId?: string | null
   location?: string | null
-  contact?: string | null
+  contactPhone?: string | null
+  contactWhatsapp?: string | null
   postedAt?: Date | string | null
   url?: string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1717,12 +1755,12 @@ export type AnnouncementCreateManyJobTypeInput = {
 export type AnnouncementUpdateWithoutJobTypeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumListingTypeFieldUpdateOperationsInput | $Enums.ListingType
-  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryPeriod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
@@ -1740,26 +1778,27 @@ export type AnnouncementUpdateWithoutJobTypeInput = {
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.StringFieldUpdateOperationsInput | string
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactWhatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   source?: Prisma.SourceUpdateOneRequiredWithoutAnnouncementsNestedInput
-  region?: Prisma.RegionUpdateOneRequiredWithoutAnnouncementsNestedInput
+  region?: Prisma.RegionUpdateOneWithoutAnnouncementsNestedInput
 }
 
 export type AnnouncementUncheckedUpdateWithoutJobTypeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumListingTypeFieldUpdateOperationsInput | $Enums.ListingType
   sourceId?: Prisma.StringFieldUpdateOperationsInput | string
-  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryPeriod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
@@ -1776,9 +1815,10 @@ export type AnnouncementUncheckedUpdateWithoutJobTypeInput = {
   experienceYearsRequired?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.StringFieldUpdateOperationsInput | string
-  regionId?: Prisma.StringFieldUpdateOperationsInput | string
+  regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactWhatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1790,12 +1830,12 @@ export type AnnouncementUncheckedUpdateManyWithoutJobTypeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumListingTypeFieldUpdateOperationsInput | $Enums.ListingType
   sourceId?: Prisma.StringFieldUpdateOperationsInput | string
-  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryPeriod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
@@ -1812,9 +1852,10 @@ export type AnnouncementUncheckedUpdateManyWithoutJobTypeInput = {
   experienceYearsRequired?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.StringFieldUpdateOperationsInput | string
-  regionId?: Prisma.StringFieldUpdateOperationsInput | string
+  regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactWhatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1825,12 +1866,12 @@ export type AnnouncementUncheckedUpdateManyWithoutJobTypeInput = {
 export type AnnouncementCreateManySourceInput = {
   id?: string
   type: $Enums.ListingType
-  externalId?: string | null
+  externalId: string
   title: string
   description?: string | null
   salaryMin?: number | null
   salaryMax?: number | null
-  salaryPeriod?: string | null
+  salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
@@ -1847,10 +1888,11 @@ export type AnnouncementCreateManySourceInput = {
   experienceYearsRequired?: number | null
   city?: string | null
   language?: string
-  regionId: string
+  regionId?: string | null
   jobTypeId: string
   location?: string | null
-  contact?: string | null
+  contactPhone?: string | null
+  contactWhatsapp?: string | null
   postedAt?: Date | string | null
   url?: string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1861,12 +1903,12 @@ export type AnnouncementCreateManySourceInput = {
 export type AnnouncementUpdateWithoutSourceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumListingTypeFieldUpdateOperationsInput | $Enums.ListingType
-  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryPeriod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
@@ -1884,25 +1926,26 @@ export type AnnouncementUpdateWithoutSourceInput = {
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.StringFieldUpdateOperationsInput | string
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactWhatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  region?: Prisma.RegionUpdateOneRequiredWithoutAnnouncementsNestedInput
+  region?: Prisma.RegionUpdateOneWithoutAnnouncementsNestedInput
   jobType?: Prisma.JobTypeUpdateOneRequiredWithoutAnnouncementsNestedInput
 }
 
 export type AnnouncementUncheckedUpdateWithoutSourceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumListingTypeFieldUpdateOperationsInput | $Enums.ListingType
-  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryPeriod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
@@ -1919,10 +1962,11 @@ export type AnnouncementUncheckedUpdateWithoutSourceInput = {
   experienceYearsRequired?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.StringFieldUpdateOperationsInput | string
-  regionId?: Prisma.StringFieldUpdateOperationsInput | string
+  regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactWhatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1933,12 +1977,12 @@ export type AnnouncementUncheckedUpdateWithoutSourceInput = {
 export type AnnouncementUncheckedUpdateManyWithoutSourceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumListingTypeFieldUpdateOperationsInput | $Enums.ListingType
-  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryPeriod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
@@ -1955,10 +1999,11 @@ export type AnnouncementUncheckedUpdateManyWithoutSourceInput = {
   experienceYearsRequired?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   language?: Prisma.StringFieldUpdateOperationsInput | string
-  regionId?: Prisma.StringFieldUpdateOperationsInput | string
+  regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   jobTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contact?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactWhatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1997,14 +2042,15 @@ export type AnnouncementSelect<ExtArgs extends runtime.Types.Extensions.Internal
   regionId?: boolean
   jobTypeId?: boolean
   location?: boolean
-  contact?: boolean
+  contactPhone?: boolean
+  contactWhatsapp?: boolean
   postedAt?: boolean
   url?: boolean
   rawData?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   source?: boolean | Prisma.SourceDefaultArgs<ExtArgs>
-  region?: boolean | Prisma.RegionDefaultArgs<ExtArgs>
+  region?: boolean | Prisma.Announcement$regionArgs<ExtArgs>
   jobType?: boolean | Prisma.JobTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["announcement"]>
 
@@ -2037,14 +2083,15 @@ export type AnnouncementSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   regionId?: boolean
   jobTypeId?: boolean
   location?: boolean
-  contact?: boolean
+  contactPhone?: boolean
+  contactWhatsapp?: boolean
   postedAt?: boolean
   url?: boolean
   rawData?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   source?: boolean | Prisma.SourceDefaultArgs<ExtArgs>
-  region?: boolean | Prisma.RegionDefaultArgs<ExtArgs>
+  region?: boolean | Prisma.Announcement$regionArgs<ExtArgs>
   jobType?: boolean | Prisma.JobTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["announcement"]>
 
@@ -2077,14 +2124,15 @@ export type AnnouncementSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   regionId?: boolean
   jobTypeId?: boolean
   location?: boolean
-  contact?: boolean
+  contactPhone?: boolean
+  contactWhatsapp?: boolean
   postedAt?: boolean
   url?: boolean
   rawData?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   source?: boolean | Prisma.SourceDefaultArgs<ExtArgs>
-  region?: boolean | Prisma.RegionDefaultArgs<ExtArgs>
+  region?: boolean | Prisma.Announcement$regionArgs<ExtArgs>
   jobType?: boolean | Prisma.JobTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["announcement"]>
 
@@ -2117,7 +2165,8 @@ export type AnnouncementSelectScalar = {
   regionId?: boolean
   jobTypeId?: boolean
   location?: boolean
-  contact?: boolean
+  contactPhone?: boolean
+  contactWhatsapp?: boolean
   postedAt?: boolean
   url?: boolean
   rawData?: boolean
@@ -2125,20 +2174,20 @@ export type AnnouncementSelectScalar = {
   updatedAt?: boolean
 }
 
-export type AnnouncementOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "sourceId" | "externalId" | "title" | "description" | "salaryMin" | "salaryMax" | "salaryPeriod" | "salaryRaw" | "isUrgent" | "workArrangement" | "shift" | "contractDuration" | "transportAllowance" | "isVerified" | "isFeatured" | "viewCount" | "workDays" | "workStartTime" | "workEndTime" | "desiredStartDate" | "experienceYearsRequired" | "city" | "language" | "regionId" | "jobTypeId" | "location" | "contact" | "postedAt" | "url" | "rawData" | "createdAt" | "updatedAt", ExtArgs["result"]["announcement"]>
+export type AnnouncementOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "sourceId" | "externalId" | "title" | "description" | "salaryMin" | "salaryMax" | "salaryPeriod" | "salaryRaw" | "isUrgent" | "workArrangement" | "shift" | "contractDuration" | "transportAllowance" | "isVerified" | "isFeatured" | "viewCount" | "workDays" | "workStartTime" | "workEndTime" | "desiredStartDate" | "experienceYearsRequired" | "city" | "language" | "regionId" | "jobTypeId" | "location" | "contactPhone" | "contactWhatsapp" | "postedAt" | "url" | "rawData" | "createdAt" | "updatedAt", ExtArgs["result"]["announcement"]>
 export type AnnouncementInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   source?: boolean | Prisma.SourceDefaultArgs<ExtArgs>
-  region?: boolean | Prisma.RegionDefaultArgs<ExtArgs>
+  region?: boolean | Prisma.Announcement$regionArgs<ExtArgs>
   jobType?: boolean | Prisma.JobTypeDefaultArgs<ExtArgs>
 }
 export type AnnouncementIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   source?: boolean | Prisma.SourceDefaultArgs<ExtArgs>
-  region?: boolean | Prisma.RegionDefaultArgs<ExtArgs>
+  region?: boolean | Prisma.Announcement$regionArgs<ExtArgs>
   jobType?: boolean | Prisma.JobTypeDefaultArgs<ExtArgs>
 }
 export type AnnouncementIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   source?: boolean | Prisma.SourceDefaultArgs<ExtArgs>
-  region?: boolean | Prisma.RegionDefaultArgs<ExtArgs>
+  region?: boolean | Prisma.Announcement$regionArgs<ExtArgs>
   jobType?: boolean | Prisma.JobTypeDefaultArgs<ExtArgs>
 }
 
@@ -2146,19 +2195,19 @@ export type $AnnouncementPayload<ExtArgs extends runtime.Types.Extensions.Intern
   name: "Announcement"
   objects: {
     source: Prisma.$SourcePayload<ExtArgs>
-    region: Prisma.$RegionPayload<ExtArgs>
+    region: Prisma.$RegionPayload<ExtArgs> | null
     jobType: Prisma.$JobTypePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     type: $Enums.ListingType
     sourceId: string
-    externalId: string | null
+    externalId: string
     title: string
     description: string | null
     salaryMin: number | null
     salaryMax: number | null
-    salaryPeriod: string | null
+    salaryPeriod: $Enums.SalaryPeriod | null
     salaryRaw: string | null
     isUrgent: boolean
     workArrangement: $Enums.WorkArrangement | null
@@ -2175,10 +2224,11 @@ export type $AnnouncementPayload<ExtArgs extends runtime.Types.Extensions.Intern
     experienceYearsRequired: number | null
     city: string | null
     language: string
-    regionId: string
+    regionId: string | null
     jobTypeId: string
     location: string | null
-    contact: string | null
+    contactPhone: string | null
+    contactWhatsapp: string | null
     postedAt: Date | null
     url: string | null
     rawData: runtime.JsonValue | null
@@ -2579,7 +2629,7 @@ readonly fields: AnnouncementFieldRefs;
 export interface Prisma__AnnouncementClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   source<T extends Prisma.SourceDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SourceDefaultArgs<ExtArgs>>): Prisma.Prisma__SourceClient<runtime.Types.Result.GetResult<Prisma.$SourcePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  region<T extends Prisma.RegionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RegionDefaultArgs<ExtArgs>>): Prisma.Prisma__RegionClient<runtime.Types.Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  region<T extends Prisma.Announcement$regionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Announcement$regionArgs<ExtArgs>>): Prisma.Prisma__RegionClient<runtime.Types.Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   jobType<T extends Prisma.JobTypeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.JobTypeDefaultArgs<ExtArgs>>): Prisma.Prisma__JobTypeClient<runtime.Types.Result.GetResult<Prisma.$JobTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2618,7 +2668,7 @@ export interface AnnouncementFieldRefs {
   readonly description: Prisma.FieldRef<"Announcement", 'String'>
   readonly salaryMin: Prisma.FieldRef<"Announcement", 'Float'>
   readonly salaryMax: Prisma.FieldRef<"Announcement", 'Float'>
-  readonly salaryPeriod: Prisma.FieldRef<"Announcement", 'String'>
+  readonly salaryPeriod: Prisma.FieldRef<"Announcement", 'SalaryPeriod'>
   readonly salaryRaw: Prisma.FieldRef<"Announcement", 'String'>
   readonly isUrgent: Prisma.FieldRef<"Announcement", 'Boolean'>
   readonly workArrangement: Prisma.FieldRef<"Announcement", 'WorkArrangement'>
@@ -2638,7 +2688,8 @@ export interface AnnouncementFieldRefs {
   readonly regionId: Prisma.FieldRef<"Announcement", 'String'>
   readonly jobTypeId: Prisma.FieldRef<"Announcement", 'String'>
   readonly location: Prisma.FieldRef<"Announcement", 'String'>
-  readonly contact: Prisma.FieldRef<"Announcement", 'String'>
+  readonly contactPhone: Prisma.FieldRef<"Announcement", 'String'>
+  readonly contactWhatsapp: Prisma.FieldRef<"Announcement", 'String'>
   readonly postedAt: Prisma.FieldRef<"Announcement", 'DateTime'>
   readonly url: Prisma.FieldRef<"Announcement", 'String'>
   readonly rawData: Prisma.FieldRef<"Announcement", 'Json'>
@@ -3042,6 +3093,25 @@ export type AnnouncementDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many Announcements to delete.
    */
   limit?: number
+}
+
+/**
+ * Announcement.region
+ */
+export type Announcement$regionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Region
+   */
+  select?: Prisma.RegionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Region
+   */
+  omit?: Prisma.RegionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RegionInclude<ExtArgs> | null
+  where?: Prisma.RegionWhereInput
 }
 
 /**

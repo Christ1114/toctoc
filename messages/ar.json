@@ -82,6 +82,7 @@
       },
         "profileCard": {
           "title": "أمثلة على الملفات الشخصية",
+          "morelesse": "عرض المزيد",
           "urgent": "عاجل",
           "tocer": "Tocer",
           "salaryNegotiable": "الراتب قابل للتفاوض",
@@ -108,7 +109,8 @@
         },
           "announcementCard": {
                 "title": "أمثلة على الملفات الشخصية",
-                "description": "عروض العمل التي تم العثور على ملف شخصي لها لا يتم عرضها، أو تلك التي لم يسجل المستخدم الدخول إليها بعد.",
+                "loading": "تحميل...",
+                "morelesse": "عرض المزيد",
             "salaryPeriod": "شهر",
             "salaryNegotiable": "الراتب قابل للتفاوض",
             "noTransport": "بدون نقل",
@@ -177,7 +179,12 @@
               "title2": "ابحث عن عروض من وكالات أخرى بالإضافة إلى عروضنا"
             },
             "mapComponent": {
+              "title": "العروض حسب الموقع",
               "loading": "جارٍ تحميل الخريطة...",
+              "loadingData": "جارٍ تحميل البيانات...",
+              "citiesCount": "{count, plural, zero {مدينة} one {مدينة} two {مدينتان} few {مدن} many {مدينة} other {مدينة}}",
+              "offersCount": "عروض",
+              "more": "أخرى",
               "categories": {
                 "NOUNOU": "مربية أطفال",
                 "MENAGERE": "عاملة منزلية",
@@ -188,7 +195,7 @@
                 "AIDE_PERSONNE_AGEE": "مقدم رعاية للمسنين",
                 "MAJORDOME": "مدبر منزل / مديرة منزل"
               }
-            },
+          },
             "policy": {
               "table": {
                 "titleHeader": "العنوان",

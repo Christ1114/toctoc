@@ -8,6 +8,7 @@ import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import { useTranslations } from 'next-intl';
 
+
 let DefaultIcon = L.icon({
   iconUrl: icon.src,
   shadowUrl: iconShadow.src,
@@ -16,6 +17,7 @@ let DefaultIcon = L.icon({
 });
 
 L.Marker.prototype.options.icon = DefaultIcon;
+
 
 const IVORY_COAST_BOUNDS: LatLngBoundsExpression = [
   [4.1, -8.6],
@@ -47,10 +49,12 @@ type RegionPoint = {
   name: string;
   lat: number;
   lng: number;
-  byCategory: Partial<Record<CategoryKey, number>>;
+  byCategory?: Partial<Record<CategoryKey, number>>;
+  total?: number; 
 };
 
-function jitterAround(lat: number, lng: number, index: number, total: number, radiusDeg = 0.06) {
+
+function jitterAround(lat: number, lng: number, index: number, total: number, radiusDeg = 0.04) {
   if (total <= 1) return { lat, lng };
   const angle = (2 * Math.PI * index) / total;
   return {
@@ -58,27 +62,30 @@ function jitterAround(lat: number, lng: number, index: number, total: number, ra
     lng: lng + radiusDeg * Math.cos(angle),
   };
 }
-
 interface MapComponentProps {
   regions: RegionPoint[];
 }
-
 export default function MapComponent({ regions }: MapComponentProps) {
   const t = useTranslations("mapComponent");
   const [isClient, setIsClient] = useState(false);
   const [pulseTick, setPulseTick] = useState(0);
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  
+
+  const allCounts = regions.flatMap((r) => {
+    if (r.byCategory) return Object.values(r.byCategory);
+    if (r.total) return [r.total];
+    return [];
+  });
+  const globalMax = Math.max(...allCounts, 1);
+
   useEffect(() => {
     setIsClient(true);
   }, []);
-  
   useEffect(() => {
     if (!isClient) return;
     const id = setInterval(() => setPulseTick((t) => t + 1), 1400);
     return () => clearInterval(id);
   }, [isClient]);
-  
   const [MapComponents, setMapComponents] = useState<{
     MapContainer: any;
     TileLayer: any;
@@ -89,34 +96,61 @@ export default function MapComponent({ regions }: MapComponentProps) {
 
   useEffect(() => {
     if (!isClient) return;
-    
+
     const loadMap = async () => {
       const { MapContainer, TileLayer, CircleMarker, Popup, Tooltip } = await import('react-leaflet');
       setMapComponents({ MapContainer, TileLayer, CircleMarker, Popup, Tooltip });
     };
-    
+
     loadMap();
   }, [isClient]);
-
   if (!isClient || !MapComponents) {
+    
     return (
-      <div className="w-full h-112 rounded-3xl bg-black/20 flex items-center justify-center">
+      <div className="w-full h-full rounded-3xl bg-black/20 flex items-center justify-center">
         <div className="text-white/60">{t("loading")}</div>
       </div>
     );
   }
 
   const { MapContainer, TileLayer, CircleMarker, Popup, Tooltip } = MapComponents;
+  const getRadius = (count: number) => {
+    const minRadius = 6;
+    const maxRadius = 22;
+    return minRadius + (count / globalMax) * (maxRadius - minRadius);
+  };
+
 
   return (
-    <div ref={mapContainerRef} className="w-full h-112 rounded-3xl overflow-hidden border border-white/10 relative">
+    
+    <div ref={mapContainerRef} className="w-full h-full rounded-3xl overflow-hidden border border-white/10 relative">
+  
       <style jsx global>{`
-        .glow-marker {
-          animation: glow-pulse 1.4s ease-in-out infinite;
+        .pulse-point {
+          animation: pulse-glow 1.4s ease-in-out infinite;
         }
-        @keyframes glow-pulse {
-          0%, 100% { filter: drop-shadow(0 0 2px currentColor); opacity: 0.85; }
-          50% { filter: drop-shadow(0 0 8px currentColor); opacity: 1; }
+        @keyframes pulse-glow {
+          0%, 100% {
+            filter: drop-shadow(0 0 3px currentColor);
+            opacity: 0.7;
+          }
+          50% {
+            filter: drop-shadow(0 0 12px currentColor) drop-shadow(0 0 24px currentColor);
+            opacity: 1;
+          }
+        }
+        .pulse-point-strong {
+          animation: pulse-glow-strong 0.8s ease-in-out infinite;
+        }
+        @keyframes pulse-glow-strong {
+          0%, 100% {
+            filter: drop-shadow(0 0 5px currentColor) drop-shadow(0 0 15px currentColor);
+            opacity: 0.8;
+          }
+          50% {
+            filter: drop-shadow(0 0 20px currentColor) drop-shadow(0 0 40px currentColor);
+            opacity: 1;
+          }
         }
       `}</style>
 
@@ -136,49 +170,100 @@ export default function MapComponent({ regions }: MapComponentProps) {
         />
 
         {regions.map((region) => {
-          const entries = Object.entries(region.byCategory) as [CategoryKey, number][];
-          const maxCount = Math.max(...entries.map(([, c]) => c), 1);
+          const hasCategories = region.byCategory && Object.keys(region.byCategory).length > 0;
 
-          return entries.map(([category, count], i) => {
-            const pos = jitterAround(region.lat, region.lng, i, entries.length);
-            const radius = 6 + (count / maxCount) * 10;
-            const color = CATEGORY_COLORS[category];
+          if (hasCategories) {
+            
+            const entries = Object.entries(region.byCategory!) as [CategoryKey, number][];
+
+            return entries.map(([category, count], i) => {
+              const pos = jitterAround(region.lat, region.lng, i, entries.length);
+              const radius = getRadius(count);
+              const color = CATEGORY_COLORS[category];
+              const isStrong = count > globalMax * 0.5;
+
+              return (
+                <CircleMarker
+                  key={`${region.name}-${category}`}
+                  center={[pos.lat, pos.lng]}
+                  radius={radius}
+                  pathOptions={{
+                    color: 'transparent',
+                    fillColor: color,
+                    fillOpacity: 0.85,
+                    weight: 0,
+                  }}
+                  className={isStrong ? 'pulse-point-strong' : 'pulse-point'}
+                  style={{ color: color }}
+                >
+                  <Tooltip direction="top" offset={[0, -radius - 4]}>
+                    <div className="text-center">
+                      <p className="font-bold">{region.name}</p>
+                      <p>{t(`categories.${category}`)} : <strong>{count.toLocaleString('fr-FR')}</strong></p>
+                    </div>
+                  </Tooltip>
+                  <Popup>
+                    <div className="text-center">
+                      <h3 className="font-bold text-lg">{region.name}</h3>
+                      <p style={{ color }} className="text-xl font-semibold">
+                        {t(`categories.${category}`)} : {count.toLocaleString('fr-FR')}
+                      </p>
+                    </div>
+                  </Popup>
+                </CircleMarker>
+              );
+            });
+          } else if (region.total) {
+            
+            const radius = getRadius(region.total);
+            const isStrong = region.total > globalMax * 0.5;
+            const color = '#F5C542';
 
             return (
               <CircleMarker
-                key={`${region.name}-${category}`}
-                center={[pos.lat, pos.lng]}
+                key={`${region.name}-total`}
+                center={[region.lat, region.lng]}
                 radius={radius}
                 pathOptions={{
-                  color,
+                  color: 'transparent',
                   fillColor: color,
-                  fillOpacity: 0.75,
-                  weight: 1,
+                  fillOpacity: 0.85,
+                  weight: 0,
                 }}
-                className="glow-marker"
+                className={isStrong ? 'pulse-point-strong' : 'pulse-point'}
+                style={{ color: color }}
               >
-                <Tooltip direction="top" offset={[0, -radius]}>
-                  {region.name} — {t(`categories.${category}`)}
+                <Tooltip direction="top" offset={[0, -radius - 4]}>
+                  <div className="text-center">
+                    <p className="font-bold text-sm">{region.name}</p>
+                    <p className="text-lg font-bold">{region.total} offres</p>
+                  </div>
                 </Tooltip>
                 <Popup>
-                  <div className="text-center">
+                  <div className="text-center p-2">
                     <h3 className="font-bold text-lg">{region.name}</h3>
-                    <p style={{ color }} className="text-xl font-semibold">
-                      {t(`categories.${category}`)} : {count.toLocaleString('fr-FR')}
+                    <p className="text-2xl font-bold" style={{ color }}>
+                      {region.total?.toLocaleString('fr-FR')}
                     </p>
+                    <p className="text-sm text-gray-500">offres disponibles</p>
                   </div>
                 </Popup>
               </CircleMarker>
             );
-          });
-        })}
+          }
+
+          return null;
+        })} 
       </MapContainer>
       <div className="absolute bottom-3 left-3 z-20 flex flex-wrap gap-2 rounded-xl bg-black/60 px-3 py-2 backdrop-blur-sm">
         {(Object.keys(CATEGORY_COLORS) as CategoryKey[]).map((cat) => (
           <span key={cat} className="flex items-center gap-1.5 text-xs text-white/80">
             <span
-              className="h-2.5 w-2.5 rounded-full"
-              style={{ background: CATEGORY_COLORS[cat], boxShadow: `0 0 6px ${CATEGORY_COLORS[cat]}` }}
+              className="h-2.5 w-2.5 rounded-full animate-pulse"
+              style={{
+                background: CATEGORY_COLORS[cat],
+                boxShadow: `0 0 8px ${CATEGORY_COLORS[cat]}`,
+              }}
             />
             {t(`categories.${cat}`)}
           </span>

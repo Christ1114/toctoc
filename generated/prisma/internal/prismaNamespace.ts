@@ -958,7 +958,8 @@ export const AnnouncementScalarFieldEnum = {
   regionId: 'regionId',
   jobTypeId: 'jobTypeId',
   location: 'location',
-  contact: 'contact',
+  contactPhone: 'contactPhone',
+  contactWhatsapp: 'contactWhatsapp',
   postedAt: 'postedAt',
   url: 'url',
   rawData: 'rawData',
@@ -1098,6 +1099,20 @@ export type EnumListingTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
  * Reference to a field of type 'ListingType[]'
  */
 export type ListEnumListingTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ListingType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'SalaryPeriod'
+ */
+export type EnumSalaryPeriodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SalaryPeriod'>
+    
+
+
+/**
+ * Reference to a field of type 'SalaryPeriod[]'
+ */
+export type ListEnumSalaryPeriodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SalaryPeriod[]'>
     
 
 

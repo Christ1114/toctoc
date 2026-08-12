@@ -406,9 +406,9 @@ export type RegionSumOrderByAggregateInput = {
   longitude?: Prisma.SortOrder
 }
 
-export type RegionScalarRelationFilter = {
-  is?: Prisma.RegionWhereInput
-  isNot?: Prisma.RegionWhereInput
+export type RegionNullableScalarRelationFilter = {
+  is?: Prisma.RegionWhereInput | null
+  isNot?: Prisma.RegionWhereInput | null
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -433,10 +433,12 @@ export type RegionCreateNestedOneWithoutAnnouncementsInput = {
   connect?: Prisma.RegionWhereUniqueInput
 }
 
-export type RegionUpdateOneRequiredWithoutAnnouncementsNestedInput = {
+export type RegionUpdateOneWithoutAnnouncementsNestedInput = {
   create?: Prisma.XOR<Prisma.RegionCreateWithoutAnnouncementsInput, Prisma.RegionUncheckedCreateWithoutAnnouncementsInput>
   connectOrCreate?: Prisma.RegionCreateOrConnectWithoutAnnouncementsInput
   upsert?: Prisma.RegionUpsertWithoutAnnouncementsInput
+  disconnect?: Prisma.RegionWhereInput | boolean
+  delete?: Prisma.RegionWhereInput | boolean
   connect?: Prisma.RegionWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.RegionUpdateToOneWithWhereWithoutAnnouncementsInput, Prisma.RegionUpdateWithoutAnnouncementsInput>, Prisma.RegionUncheckedUpdateWithoutAnnouncementsInput>
 }

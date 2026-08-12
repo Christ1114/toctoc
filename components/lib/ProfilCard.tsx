@@ -2,7 +2,6 @@
 
 import { Baby, Sparkles, ChefHat, Car, Shield, Flower2, Star } from 'lucide-react';
 import { orbitron } from '@/fonts/font';
-import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
 type Profile = {
@@ -32,15 +31,6 @@ type Profile = {
   jobType: { name: string; slug: string };
   region: { name: string };
   source: { name: string };
-};
-
-const JOB_ICONS: Record<string, React.ElementType> = {
-  nounou: Baby,
-  menagere: Sparkles,
-  cuisinier: ChefHat,
-  chauffeur: Car,
-  gardien: Shield,
-  jardinier: Flower2,
 };
 
 function formatSalary(p: Profile, t: any): string {
@@ -77,140 +67,108 @@ export default function ProfileCard({ profile: p }: { profile: Profile | null | 
   const jobTitle = p.title?.split(' - ')[1] ?? p.jobType?.name ?? '';
 
   return (
-    <div dir={isRtl ? 'rtl' : 'ltr'} className="relative w-full max-w-6xl group gap-y-5">
-      <div
-        className="absolute inset-0 -z-10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"
-        style={{
-          background: `
-            linear-gradient(to right, #F5C542 1px, transparent 1px),
-            linear-gradient(to bottom, #2F7A4F 1px, transparent 1px),
-            linear-gradient(to right, #C1502E 1px, transparent 1px),
-            linear-gradient(to bottom, #3E7CB1 1px, transparent 1px),
-            linear-gradient(to right, #6B8E23 1px, transparent 1px),
-            linear-gradient(to bottom, #8B5FBF 1px, transparent 1px),
-            linear-gradient(to right, #D1637A 1px, transparent 1px),
-            linear-gradient(to bottom, #C9A227 1px, transparent 1px)
-          `,
-          backgroundSize: `3rem 3rem, 3rem 3rem, 3rem 3rem, 3rem 3rem, 3rem 3rem, 3rem 3rem, 3rem 3rem, 3rem 3rem`,
-          backgroundPosition: `0 0, 0 0, 0.75rem 0, 0 0.75rem, 1.5rem 0, 0 1.5rem, 2.25rem 0, 0 2.25rem`,
-          maskImage: 'radial-gradient(ellipse 100% 80% at 50% 50%, #000 60%, transparent 100%)',
-          WebkitMaskImage: 'radial-gradient(ellipse 100% 80% at 50% 50%, #000 60%, transparent 100%)',
-          opacity: 0.12,
-        }}
-      />
+    <div
+      dir={isRtl ? 'rtl' : 'ltr'}
+      className={`flex flex-col sm:flex-row w-full max-w-6xl gap-2 sm:gap-4 
+                  border-b border-gray-200 dark:border-stone-700 
+                  bg-white dark:bg-stone-900 
+                  px-3 sm:px-4 py-3 sm:py-4 
+                  last:border-b-0 
+                  hover:bg-gray-50 dark:hover:bg-stone-800
+                  transition-colors duration-200
+                  ${p.isFeatured ? 'bg-amber-50/40 dark:bg-amber-900/10' : ''}`}
+    >
+      
+      <div className="hidden sm:flex w-16 lg:w-20 shrink-0 flex-col items-center gap-1.5">
+        <div className="flex h-10 w-10 lg:h-12 lg:w-12 items-center justify-center rounded-full bg-gray-100 dark:bg-stone-800">
+          <span className="text-sm font-bold text-gray-500 dark:text-stone-400">{initials}</span>
+        </div>
+        <Star size={14} className="text-gray-300 dark:text-stone-600" />
+      </div>
 
-      <div className="absolute left-5 top-1/2 -translate-y-1/2 w-px h-3/4 bg-linear-to-b from-transparent via-zinc-300 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-      <div className={`
-        flex w-full flex-col gap-3 bg-white/80 backdrop-blur-sm
-        px-3.5 py-3 transition-all duration-300
-        shadow-lg shadow-zinc-500/10
-        group-hover:shadow-xl group-hover:shadow-zinc-500/20 group-hover:scale-[1.01]
-        ${p.isFeatured ? 'border-amber-300/60 bg-amber-50/40 shadow-amber-500/20' : ''}
-        ${p.isVerified ? 'border-emerald-300/40' : ''}
-      `}>
-        <div className="flex w-full gap-3">
-          <div className="flex w-12 shrink-0 flex-col items-center gap-0.5">
-            <div className="relative">
-              <div className={`
-                flex h-9 w-9 items-center justify-center rounded-xl
-                bg-white/80 backdrop-blur-sm border border-zinc-200/80
-                shadow-lg shadow-zinc-500/10
-                group-hover:shadow-zinc-500/20 group-hover:scale-110
-                transition-all duration-500
-                ${p.isVerified ? 'border-emerald-300/50' : ''}
-              `}>
-                <span className={`text-xs font-bold ${p.isVerified ? 'text-emerald-600' : 'text-zinc-600'}`}>
-                  {initials}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex w-28 shrink-0 flex-col gap-0.5">
-            <span className={`text-xs font-bold ${p.isFeatured ? 'text-amber-600' : 'text-zinc-700'}`}>
-              {formatSalary(p, t)}
-            </span>
-            <span className="text-[9px] text-zinc-400">{p.jobType?.name ?? '—'}</span> 
-          </div>
-          
-          <div className="min-w-0 flex-1">
-            <div className="flex flex-wrap items-center gap-1.5">
-              <h3 className={`truncate text-xs font-bold text-zinc-700 group-hover:text-zinc-900 transition-colors duration-300 ${orbitron.className}`}>
-                {fullName}
-              </h3>
-              {p.isUrgent && (
-                <span className="flex items-center gap-0.5 rounded-full bg-rose-50/90 backdrop-blur-sm px-1.5 py-0.5 text-[8px] font-bold text-rose-600 border border-rose-200/50">
-                  <span className="w-1 h-1 rounded-full bg-rose-500 animate-pulse" />
-                  {t("urgent")}
-                </span>
-              )}
-            </div>
-
-            <p className="text-[10px] text-zinc-500 truncate group-hover:text-zinc-600 transition-colors duration-300">
-              <span className="bg-zinc-50/80 px-1.5 py-0.5 rounded-md border border-zinc-100">
-                {p.location ?? p.city ?? '—'}
-              </span>
-              <span className="mx-1 text-zinc-300">·</span>
-              <span className="text-zinc-600">{jobTitle}</span>
-              {p.workArrangement && (
-                <>
-                  <span className="mx-1 text-zinc-300">·</span>
-                  <span className="text-zinc-400 text-[9px] bg-zinc-50/80 px-1.5 py-0.5 rounded-full border border-zinc-100">
-                    {t(`workArrangement.${p.workArrangement}`)}
-                  </span>
-                </>
-              )}
-            </p>
-
-            <div className="flex items-center gap-1 text-[9px] text-zinc-400 truncate group-hover:text-zinc-500 transition-colors duration-300">
-              {workDays.length > 0 && (
-                <span className="bg-zinc-50/80 px-1.5 py-0.5 rounded border border-zinc-100">
-                  {workDays.map((d) => t(`days.${d}`) ?? d).join(', ')}
-                </span>
-              )}
-              {p.workStartTime && (
-                <span className="bg-zinc-50/80 px-1.5 py-0.5 rounded border border-zinc-100 font-mono text-[8px]">
-                  {p.workStartTime}~{p.workEndTime ?? '?'}
-                </span>
-              )}
-              {p.contractDuration && (
-                <span className={`text-[8px] font-semibold ${p.contractDuration === 'TEMPORAIRE' ? 'text-amber-600 bg-amber-50/80' : 'text-emerald-600 bg-emerald-50/80'} px-1.5 py-0.5 rounded-full border`}>
-                  {t(`contract.${p.contractDuration}`)}
-                </span>
-              )}
-              {p.experienceYearsRequired != null && (
-                <span className="text-zinc-400">· {p.experienceYearsRequired}a</span>
-              )}
-            </div>
-          </div>
+     
+      <div className="flex sm:w-32 lg:w-36 shrink-0 flex-row sm:flex-col items-center sm:items-start gap-2 sm:gap-0.5 text-sm">
+        
+        <div className="flex sm:hidden h-8 w-8 items-center justify-center rounded-full bg-gray-100 dark:bg-stone-800 shrink-0">
+          <span className="text-xs font-bold text-gray-500 dark:text-stone-400">{initials}</span>
         </div>
         
-        <div className="flex justify-end border-t border-zinc-100 pt-2">
-          <Link
-            href={`/profils/${p.id}`}
-            className="text-[11px] font-bold px-3.5 py-1.5 border-2 border-zinc-300 text-zinc-600 whitespace-nowrap backdrop-blur-sm bg-white/60 hover:bg-zinc-100 hover:border-zinc-400 hover:text-zinc-800 transition-all duration-300 flex items-center gap-1.5 group/btn"
-            aria-label={t("aria.contact", { name: fullName })}
-          >
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-              />
-            </svg>
-            {t("tocer")}
-            <svg
-              className="w-3 h-3 opacity-0 -translate-x-2 group-hover/btn:opacity-100 group-hover/btn:translate-x-0 transition-all duration-300"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </Link>
+        <span className={`text-xs sm:text-sm font-bold ${p.isFeatured ? 'text-amber-600 dark:text-amber-400' : 'text-amber-600 dark:text-amber-400'}`}>
+          {formatSalary(p, t)}
+        </span>
+        <span className="text-[10px] sm:text-xs text-gray-400 dark:text-stone-500">
+          {p.jobType?.name ?? '—'}
+        </span>
+       
+      </div>
+
+     
+      <div className="min-w-0 flex-1">
+       
+        <div className="flex flex-wrap items-center gap-1.5">
+          <h3 className={`text-sm sm:text-[15px] font-bold text-blue-600 dark:text-blue-400 hover:underline cursor-pointer ${orbitron.className}`}>
+            {fullName}
+          </h3>
+          {p.isUrgent && (
+            <span className="rounded bg-orange-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
+              {t("urgent")}
+            </span>
+          )}
+         
         </div>
+
+        <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-gray-500 dark:text-stone-400">
+          <span className="bg-gray-50 dark:bg-stone-800 px-1.5 py-0.5 rounded-md">
+            {p.location ?? p.city ?? '—'}
+          </span>
+          <span className="mx-1">·</span>
+          <span>{jobTitle}</span>
+          {p.workArrangement && (
+            <>
+              <span className="mx-1">·</span>
+              <span className="bg-gray-50 dark:bg-stone-800 px-1.5 py-0.5 rounded-full text-[10px]">
+                {t(`workArrangement.${p.workArrangement}`)}
+              </span>
+            </>
+          )}
+        </p>
+
+        <div className="flex items-center gap-1 mt-0.5 text-[10px] sm:text-xs text-gray-500 dark:text-stone-400">
+          {workDays.length > 0 && (
+            <span className="bg-gray-50 dark:bg-stone-800 px-1.5 py-0.5 rounded">
+              {workDays.map((d) => t(`days.${d}`) ?? d).join(', ')}
+            </span>
+          )}
+          {p.workStartTime && (
+            <span className="bg-gray-50 dark:bg-stone-800 px-1.5 py-0.5 rounded font-mono text-[9px]">
+              {p.workStartTime}~{p.workEndTime ?? '?'}
+            </span>
+          )}
+          {p.contractDuration && (
+            <span className={`text-[9px] font-semibold ${p.contractDuration === 'TEMPORAIRE' ? 'text-amber-600 bg-amber-50/80' : 'text-emerald-600 bg-emerald-50/80'} px-1.5 py-0.5 rounded-full border`}>
+              {t(`contract.${p.contractDuration}`)}
+            </span>
+          )}
+          {p.experienceYearsRequired != null && (
+            <span>· {p.experienceYearsRequired}a</span>
+          )}
+        </div>
+      </div>
+
+     
+      <div className="hidden sm:flex w-20 lg:w-24 shrink-0 flex-col items-end gap-1 text-right">
+        
+        <span className="text-xs sm:text-sm text-gray-500 dark:text-stone-400">
+           {p.viewCount ?? 0}
+        </span>
+        
+      </div>
+
+     
+      <div className="flex sm:hidden items-center justify-between mt-1 pt-1 border-t border-gray-100 dark:border-stone-800">
+        <span className="text-[10px] text-gray-400 dark:text-stone-500">
+          {p.source?.name}
+        </span>
       </div>
     </div>
   );

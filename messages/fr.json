@@ -82,9 +82,14 @@
       }
     },
       "profileCard": {
-        "title": "Exemples de profil",
+        "title": "Exemples d'offre",
+        "morelesse": "voir plus",
+        "lessmore": "voir moins",
+        "warning":"aucun profil pour le moment",
+        "title2":"L'excellence de nos experts",
         "urgent": "URGENT",
         "tocer": "Tocer",
+        "loading": "Chargement...",
         "salaryNegotiable": "Salaire à négocier",
         "workArrangement": {
           "NAVETTE": "Navette",
@@ -110,6 +115,10 @@
         "announcementCard": {
           "title":"Exemples de profil",
           "description":"Les offres d'emplois pour lesquelles un profil a déjà été trouvé ne sont  pas affichées ou  pour lesquelles l'utilisateur ne s'est pas encore connecté.",
+          "nooffer":"Aucune offre pour le moment.",
+          "morelesse": "voir plus",
+          "loading":"Chargement...",
+          "lessmore": "voir moins",
           "salaryPeriod": "mois",
           "salaryNegotiable": "Salaire à négocier",
           "noTransport": "Sans transport",
@@ -178,7 +187,12 @@
             "title2": "Retrouvez des offres d'autres agences ainsi que la notre"
           },
           "mapComponent": {
+            "title": "Offres par localité",
             "loading": "Chargement de la carte...",
+            "loadingData": "Chargement des données...",
+            "citiesCount": "{count, plural, =1 {ville} other {villes}}",
+            "offersCount": "offres",
+            "more": "autres",
             "categories": {
               "NOUNOU": "Nounou",
               "MENAGERE": "Aide ménagère",
@@ -189,7 +203,7 @@
               "AIDE_PERSONNE_AGEE": "Aide personne âgée",
               "MAJORDOME": "Majordome / Gouvernante"
             }
-          },
+        },
           "policy": {
             "table": {
               "titleHeader": "Titre",

@@ -79,6 +79,7 @@
     },
       "profileCard": {
         "title": "个人资料示例",
+        "morelesse": "查看更多",
         "urgent": "紧急",
         "tocer": "Tocer",
         "salaryNegotiable": "薪资面议",
@@ -105,6 +106,8 @@
       },
         "announcementCard": {
               "title": "个人资料示例",
+              "loading": "加载中...",
+              "morelesse": "查看更多",
               "description": "已找到人选的职位空缺不予显示，或者用户尚未登录的职位空缺也不予显示。",
           "salaryPeriod": "月",
           "salaryNegotiable": "薪资面议",
@@ -174,18 +177,23 @@
             "title2": "查找其他机构以及我们自己的报价"
           },
           "mapComponent": {
+            "title": "按地区分类的招聘信息",
             "loading": "地图加载中...",
+            "loadingData": "数据加载中...",
+            "citiesCount": "{count, plural, other {个城市}}",
+            "offersCount": "条招聘信息",
+            "more": "更多",
             "categories": {
               "NOUNOU": "保姆",
-              "MENAGERE": "清洁工",
+              "MENAGERE": "家政助理",
               "CUISINIER": "厨师",
               "CHAUFFEUR": "司机",
               "JARDINIER": "园丁",
               "GARDIEN": "保安",
-              "AIDE_PERSONNE_AGEE": "老人看护",
-              "MAJORDOME": "管家 / 女管家"
+              "AIDE_PERSONNE_AGEE": "老年人护理员",
+              "MAJORDOME": "管家"
             }
-          },
+        },
           "policy": {
             "table": {
               "titleHeader": "标题",

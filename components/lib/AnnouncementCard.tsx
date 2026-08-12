@@ -46,7 +46,7 @@ export default function AnnouncementCard({ announcement: a }: { announcement: An
 
   if (!a) {
     if (process.env.NODE_ENV !== 'production') {
-      console.warn('AnnouncementCard reçu sans `announcement` — vérifie le .map() de la page appelante.');
+      console.warn('AnnouncementCard reçu sans `announcement`');
     }
     return null;
   }
@@ -73,66 +73,97 @@ export default function AnnouncementCard({ announcement: a }: { announcement: An
   return (
     <div
       dir={isRtl ? 'rtl' : 'ltr'}
-      className={`flex w-full max-w-6xl gap-4 border-b border-gray-200 bg-white px-4 py-4 last:border-b-0 hover:bg-gray-50 ${
-        a.isFeatured ? 'bg-amber-50/40' : ''
-      }`}
+      className={`flex flex-col sm:flex-row w-full max-w-6xl gap-2 sm:gap-4 
+                  border-b border-gray-200 dark:border-stone-700 
+                  bg-white dark:bg-stone-900 
+                  px-3 sm:px-4 py-3 sm:py-4 
+                  last:border-b-0 
+                  hover:bg-gray-50 dark:hover:bg-stone-800
+                  transition-colors duration-200
+                  ${a.isFeatured ? 'bg-amber-50/40 dark:bg-amber-900/10' : ''}`}
     >
-      <div className="flex w-20 shrink-0 flex-col items-center gap-1.5">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
-          <Icon size={22} strokeWidth={1.75} className="text-gray-500" />
+      
+      <div className="hidden sm:flex w-16 lg:w-20 shrink-0 flex-col items-center gap-1.5">
+        <div className="flex h-10 w-10 lg:h-12 lg:w-12 items-center justify-center rounded-full bg-gray-100 dark:bg-stone-800">
+          <Icon size={20} strokeWidth={1.75} className="text-gray-500 dark:text-stone-400" />
         </div>
-        <Star size={14} className="text-gray-300" />
+        <Star size={14} className="text-gray-300 dark:text-stone-600" />
       </div>
 
-      <div className="flex w-36 shrink-0 flex-col gap-0.5 text-sm">
-        <span className="font-bold text-amber-600">{formatSalary(a)}</span>
-        <span className="text-xs text-gray-400">{formatTransport(a) || t("transportNotSpecified")}</span>
+     
+      <div className="flex sm:w-32 lg:w-36 shrink-0 flex-row sm:flex-col items-center sm:items-start gap-2 sm:gap-0.5 text-sm">
+        
+        <div className="flex sm:hidden h-8 w-8 items-center justify-center rounded-full bg-gray-100 dark:bg-stone-800 shrink-0">
+          <Icon size={16} strokeWidth={1.75} className="text-gray-500 dark:text-stone-400" />
+        </div>
+        
+        <span className="text-xs sm:text-sm font-bold text-amber-600 dark:text-amber-400">
+          {formatSalary(a)}
+        </span>
+        <span className="text-[10px] sm:text-xs text-gray-400 dark:text-stone-500">
+          {formatTransport(a) || t("transportNotSpecified")}
+        </span>
         {a.isVerified && (
-          <span className="mt-1 inline-flex w-fit items-center rounded bg-yellow-300 px-2 py-0.5 text-[11px] font-semibold text-gray-800">
+          <span className="mt-0 sm:mt-1 inline-flex w-fit items-center rounded bg-yellow-300 dark:bg-yellow-500/80 
+                           px-1.5 sm:px-2 py-0.5 text-[10px] sm:text-[11px] font-semibold 
+                           text-gray-800 dark:text-gray-900">
             {t("verifiedIdentity")}
           </span>
         )}
       </div>
-
       <div className="min-w-0 flex-1">
+       
         <div className="flex flex-wrap items-center gap-1.5">
-          <h3 className="text-[15px] font-bold text-blue-600 hover:underline">{a.title}</h3>
+          <h3 className="text-sm sm:text-[15px] font-bold text-blue-600 dark:text-blue-400 hover:underline cursor-pointer">
+            {a.title}
+          </h3>
           {a.isUrgent && (
-            <span className="rounded bg-orange-500 px-1.5 py-0.5 text-[10px] font-bold text-white">{t("urgent")}</span>
+            <span className="rounded bg-orange-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
+              {t("urgent")}
+            </span>
+          )}
+          {a.isFeatured && (
+            <span className="sm:hidden rounded border border-orange-400 px-1.5 py-0.5 text-[10px] font-bold text-orange-500">
+              {t("top")}
+            </span>
           )}
         </div>
-
-        <p className="mt-1 text-sm text-gray-500">
-          {a.location ?? a.city ?? '—'} · {a.jobType?.name ?? '—'}
+        <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-gray-500 dark:text-stone-400">
+           {a.location ?? a.city ?? '—'} · {a.jobType?.name ?? '—'}
           {a.workArrangement && ` · ${t(`workArrangement.${a.workArrangement}`)}`}
         </p>
-
         {(workDays.length > 0 || a.workStartTime) && (
-          <p className="mt-0.5 text-sm text-gray-500">
-            {workDays.map((d) => t(`days.${d}`) ?? d).join(',')}
-            {a.workStartTime && ` ${a.workStartTime} ~ ${a.workEndTime ?? '?'}`}
-            {' · '}
-            {a.contractDuration ? t(`contractStart.${a.contractDuration}`) : ''}
+          <p className="mt-0.5 text-xs sm:text-sm text-gray-500 dark:text-stone-400">
+             {workDays.map((d) => t(`days.${d}`) ?? d).join(', ')}
+            {a.workStartTime && `  ${a.workStartTime} ~ ${a.workEndTime ?? '?'}`}
           </p>
         )}
-
-        <p className="mt-0.5 text-sm text-gray-500">
+        <p className="mt-0.5 text-xs sm:text-sm text-gray-500 dark:text-stone-400">
           {a.contractDuration ? t(`contract.${a.contractDuration}`) : ''}
           {a.experienceYearsRequired != null
             ? ` · ${t("experience.required", { years: a.experienceYearsRequired })}`
             : ` · ${t("experience.notRequired")}`}
         </p>
       </div>
-
-      <div className="flex w-24 shrink-0 flex-col items-end gap-1 text-right">
+      <div className="hidden sm:flex w-20 lg:w-24 shrink-0 flex-col items-end gap-1 text-right">
         {a.isFeatured && (
-          <span className="rounded border border-orange-400 px-2 py-0.5 text-[11px] font-bold text-orange-500">
+          <span className="rounded border border-orange-400 dark:border-orange-500 px-2 py-0.5 text-[11px] font-bold text-orange-500 dark:text-orange-400">
             {t("top")}
           </span>
         )}
-        <span className="text-sm text-gray-500">{t("viewCount", { count: a.viewCount ?? 0 })}</span>
-        <span className="text-[11px] text-gray-400">
+        <span className="text-xs sm:text-sm text-gray-500 dark:text-stone-400">
+           {a.viewCount ?? 0}
+        </span>
+        <span className="text-[10px] sm:text-[11px] text-gray-400 dark:text-stone-500">
           {a.type ? t(`type.${a.type}`) : ''}
+        </span>
+      </div>
+      <div className="flex sm:hidden items-center justify-between mt-1 pt-1 border-t border-gray-100 dark:border-stone-800">
+        <span className="text-[10px] text-gray-400 dark:text-stone-500">
+           {a.viewCount ?? 0} · {a.type ? t(`type.${a.type}`) : ''}
+        </span>
+        <span className="text-[10px] text-gray-400 dark:text-stone-500">
+          {a.source?.name}
         </span>
       </div>
     </div>

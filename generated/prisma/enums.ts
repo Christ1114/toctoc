@@ -39,3 +39,13 @@ export const ContractDuration = {
 } as const
 
 export type ContractDuration = (typeof ContractDuration)[keyof typeof ContractDuration]
+
+
+export const SalaryPeriod = {
+  HEURE: 'HEURE',
+  JOUR: 'JOUR',
+  SEMAINE: 'SEMAINE',
+  MOIS: 'MOIS'
+} as const
+
+export type SalaryPeriod = (typeof SalaryPeriod)[keyof typeof SalaryPeriod]

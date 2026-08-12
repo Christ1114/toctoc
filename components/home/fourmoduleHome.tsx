@@ -1,5 +1,3 @@
-'use client';
-
 import { orbitron } from '@/fonts/font';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -60,118 +58,93 @@ export default function FourModuleHome() {
   ];
 
   return (
-    <div className="w-full max-w-5xl -translate-x-10 flex flex-col gap-8 p-6 box-border relative">
+    <div className="w-full flex flex-col relative">
+
       <div
         className="absolute inset-0 -z-10"
-        style={{
-          background: `
-            linear-gradient(to right, #F5C542 1px, transparent 1px),
-            linear-gradient(to bottom, #2F7A4F 1px, transparent 1px),
-            linear-gradient(to right, #C1502E 1px, transparent 1px),
-            linear-gradient(to bottom, #3E7CB1 1px, transparent 1px),
-            linear-gradient(to right, #6B8E23 1px, transparent 1px),
-            linear-gradient(to bottom, #8B5FBF 1px, transparent 1px),
-            linear-gradient(to right, #D1637A 1px, transparent 1px),
-            linear-gradient(to bottom, #C9A227 1px, transparent 1px)
-          `,
-          backgroundSize: `
-            4rem 4rem,
-            4rem 4rem,
-            4rem 4rem,
-            4rem 4rem,
-            4rem 4rem,
-            4rem 4rem,
-            4rem 4rem,
-            4rem 4rem
-          `,
-          backgroundPosition: `
-            0 0,
-            0 0,
-            1rem 0,
-            0 1rem,
-            2rem 0,
-            0 2rem,
-            3rem 0,
-            0 3rem
-          `,
-          maskImage:
-            'radial-gradient(ellipse 80% 50% at 50% 0%, #000 70%, transparent 110%)',
-          WebkitMaskImage:
-            'radial-gradient(ellipse 80% 50% at 50% 0%, #000 70%, transparent 110%)',
-          opacity: 0.15,
-        }}
       />
-      <div className="text-center -mb-2">
-        <h2
-          className={`text-xl font-bold text-zinc-700 ${orbitron.className} antialiased text-black dark:text-white `}
-        >
+      <div className="text-center mb-10">
+        <h2 className={`font-bold text-black dark:text-white
+                        text-sm sm:text-lg lg:text-xl xl:text-2xl
+                        ${orbitron.className} antialiased`}>
           {t("title")}
         </h2>
       </div>
-      {Grid.map((item, index) => (
-        <div
-          key={`service-${item.id}`}
-          className="grid grid-cols-[350px_1fr] items-center gap-4 w-full group relative"
-          style={{
-            animationDelay: `${index * 100}ms`,
-          }}
-        >
-          <div className="absolute left-5 top-1/2 -translate-y-1/2 w-px h-full bg-linear-to-b from-transparent via-zinc-300 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="grid grid-cols-1 sm:grid-cols-2  xl:grid-cols-1 lg:grid-cols-1  gap-3 sm:gap-4 lg:gap-5 xl:gap-6">
+        {Grid.map((item, index) => (
+          <Link
+            key={`service-${item.id}`}
+            href={item.btn2.href}
+            aria-label={`${item.btn2.title} - ${item.title}`}
+            className="flex items-center justify-between gap-2 sm:gap-3 lg:gap-4
+                       w-full h-19 group relative
+                       rounded-lg sm:rounded-xl
+                       border-2 border-zinc-300
+                       bg-white/60 backdrop-blur-sm
+                       p-3 sm:p-4 lg:p-5 xl:p-6
+                       cursor-pointer
+                       hover:bg-zinc-100 hover:border-zinc-400
+                       hover:shadow-md
+                       active:scale-95
+                       transition-all duration-300"
+            style={{
+              animationDelay: `${index * 100}ms`,
+            }}
+          >
+            <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 min-w-0 flex-1 relative z-10">
 
-          <div className="flex items-center gap-4 min-w-0 relative z-10 ">
-            <div className="w-10 h-10 shrink-0 rounded-xl bg-white/80 backdrop-blur-sm border border-zinc-200 shadow-lg shadow-zinc-500/10 flex items-center justify-center overflow-hidden group-hover:shadow-zinc-500/20 group-hover:scale-110 transition-all duration-300">
-              <div className="absolute inset-0 bg-linear-to-br from-zinc-500/10 to-zinc-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <Image
-                src={item.icon}
-                alt={item.title}
-                width={22}
-                height={22}
-                className="object-contain relative z-10"
-              />
+              <div className="w-7 h-7 sm:w-9 sm:h-9 lg:w-10 lg:h-10 xl:w-12 xl:h-12
+                              shrink-0 rounded-lg sm:rounded-xl 
+                              bg-white/80 backdrop-blur-sm 
+                              border border-zinc-200 
+                              shadow-md sm:shadow-lg shadow-zinc-500/10 
+                              flex items-center justify-center overflow-hidden 
+                              group-hover:shadow-zinc-500/20 
+                              group-hover:scale-105 sm:group-hover:scale-110 
+                              transition-all duration-300">
+                <div className="absolute inset-0 bg-linear-to-br from-zinc-500/10 to-zinc-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <Image
+                  src={item.icon}
+                  alt={item.title}
+                  width={16}
+                  height={16}
+                  className="object-contain relative z-10
+                             w-3.5 h-3.5 sm:w-5 sm:h-5 lg:w-5.5 lg:h-5.5 xl:w-6.5 xl:h-6.5"
+                />
+              </div>
+
+              <h6 className={`font-bold text-zinc-700 dark:text-white 
+                             group-hover:text-zinc-900 
+                             transition-colors duration-300 
+                             leading-tight
+                             text-[11px] sm:text-xs lg:text-sm xl:text-base
+                             min-w-0 flex-1
+                             line-clamp-2
+                             ${orbitron.className} antialiased`}>
+                {item.title}
+              </h6>
             </div>
-            <h6
-              className={`text-xs w-24 leading-tight font-bold text-zinc-700  dark:text-white group-hover:text-zinc-900 transition-colors duration-300 ${orbitron.className} antialiased`}
+
+            <svg
+              className="w-3.5 h-3.5 sm:w-4 sm:h-4 xl:w-5 xl:h-5
+                         shrink-0 text-zinc-500
+                         -translate-x-1
+                         group-hover:translate-x-0 group-hover:text-zinc-800
+                         transition-all duration-300 relative z-10"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
             >
-              {item.title}
-            </h6>
-          </div>
-          <div className="flex items-center gap-3 justify-end min-w-5 relative z-10">
-            <Link
-              href={item.btn2.href}
-              className="text-xs font-bold px-4 py-2 border-2 border-zinc-300 text-zinc-600 whitespace-nowrap backdrop-blur-sm bg-white/60 hover:bg-zinc-100 hover:border-zinc-400 hover:text-zinc-800 transition-all duration-300 flex items-center gap-1.5 group/btn2"
-              aria-label={`${item.btn2.title} - ${item.title}`}
-            >
-              <svg
-                className="w-3 h-3"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                />
-              </svg>
-              {item.btn2.title}
-              <svg
-                className="w-3 h-3 opacity-0 -translate-x-2 group-hover/btn2:opacity-100 group-hover/btn2:translate-x-0 transition-all duration-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </Link>
-          </div>
-        </div>
-      ))}
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

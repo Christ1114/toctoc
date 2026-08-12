@@ -83,6 +83,7 @@
     },
       "profileCard": {
         "title": "Profile examples",
+        "morelesse": "view more",
         "urgent": "URGENT",
         "tocer": "Tocer",
         "salaryNegotiable": "Salary negotiable",
@@ -110,6 +111,8 @@
         "announcementCard": {
          
               "title": "Profile examples",
+              "loading": "Loading...",
+              "morelesse": "view more",
               "description": "Job offers for which a profile has already been found are not displayed, or for which the user has not yet logged in.",
           "salaryPeriod": "month",
           "salaryNegotiable": "Salary negotiable",
@@ -179,7 +182,12 @@
             "title2": "Find offers from other agencies as well as ours"
           },
           "mapComponent": {
+            "title": "Offers by location",
             "loading": "Loading map...",
+            "loadingData": "Loading data...",
+            "citiesCount": "{count, plural, =1 {city} other {cities}}",
+            "offersCount": "offers",
+            "more": "more",
             "categories": {
               "NOUNOU": "Nanny",
               "MENAGERE": "Housekeeper",
@@ -190,7 +198,7 @@
               "AIDE_PERSONNE_AGEE": "Elderly caregiver",
               "MAJORDOME": "Butler / Housekeeper"
             }
-          },
+        },
           "policy": {
             "table": {
               "titleHeader": "Title",

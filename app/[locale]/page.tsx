@@ -10,6 +10,7 @@ import { orbitron } from "@/fonts/font";
 import IntroTocToc from "@/animate/toctocIntro";
 import FooterComponent from "@/components/footer/footer";
 import { useTranslations, useLocale } from 'next-intl';
+import SevenModuleHome from "@/components/home/sevenmoduleHome";
 
 export default function Home() {
   const t = useTranslations("home");
@@ -17,47 +18,43 @@ export default function Home() {
   const isRtl = locale === 'ar';
 
   return (
-    <div className={`h-full w-full overflow-x-hidden bg-white dark:bg-zinc-900`} dir={isRtl ? 'rtl' : 'ltr'}>
-      <header className="mb-8 flex w-full cursor-default">
+    <div className="h-full w-full overflow-x-hidden bg-white dark:bg-zinc-900 px-4 sm:px-5" dir={isRtl ? 'rtl' : 'ltr'} >
+      <header className="mb-4 sm:mb-6  lg:mb-8 flex w-full cursor-default">
         <Navbar />
       </header>
-
-      <main className="relative flex w-full flex-col gap-8 p-5">
-     
-        <div className="flex w-full flex-col items-center justify-center gap-8 lg:flex-row lg:items-start lg:gap-10">
-          <div className="flex w-full flex-col items-center justify-center gap-y-2 px-4 ">
+      <main className="relative flex w-full flex-col pt-5 xl:pt-0 sm:pt-16 lg:pt-19">
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-0">
+          <div className="w-full  sm:pt-5 lg:w-2/3">
             <FirstModuleHome />
-            <SecondModuleHome />
-            <FivemoduleHome />
           </div>
-
-          <div className="flex w-full flex-col gap-y-5 px-4 sm:px-5 lg:w-1/3">
+           <div className="w-full lg:w-1/3">
             <ThirdModuleComponent />
-            <FourModuleHome />
+           </div>
+        </div>
+        <div className="flex flex-col xl:flex-row items-center lg:items-start justify-between gap-6 lg:gap-0 mt-6 lg:mt-0">
+          <div className="w-full lg:w-2/3 flex items-center justify-center">
+            <FivemoduleHome />
+          </div>  
+          <div className="w-full lg:w-1/2 lg:translate-y-10 ">
+           <FourModuleHome />
           </div>
         </div>
-        
-        <div className="flex w-full gap-x-8">
-          <div className="flex items-center justify-center w-1/2">
-            <SixModuleHome />
+        <div className="flex items-center justify-center mt-6 lg:mt-0">
+           <SecondModuleHome/>
+        </div>
+        <div className="flex flex-col lg:flex-row items-center justify-between mt-10 lg:mt-15 gap-6 lg:gap-0">
+          <div className="w-full lg:w-1/2 flex items-center justify-center">
+            <SixModuleHome/>
           </div>
-          <div className="w-1/2 flex items-center justify-center border-l border-blue-300 rounded-full">
-            <SevenmoduleHome />
+          <div className="w-full lg:w-1/2 flex items-center justify-center lg:-mt-11">
+            <SevenModuleHome/>
           </div>
         </div>
-        
-        <div className={`flex items-center mt-10 ${isRtl ? 'translate-x-90' : 'translate-x-90'} justify-center w-150 max-w-full`}>
-          <h1 className={`text-center text-2xl font-bold ${orbitron.className} antialiased wrap-break-words ${isRtl ? 'text-base md:text-lg lg:text-2xl' : ''}`}>
-            "{t("quote.text")} <span className="underline underline-1 underline-offset-4">{t("quote.highlight")}</span>"
-          </h1>
-        </div>
-        
-        <div className="w-full h-full">
-          <IntroTocToc />
+        <div className="flex items-center justify-center mt-8 lg:mt-5">
+          <IntroTocToc/>
         </div>
       </main>
-      
-      <footer className="w-full h-full">
+      <footer className="w-full h-full mt-8 sm:mt-12 lg:mt-16">
         <FooterComponent />
       </footer>
     </div>
