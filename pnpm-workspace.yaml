@@ -6,3 +6,5 @@ allowBuilds:
   prisma: true
   sharp: true
   unrs-resolver: true
+  overrides:
+  zeptomatch: "^2.1.0"
