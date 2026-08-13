@@ -1,5 +1,6 @@
 'use client';
 
+import { orbitron } from '@/fonts/font';
 import { Baby, Sparkles, ChefHat, Car, Shield, Flower2, Star } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
@@ -79,7 +80,7 @@ export default function AnnouncementCard({ announcement: a }: { announcement: An
                   px-3 sm:px-4 py-3 sm:py-4 
                   last:border-b-0 
                   hover:bg-gray-50 dark:hover:bg-stone-800
-                  transition-colors duration-200
+                  transition-colors duration-200 ${orbitron.className}
                   ${a.isFeatured ? 'bg-amber-50/40 dark:bg-amber-900/10' : ''}`}
     >
       
@@ -161,9 +162,6 @@ export default function AnnouncementCard({ announcement: a }: { announcement: An
       <div className="flex sm:hidden items-center justify-between mt-1 pt-1 border-t border-gray-100 dark:border-stone-800">
         <span className="text-[10px] text-gray-400 dark:text-stone-500">
            {a.viewCount ?? 0} · {a.type ? t(`type.${a.type}`) : ''}
-        </span>
-        <span className="text-[10px] text-gray-400 dark:text-stone-500">
-          {a.source?.name}
         </span>
       </div>
     </div>

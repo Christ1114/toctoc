@@ -84,6 +84,8 @@
       "profileCard": {
         "title": "Profile examples",
         "morelesse": "view more",
+        "Loading": "Loading...",
+        "lessmore": "view less",
         "urgent": "URGENT",
         "tocer": "Tocer",
         "salaryNegotiable": "Salary negotiable",
@@ -113,6 +115,7 @@
               "title": "Profile examples",
               "loading": "Loading...",
               "morelesse": "view more",
+              "lessmore": "view less",  
               "description": "Job offers for which a profile has already been found are not displayed, or for which the user has not yet logged in.",
           "salaryPeriod": "month",
           "salaryNegotiable": "Salary negotiable",

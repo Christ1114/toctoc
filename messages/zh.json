@@ -79,7 +79,9 @@
     },
       "profileCard": {
         "title": "个人资料示例",
+        "Loading": "加载中...",
         "morelesse": "查看更多",
+        "lessmore": "查看更少",
         "urgent": "紧急",
         "tocer": "Tocer",
         "salaryNegotiable": "薪资面议",
@@ -108,6 +110,7 @@
               "title": "个人资料示例",
               "loading": "加载中...",
               "morelesse": "查看更多",
+              "lessmore": "查看更少",
               "description": "已找到人选的职位空缺不予显示，或者用户尚未登录的职位空缺也不予显示。",
           "salaryPeriod": "月",
           "salaryNegotiable": "薪资面议",

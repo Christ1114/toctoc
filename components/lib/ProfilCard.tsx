@@ -74,7 +74,7 @@ export default function ProfileCard({ profile: p }: { profile: Profile | null | 
                   bg-white dark:bg-stone-900 
                   px-3 sm:px-4 py-3 sm:py-4 
                   last:border-b-0 
-                  hover:bg-gray-50 dark:hover:bg-stone-800
+                  hover:bg-gray-50 dark:hover:bg-stone-800 ${orbitron.className}
                   transition-colors duration-200
                   ${p.isFeatured ? 'bg-amber-50/40 dark:bg-amber-900/10' : ''}`}
     >
@@ -162,13 +162,6 @@ export default function ProfileCard({ profile: p }: { profile: Profile | null | 
            {p.viewCount ?? 0}
         </span>
         
-      </div>
-
-     
-      <div className="flex sm:hidden items-center justify-between mt-1 pt-1 border-t border-gray-100 dark:border-stone-800">
-        <span className="text-[10px] text-gray-400 dark:text-stone-500">
-          {p.source?.name}
-        </span>
       </div>
     </div>
   );

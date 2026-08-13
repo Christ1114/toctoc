@@ -38,17 +38,31 @@ export default function FooterComponent() {
                                 gap-y-2 py-3 px-2
                                 border-r border-gray-200 dark:border-zinc-700
                                 sm:border-gray-400">
+                    
                     <Image
                         src={Img2}
                         alt={t("alt.qrCode")}
                         width={80}
                         height={80}
-                        className="object-contain rounded-lg w-17.5 sm:w-25 lg:w-35"
+                        className="hidden lg:block object-contain rounded-lg lg:w-35"
                         priority
                     />
-                    <p className={`text-[9px] sm:text-xs font-bold text-[#432dd7] text-center leading-tight ${orbitron.className}`}>
+                    <p className={`hidden lg:block text-xs font-bold text-[#432dd7] text-center leading-tight ${orbitron.className}`}>
                         {t("downloadApp")}
                     </p>
+
+                  
+                    <button
+                        onClick={() => router.push('/download')}
+                        className="lg:hidden cursor-pointer bg-[#432dd7] w-full flex items-center justify-center
+                                   p-2 sm:p-2.5
+                                   text-[9px] sm:text-[10px] font-bold text-white 
+                                   rounded-md
+                                   transition-all duration-300 
+                                   hover:bg-[#3524b0] active:scale-95"
+                    >
+                        {t("downloadApp")}
+                    </button>
                 </div>
                 <div className="grid grid-rows-[1fr_auto] items-center justify-items-center 
                                 gap-y-2 py-3 px-2

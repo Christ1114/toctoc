@@ -83,6 +83,8 @@
         "profileCard": {
           "title": "أمثلة على الملفات الشخصية",
           "morelesse": "عرض المزيد",
+          "Loading": "تحميل...",
+          "lessmore": "عرض الأقل",
           "urgent": "عاجل",
           "tocer": "Tocer",
           "salaryNegotiable": "الراتب قابل للتفاوض",
@@ -111,6 +113,7 @@
                 "title": "أمثلة على الملفات الشخصية",
                 "loading": "تحميل...",
                 "morelesse": "عرض المزيد",
+                "lessmore": "عرض الأقل",
             "salaryPeriod": "شهر",
             "salaryNegotiable": "الراتب قابل للتفاوض",
             "noTransport": "بدون نقل",

@@ -22,9 +22,9 @@ export default function Home() {
       <header className="mb-4 sm:mb-6  lg:mb-8 flex w-full cursor-default">
         <Navbar />
       </header>
-      <main className="relative flex w-full flex-col pt-5 xl:pt-0 sm:pt-16 lg:pt-19">
+      <main className="relative flex w-full flex-col pt-5 xl:pt-0  sm:pt-16 lg:pt-19">
         <div className="flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-0">
-          <div className="w-full  sm:pt-5 lg:w-2/3">
+          <div className="w-full   sm:pt-5 lg:w-2/3">
             <FirstModuleHome />
           </div>
            <div className="w-full lg:w-1/3">
