@@ -113,8 +113,8 @@ export default function FourModuleHome() {
                 />
               </div>
 
-              <h6 className={`font-bold text-zinc-700 dark:text-white 
-                             group-hover:text-zinc-900 
+              <h6 className={`font-bold text-zinc-700 dark:text-neutral-950 
+                             group-hover:text-neutral-950 
                              transition-colors duration-300 
                              leading-tight
                              text-[11px] sm:text-xs lg:text-sm xl:text-base
@@ -129,7 +129,7 @@ export default function FourModuleHome() {
               className="w-3.5 h-3.5 sm:w-4 sm:h-4 xl:w-5 xl:h-5
                          shrink-0 text-zinc-500
                          -translate-x-1
-                         group-hover:translate-x-0 group-hover:text-zinc-800
+                         group-hover:translate-x-0 group-hover:text-neutral-950
                          transition-all duration-300 relative z-10"
               fill="none"
               stroke="currentColor"
