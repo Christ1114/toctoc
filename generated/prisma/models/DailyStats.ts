@@ -42,6 +42,7 @@ export type DailyStatsMinAggregateOutputType = {
   totalAnnouncements: number | null
   newAnnouncements: number | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type DailyStatsMaxAggregateOutputType = {
@@ -50,6 +51,7 @@ export type DailyStatsMaxAggregateOutputType = {
   totalAnnouncements: number | null
   newAnnouncements: number | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type DailyStatsCountAggregateOutputType = {
@@ -60,6 +62,7 @@ export type DailyStatsCountAggregateOutputType = {
   regionStats: number
   jobTypeStats: number
   createdAt: number
+  updatedAt: number
   _all: number
 }
 
@@ -80,6 +83,7 @@ export type DailyStatsMinAggregateInputType = {
   totalAnnouncements?: true
   newAnnouncements?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type DailyStatsMaxAggregateInputType = {
@@ -88,6 +92,7 @@ export type DailyStatsMaxAggregateInputType = {
   totalAnnouncements?: true
   newAnnouncements?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type DailyStatsCountAggregateInputType = {
@@ -98,6 +103,7 @@ export type DailyStatsCountAggregateInputType = {
   regionStats?: true
   jobTypeStats?: true
   createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -195,6 +201,7 @@ export type DailyStatsGroupByOutputType = {
   regionStats: runtime.JsonValue | null
   jobTypeStats: runtime.JsonValue | null
   createdAt: Date
+  updatedAt: Date
   _count: DailyStatsCountAggregateOutputType | null
   _avg: DailyStatsAvgAggregateOutputType | null
   _sum: DailyStatsSumAggregateOutputType | null
@@ -228,6 +235,7 @@ export type DailyStatsWhereInput = {
   regionStats?: Prisma.JsonNullableFilter<"DailyStats">
   jobTypeStats?: Prisma.JsonNullableFilter<"DailyStats">
   createdAt?: Prisma.DateTimeFilter<"DailyStats"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"DailyStats"> | Date | string
 }
 
 export type DailyStatsOrderByWithRelationInput = {
@@ -238,6 +246,7 @@ export type DailyStatsOrderByWithRelationInput = {
   regionStats?: Prisma.SortOrderInput | Prisma.SortOrder
   jobTypeStats?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type DailyStatsWhereUniqueInput = Prisma.AtLeast<{
@@ -251,6 +260,7 @@ export type DailyStatsWhereUniqueInput = Prisma.AtLeast<{
   regionStats?: Prisma.JsonNullableFilter<"DailyStats">
   jobTypeStats?: Prisma.JsonNullableFilter<"DailyStats">
   createdAt?: Prisma.DateTimeFilter<"DailyStats"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"DailyStats"> | Date | string
 }, "id" | "date">
 
 export type DailyStatsOrderByWithAggregationInput = {
@@ -261,6 +271,7 @@ export type DailyStatsOrderByWithAggregationInput = {
   regionStats?: Prisma.SortOrderInput | Prisma.SortOrder
   jobTypeStats?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.DailyStatsCountOrderByAggregateInput
   _avg?: Prisma.DailyStatsAvgOrderByAggregateInput
   _max?: Prisma.DailyStatsMaxOrderByAggregateInput
@@ -279,6 +290,7 @@ export type DailyStatsScalarWhereWithAggregatesInput = {
   regionStats?: Prisma.JsonNullableWithAggregatesFilter<"DailyStats">
   jobTypeStats?: Prisma.JsonNullableWithAggregatesFilter<"DailyStats">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"DailyStats"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"DailyStats"> | Date | string
 }
 
 export type DailyStatsCreateInput = {
@@ -289,6 +301,7 @@ export type DailyStatsCreateInput = {
   regionStats?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   jobTypeStats?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type DailyStatsUncheckedCreateInput = {
@@ -299,6 +312,7 @@ export type DailyStatsUncheckedCreateInput = {
   regionStats?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   jobTypeStats?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type DailyStatsUpdateInput = {
@@ -309,6 +323,7 @@ export type DailyStatsUpdateInput = {
   regionStats?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   jobTypeStats?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type DailyStatsUncheckedUpdateInput = {
@@ -319,6 +334,7 @@ export type DailyStatsUncheckedUpdateInput = {
   regionStats?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   jobTypeStats?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type DailyStatsCreateManyInput = {
@@ -329,6 +345,7 @@ export type DailyStatsCreateManyInput = {
   regionStats?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   jobTypeStats?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type DailyStatsUpdateManyMutationInput = {
@@ -339,6 +356,7 @@ export type DailyStatsUpdateManyMutationInput = {
   regionStats?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   jobTypeStats?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type DailyStatsUncheckedUpdateManyInput = {
@@ -349,6 +367,7 @@ export type DailyStatsUncheckedUpdateManyInput = {
   regionStats?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   jobTypeStats?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type DailyStatsCountOrderByAggregateInput = {
@@ -359,6 +378,7 @@ export type DailyStatsCountOrderByAggregateInput = {
   regionStats?: Prisma.SortOrder
   jobTypeStats?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type DailyStatsAvgOrderByAggregateInput = {
@@ -372,6 +392,7 @@ export type DailyStatsMaxOrderByAggregateInput = {
   totalAnnouncements?: Prisma.SortOrder
   newAnnouncements?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type DailyStatsMinOrderByAggregateInput = {
@@ -380,6 +401,7 @@ export type DailyStatsMinOrderByAggregateInput = {
   totalAnnouncements?: Prisma.SortOrder
   newAnnouncements?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type DailyStatsSumOrderByAggregateInput = {
@@ -397,6 +419,7 @@ export type DailyStatsSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   regionStats?: boolean
   jobTypeStats?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
 }, ExtArgs["result"]["dailyStats"]>
 
 export type DailyStatsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -407,6 +430,7 @@ export type DailyStatsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   regionStats?: boolean
   jobTypeStats?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
 }, ExtArgs["result"]["dailyStats"]>
 
 export type DailyStatsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -417,6 +441,7 @@ export type DailyStatsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   regionStats?: boolean
   jobTypeStats?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
 }, ExtArgs["result"]["dailyStats"]>
 
 export type DailyStatsSelectScalar = {
@@ -427,9 +452,10 @@ export type DailyStatsSelectScalar = {
   regionStats?: boolean
   jobTypeStats?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type DailyStatsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "date" | "totalAnnouncements" | "newAnnouncements" | "regionStats" | "jobTypeStats" | "createdAt", ExtArgs["result"]["dailyStats"]>
+export type DailyStatsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "date" | "totalAnnouncements" | "newAnnouncements" | "regionStats" | "jobTypeStats" | "createdAt" | "updatedAt", ExtArgs["result"]["dailyStats"]>
 
 export type $DailyStatsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "DailyStats"
@@ -442,6 +468,7 @@ export type $DailyStatsPayload<ExtArgs extends runtime.Types.Extensions.Internal
     regionStats: runtime.JsonValue | null
     jobTypeStats: runtime.JsonValue | null
     createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["dailyStats"]>
   composites: {}
 }
@@ -872,6 +899,7 @@ export interface DailyStatsFieldRefs {
   readonly regionStats: Prisma.FieldRef<"DailyStats", 'Json'>
   readonly jobTypeStats: Prisma.FieldRef<"DailyStats", 'Json'>
   readonly createdAt: Prisma.FieldRef<"DailyStats", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"DailyStats", 'DateTime'>
 }
     
 

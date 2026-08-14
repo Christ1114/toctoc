@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     default: "Toctoc",
     template: "%s | Toctoc",
   },
-  description: "La meilleure plateforme de recherche en ligne de personnel de maison en Côte d'Ivoire, basée sur l'intelligence artificielle pour un calibrage en toute efficacité et totalement gratuit",
+  description: "Recherchez parmi des milliers de profils vérifiés de personnel de maison en Côte d'Ivoire. Notre IA vous aide à trouver la perle rare, gratuitement.",
   icons: {
  
     icon: {

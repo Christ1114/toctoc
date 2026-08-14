@@ -27,17 +27,17 @@ export type AggregateAnnouncement = {
 }
 
 export type AnnouncementAvgAggregateOutputType = {
-  salaryMin: number | null
-  salaryMax: number | null
-  transportAllowance: number | null
+  salaryMin: runtime.Decimal | null
+  salaryMax: runtime.Decimal | null
+  transportAllowance: runtime.Decimal | null
   viewCount: number | null
   experienceYearsRequired: number | null
 }
 
 export type AnnouncementSumAggregateOutputType = {
-  salaryMin: number | null
-  salaryMax: number | null
-  transportAllowance: number | null
+  salaryMin: runtime.Decimal | null
+  salaryMax: runtime.Decimal | null
+  transportAllowance: runtime.Decimal | null
   viewCount: number | null
   experienceYearsRequired: number | null
 }
@@ -49,15 +49,15 @@ export type AnnouncementMinAggregateOutputType = {
   externalId: string | null
   title: string | null
   description: string | null
-  salaryMin: number | null
-  salaryMax: number | null
+  salaryMin: runtime.Decimal | null
+  salaryMax: runtime.Decimal | null
   salaryPeriod: $Enums.SalaryPeriod | null
   salaryRaw: string | null
   isUrgent: boolean | null
   workArrangement: $Enums.WorkArrangement | null
   shift: $Enums.WorkShift | null
   contractDuration: $Enums.ContractDuration | null
-  transportAllowance: number | null
+  transportAllowance: runtime.Decimal | null
   isVerified: boolean | null
   isFeatured: boolean | null
   viewCount: number | null
@@ -74,6 +74,7 @@ export type AnnouncementMinAggregateOutputType = {
   contactWhatsapp: string | null
   postedAt: Date | null
   url: string | null
+  userId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -85,15 +86,15 @@ export type AnnouncementMaxAggregateOutputType = {
   externalId: string | null
   title: string | null
   description: string | null
-  salaryMin: number | null
-  salaryMax: number | null
+  salaryMin: runtime.Decimal | null
+  salaryMax: runtime.Decimal | null
   salaryPeriod: $Enums.SalaryPeriod | null
   salaryRaw: string | null
   isUrgent: boolean | null
   workArrangement: $Enums.WorkArrangement | null
   shift: $Enums.WorkShift | null
   contractDuration: $Enums.ContractDuration | null
-  transportAllowance: number | null
+  transportAllowance: runtime.Decimal | null
   isVerified: boolean | null
   isFeatured: boolean | null
   viewCount: number | null
@@ -110,6 +111,7 @@ export type AnnouncementMaxAggregateOutputType = {
   contactWhatsapp: string | null
   postedAt: Date | null
   url: string | null
+  userId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -148,6 +150,7 @@ export type AnnouncementCountAggregateOutputType = {
   postedAt: number
   url: number
   rawData: number
+  userId: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -202,6 +205,7 @@ export type AnnouncementMinAggregateInputType = {
   contactWhatsapp?: true
   postedAt?: true
   url?: true
+  userId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -238,6 +242,7 @@ export type AnnouncementMaxAggregateInputType = {
   contactWhatsapp?: true
   postedAt?: true
   url?: true
+  userId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -276,6 +281,7 @@ export type AnnouncementCountAggregateInputType = {
   postedAt?: true
   url?: true
   rawData?: true
+  userId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -374,15 +380,15 @@ export type AnnouncementGroupByOutputType = {
   externalId: string
   title: string
   description: string | null
-  salaryMin: number | null
-  salaryMax: number | null
+  salaryMin: runtime.Decimal | null
+  salaryMax: runtime.Decimal | null
   salaryPeriod: $Enums.SalaryPeriod | null
   salaryRaw: string | null
   isUrgent: boolean
   workArrangement: $Enums.WorkArrangement | null
   shift: $Enums.WorkShift | null
   contractDuration: $Enums.ContractDuration | null
-  transportAllowance: number | null
+  transportAllowance: runtime.Decimal | null
   isVerified: boolean
   isFeatured: boolean
   viewCount: number
@@ -401,6 +407,7 @@ export type AnnouncementGroupByOutputType = {
   postedAt: Date | null
   url: string | null
   rawData: runtime.JsonValue | null
+  userId: string | null
   createdAt: Date
   updatedAt: Date
   _count: AnnouncementCountAggregateOutputType | null
@@ -435,15 +442,15 @@ export type AnnouncementWhereInput = {
   externalId?: Prisma.StringFilter<"Announcement"> | string
   title?: Prisma.StringFilter<"Announcement"> | string
   description?: Prisma.StringNullableFilter<"Announcement"> | string | null
-  salaryMin?: Prisma.FloatNullableFilter<"Announcement"> | number | null
-  salaryMax?: Prisma.FloatNullableFilter<"Announcement"> | number | null
+  salaryMin?: Prisma.DecimalNullableFilter<"Announcement"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: Prisma.DecimalNullableFilter<"Announcement"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: Prisma.EnumSalaryPeriodNullableFilter<"Announcement"> | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.StringNullableFilter<"Announcement"> | string | null
   isUrgent?: Prisma.BoolFilter<"Announcement"> | boolean
   workArrangement?: Prisma.EnumWorkArrangementNullableFilter<"Announcement"> | $Enums.WorkArrangement | null
   shift?: Prisma.EnumWorkShiftNullableFilter<"Announcement"> | $Enums.WorkShift | null
   contractDuration?: Prisma.EnumContractDurationNullableFilter<"Announcement"> | $Enums.ContractDuration | null
-  transportAllowance?: Prisma.FloatNullableFilter<"Announcement"> | number | null
+  transportAllowance?: Prisma.DecimalNullableFilter<"Announcement"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: Prisma.BoolFilter<"Announcement"> | boolean
   isFeatured?: Prisma.BoolFilter<"Announcement"> | boolean
   viewCount?: Prisma.IntFilter<"Announcement"> | number
@@ -462,11 +469,13 @@ export type AnnouncementWhereInput = {
   postedAt?: Prisma.DateTimeNullableFilter<"Announcement"> | Date | string | null
   url?: Prisma.StringNullableFilter<"Announcement"> | string | null
   rawData?: Prisma.JsonNullableFilter<"Announcement">
+  userId?: Prisma.StringNullableFilter<"Announcement"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
   source?: Prisma.XOR<Prisma.SourceScalarRelationFilter, Prisma.SourceWhereInput>
   region?: Prisma.XOR<Prisma.RegionNullableScalarRelationFilter, Prisma.RegionWhereInput> | null
   jobType?: Prisma.XOR<Prisma.JobTypeScalarRelationFilter, Prisma.JobTypeWhereInput>
+  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
 export type AnnouncementOrderByWithRelationInput = {
@@ -503,11 +512,13 @@ export type AnnouncementOrderByWithRelationInput = {
   postedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   url?: Prisma.SortOrderInput | Prisma.SortOrder
   rawData?: Prisma.SortOrderInput | Prisma.SortOrder
+  userId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   source?: Prisma.SourceOrderByWithRelationInput
   region?: Prisma.RegionOrderByWithRelationInput
   jobType?: Prisma.JobTypeOrderByWithRelationInput
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type AnnouncementWhereUniqueInput = Prisma.AtLeast<{
@@ -521,15 +532,15 @@ export type AnnouncementWhereUniqueInput = Prisma.AtLeast<{
   externalId?: Prisma.StringFilter<"Announcement"> | string
   title?: Prisma.StringFilter<"Announcement"> | string
   description?: Prisma.StringNullableFilter<"Announcement"> | string | null
-  salaryMin?: Prisma.FloatNullableFilter<"Announcement"> | number | null
-  salaryMax?: Prisma.FloatNullableFilter<"Announcement"> | number | null
+  salaryMin?: Prisma.DecimalNullableFilter<"Announcement"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: Prisma.DecimalNullableFilter<"Announcement"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: Prisma.EnumSalaryPeriodNullableFilter<"Announcement"> | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.StringNullableFilter<"Announcement"> | string | null
   isUrgent?: Prisma.BoolFilter<"Announcement"> | boolean
   workArrangement?: Prisma.EnumWorkArrangementNullableFilter<"Announcement"> | $Enums.WorkArrangement | null
   shift?: Prisma.EnumWorkShiftNullableFilter<"Announcement"> | $Enums.WorkShift | null
   contractDuration?: Prisma.EnumContractDurationNullableFilter<"Announcement"> | $Enums.ContractDuration | null
-  transportAllowance?: Prisma.FloatNullableFilter<"Announcement"> | number | null
+  transportAllowance?: Prisma.DecimalNullableFilter<"Announcement"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: Prisma.BoolFilter<"Announcement"> | boolean
   isFeatured?: Prisma.BoolFilter<"Announcement"> | boolean
   viewCount?: Prisma.IntFilter<"Announcement"> | number
@@ -548,11 +559,13 @@ export type AnnouncementWhereUniqueInput = Prisma.AtLeast<{
   postedAt?: Prisma.DateTimeNullableFilter<"Announcement"> | Date | string | null
   url?: Prisma.StringNullableFilter<"Announcement"> | string | null
   rawData?: Prisma.JsonNullableFilter<"Announcement">
+  userId?: Prisma.StringNullableFilter<"Announcement"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
   source?: Prisma.XOR<Prisma.SourceScalarRelationFilter, Prisma.SourceWhereInput>
   region?: Prisma.XOR<Prisma.RegionNullableScalarRelationFilter, Prisma.RegionWhereInput> | null
   jobType?: Prisma.XOR<Prisma.JobTypeScalarRelationFilter, Prisma.JobTypeWhereInput>
+  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id" | "sourceId_externalId">
 
 export type AnnouncementOrderByWithAggregationInput = {
@@ -589,6 +602,7 @@ export type AnnouncementOrderByWithAggregationInput = {
   postedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   url?: Prisma.SortOrderInput | Prisma.SortOrder
   rawData?: Prisma.SortOrderInput | Prisma.SortOrder
+  userId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.AnnouncementCountOrderByAggregateInput
@@ -608,15 +622,15 @@ export type AnnouncementScalarWhereWithAggregatesInput = {
   externalId?: Prisma.StringWithAggregatesFilter<"Announcement"> | string
   title?: Prisma.StringWithAggregatesFilter<"Announcement"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Announcement"> | string | null
-  salaryMin?: Prisma.FloatNullableWithAggregatesFilter<"Announcement"> | number | null
-  salaryMax?: Prisma.FloatNullableWithAggregatesFilter<"Announcement"> | number | null
+  salaryMin?: Prisma.DecimalNullableWithAggregatesFilter<"Announcement"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: Prisma.DecimalNullableWithAggregatesFilter<"Announcement"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: Prisma.EnumSalaryPeriodNullableWithAggregatesFilter<"Announcement"> | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.StringNullableWithAggregatesFilter<"Announcement"> | string | null
   isUrgent?: Prisma.BoolWithAggregatesFilter<"Announcement"> | boolean
   workArrangement?: Prisma.EnumWorkArrangementNullableWithAggregatesFilter<"Announcement"> | $Enums.WorkArrangement | null
   shift?: Prisma.EnumWorkShiftNullableWithAggregatesFilter<"Announcement"> | $Enums.WorkShift | null
   contractDuration?: Prisma.EnumContractDurationNullableWithAggregatesFilter<"Announcement"> | $Enums.ContractDuration | null
-  transportAllowance?: Prisma.FloatNullableWithAggregatesFilter<"Announcement"> | number | null
+  transportAllowance?: Prisma.DecimalNullableWithAggregatesFilter<"Announcement"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: Prisma.BoolWithAggregatesFilter<"Announcement"> | boolean
   isFeatured?: Prisma.BoolWithAggregatesFilter<"Announcement"> | boolean
   viewCount?: Prisma.IntWithAggregatesFilter<"Announcement"> | number
@@ -635,6 +649,7 @@ export type AnnouncementScalarWhereWithAggregatesInput = {
   postedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Announcement"> | Date | string | null
   url?: Prisma.StringNullableWithAggregatesFilter<"Announcement"> | string | null
   rawData?: Prisma.JsonNullableWithAggregatesFilter<"Announcement">
+  userId?: Prisma.StringNullableWithAggregatesFilter<"Announcement"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Announcement"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Announcement"> | Date | string
 }
@@ -645,15 +660,15 @@ export type AnnouncementCreateInput = {
   externalId: string
   title: string
   description?: string | null
-  salaryMin?: number | null
-  salaryMax?: number | null
+  salaryMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
   shift?: $Enums.WorkShift | null
   contractDuration?: $Enums.ContractDuration | null
-  transportAllowance?: number | null
+  transportAllowance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: boolean
   isFeatured?: boolean
   viewCount?: number
@@ -675,6 +690,7 @@ export type AnnouncementCreateInput = {
   source: Prisma.SourceCreateNestedOneWithoutAnnouncementsInput
   region?: Prisma.RegionCreateNestedOneWithoutAnnouncementsInput
   jobType: Prisma.JobTypeCreateNestedOneWithoutAnnouncementsInput
+  user?: Prisma.UserCreateNestedOneWithoutAnnouncementsInput
 }
 
 export type AnnouncementUncheckedCreateInput = {
@@ -684,15 +700,15 @@ export type AnnouncementUncheckedCreateInput = {
   externalId: string
   title: string
   description?: string | null
-  salaryMin?: number | null
-  salaryMax?: number | null
+  salaryMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
   shift?: $Enums.WorkShift | null
   contractDuration?: $Enums.ContractDuration | null
-  transportAllowance?: number | null
+  transportAllowance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: boolean
   isFeatured?: boolean
   viewCount?: number
@@ -711,6 +727,7 @@ export type AnnouncementUncheckedCreateInput = {
   postedAt?: Date | string | null
   url?: string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  userId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -721,15 +738,15 @@ export type AnnouncementUpdateInput = {
   externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  salaryMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
   shift?: Prisma.NullableEnumWorkShiftFieldUpdateOperationsInput | $Enums.WorkShift | null
   contractDuration?: Prisma.NullableEnumContractDurationFieldUpdateOperationsInput | $Enums.ContractDuration | null
-  transportAllowance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transportAllowance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -751,6 +768,7 @@ export type AnnouncementUpdateInput = {
   source?: Prisma.SourceUpdateOneRequiredWithoutAnnouncementsNestedInput
   region?: Prisma.RegionUpdateOneWithoutAnnouncementsNestedInput
   jobType?: Prisma.JobTypeUpdateOneRequiredWithoutAnnouncementsNestedInput
+  user?: Prisma.UserUpdateOneWithoutAnnouncementsNestedInput
 }
 
 export type AnnouncementUncheckedUpdateInput = {
@@ -760,15 +778,15 @@ export type AnnouncementUncheckedUpdateInput = {
   externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  salaryMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
   shift?: Prisma.NullableEnumWorkShiftFieldUpdateOperationsInput | $Enums.WorkShift | null
   contractDuration?: Prisma.NullableEnumContractDurationFieldUpdateOperationsInput | $Enums.ContractDuration | null
-  transportAllowance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transportAllowance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -787,6 +805,7 @@ export type AnnouncementUncheckedUpdateInput = {
   postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -798,15 +817,15 @@ export type AnnouncementCreateManyInput = {
   externalId: string
   title: string
   description?: string | null
-  salaryMin?: number | null
-  salaryMax?: number | null
+  salaryMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
   shift?: $Enums.WorkShift | null
   contractDuration?: $Enums.ContractDuration | null
-  transportAllowance?: number | null
+  transportAllowance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: boolean
   isFeatured?: boolean
   viewCount?: number
@@ -825,6 +844,7 @@ export type AnnouncementCreateManyInput = {
   postedAt?: Date | string | null
   url?: string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  userId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -835,15 +855,15 @@ export type AnnouncementUpdateManyMutationInput = {
   externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  salaryMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
   shift?: Prisma.NullableEnumWorkShiftFieldUpdateOperationsInput | $Enums.WorkShift | null
   contractDuration?: Prisma.NullableEnumContractDurationFieldUpdateOperationsInput | $Enums.ContractDuration | null
-  transportAllowance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transportAllowance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -871,15 +891,15 @@ export type AnnouncementUncheckedUpdateManyInput = {
   externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  salaryMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
   shift?: Prisma.NullableEnumWorkShiftFieldUpdateOperationsInput | $Enums.WorkShift | null
   contractDuration?: Prisma.NullableEnumContractDurationFieldUpdateOperationsInput | $Enums.ContractDuration | null
-  transportAllowance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transportAllowance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -898,6 +918,7 @@ export type AnnouncementUncheckedUpdateManyInput = {
   postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -959,6 +980,7 @@ export type AnnouncementCountOrderByAggregateInput = {
   postedAt?: Prisma.SortOrder
   url?: Prisma.SortOrder
   rawData?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -1003,6 +1025,7 @@ export type AnnouncementMaxOrderByAggregateInput = {
   contactWhatsapp?: Prisma.SortOrder
   postedAt?: Prisma.SortOrder
   url?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -1039,6 +1062,7 @@ export type AnnouncementMinOrderByAggregateInput = {
   contactWhatsapp?: Prisma.SortOrder
   postedAt?: Prisma.SortOrder
   url?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -1189,6 +1213,14 @@ export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
+export type NullableDecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
+}
+
 export type NullableEnumSalaryPeriodFieldUpdateOperationsInput = {
   set?: $Enums.SalaryPeriod | null
 }
@@ -1226,21 +1258,63 @@ export type NullableIntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type AnnouncementCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.AnnouncementCreateWithoutUserInput, Prisma.AnnouncementUncheckedCreateWithoutUserInput> | Prisma.AnnouncementCreateWithoutUserInput[] | Prisma.AnnouncementUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.AnnouncementCreateOrConnectWithoutUserInput | Prisma.AnnouncementCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.AnnouncementCreateManyUserInputEnvelope
+  connect?: Prisma.AnnouncementWhereUniqueInput | Prisma.AnnouncementWhereUniqueInput[]
+}
+
+export type AnnouncementUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.AnnouncementCreateWithoutUserInput, Prisma.AnnouncementUncheckedCreateWithoutUserInput> | Prisma.AnnouncementCreateWithoutUserInput[] | Prisma.AnnouncementUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.AnnouncementCreateOrConnectWithoutUserInput | Prisma.AnnouncementCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.AnnouncementCreateManyUserInputEnvelope
+  connect?: Prisma.AnnouncementWhereUniqueInput | Prisma.AnnouncementWhereUniqueInput[]
+}
+
+export type AnnouncementUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.AnnouncementCreateWithoutUserInput, Prisma.AnnouncementUncheckedCreateWithoutUserInput> | Prisma.AnnouncementCreateWithoutUserInput[] | Prisma.AnnouncementUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.AnnouncementCreateOrConnectWithoutUserInput | Prisma.AnnouncementCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.AnnouncementUpsertWithWhereUniqueWithoutUserInput | Prisma.AnnouncementUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.AnnouncementCreateManyUserInputEnvelope
+  set?: Prisma.AnnouncementWhereUniqueInput | Prisma.AnnouncementWhereUniqueInput[]
+  disconnect?: Prisma.AnnouncementWhereUniqueInput | Prisma.AnnouncementWhereUniqueInput[]
+  delete?: Prisma.AnnouncementWhereUniqueInput | Prisma.AnnouncementWhereUniqueInput[]
+  connect?: Prisma.AnnouncementWhereUniqueInput | Prisma.AnnouncementWhereUniqueInput[]
+  update?: Prisma.AnnouncementUpdateWithWhereUniqueWithoutUserInput | Prisma.AnnouncementUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.AnnouncementUpdateManyWithWhereWithoutUserInput | Prisma.AnnouncementUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.AnnouncementScalarWhereInput | Prisma.AnnouncementScalarWhereInput[]
+}
+
+export type AnnouncementUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.AnnouncementCreateWithoutUserInput, Prisma.AnnouncementUncheckedCreateWithoutUserInput> | Prisma.AnnouncementCreateWithoutUserInput[] | Prisma.AnnouncementUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.AnnouncementCreateOrConnectWithoutUserInput | Prisma.AnnouncementCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.AnnouncementUpsertWithWhereUniqueWithoutUserInput | Prisma.AnnouncementUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.AnnouncementCreateManyUserInputEnvelope
+  set?: Prisma.AnnouncementWhereUniqueInput | Prisma.AnnouncementWhereUniqueInput[]
+  disconnect?: Prisma.AnnouncementWhereUniqueInput | Prisma.AnnouncementWhereUniqueInput[]
+  delete?: Prisma.AnnouncementWhereUniqueInput | Prisma.AnnouncementWhereUniqueInput[]
+  connect?: Prisma.AnnouncementWhereUniqueInput | Prisma.AnnouncementWhereUniqueInput[]
+  update?: Prisma.AnnouncementUpdateWithWhereUniqueWithoutUserInput | Prisma.AnnouncementUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.AnnouncementUpdateManyWithWhereWithoutUserInput | Prisma.AnnouncementUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.AnnouncementScalarWhereInput | Prisma.AnnouncementScalarWhereInput[]
+}
+
 export type AnnouncementCreateWithoutRegionInput = {
   id?: string
   type: $Enums.ListingType
   externalId: string
   title: string
   description?: string | null
-  salaryMin?: number | null
-  salaryMax?: number | null
+  salaryMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
   shift?: $Enums.WorkShift | null
   contractDuration?: $Enums.ContractDuration | null
-  transportAllowance?: number | null
+  transportAllowance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: boolean
   isFeatured?: boolean
   viewCount?: number
@@ -1261,6 +1335,7 @@ export type AnnouncementCreateWithoutRegionInput = {
   updatedAt?: Date | string
   source: Prisma.SourceCreateNestedOneWithoutAnnouncementsInput
   jobType: Prisma.JobTypeCreateNestedOneWithoutAnnouncementsInput
+  user?: Prisma.UserCreateNestedOneWithoutAnnouncementsInput
 }
 
 export type AnnouncementUncheckedCreateWithoutRegionInput = {
@@ -1270,15 +1345,15 @@ export type AnnouncementUncheckedCreateWithoutRegionInput = {
   externalId: string
   title: string
   description?: string | null
-  salaryMin?: number | null
-  salaryMax?: number | null
+  salaryMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
   shift?: $Enums.WorkShift | null
   contractDuration?: $Enums.ContractDuration | null
-  transportAllowance?: number | null
+  transportAllowance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: boolean
   isFeatured?: boolean
   viewCount?: number
@@ -1296,6 +1371,7 @@ export type AnnouncementUncheckedCreateWithoutRegionInput = {
   postedAt?: Date | string | null
   url?: string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  userId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1336,15 +1412,15 @@ export type AnnouncementScalarWhereInput = {
   externalId?: Prisma.StringFilter<"Announcement"> | string
   title?: Prisma.StringFilter<"Announcement"> | string
   description?: Prisma.StringNullableFilter<"Announcement"> | string | null
-  salaryMin?: Prisma.FloatNullableFilter<"Announcement"> | number | null
-  salaryMax?: Prisma.FloatNullableFilter<"Announcement"> | number | null
+  salaryMin?: Prisma.DecimalNullableFilter<"Announcement"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: Prisma.DecimalNullableFilter<"Announcement"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: Prisma.EnumSalaryPeriodNullableFilter<"Announcement"> | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.StringNullableFilter<"Announcement"> | string | null
   isUrgent?: Prisma.BoolFilter<"Announcement"> | boolean
   workArrangement?: Prisma.EnumWorkArrangementNullableFilter<"Announcement"> | $Enums.WorkArrangement | null
   shift?: Prisma.EnumWorkShiftNullableFilter<"Announcement"> | $Enums.WorkShift | null
   contractDuration?: Prisma.EnumContractDurationNullableFilter<"Announcement"> | $Enums.ContractDuration | null
-  transportAllowance?: Prisma.FloatNullableFilter<"Announcement"> | number | null
+  transportAllowance?: Prisma.DecimalNullableFilter<"Announcement"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: Prisma.BoolFilter<"Announcement"> | boolean
   isFeatured?: Prisma.BoolFilter<"Announcement"> | boolean
   viewCount?: Prisma.IntFilter<"Announcement"> | number
@@ -1363,6 +1439,7 @@ export type AnnouncementScalarWhereInput = {
   postedAt?: Prisma.DateTimeNullableFilter<"Announcement"> | Date | string | null
   url?: Prisma.StringNullableFilter<"Announcement"> | string | null
   rawData?: Prisma.JsonNullableFilter<"Announcement">
+  userId?: Prisma.StringNullableFilter<"Announcement"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
 }
@@ -1373,15 +1450,15 @@ export type AnnouncementCreateWithoutJobTypeInput = {
   externalId: string
   title: string
   description?: string | null
-  salaryMin?: number | null
-  salaryMax?: number | null
+  salaryMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
   shift?: $Enums.WorkShift | null
   contractDuration?: $Enums.ContractDuration | null
-  transportAllowance?: number | null
+  transportAllowance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: boolean
   isFeatured?: boolean
   viewCount?: number
@@ -1402,6 +1479,7 @@ export type AnnouncementCreateWithoutJobTypeInput = {
   updatedAt?: Date | string
   source: Prisma.SourceCreateNestedOneWithoutAnnouncementsInput
   region?: Prisma.RegionCreateNestedOneWithoutAnnouncementsInput
+  user?: Prisma.UserCreateNestedOneWithoutAnnouncementsInput
 }
 
 export type AnnouncementUncheckedCreateWithoutJobTypeInput = {
@@ -1411,15 +1489,15 @@ export type AnnouncementUncheckedCreateWithoutJobTypeInput = {
   externalId: string
   title: string
   description?: string | null
-  salaryMin?: number | null
-  salaryMax?: number | null
+  salaryMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
   shift?: $Enums.WorkShift | null
   contractDuration?: $Enums.ContractDuration | null
-  transportAllowance?: number | null
+  transportAllowance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: boolean
   isFeatured?: boolean
   viewCount?: number
@@ -1437,6 +1515,7 @@ export type AnnouncementUncheckedCreateWithoutJobTypeInput = {
   postedAt?: Date | string | null
   url?: string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  userId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1473,15 +1552,15 @@ export type AnnouncementCreateWithoutSourceInput = {
   externalId: string
   title: string
   description?: string | null
-  salaryMin?: number | null
-  salaryMax?: number | null
+  salaryMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
   shift?: $Enums.WorkShift | null
   contractDuration?: $Enums.ContractDuration | null
-  transportAllowance?: number | null
+  transportAllowance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: boolean
   isFeatured?: boolean
   viewCount?: number
@@ -1502,6 +1581,7 @@ export type AnnouncementCreateWithoutSourceInput = {
   updatedAt?: Date | string
   region?: Prisma.RegionCreateNestedOneWithoutAnnouncementsInput
   jobType: Prisma.JobTypeCreateNestedOneWithoutAnnouncementsInput
+  user?: Prisma.UserCreateNestedOneWithoutAnnouncementsInput
 }
 
 export type AnnouncementUncheckedCreateWithoutSourceInput = {
@@ -1510,15 +1590,15 @@ export type AnnouncementUncheckedCreateWithoutSourceInput = {
   externalId: string
   title: string
   description?: string | null
-  salaryMin?: number | null
-  salaryMax?: number | null
+  salaryMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
   shift?: $Enums.WorkShift | null
   contractDuration?: $Enums.ContractDuration | null
-  transportAllowance?: number | null
+  transportAllowance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: boolean
   isFeatured?: boolean
   viewCount?: number
@@ -1537,6 +1617,7 @@ export type AnnouncementUncheckedCreateWithoutSourceInput = {
   postedAt?: Date | string | null
   url?: string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  userId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1567,6 +1648,108 @@ export type AnnouncementUpdateManyWithWhereWithoutSourceInput = {
   data: Prisma.XOR<Prisma.AnnouncementUpdateManyMutationInput, Prisma.AnnouncementUncheckedUpdateManyWithoutSourceInput>
 }
 
+export type AnnouncementCreateWithoutUserInput = {
+  id?: string
+  type: $Enums.ListingType
+  externalId: string
+  title: string
+  description?: string | null
+  salaryMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryPeriod?: $Enums.SalaryPeriod | null
+  salaryRaw?: string | null
+  isUrgent?: boolean
+  workArrangement?: $Enums.WorkArrangement | null
+  shift?: $Enums.WorkShift | null
+  contractDuration?: $Enums.ContractDuration | null
+  transportAllowance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  isVerified?: boolean
+  isFeatured?: boolean
+  viewCount?: number
+  workDays?: Prisma.AnnouncementCreateworkDaysInput | string[]
+  workStartTime?: string | null
+  workEndTime?: string | null
+  desiredStartDate?: Date | string | null
+  experienceYearsRequired?: number | null
+  city?: string | null
+  language?: string
+  location?: string | null
+  contactPhone?: string | null
+  contactWhatsapp?: string | null
+  postedAt?: Date | string | null
+  url?: string | null
+  rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  source: Prisma.SourceCreateNestedOneWithoutAnnouncementsInput
+  region?: Prisma.RegionCreateNestedOneWithoutAnnouncementsInput
+  jobType: Prisma.JobTypeCreateNestedOneWithoutAnnouncementsInput
+}
+
+export type AnnouncementUncheckedCreateWithoutUserInput = {
+  id?: string
+  type: $Enums.ListingType
+  sourceId: string
+  externalId: string
+  title: string
+  description?: string | null
+  salaryMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryPeriod?: $Enums.SalaryPeriod | null
+  salaryRaw?: string | null
+  isUrgent?: boolean
+  workArrangement?: $Enums.WorkArrangement | null
+  shift?: $Enums.WorkShift | null
+  contractDuration?: $Enums.ContractDuration | null
+  transportAllowance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  isVerified?: boolean
+  isFeatured?: boolean
+  viewCount?: number
+  workDays?: Prisma.AnnouncementCreateworkDaysInput | string[]
+  workStartTime?: string | null
+  workEndTime?: string | null
+  desiredStartDate?: Date | string | null
+  experienceYearsRequired?: number | null
+  city?: string | null
+  language?: string
+  regionId?: string | null
+  jobTypeId: string
+  location?: string | null
+  contactPhone?: string | null
+  contactWhatsapp?: string | null
+  postedAt?: Date | string | null
+  url?: string | null
+  rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type AnnouncementCreateOrConnectWithoutUserInput = {
+  where: Prisma.AnnouncementWhereUniqueInput
+  create: Prisma.XOR<Prisma.AnnouncementCreateWithoutUserInput, Prisma.AnnouncementUncheckedCreateWithoutUserInput>
+}
+
+export type AnnouncementCreateManyUserInputEnvelope = {
+  data: Prisma.AnnouncementCreateManyUserInput | Prisma.AnnouncementCreateManyUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type AnnouncementUpsertWithWhereUniqueWithoutUserInput = {
+  where: Prisma.AnnouncementWhereUniqueInput
+  update: Prisma.XOR<Prisma.AnnouncementUpdateWithoutUserInput, Prisma.AnnouncementUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.AnnouncementCreateWithoutUserInput, Prisma.AnnouncementUncheckedCreateWithoutUserInput>
+}
+
+export type AnnouncementUpdateWithWhereUniqueWithoutUserInput = {
+  where: Prisma.AnnouncementWhereUniqueInput
+  data: Prisma.XOR<Prisma.AnnouncementUpdateWithoutUserInput, Prisma.AnnouncementUncheckedUpdateWithoutUserInput>
+}
+
+export type AnnouncementUpdateManyWithWhereWithoutUserInput = {
+  where: Prisma.AnnouncementScalarWhereInput
+  data: Prisma.XOR<Prisma.AnnouncementUpdateManyMutationInput, Prisma.AnnouncementUncheckedUpdateManyWithoutUserInput>
+}
+
 export type AnnouncementCreateManyRegionInput = {
   id?: string
   type: $Enums.ListingType
@@ -1574,15 +1757,15 @@ export type AnnouncementCreateManyRegionInput = {
   externalId: string
   title: string
   description?: string | null
-  salaryMin?: number | null
-  salaryMax?: number | null
+  salaryMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
   shift?: $Enums.WorkShift | null
   contractDuration?: $Enums.ContractDuration | null
-  transportAllowance?: number | null
+  transportAllowance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: boolean
   isFeatured?: boolean
   viewCount?: number
@@ -1600,6 +1783,7 @@ export type AnnouncementCreateManyRegionInput = {
   postedAt?: Date | string | null
   url?: string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  userId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1610,15 +1794,15 @@ export type AnnouncementUpdateWithoutRegionInput = {
   externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  salaryMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
   shift?: Prisma.NullableEnumWorkShiftFieldUpdateOperationsInput | $Enums.WorkShift | null
   contractDuration?: Prisma.NullableEnumContractDurationFieldUpdateOperationsInput | $Enums.ContractDuration | null
-  transportAllowance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transportAllowance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1639,6 +1823,7 @@ export type AnnouncementUpdateWithoutRegionInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   source?: Prisma.SourceUpdateOneRequiredWithoutAnnouncementsNestedInput
   jobType?: Prisma.JobTypeUpdateOneRequiredWithoutAnnouncementsNestedInput
+  user?: Prisma.UserUpdateOneWithoutAnnouncementsNestedInput
 }
 
 export type AnnouncementUncheckedUpdateWithoutRegionInput = {
@@ -1648,15 +1833,15 @@ export type AnnouncementUncheckedUpdateWithoutRegionInput = {
   externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  salaryMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
   shift?: Prisma.NullableEnumWorkShiftFieldUpdateOperationsInput | $Enums.WorkShift | null
   contractDuration?: Prisma.NullableEnumContractDurationFieldUpdateOperationsInput | $Enums.ContractDuration | null
-  transportAllowance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transportAllowance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1674,6 +1859,7 @@ export type AnnouncementUncheckedUpdateWithoutRegionInput = {
   postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1685,15 +1871,15 @@ export type AnnouncementUncheckedUpdateManyWithoutRegionInput = {
   externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  salaryMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
   shift?: Prisma.NullableEnumWorkShiftFieldUpdateOperationsInput | $Enums.WorkShift | null
   contractDuration?: Prisma.NullableEnumContractDurationFieldUpdateOperationsInput | $Enums.ContractDuration | null
-  transportAllowance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transportAllowance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1711,6 +1897,7 @@ export type AnnouncementUncheckedUpdateManyWithoutRegionInput = {
   postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1722,15 +1909,15 @@ export type AnnouncementCreateManyJobTypeInput = {
   externalId: string
   title: string
   description?: string | null
-  salaryMin?: number | null
-  salaryMax?: number | null
+  salaryMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
   shift?: $Enums.WorkShift | null
   contractDuration?: $Enums.ContractDuration | null
-  transportAllowance?: number | null
+  transportAllowance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: boolean
   isFeatured?: boolean
   viewCount?: number
@@ -1748,6 +1935,7 @@ export type AnnouncementCreateManyJobTypeInput = {
   postedAt?: Date | string | null
   url?: string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  userId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1758,15 +1946,15 @@ export type AnnouncementUpdateWithoutJobTypeInput = {
   externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  salaryMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
   shift?: Prisma.NullableEnumWorkShiftFieldUpdateOperationsInput | $Enums.WorkShift | null
   contractDuration?: Prisma.NullableEnumContractDurationFieldUpdateOperationsInput | $Enums.ContractDuration | null
-  transportAllowance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transportAllowance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1787,6 +1975,7 @@ export type AnnouncementUpdateWithoutJobTypeInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   source?: Prisma.SourceUpdateOneRequiredWithoutAnnouncementsNestedInput
   region?: Prisma.RegionUpdateOneWithoutAnnouncementsNestedInput
+  user?: Prisma.UserUpdateOneWithoutAnnouncementsNestedInput
 }
 
 export type AnnouncementUncheckedUpdateWithoutJobTypeInput = {
@@ -1796,15 +1985,15 @@ export type AnnouncementUncheckedUpdateWithoutJobTypeInput = {
   externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  salaryMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
   shift?: Prisma.NullableEnumWorkShiftFieldUpdateOperationsInput | $Enums.WorkShift | null
   contractDuration?: Prisma.NullableEnumContractDurationFieldUpdateOperationsInput | $Enums.ContractDuration | null
-  transportAllowance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transportAllowance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1822,6 +2011,7 @@ export type AnnouncementUncheckedUpdateWithoutJobTypeInput = {
   postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1833,15 +2023,15 @@ export type AnnouncementUncheckedUpdateManyWithoutJobTypeInput = {
   externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  salaryMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
   shift?: Prisma.NullableEnumWorkShiftFieldUpdateOperationsInput | $Enums.WorkShift | null
   contractDuration?: Prisma.NullableEnumContractDurationFieldUpdateOperationsInput | $Enums.ContractDuration | null
-  transportAllowance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transportAllowance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1859,6 +2049,7 @@ export type AnnouncementUncheckedUpdateManyWithoutJobTypeInput = {
   postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1869,15 +2060,168 @@ export type AnnouncementCreateManySourceInput = {
   externalId: string
   title: string
   description?: string | null
-  salaryMin?: number | null
-  salaryMax?: number | null
+  salaryMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: $Enums.SalaryPeriod | null
   salaryRaw?: string | null
   isUrgent?: boolean
   workArrangement?: $Enums.WorkArrangement | null
   shift?: $Enums.WorkShift | null
   contractDuration?: $Enums.ContractDuration | null
-  transportAllowance?: number | null
+  transportAllowance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  isVerified?: boolean
+  isFeatured?: boolean
+  viewCount?: number
+  workDays?: Prisma.AnnouncementCreateworkDaysInput | string[]
+  workStartTime?: string | null
+  workEndTime?: string | null
+  desiredStartDate?: Date | string | null
+  experienceYearsRequired?: number | null
+  city?: string | null
+  language?: string
+  regionId?: string | null
+  jobTypeId: string
+  location?: string | null
+  contactPhone?: string | null
+  contactWhatsapp?: string | null
+  postedAt?: Date | string | null
+  url?: string | null
+  rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  userId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type AnnouncementUpdateWithoutSourceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumListingTypeFieldUpdateOperationsInput | $Enums.ListingType
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
+  salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
+  shift?: Prisma.NullableEnumWorkShiftFieldUpdateOperationsInput | $Enums.WorkShift | null
+  contractDuration?: Prisma.NullableEnumContractDurationFieldUpdateOperationsInput | $Enums.ContractDuration | null
+  transportAllowance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  workDays?: Prisma.AnnouncementUpdateworkDaysInput | string[]
+  workStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workEndTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  desiredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  experienceYearsRequired?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactWhatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  region?: Prisma.RegionUpdateOneWithoutAnnouncementsNestedInput
+  jobType?: Prisma.JobTypeUpdateOneRequiredWithoutAnnouncementsNestedInput
+  user?: Prisma.UserUpdateOneWithoutAnnouncementsNestedInput
+}
+
+export type AnnouncementUncheckedUpdateWithoutSourceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumListingTypeFieldUpdateOperationsInput | $Enums.ListingType
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
+  salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
+  shift?: Prisma.NullableEnumWorkShiftFieldUpdateOperationsInput | $Enums.WorkShift | null
+  contractDuration?: Prisma.NullableEnumContractDurationFieldUpdateOperationsInput | $Enums.ContractDuration | null
+  transportAllowance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  workDays?: Prisma.AnnouncementUpdateworkDaysInput | string[]
+  workStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workEndTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  desiredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  experienceYearsRequired?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTypeId?: Prisma.StringFieldUpdateOperationsInput | string
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactWhatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type AnnouncementUncheckedUpdateManyWithoutSourceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumListingTypeFieldUpdateOperationsInput | $Enums.ListingType
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salaryMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
+  salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
+  shift?: Prisma.NullableEnumWorkShiftFieldUpdateOperationsInput | $Enums.WorkShift | null
+  contractDuration?: Prisma.NullableEnumContractDurationFieldUpdateOperationsInput | $Enums.ContractDuration | null
+  transportAllowance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  workDays?: Prisma.AnnouncementUpdateworkDaysInput | string[]
+  workStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workEndTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  desiredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  experienceYearsRequired?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  regionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTypeId?: Prisma.StringFieldUpdateOperationsInput | string
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactWhatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  postedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type AnnouncementCreateManyUserInput = {
+  id?: string
+  type: $Enums.ListingType
+  sourceId: string
+  externalId: string
+  title: string
+  description?: string | null
+  salaryMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryPeriod?: $Enums.SalaryPeriod | null
+  salaryRaw?: string | null
+  isUrgent?: boolean
+  workArrangement?: $Enums.WorkArrangement | null
+  shift?: $Enums.WorkShift | null
+  contractDuration?: $Enums.ContractDuration | null
+  transportAllowance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: boolean
   isFeatured?: boolean
   viewCount?: number
@@ -1900,21 +2244,21 @@ export type AnnouncementCreateManySourceInput = {
   updatedAt?: Date | string
 }
 
-export type AnnouncementUpdateWithoutSourceInput = {
+export type AnnouncementUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumListingTypeFieldUpdateOperationsInput | $Enums.ListingType
   externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  salaryMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
   shift?: Prisma.NullableEnumWorkShiftFieldUpdateOperationsInput | $Enums.WorkShift | null
   contractDuration?: Prisma.NullableEnumContractDurationFieldUpdateOperationsInput | $Enums.ContractDuration | null
-  transportAllowance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transportAllowance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1933,25 +2277,27 @@ export type AnnouncementUpdateWithoutSourceInput = {
   rawData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  source?: Prisma.SourceUpdateOneRequiredWithoutAnnouncementsNestedInput
   region?: Prisma.RegionUpdateOneWithoutAnnouncementsNestedInput
   jobType?: Prisma.JobTypeUpdateOneRequiredWithoutAnnouncementsNestedInput
 }
 
-export type AnnouncementUncheckedUpdateWithoutSourceInput = {
+export type AnnouncementUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumListingTypeFieldUpdateOperationsInput | $Enums.ListingType
+  sourceId?: Prisma.StringFieldUpdateOperationsInput | string
   externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  salaryMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
   shift?: Prisma.NullableEnumWorkShiftFieldUpdateOperationsInput | $Enums.WorkShift | null
   contractDuration?: Prisma.NullableEnumContractDurationFieldUpdateOperationsInput | $Enums.ContractDuration | null
-  transportAllowance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transportAllowance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1974,21 +2320,22 @@ export type AnnouncementUncheckedUpdateWithoutSourceInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type AnnouncementUncheckedUpdateManyWithoutSourceInput = {
+export type AnnouncementUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumListingTypeFieldUpdateOperationsInput | $Enums.ListingType
+  sourceId?: Prisma.StringFieldUpdateOperationsInput | string
   externalId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  salaryMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  salaryMax?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  salaryMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  salaryMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   salaryPeriod?: Prisma.NullableEnumSalaryPeriodFieldUpdateOperationsInput | $Enums.SalaryPeriod | null
   salaryRaw?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   workArrangement?: Prisma.NullableEnumWorkArrangementFieldUpdateOperationsInput | $Enums.WorkArrangement | null
   shift?: Prisma.NullableEnumWorkShiftFieldUpdateOperationsInput | $Enums.WorkShift | null
   contractDuration?: Prisma.NullableEnumContractDurationFieldUpdateOperationsInput | $Enums.ContractDuration | null
-  transportAllowance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  transportAllowance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2047,11 +2394,13 @@ export type AnnouncementSelect<ExtArgs extends runtime.Types.Extensions.Internal
   postedAt?: boolean
   url?: boolean
   rawData?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   source?: boolean | Prisma.SourceDefaultArgs<ExtArgs>
   region?: boolean | Prisma.Announcement$regionArgs<ExtArgs>
   jobType?: boolean | Prisma.JobTypeDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Announcement$userArgs<ExtArgs>
 }, ExtArgs["result"]["announcement"]>
 
 export type AnnouncementSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -2088,11 +2437,13 @@ export type AnnouncementSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   postedAt?: boolean
   url?: boolean
   rawData?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   source?: boolean | Prisma.SourceDefaultArgs<ExtArgs>
   region?: boolean | Prisma.Announcement$regionArgs<ExtArgs>
   jobType?: boolean | Prisma.JobTypeDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Announcement$userArgs<ExtArgs>
 }, ExtArgs["result"]["announcement"]>
 
 export type AnnouncementSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -2129,11 +2480,13 @@ export type AnnouncementSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   postedAt?: boolean
   url?: boolean
   rawData?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   source?: boolean | Prisma.SourceDefaultArgs<ExtArgs>
   region?: boolean | Prisma.Announcement$regionArgs<ExtArgs>
   jobType?: boolean | Prisma.JobTypeDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Announcement$userArgs<ExtArgs>
 }, ExtArgs["result"]["announcement"]>
 
 export type AnnouncementSelectScalar = {
@@ -2170,25 +2523,29 @@ export type AnnouncementSelectScalar = {
   postedAt?: boolean
   url?: boolean
   rawData?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type AnnouncementOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "sourceId" | "externalId" | "title" | "description" | "salaryMin" | "salaryMax" | "salaryPeriod" | "salaryRaw" | "isUrgent" | "workArrangement" | "shift" | "contractDuration" | "transportAllowance" | "isVerified" | "isFeatured" | "viewCount" | "workDays" | "workStartTime" | "workEndTime" | "desiredStartDate" | "experienceYearsRequired" | "city" | "language" | "regionId" | "jobTypeId" | "location" | "contactPhone" | "contactWhatsapp" | "postedAt" | "url" | "rawData" | "createdAt" | "updatedAt", ExtArgs["result"]["announcement"]>
+export type AnnouncementOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "sourceId" | "externalId" | "title" | "description" | "salaryMin" | "salaryMax" | "salaryPeriod" | "salaryRaw" | "isUrgent" | "workArrangement" | "shift" | "contractDuration" | "transportAllowance" | "isVerified" | "isFeatured" | "viewCount" | "workDays" | "workStartTime" | "workEndTime" | "desiredStartDate" | "experienceYearsRequired" | "city" | "language" | "regionId" | "jobTypeId" | "location" | "contactPhone" | "contactWhatsapp" | "postedAt" | "url" | "rawData" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["announcement"]>
 export type AnnouncementInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   source?: boolean | Prisma.SourceDefaultArgs<ExtArgs>
   region?: boolean | Prisma.Announcement$regionArgs<ExtArgs>
   jobType?: boolean | Prisma.JobTypeDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Announcement$userArgs<ExtArgs>
 }
 export type AnnouncementIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   source?: boolean | Prisma.SourceDefaultArgs<ExtArgs>
   region?: boolean | Prisma.Announcement$regionArgs<ExtArgs>
   jobType?: boolean | Prisma.JobTypeDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Announcement$userArgs<ExtArgs>
 }
 export type AnnouncementIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   source?: boolean | Prisma.SourceDefaultArgs<ExtArgs>
   region?: boolean | Prisma.Announcement$regionArgs<ExtArgs>
   jobType?: boolean | Prisma.JobTypeDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Announcement$userArgs<ExtArgs>
 }
 
 export type $AnnouncementPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2197,6 +2554,7 @@ export type $AnnouncementPayload<ExtArgs extends runtime.Types.Extensions.Intern
     source: Prisma.$SourcePayload<ExtArgs>
     region: Prisma.$RegionPayload<ExtArgs> | null
     jobType: Prisma.$JobTypePayload<ExtArgs>
+    user: Prisma.$UserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2205,15 +2563,15 @@ export type $AnnouncementPayload<ExtArgs extends runtime.Types.Extensions.Intern
     externalId: string
     title: string
     description: string | null
-    salaryMin: number | null
-    salaryMax: number | null
+    salaryMin: runtime.Decimal | null
+    salaryMax: runtime.Decimal | null
     salaryPeriod: $Enums.SalaryPeriod | null
     salaryRaw: string | null
     isUrgent: boolean
     workArrangement: $Enums.WorkArrangement | null
     shift: $Enums.WorkShift | null
     contractDuration: $Enums.ContractDuration | null
-    transportAllowance: number | null
+    transportAllowance: runtime.Decimal | null
     isVerified: boolean
     isFeatured: boolean
     viewCount: number
@@ -2232,6 +2590,7 @@ export type $AnnouncementPayload<ExtArgs extends runtime.Types.Extensions.Intern
     postedAt: Date | null
     url: string | null
     rawData: runtime.JsonValue | null
+    userId: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["announcement"]>
@@ -2631,6 +2990,7 @@ export interface Prisma__AnnouncementClient<T, Null = never, ExtArgs extends run
   source<T extends Prisma.SourceDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SourceDefaultArgs<ExtArgs>>): Prisma.Prisma__SourceClient<runtime.Types.Result.GetResult<Prisma.$SourcePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   region<T extends Prisma.Announcement$regionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Announcement$regionArgs<ExtArgs>>): Prisma.Prisma__RegionClient<runtime.Types.Result.GetResult<Prisma.$RegionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   jobType<T extends Prisma.JobTypeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.JobTypeDefaultArgs<ExtArgs>>): Prisma.Prisma__JobTypeClient<runtime.Types.Result.GetResult<Prisma.$JobTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.Announcement$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Announcement$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2666,15 +3026,15 @@ export interface AnnouncementFieldRefs {
   readonly externalId: Prisma.FieldRef<"Announcement", 'String'>
   readonly title: Prisma.FieldRef<"Announcement", 'String'>
   readonly description: Prisma.FieldRef<"Announcement", 'String'>
-  readonly salaryMin: Prisma.FieldRef<"Announcement", 'Float'>
-  readonly salaryMax: Prisma.FieldRef<"Announcement", 'Float'>
+  readonly salaryMin: Prisma.FieldRef<"Announcement", 'Decimal'>
+  readonly salaryMax: Prisma.FieldRef<"Announcement", 'Decimal'>
   readonly salaryPeriod: Prisma.FieldRef<"Announcement", 'SalaryPeriod'>
   readonly salaryRaw: Prisma.FieldRef<"Announcement", 'String'>
   readonly isUrgent: Prisma.FieldRef<"Announcement", 'Boolean'>
   readonly workArrangement: Prisma.FieldRef<"Announcement", 'WorkArrangement'>
   readonly shift: Prisma.FieldRef<"Announcement", 'WorkShift'>
   readonly contractDuration: Prisma.FieldRef<"Announcement", 'ContractDuration'>
-  readonly transportAllowance: Prisma.FieldRef<"Announcement", 'Float'>
+  readonly transportAllowance: Prisma.FieldRef<"Announcement", 'Decimal'>
   readonly isVerified: Prisma.FieldRef<"Announcement", 'Boolean'>
   readonly isFeatured: Prisma.FieldRef<"Announcement", 'Boolean'>
   readonly viewCount: Prisma.FieldRef<"Announcement", 'Int'>
@@ -2693,6 +3053,7 @@ export interface AnnouncementFieldRefs {
   readonly postedAt: Prisma.FieldRef<"Announcement", 'DateTime'>
   readonly url: Prisma.FieldRef<"Announcement", 'String'>
   readonly rawData: Prisma.FieldRef<"Announcement", 'Json'>
+  readonly userId: Prisma.FieldRef<"Announcement", 'String'>
   readonly createdAt: Prisma.FieldRef<"Announcement", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Announcement", 'DateTime'>
 }
@@ -3112,6 +3473,25 @@ export type Announcement$regionArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   include?: Prisma.RegionInclude<ExtArgs> | null
   where?: Prisma.RegionWhereInput
+}
+
+/**
+ * Announcement.user
+ */
+export type Announcement$userArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**

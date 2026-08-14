@@ -233,21 +233,6 @@ export default function MapComponent({ regions }: MapComponentProps) {
                 className={isStrong ? 'pulse-point-strong' : 'pulse-point'}
                 style={{ color: color }}
               >
-                <Tooltip direction="top" offset={[0, -radius - 4]}>
-                  <div className="text-center">
-                    <p className="font-bold text-sm">{region.name}</p>
-                    <p className="text-lg font-bold">{region.total} offres</p>
-                  </div>
-                </Tooltip>
-                <Popup>
-                  <div className="text-center p-2">
-                    <h3 className="font-bold text-lg">{region.name}</h3>
-                    <p className="text-2xl font-bold" style={{ color }}>
-                      {region.total?.toLocaleString('fr-FR')}
-                    </p>
-                    <p className="text-sm text-gray-500">offres disponibles</p>
-                  </div>
-                </Popup>
               </CircleMarker>
             );
           }

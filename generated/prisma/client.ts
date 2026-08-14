@@ -71,3 +71,53 @@ export type DailyStats = Prisma.DailyStatsModel
  * 
  */
 export type GlobalCounter = Prisma.GlobalCounterModel
+/**
+ * Model User
+ * 
+ */
+export type User = Prisma.UserModel
+/**
+ * Model Account
+ * 
+ */
+export type Account = Prisma.AccountModel
+/**
+ * Model Session
+ * 
+ */
+export type Session = Prisma.SessionModel
+/**
+ * Model VerificationToken
+ * 
+ */
+export type VerificationToken = Prisma.VerificationTokenModel
+/**
+ * Model UserConsent
+ * 
+ */
+export type UserConsent = Prisma.UserConsentModel
+/**
+ * Model Favorite
+ * 
+ */
+export type Favorite = Prisma.FavoriteModel
+/**
+ * Model Availability
+ * 
+ */
+export type Availability = Prisma.AvailabilityModel
+/**
+ * Model UnavailableDate
+ * 
+ */
+export type UnavailableDate = Prisma.UnavailableDateModel
+/**
+ * Model Booking
+ * 
+ */
+export type Booking = Prisma.BookingModel
+/**
+ * Model Review
+ * 
+ */
+export type Review = Prisma.ReviewModel

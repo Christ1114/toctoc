@@ -67,7 +67,7 @@ const FirstModuleHome = () => {
     };
 
     return (
-        <div className="w-full pt-8 sm:pt-10 lg:pt-15 xl:pt-20 flex items-start justify-center relative z-0 px-2 sm:px-3 lg:px-0">
+        <div className="w-full pt-8 sm:pt-10 lg:pt-15  flex items-start justify-center relative z-0 px-2 sm:px-3 lg:px-0">
             <div
                 className="w-full max-w-4xl xl:max-w-5xl bg-[#432dd7] overflow-hidden mx-auto rounded-xl sm:rounded-2xl relative"
             >

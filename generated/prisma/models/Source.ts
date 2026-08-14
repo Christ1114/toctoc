@@ -31,6 +31,7 @@ export type SourceMinAggregateOutputType = {
   active: boolean | null
   lastScraped: Date | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type SourceMaxAggregateOutputType = {
@@ -40,6 +41,7 @@ export type SourceMaxAggregateOutputType = {
   active: boolean | null
   lastScraped: Date | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type SourceCountAggregateOutputType = {
@@ -49,6 +51,7 @@ export type SourceCountAggregateOutputType = {
   active: number
   lastScraped: number
   createdAt: number
+  updatedAt: number
   _all: number
 }
 
@@ -60,6 +63,7 @@ export type SourceMinAggregateInputType = {
   active?: true
   lastScraped?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type SourceMaxAggregateInputType = {
@@ -69,6 +73,7 @@ export type SourceMaxAggregateInputType = {
   active?: true
   lastScraped?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type SourceCountAggregateInputType = {
@@ -78,6 +83,7 @@ export type SourceCountAggregateInputType = {
   active?: true
   lastScraped?: true
   createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -160,6 +166,7 @@ export type SourceGroupByOutputType = {
   active: boolean
   lastScraped: Date | null
   createdAt: Date
+  updatedAt: Date
   _count: SourceCountAggregateOutputType | null
   _min: SourceMinAggregateOutputType | null
   _max: SourceMaxAggregateOutputType | null
@@ -190,6 +197,7 @@ export type SourceWhereInput = {
   active?: Prisma.BoolFilter<"Source"> | boolean
   lastScraped?: Prisma.DateTimeNullableFilter<"Source"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Source"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Source"> | Date | string
   announcements?: Prisma.AnnouncementListRelationFilter
 }
 
@@ -200,6 +208,7 @@ export type SourceOrderByWithRelationInput = {
   active?: Prisma.SortOrder
   lastScraped?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   announcements?: Prisma.AnnouncementOrderByRelationAggregateInput
 }
 
@@ -213,6 +222,7 @@ export type SourceWhereUniqueInput = Prisma.AtLeast<{
   active?: Prisma.BoolFilter<"Source"> | boolean
   lastScraped?: Prisma.DateTimeNullableFilter<"Source"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Source"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Source"> | Date | string
   announcements?: Prisma.AnnouncementListRelationFilter
 }, "id" | "name">
 
@@ -223,6 +233,7 @@ export type SourceOrderByWithAggregationInput = {
   active?: Prisma.SortOrder
   lastScraped?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.SourceCountOrderByAggregateInput
   _max?: Prisma.SourceMaxOrderByAggregateInput
   _min?: Prisma.SourceMinOrderByAggregateInput
@@ -238,6 +249,7 @@ export type SourceScalarWhereWithAggregatesInput = {
   active?: Prisma.BoolWithAggregatesFilter<"Source"> | boolean
   lastScraped?: Prisma.DateTimeNullableWithAggregatesFilter<"Source"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Source"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Source"> | Date | string
 }
 
 export type SourceCreateInput = {
@@ -247,6 +259,7 @@ export type SourceCreateInput = {
   active?: boolean
   lastScraped?: Date | string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutSourceInput
 }
 
@@ -257,6 +270,7 @@ export type SourceUncheckedCreateInput = {
   active?: boolean
   lastScraped?: Date | string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutSourceInput
 }
 
@@ -267,6 +281,7 @@ export type SourceUpdateInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastScraped?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   announcements?: Prisma.AnnouncementUpdateManyWithoutSourceNestedInput
 }
 
@@ -277,6 +292,7 @@ export type SourceUncheckedUpdateInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastScraped?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutSourceNestedInput
 }
 
@@ -287,6 +303,7 @@ export type SourceCreateManyInput = {
   active?: boolean
   lastScraped?: Date | string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type SourceUpdateManyMutationInput = {
@@ -296,6 +313,7 @@ export type SourceUpdateManyMutationInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastScraped?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type SourceUncheckedUpdateManyInput = {
@@ -305,6 +323,7 @@ export type SourceUncheckedUpdateManyInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastScraped?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type SourceCountOrderByAggregateInput = {
@@ -314,6 +333,7 @@ export type SourceCountOrderByAggregateInput = {
   active?: Prisma.SortOrder
   lastScraped?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type SourceMaxOrderByAggregateInput = {
@@ -323,6 +343,7 @@ export type SourceMaxOrderByAggregateInput = {
   active?: Prisma.SortOrder
   lastScraped?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type SourceMinOrderByAggregateInput = {
@@ -332,6 +353,7 @@ export type SourceMinOrderByAggregateInput = {
   active?: Prisma.SortOrder
   lastScraped?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type SourceScalarRelationFilter = {
@@ -368,6 +390,7 @@ export type SourceCreateWithoutAnnouncementsInput = {
   active?: boolean
   lastScraped?: Date | string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type SourceUncheckedCreateWithoutAnnouncementsInput = {
@@ -377,6 +400,7 @@ export type SourceUncheckedCreateWithoutAnnouncementsInput = {
   active?: boolean
   lastScraped?: Date | string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type SourceCreateOrConnectWithoutAnnouncementsInput = {
@@ -402,6 +426,7 @@ export type SourceUpdateWithoutAnnouncementsInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastScraped?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type SourceUncheckedUpdateWithoutAnnouncementsInput = {
@@ -411,6 +436,7 @@ export type SourceUncheckedUpdateWithoutAnnouncementsInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastScraped?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -451,6 +477,7 @@ export type SourceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   active?: boolean
   lastScraped?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   announcements?: boolean | Prisma.Source$announcementsArgs<ExtArgs>
   _count?: boolean | Prisma.SourceCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["source"]>
@@ -462,6 +489,7 @@ export type SourceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   active?: boolean
   lastScraped?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
 }, ExtArgs["result"]["source"]>
 
 export type SourceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -471,6 +499,7 @@ export type SourceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   active?: boolean
   lastScraped?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
 }, ExtArgs["result"]["source"]>
 
 export type SourceSelectScalar = {
@@ -480,9 +509,10 @@ export type SourceSelectScalar = {
   active?: boolean
   lastScraped?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type SourceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "baseUrl" | "active" | "lastScraped" | "createdAt", ExtArgs["result"]["source"]>
+export type SourceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "baseUrl" | "active" | "lastScraped" | "createdAt" | "updatedAt", ExtArgs["result"]["source"]>
 export type SourceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   announcements?: boolean | Prisma.Source$announcementsArgs<ExtArgs>
   _count?: boolean | Prisma.SourceCountOutputTypeDefaultArgs<ExtArgs>
@@ -502,6 +532,7 @@ export type $SourcePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     active: boolean
     lastScraped: Date | null
     createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["source"]>
   composites: {}
 }
@@ -932,6 +963,7 @@ export interface SourceFieldRefs {
   readonly active: Prisma.FieldRef<"Source", 'Boolean'>
   readonly lastScraped: Prisma.FieldRef<"Source", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Source", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Source", 'DateTime'>
 }
     
 

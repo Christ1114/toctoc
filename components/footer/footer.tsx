@@ -34,7 +34,7 @@ export default function FooterComponent() {
                             grid-cols-3
                             gap-0
                             border-b border-zinc-500">
-                <div className="grid grid-rows-[auto_auto] items-center justify-items-center 
+                <div className="grid grid-rows-[auto_auto] items-center justify-items-center    
                                 gap-y-2 py-3 px-2
                                 border-r border-gray-200 dark:border-zinc-700
                                 sm:border-gray-400">

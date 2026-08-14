@@ -49,3 +49,113 @@ export const SalaryPeriod = {
 } as const
 
 export type SalaryPeriod = (typeof SalaryPeriod)[keyof typeof SalaryPeriod]
+
+
+export const Role = {
+  CLIENT: 'CLIENT',
+  PROVIDER: 'PROVIDER',
+  ADMIN: 'ADMIN'
+} as const
+
+export type Role = (typeof Role)[keyof typeof Role]
+
+
+export const ClientType = {
+  INDIVIDUAL: 'INDIVIDUAL',
+  AGENCY: 'AGENCY'
+} as const
+
+export type ClientType = (typeof ClientType)[keyof typeof ClientType]
+
+
+export const ProviderType = {
+  BABYSITTER: 'BABYSITTER',
+  GARDE_PERISCOLAIRE: 'GARDE_PERISCOLAIRE',
+  MENAGE: 'MENAGE',
+  AIDE_PERSONNES_AGEES: 'AIDE_PERSONNES_AGEES',
+  RESIDENTIEL: 'RESIDENTIEL',
+  COURT_TERME: 'COURT_TERME'
+} as const
+
+export type ProviderType = (typeof ProviderType)[keyof typeof ProviderType]
+
+
+export const TokenType = {
+  EMAIL_VERIFICATION: 'EMAIL_VERIFICATION',
+  PASSWORD_RESET: 'PASSWORD_RESET',
+  PHONE_OTP: 'PHONE_OTP'
+} as const
+
+export type TokenType = (typeof TokenType)[keyof typeof TokenType]
+
+
+export const ConsentType = {
+  LOCATION_ACCESS: 'LOCATION_ACCESS',
+  NO_VPN: 'NO_VPN',
+  VR_CONFERENCE: 'VR_CONFERENCE',
+  TERMS_OF_USE: 'TERMS_OF_USE'
+} as const
+
+export type ConsentType = (typeof ConsentType)[keyof typeof ConsentType]
+
+
+export const BookingStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED',
+  COMPLETED: 'COMPLETED'
+} as const
+
+export type BookingStatus = (typeof BookingStatus)[keyof typeof BookingStatus]
+
+
+export const PaymentStatus = {
+  PENDING: 'PENDING',
+  PAID: 'PAID',
+  REFUNDED: 'REFUNDED',
+  FAILED: 'FAILED'
+} as const
+
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
+
+
+export const DayOfWeek = {
+  MONDAY: 'MONDAY',
+  TUESDAY: 'TUESDAY',
+  WEDNESDAY: 'WEDNESDAY',
+  THURSDAY: 'THURSDAY',
+  FRIDAY: 'FRIDAY',
+  SATURDAY: 'SATURDAY',
+  SUNDAY: 'SUNDAY'
+} as const
+
+export type DayOfWeek = (typeof DayOfWeek)[keyof typeof DayOfWeek]
+
+
+export const RecurrenceType = {
+  ONE_TIME: 'ONE_TIME',
+  DAILY: 'DAILY',
+  WEEKLY: 'WEEKLY',
+  MONTHLY: 'MONTHLY'
+} as const
+
+export type RecurrenceType = (typeof RecurrenceType)[keyof typeof RecurrenceType]
+
+
+export const VerificationStatus = {
+  PENDING: 'PENDING',
+  VERIFIED: 'VERIFIED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type VerificationStatus = (typeof VerificationStatus)[keyof typeof VerificationStatus]
+
+
+export const VerificationLevel = {
+  BASIC: 'BASIC',
+  ADVANCED: 'ADVANCED',
+  PREMIUM: 'PREMIUM'
+} as const
+
+export type VerificationLevel = (typeof VerificationLevel)[keyof typeof VerificationLevel]

@@ -30,48 +30,56 @@ const FirstModuleComponent = () => {
 
   return (
     <div
-      className={`w-full max-w-250 pt-15 pb-15 h-full flex flex-col gap-y-10 items-center justify-center text-black dark:text-zinc-300 ${orbitron.className}`}
+      className={`w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 h-full flex flex-col gap-y-6 sm:gap-y-8 lg:gap-y-10 items-center justify-center text-black dark:text-zinc-300 ${orbitron.className}`}
     >
-      <table
-        border={1}
-        cellPadding={10}
-        cellSpacing={0}
-        className={`w-full border-collapse ${orbitron.className}`}
-      >
-        <thead>
-          <tr className="bg-zinc-100 dark:bg-zinc-800">
-            <th>{table.titleHeader}</th>
-            <th>{table.dateHeader}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>{table.title}</strong></td>
-            <td>{table.date}</td>
-          </tr>
-        </tbody>
-      </table>
+     
+      <div className="w-full overflow-x-auto">
+        <table
+          border={1}
+          cellPadding={10}
+          cellSpacing={0}
+          className={`w-full min-w-75 border-collapse text-sm sm:text-base ${orbitron.className}`}
+        >
+          <thead>
+            <tr className="bg-zinc-100 dark:bg-zinc-800">
+              <th className="px-3 sm:px-4 py-2 sm:py-3 text-left">{table.titleHeader}</th>
+              <th className="px-3 sm:px-4 py-2 sm:py-3 text-left">{table.dateHeader}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="px-3 sm:px-4 py-2 sm:py-3"><strong>{table.title}</strong></td>
+              <td className="px-3 sm:px-4 py-2 sm:py-3">{table.date}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div className="mt-5 sm:mt-8 leading-relaxed w-full text-sm sm:text-base lg:text-lg space-y-4 sm:space-y-5">
+        <p className="wrap-break-words">{content.intro}</p>
 
-      <div className="mt-5 leading-relaxed">
-        <p>{content.intro}</p>
+        <p className="wrap-break-words">
+          <strong>{content.modifiedDateLabel}</strong> {content.modifiedDate}
+        </p>
 
-        <p><strong>{content.modifiedDateLabel}</strong> {content.modifiedDate}</p>
+        <p className="wrap-break-words">
+          <strong>{content.detailsLabel}</strong> {content.detailsText}
+        </p>
 
-        <p><strong>{content.detailsLabel}</strong> {content.detailsText}</p>
+        <p className="font-semibold text-base sm:text-lg lg:text-xl mt-6 sm:mt-8">
+          {content.articleTitle}
+        </p>
 
-        <p><strong>{content.articleTitle}</strong></p>
+        <p className="wrap-break-words">{content.point1}</p>
 
-        <p>{content.point1}</p>
+        <p className="wrap-break-words">{content.point2}</p>
 
-        <p>{content.point2}</p>
-
-        <p>{content.point3Label}</p>
-        <ul className="list-disc pl-6">
-          <li>{content.point3Item1}</li>
-          <li>{content.point3Item2}</li>
+        <p className="wrap-break-words font-medium">{content.point3Label}</p>
+        <ul className="list-disc pl-5 sm:pl-6 space-y-2">
+          <li className="wrap-break-words">{content.point3Item1}</li>
+          <li className="wrap-break-words">{content.point3Item2}</li>
         </ul>
 
-        <p>{content.point4}</p>
+        <p className="wrap-break-words">{content.point4}</p>
       </div>
     </div>
   );

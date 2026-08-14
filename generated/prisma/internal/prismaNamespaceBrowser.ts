@@ -56,7 +56,17 @@ export const ModelName = {
   Source: 'Source',
   Announcement: 'Announcement',
   DailyStats: 'DailyStats',
-  GlobalCounter: 'GlobalCounter'
+  GlobalCounter: 'GlobalCounter',
+  User: 'User',
+  Account: 'Account',
+  Session: 'Session',
+  VerificationToken: 'VerificationToken',
+  UserConsent: 'UserConsent',
+  Favorite: 'Favorite',
+  Availability: 'Availability',
+  UnavailableDate: 'UnavailableDate',
+  Booking: 'Booking',
+  Review: 'Review'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -106,7 +116,8 @@ export const SourceScalarFieldEnum = {
   baseUrl: 'baseUrl',
   active: 'active',
   lastScraped: 'lastScraped',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type SourceScalarFieldEnum = (typeof SourceScalarFieldEnum)[keyof typeof SourceScalarFieldEnum]
@@ -146,6 +157,7 @@ export const AnnouncementScalarFieldEnum = {
   postedAt: 'postedAt',
   url: 'url',
   rawData: 'rawData',
+  userId: 'userId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -160,7 +172,8 @@ export const DailyStatsScalarFieldEnum = {
   newAnnouncements: 'newAnnouncements',
   regionStats: 'regionStats',
   jobTypeStats: 'jobTypeStats',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type DailyStatsScalarFieldEnum = (typeof DailyStatsScalarFieldEnum)[keyof typeof DailyStatsScalarFieldEnum]
@@ -173,6 +186,165 @@ export const GlobalCounterScalarFieldEnum = {
 } as const
 
 export type GlobalCounterScalarFieldEnum = (typeof GlobalCounterScalarFieldEnum)[keyof typeof GlobalCounterScalarFieldEnum]
+
+
+export const UserScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  emailVerified: 'emailVerified',
+  phone: 'phone',
+  phoneVerified: 'phoneVerified',
+  password: 'password',
+  image: 'image',
+  role: 'role',
+  clientType: 'clientType',
+  companyName: 'companyName',
+  rccmNumber: 'rccmNumber',
+  providerType: 'providerType',
+  bio: 'bio',
+  isActive: 'isActive',
+  hourlyRate: 'hourlyRate',
+  currency: 'currency',
+  verificationStatus: 'verificationStatus',
+  verificationLevel: 'verificationLevel',
+  verifiedBy: 'verifiedBy',
+  verifiedAt: 'verifiedAt',
+  verificationNotes: 'verificationNotes',
+  isDemo: 'isDemo',
+  demoExpiresAt: 'demoExpiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const AccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  provider: 'provider',
+  providerAccountId: 'providerAccountId',
+  refresh_token: 'refresh_token',
+  access_token: 'access_token',
+  expires_at: 'expires_at',
+  token_type: 'token_type',
+  scope: 'scope',
+  id_token: 'id_token',
+  session_state: 'session_state'
+} as const
+
+export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum]
+
+
+export const SessionScalarFieldEnum = {
+  id: 'id',
+  sessionToken: 'sessionToken',
+  userId: 'userId',
+  expires: 'expires'
+} as const
+
+export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
+
+
+export const VerificationTokenScalarFieldEnum = {
+  id: 'id',
+  identifier: 'identifier',
+  token: 'token',
+  type: 'type',
+  expires: 'expires',
+  userId: 'userId'
+} as const
+
+export type VerificationTokenScalarFieldEnum = (typeof VerificationTokenScalarFieldEnum)[keyof typeof VerificationTokenScalarFieldEnum]
+
+
+export const UserConsentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  accepted: 'accepted',
+  acceptedAt: 'acceptedAt',
+  ipAddress: 'ipAddress',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserConsentScalarFieldEnum = (typeof UserConsentScalarFieldEnum)[keyof typeof UserConsentScalarFieldEnum]
+
+
+export const FavoriteScalarFieldEnum = {
+  id: 'id',
+  clientId: 'clientId',
+  providerId: 'providerId',
+  createdAt: 'createdAt'
+} as const
+
+export type FavoriteScalarFieldEnum = (typeof FavoriteScalarFieldEnum)[keyof typeof FavoriteScalarFieldEnum]
+
+
+export const AvailabilityScalarFieldEnum = {
+  id: 'id',
+  providerId: 'providerId',
+  dayOfWeek: 'dayOfWeek',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  isAvailable: 'isAvailable',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AvailabilityScalarFieldEnum = (typeof AvailabilityScalarFieldEnum)[keyof typeof AvailabilityScalarFieldEnum]
+
+
+export const UnavailableDateScalarFieldEnum = {
+  id: 'id',
+  providerId: 'providerId',
+  date: 'date',
+  reason: 'reason',
+  createdAt: 'createdAt'
+} as const
+
+export type UnavailableDateScalarFieldEnum = (typeof UnavailableDateScalarFieldEnum)[keyof typeof UnavailableDateScalarFieldEnum]
+
+
+export const BookingScalarFieldEnum = {
+  id: 'id',
+  clientId: 'clientId',
+  providerId: 'providerId',
+  serviceType: 'serviceType',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  status: 'status',
+  notes: 'notes',
+  recurrenceType: 'recurrenceType',
+  recurrenceEnd: 'recurrenceEnd',
+  hourlyRate: 'hourlyRate',
+  totalAmount: 'totalAmount',
+  currency: 'currency',
+  paymentStatus: 'paymentStatus',
+  paymentMethod: 'paymentMethod',
+  paymentDate: 'paymentDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
+
+
+export const ReviewScalarFieldEnum = {
+  id: 'id',
+  bookingId: 'bookingId',
+  authorId: 'authorId',
+  receiverId: 'receiverId',
+  rating: 'rating',
+  comment: 'comment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
 
 
 export const SortOrder = {
