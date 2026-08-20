@@ -87,10 +87,10 @@ export type Account = Prisma.AccountModel
  */
 export type Session = Prisma.SessionModel
 /**
- * Model VerificationToken
+ * Model Verification
  * 
  */
-export type VerificationToken = Prisma.VerificationTokenModel
+export type Verification = Prisma.VerificationModel
 /**
  * Model UserConsent
  * 
@@ -121,3 +121,13 @@ export type Booking = Prisma.BookingModel
  * 
  */
 export type Review = Prisma.ReviewModel
+/**
+ * Model VerifiedPhone
+ * 
+ */
+export type VerifiedPhone = Prisma.VerifiedPhoneModel
+/**
+ * Model RateLimit
+ * 
+ */
+export type RateLimit = Prisma.RateLimitModel

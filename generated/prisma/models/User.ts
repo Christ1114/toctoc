@@ -38,12 +38,13 @@ export type UserMinAggregateOutputType = {
   id: string | null
   name: string | null
   email: string | null
-  emailVerified: Date | null
+  emailVerified: boolean | null
   phone: string | null
-  phoneVerified: Date | null
+  phoneCountryCode: string | null
+  phoneVerified: boolean | null
   password: string | null
   image: string | null
-  role: $Enums.Role | null
+  accountType: $Enums.Role | null
   clientType: $Enums.ClientType | null
   companyName: string | null
   rccmNumber: string | null
@@ -67,12 +68,13 @@ export type UserMaxAggregateOutputType = {
   id: string | null
   name: string | null
   email: string | null
-  emailVerified: Date | null
+  emailVerified: boolean | null
   phone: string | null
-  phoneVerified: Date | null
+  phoneCountryCode: string | null
+  phoneVerified: boolean | null
   password: string | null
   image: string | null
-  role: $Enums.Role | null
+  accountType: $Enums.Role | null
   clientType: $Enums.ClientType | null
   companyName: string | null
   rccmNumber: string | null
@@ -98,10 +100,11 @@ export type UserCountAggregateOutputType = {
   email: number
   emailVerified: number
   phone: number
+  phoneCountryCode: number
   phoneVerified: number
   password: number
   image: number
-  role: number
+  accountType: number
   clientType: number
   companyName: number
   rccmNumber: number
@@ -137,10 +140,11 @@ export type UserMinAggregateInputType = {
   email?: true
   emailVerified?: true
   phone?: true
+  phoneCountryCode?: true
   phoneVerified?: true
   password?: true
   image?: true
-  role?: true
+  accountType?: true
   clientType?: true
   companyName?: true
   rccmNumber?: true
@@ -166,10 +170,11 @@ export type UserMaxAggregateInputType = {
   email?: true
   emailVerified?: true
   phone?: true
+  phoneCountryCode?: true
   phoneVerified?: true
   password?: true
   image?: true
-  role?: true
+  accountType?: true
   clientType?: true
   companyName?: true
   rccmNumber?: true
@@ -195,10 +200,11 @@ export type UserCountAggregateInputType = {
   email?: true
   emailVerified?: true
   phone?: true
+  phoneCountryCode?: true
   phoneVerified?: true
   password?: true
   image?: true
-  role?: true
+  accountType?: true
   clientType?: true
   companyName?: true
   rccmNumber?: true
@@ -309,12 +315,13 @@ export type UserGroupByOutputType = {
   id: string
   name: string | null
   email: string | null
-  emailVerified: Date | null
+  emailVerified: boolean
   phone: string | null
-  phoneVerified: Date | null
+  phoneCountryCode: string | null
+  phoneVerified: boolean
   password: string | null
   image: string | null
-  role: $Enums.Role
+  accountType: $Enums.Role
   clientType: $Enums.ClientType | null
   companyName: string | null
   rccmNumber: string | null
@@ -361,12 +368,13 @@ export type UserWhereInput = {
   id?: Prisma.StringFilter<"User"> | string
   name?: Prisma.StringNullableFilter<"User"> | string | null
   email?: Prisma.StringNullableFilter<"User"> | string | null
-  emailVerified?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  emailVerified?: Prisma.BoolFilter<"User"> | boolean
   phone?: Prisma.StringNullableFilter<"User"> | string | null
-  phoneVerified?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  phoneCountryCode?: Prisma.StringNullableFilter<"User"> | string | null
+  phoneVerified?: Prisma.BoolFilter<"User"> | boolean
   password?: Prisma.StringNullableFilter<"User"> | string | null
   image?: Prisma.StringNullableFilter<"User"> | string | null
-  role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
+  accountType?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   clientType?: Prisma.EnumClientTypeNullableFilter<"User"> | $Enums.ClientType | null
   companyName?: Prisma.StringNullableFilter<"User"> | string | null
   rccmNumber?: Prisma.StringNullableFilter<"User"> | string | null
@@ -386,7 +394,6 @@ export type UserWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   accounts?: Prisma.AccountListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
-  verificationTokens?: Prisma.VerificationTokenListRelationFilter
   consents?: Prisma.UserConsentListRelationFilter
   bookingsAsClient?: Prisma.BookingListRelationFilter
   bookingsAsProvider?: Prisma.BookingListRelationFilter
@@ -403,12 +410,13 @@ export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
-  emailVerified?: Prisma.SortOrderInput | Prisma.SortOrder
+  emailVerified?: Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
-  phoneVerified?: Prisma.SortOrderInput | Prisma.SortOrder
+  phoneCountryCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  phoneVerified?: Prisma.SortOrder
   password?: Prisma.SortOrderInput | Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
-  role?: Prisma.SortOrder
+  accountType?: Prisma.SortOrder
   clientType?: Prisma.SortOrderInput | Prisma.SortOrder
   companyName?: Prisma.SortOrderInput | Prisma.SortOrder
   rccmNumber?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -428,7 +436,6 @@ export type UserOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   accounts?: Prisma.AccountOrderByRelationAggregateInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
-  verificationTokens?: Prisma.VerificationTokenOrderByRelationAggregateInput
   consents?: Prisma.UserConsentOrderByRelationAggregateInput
   bookingsAsClient?: Prisma.BookingOrderByRelationAggregateInput
   bookingsAsProvider?: Prisma.BookingOrderByRelationAggregateInput
@@ -449,11 +456,12 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   name?: Prisma.StringNullableFilter<"User"> | string | null
-  emailVerified?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
-  phoneVerified?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  emailVerified?: Prisma.BoolFilter<"User"> | boolean
+  phoneCountryCode?: Prisma.StringNullableFilter<"User"> | string | null
+  phoneVerified?: Prisma.BoolFilter<"User"> | boolean
   password?: Prisma.StringNullableFilter<"User"> | string | null
   image?: Prisma.StringNullableFilter<"User"> | string | null
-  role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
+  accountType?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   clientType?: Prisma.EnumClientTypeNullableFilter<"User"> | $Enums.ClientType | null
   companyName?: Prisma.StringNullableFilter<"User"> | string | null
   rccmNumber?: Prisma.StringNullableFilter<"User"> | string | null
@@ -473,7 +481,6 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   accounts?: Prisma.AccountListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
-  verificationTokens?: Prisma.VerificationTokenListRelationFilter
   consents?: Prisma.UserConsentListRelationFilter
   bookingsAsClient?: Prisma.BookingListRelationFilter
   bookingsAsProvider?: Prisma.BookingListRelationFilter
@@ -490,12 +497,13 @@ export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
-  emailVerified?: Prisma.SortOrderInput | Prisma.SortOrder
+  emailVerified?: Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
-  phoneVerified?: Prisma.SortOrderInput | Prisma.SortOrder
+  phoneCountryCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  phoneVerified?: Prisma.SortOrder
   password?: Prisma.SortOrderInput | Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
-  role?: Prisma.SortOrder
+  accountType?: Prisma.SortOrder
   clientType?: Prisma.SortOrderInput | Prisma.SortOrder
   companyName?: Prisma.SortOrderInput | Prisma.SortOrder
   rccmNumber?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -527,12 +535,13 @@ export type UserScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"User"> | string
   name?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   email?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  emailVerified?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  emailVerified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   phone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  phoneVerified?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  phoneCountryCode?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  phoneVerified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   password?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   image?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
+  accountType?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
   clientType?: Prisma.EnumClientTypeNullableWithAggregatesFilter<"User"> | $Enums.ClientType | null
   companyName?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   rccmNumber?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
@@ -556,12 +565,13 @@ export type UserCreateInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -581,7 +591,6 @@ export type UserCreateInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingCreateNestedManyWithoutClientInput
   bookingsAsProvider?: Prisma.BookingCreateNestedManyWithoutProviderInput
@@ -598,12 +607,13 @@ export type UserUncheckedCreateInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -623,7 +633,6 @@ export type UserUncheckedCreateInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingUncheckedCreateNestedManyWithoutClientInput
   bookingsAsProvider?: Prisma.BookingUncheckedCreateNestedManyWithoutProviderInput
@@ -640,12 +649,13 @@ export type UserUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -665,7 +675,6 @@ export type UserUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUpdateManyWithoutClientNestedInput
   bookingsAsProvider?: Prisma.BookingUpdateManyWithoutProviderNestedInput
@@ -682,12 +691,13 @@ export type UserUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -707,7 +717,6 @@ export type UserUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUncheckedUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUncheckedUpdateManyWithoutClientNestedInput
   bookingsAsProvider?: Prisma.BookingUncheckedUpdateManyWithoutProviderNestedInput
@@ -724,12 +733,13 @@ export type UserCreateManyInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -753,12 +763,13 @@ export type UserUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -782,12 +793,13 @@ export type UserUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -818,10 +830,11 @@ export type UserCountOrderByAggregateInput = {
   email?: Prisma.SortOrder
   emailVerified?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  phoneCountryCode?: Prisma.SortOrder
   phoneVerified?: Prisma.SortOrder
   password?: Prisma.SortOrder
   image?: Prisma.SortOrder
-  role?: Prisma.SortOrder
+  accountType?: Prisma.SortOrder
   clientType?: Prisma.SortOrder
   companyName?: Prisma.SortOrder
   rccmNumber?: Prisma.SortOrder
@@ -851,10 +864,11 @@ export type UserMaxOrderByAggregateInput = {
   email?: Prisma.SortOrder
   emailVerified?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  phoneCountryCode?: Prisma.SortOrder
   phoneVerified?: Prisma.SortOrder
   password?: Prisma.SortOrder
   image?: Prisma.SortOrder
-  role?: Prisma.SortOrder
+  accountType?: Prisma.SortOrder
   clientType?: Prisma.SortOrder
   companyName?: Prisma.SortOrder
   rccmNumber?: Prisma.SortOrder
@@ -880,10 +894,11 @@ export type UserMinOrderByAggregateInput = {
   email?: Prisma.SortOrder
   emailVerified?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  phoneCountryCode?: Prisma.SortOrder
   phoneVerified?: Prisma.SortOrder
   password?: Prisma.SortOrder
   image?: Prisma.SortOrder
-  role?: Prisma.SortOrder
+  accountType?: Prisma.SortOrder
   clientType?: Prisma.SortOrder
   companyName?: Prisma.SortOrder
   rccmNumber?: Prisma.SortOrder
@@ -974,22 +989,6 @@ export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
   upsert?: Prisma.UserUpsertWithoutSessionsInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSessionsInput, Prisma.UserUpdateWithoutSessionsInput>, Prisma.UserUncheckedUpdateWithoutSessionsInput>
-}
-
-export type UserCreateNestedOneWithoutVerificationTokensInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutVerificationTokensInput, Prisma.UserUncheckedCreateWithoutVerificationTokensInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutVerificationTokensInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneWithoutVerificationTokensNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutVerificationTokensInput, Prisma.UserUncheckedCreateWithoutVerificationTokensInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutVerificationTokensInput
-  upsert?: Prisma.UserUpsertWithoutVerificationTokensInput
-  disconnect?: Prisma.UserWhereInput | boolean
-  delete?: Prisma.UserWhereInput | boolean
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutVerificationTokensInput, Prisma.UserUpdateWithoutVerificationTokensInput>, Prisma.UserUncheckedUpdateWithoutVerificationTokensInput>
 }
 
 export type UserCreateNestedOneWithoutConsentsInput = {
@@ -1122,12 +1121,13 @@ export type UserCreateWithoutAnnouncementsInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -1147,7 +1147,6 @@ export type UserCreateWithoutAnnouncementsInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingCreateNestedManyWithoutClientInput
   bookingsAsProvider?: Prisma.BookingCreateNestedManyWithoutProviderInput
@@ -1163,12 +1162,13 @@ export type UserUncheckedCreateWithoutAnnouncementsInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -1188,7 +1188,6 @@ export type UserUncheckedCreateWithoutAnnouncementsInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingUncheckedCreateNestedManyWithoutClientInput
   bookingsAsProvider?: Prisma.BookingUncheckedCreateNestedManyWithoutProviderInput
@@ -1220,12 +1219,13 @@ export type UserUpdateWithoutAnnouncementsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1245,7 +1245,6 @@ export type UserUpdateWithoutAnnouncementsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUpdateManyWithoutClientNestedInput
   bookingsAsProvider?: Prisma.BookingUpdateManyWithoutProviderNestedInput
@@ -1261,12 +1260,13 @@ export type UserUncheckedUpdateWithoutAnnouncementsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1286,7 +1286,6 @@ export type UserUncheckedUpdateWithoutAnnouncementsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUncheckedUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUncheckedUpdateManyWithoutClientNestedInput
   bookingsAsProvider?: Prisma.BookingUncheckedUpdateManyWithoutProviderNestedInput
@@ -1302,12 +1301,13 @@ export type UserCreateWithoutAccountsInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -1326,7 +1326,6 @@ export type UserCreateWithoutAccountsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingCreateNestedManyWithoutClientInput
   bookingsAsProvider?: Prisma.BookingCreateNestedManyWithoutProviderInput
@@ -1343,12 +1342,13 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -1367,7 +1367,6 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingUncheckedCreateNestedManyWithoutClientInput
   bookingsAsProvider?: Prisma.BookingUncheckedCreateNestedManyWithoutProviderInput
@@ -1400,12 +1399,13 @@ export type UserUpdateWithoutAccountsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1424,7 +1424,6 @@ export type UserUpdateWithoutAccountsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUpdateManyWithoutClientNestedInput
   bookingsAsProvider?: Prisma.BookingUpdateManyWithoutProviderNestedInput
@@ -1441,12 +1440,13 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1465,7 +1465,6 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUncheckedUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUncheckedUpdateManyWithoutClientNestedInput
   bookingsAsProvider?: Prisma.BookingUncheckedUpdateManyWithoutProviderNestedInput
@@ -1482,12 +1481,13 @@ export type UserCreateWithoutSessionsInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -1506,7 +1506,6 @@ export type UserCreateWithoutSessionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingCreateNestedManyWithoutClientInput
   bookingsAsProvider?: Prisma.BookingCreateNestedManyWithoutProviderInput
@@ -1523,12 +1522,13 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -1547,7 +1547,6 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingUncheckedCreateNestedManyWithoutClientInput
   bookingsAsProvider?: Prisma.BookingUncheckedCreateNestedManyWithoutProviderInput
@@ -1580,12 +1579,13 @@ export type UserUpdateWithoutSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1604,7 +1604,6 @@ export type UserUpdateWithoutSessionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUpdateManyWithoutClientNestedInput
   bookingsAsProvider?: Prisma.BookingUpdateManyWithoutProviderNestedInput
@@ -1621,12 +1620,13 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1645,187 +1645,6 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
-  consents?: Prisma.UserConsentUncheckedUpdateManyWithoutUserNestedInput
-  bookingsAsClient?: Prisma.BookingUncheckedUpdateManyWithoutClientNestedInput
-  bookingsAsProvider?: Prisma.BookingUncheckedUpdateManyWithoutProviderNestedInput
-  reviewsGiven?: Prisma.ReviewUncheckedUpdateManyWithoutAuthorNestedInput
-  reviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutReceiverNestedInput
-  favoriteProviders?: Prisma.FavoriteUncheckedUpdateManyWithoutClientNestedInput
-  favoritedBy?: Prisma.FavoriteUncheckedUpdateManyWithoutProviderNestedInput
-  availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutProviderNestedInput
-  unavailableDates?: Prisma.UnavailableDateUncheckedUpdateManyWithoutProviderNestedInput
-  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type UserCreateWithoutVerificationTokensInput = {
-  id?: string
-  name?: string | null
-  email?: string | null
-  emailVerified?: Date | string | null
-  phone?: string | null
-  phoneVerified?: Date | string | null
-  password?: string | null
-  image?: string | null
-  role?: $Enums.Role
-  clientType?: $Enums.ClientType | null
-  companyName?: string | null
-  rccmNumber?: string | null
-  providerType?: $Enums.ProviderType | null
-  bio?: string | null
-  isActive?: boolean
-  hourlyRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  currency?: string
-  verificationStatus?: $Enums.VerificationStatus
-  verificationLevel?: $Enums.VerificationLevel | null
-  verifiedBy?: string | null
-  verifiedAt?: Date | string | null
-  verificationNotes?: string | null
-  isDemo?: boolean
-  demoExpiresAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  consents?: Prisma.UserConsentCreateNestedManyWithoutUserInput
-  bookingsAsClient?: Prisma.BookingCreateNestedManyWithoutClientInput
-  bookingsAsProvider?: Prisma.BookingCreateNestedManyWithoutProviderInput
-  reviewsGiven?: Prisma.ReviewCreateNestedManyWithoutAuthorInput
-  reviewsReceived?: Prisma.ReviewCreateNestedManyWithoutReceiverInput
-  favoriteProviders?: Prisma.FavoriteCreateNestedManyWithoutClientInput
-  favoritedBy?: Prisma.FavoriteCreateNestedManyWithoutProviderInput
-  availabilities?: Prisma.AvailabilityCreateNestedManyWithoutProviderInput
-  unavailableDates?: Prisma.UnavailableDateCreateNestedManyWithoutProviderInput
-  announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
-}
-
-export type UserUncheckedCreateWithoutVerificationTokensInput = {
-  id?: string
-  name?: string | null
-  email?: string | null
-  emailVerified?: Date | string | null
-  phone?: string | null
-  phoneVerified?: Date | string | null
-  password?: string | null
-  image?: string | null
-  role?: $Enums.Role
-  clientType?: $Enums.ClientType | null
-  companyName?: string | null
-  rccmNumber?: string | null
-  providerType?: $Enums.ProviderType | null
-  bio?: string | null
-  isActive?: boolean
-  hourlyRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  currency?: string
-  verificationStatus?: $Enums.VerificationStatus
-  verificationLevel?: $Enums.VerificationLevel | null
-  verifiedBy?: string | null
-  verifiedAt?: Date | string | null
-  verificationNotes?: string | null
-  isDemo?: boolean
-  demoExpiresAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutUserInput
-  bookingsAsClient?: Prisma.BookingUncheckedCreateNestedManyWithoutClientInput
-  bookingsAsProvider?: Prisma.BookingUncheckedCreateNestedManyWithoutProviderInput
-  reviewsGiven?: Prisma.ReviewUncheckedCreateNestedManyWithoutAuthorInput
-  reviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutReceiverInput
-  favoriteProviders?: Prisma.FavoriteUncheckedCreateNestedManyWithoutClientInput
-  favoritedBy?: Prisma.FavoriteUncheckedCreateNestedManyWithoutProviderInput
-  availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutProviderInput
-  unavailableDates?: Prisma.UnavailableDateUncheckedCreateNestedManyWithoutProviderInput
-  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutVerificationTokensInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutVerificationTokensInput, Prisma.UserUncheckedCreateWithoutVerificationTokensInput>
-}
-
-export type UserUpsertWithoutVerificationTokensInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutVerificationTokensInput, Prisma.UserUncheckedUpdateWithoutVerificationTokensInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutVerificationTokensInput, Prisma.UserUncheckedCreateWithoutVerificationTokensInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutVerificationTokensInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutVerificationTokensInput, Prisma.UserUncheckedUpdateWithoutVerificationTokensInput>
-}
-
-export type UserUpdateWithoutVerificationTokensInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
-  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  providerType?: Prisma.NullableEnumProviderTypeFieldUpdateOperationsInput | $Enums.ProviderType | null
-  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  hourlyRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  verificationStatus?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
-  verificationLevel?: Prisma.NullableEnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel | null
-  verifiedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  consents?: Prisma.UserConsentUpdateManyWithoutUserNestedInput
-  bookingsAsClient?: Prisma.BookingUpdateManyWithoutClientNestedInput
-  bookingsAsProvider?: Prisma.BookingUpdateManyWithoutProviderNestedInput
-  reviewsGiven?: Prisma.ReviewUpdateManyWithoutAuthorNestedInput
-  reviewsReceived?: Prisma.ReviewUpdateManyWithoutReceiverNestedInput
-  favoriteProviders?: Prisma.FavoriteUpdateManyWithoutClientNestedInput
-  favoritedBy?: Prisma.FavoriteUpdateManyWithoutProviderNestedInput
-  availabilities?: Prisma.AvailabilityUpdateManyWithoutProviderNestedInput
-  unavailableDates?: Prisma.UnavailableDateUpdateManyWithoutProviderNestedInput
-  announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutVerificationTokensInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
-  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  providerType?: Prisma.NullableEnumProviderTypeFieldUpdateOperationsInput | $Enums.ProviderType | null
-  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  hourlyRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  verificationStatus?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
-  verificationLevel?: Prisma.NullableEnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel | null
-  verifiedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUncheckedUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUncheckedUpdateManyWithoutClientNestedInput
   bookingsAsProvider?: Prisma.BookingUncheckedUpdateManyWithoutProviderNestedInput
@@ -1842,12 +1661,13 @@ export type UserCreateWithoutConsentsInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -1867,7 +1687,6 @@ export type UserCreateWithoutConsentsInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingCreateNestedManyWithoutClientInput
   bookingsAsProvider?: Prisma.BookingCreateNestedManyWithoutProviderInput
   reviewsGiven?: Prisma.ReviewCreateNestedManyWithoutAuthorInput
@@ -1883,12 +1702,13 @@ export type UserUncheckedCreateWithoutConsentsInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -1908,7 +1728,6 @@ export type UserUncheckedCreateWithoutConsentsInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingUncheckedCreateNestedManyWithoutClientInput
   bookingsAsProvider?: Prisma.BookingUncheckedCreateNestedManyWithoutProviderInput
   reviewsGiven?: Prisma.ReviewUncheckedCreateNestedManyWithoutAuthorInput
@@ -1940,12 +1759,13 @@ export type UserUpdateWithoutConsentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1965,7 +1785,6 @@ export type UserUpdateWithoutConsentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUpdateManyWithoutClientNestedInput
   bookingsAsProvider?: Prisma.BookingUpdateManyWithoutProviderNestedInput
   reviewsGiven?: Prisma.ReviewUpdateManyWithoutAuthorNestedInput
@@ -1981,12 +1800,13 @@ export type UserUncheckedUpdateWithoutConsentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2006,7 +1826,6 @@ export type UserUncheckedUpdateWithoutConsentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUncheckedUpdateManyWithoutClientNestedInput
   bookingsAsProvider?: Prisma.BookingUncheckedUpdateManyWithoutProviderNestedInput
   reviewsGiven?: Prisma.ReviewUncheckedUpdateManyWithoutAuthorNestedInput
@@ -2022,12 +1841,13 @@ export type UserCreateWithoutFavoriteProvidersInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2047,7 +1867,6 @@ export type UserCreateWithoutFavoriteProvidersInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingCreateNestedManyWithoutClientInput
   bookingsAsProvider?: Prisma.BookingCreateNestedManyWithoutProviderInput
@@ -2063,12 +1882,13 @@ export type UserUncheckedCreateWithoutFavoriteProvidersInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2088,7 +1908,6 @@ export type UserUncheckedCreateWithoutFavoriteProvidersInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingUncheckedCreateNestedManyWithoutClientInput
   bookingsAsProvider?: Prisma.BookingUncheckedCreateNestedManyWithoutProviderInput
@@ -2109,12 +1928,13 @@ export type UserCreateWithoutFavoritedByInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2134,7 +1954,6 @@ export type UserCreateWithoutFavoritedByInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingCreateNestedManyWithoutClientInput
   bookingsAsProvider?: Prisma.BookingCreateNestedManyWithoutProviderInput
@@ -2150,12 +1969,13 @@ export type UserUncheckedCreateWithoutFavoritedByInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2175,7 +1995,6 @@ export type UserUncheckedCreateWithoutFavoritedByInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingUncheckedCreateNestedManyWithoutClientInput
   bookingsAsProvider?: Prisma.BookingUncheckedCreateNestedManyWithoutProviderInput
@@ -2207,12 +2026,13 @@ export type UserUpdateWithoutFavoriteProvidersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2232,7 +2052,6 @@ export type UserUpdateWithoutFavoriteProvidersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUpdateManyWithoutClientNestedInput
   bookingsAsProvider?: Prisma.BookingUpdateManyWithoutProviderNestedInput
@@ -2248,12 +2067,13 @@ export type UserUncheckedUpdateWithoutFavoriteProvidersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2273,7 +2093,6 @@ export type UserUncheckedUpdateWithoutFavoriteProvidersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUncheckedUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUncheckedUpdateManyWithoutClientNestedInput
   bookingsAsProvider?: Prisma.BookingUncheckedUpdateManyWithoutProviderNestedInput
@@ -2300,12 +2119,13 @@ export type UserUpdateWithoutFavoritedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2325,7 +2145,6 @@ export type UserUpdateWithoutFavoritedByInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUpdateManyWithoutClientNestedInput
   bookingsAsProvider?: Prisma.BookingUpdateManyWithoutProviderNestedInput
@@ -2341,12 +2160,13 @@ export type UserUncheckedUpdateWithoutFavoritedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2366,7 +2186,6 @@ export type UserUncheckedUpdateWithoutFavoritedByInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUncheckedUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUncheckedUpdateManyWithoutClientNestedInput
   bookingsAsProvider?: Prisma.BookingUncheckedUpdateManyWithoutProviderNestedInput
@@ -2382,12 +2201,13 @@ export type UserCreateWithoutAvailabilitiesInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2407,7 +2227,6 @@ export type UserCreateWithoutAvailabilitiesInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingCreateNestedManyWithoutClientInput
   bookingsAsProvider?: Prisma.BookingCreateNestedManyWithoutProviderInput
@@ -2423,12 +2242,13 @@ export type UserUncheckedCreateWithoutAvailabilitiesInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2448,7 +2268,6 @@ export type UserUncheckedCreateWithoutAvailabilitiesInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingUncheckedCreateNestedManyWithoutClientInput
   bookingsAsProvider?: Prisma.BookingUncheckedCreateNestedManyWithoutProviderInput
@@ -2480,12 +2299,13 @@ export type UserUpdateWithoutAvailabilitiesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2505,7 +2325,6 @@ export type UserUpdateWithoutAvailabilitiesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUpdateManyWithoutClientNestedInput
   bookingsAsProvider?: Prisma.BookingUpdateManyWithoutProviderNestedInput
@@ -2521,12 +2340,13 @@ export type UserUncheckedUpdateWithoutAvailabilitiesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2546,7 +2366,6 @@ export type UserUncheckedUpdateWithoutAvailabilitiesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUncheckedUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUncheckedUpdateManyWithoutClientNestedInput
   bookingsAsProvider?: Prisma.BookingUncheckedUpdateManyWithoutProviderNestedInput
@@ -2562,12 +2381,13 @@ export type UserCreateWithoutUnavailableDatesInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2587,7 +2407,6 @@ export type UserCreateWithoutUnavailableDatesInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingCreateNestedManyWithoutClientInput
   bookingsAsProvider?: Prisma.BookingCreateNestedManyWithoutProviderInput
@@ -2603,12 +2422,13 @@ export type UserUncheckedCreateWithoutUnavailableDatesInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2628,7 +2448,6 @@ export type UserUncheckedCreateWithoutUnavailableDatesInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingUncheckedCreateNestedManyWithoutClientInput
   bookingsAsProvider?: Prisma.BookingUncheckedCreateNestedManyWithoutProviderInput
@@ -2660,12 +2479,13 @@ export type UserUpdateWithoutUnavailableDatesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2685,7 +2505,6 @@ export type UserUpdateWithoutUnavailableDatesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUpdateManyWithoutClientNestedInput
   bookingsAsProvider?: Prisma.BookingUpdateManyWithoutProviderNestedInput
@@ -2701,12 +2520,13 @@ export type UserUncheckedUpdateWithoutUnavailableDatesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2726,7 +2546,6 @@ export type UserUncheckedUpdateWithoutUnavailableDatesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUncheckedUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUncheckedUpdateManyWithoutClientNestedInput
   bookingsAsProvider?: Prisma.BookingUncheckedUpdateManyWithoutProviderNestedInput
@@ -2742,12 +2561,13 @@ export type UserCreateWithoutBookingsAsClientInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2767,7 +2587,6 @@ export type UserCreateWithoutBookingsAsClientInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentCreateNestedManyWithoutUserInput
   bookingsAsProvider?: Prisma.BookingCreateNestedManyWithoutProviderInput
   reviewsGiven?: Prisma.ReviewCreateNestedManyWithoutAuthorInput
@@ -2783,12 +2602,13 @@ export type UserUncheckedCreateWithoutBookingsAsClientInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2808,7 +2628,6 @@ export type UserUncheckedCreateWithoutBookingsAsClientInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutUserInput
   bookingsAsProvider?: Prisma.BookingUncheckedCreateNestedManyWithoutProviderInput
   reviewsGiven?: Prisma.ReviewUncheckedCreateNestedManyWithoutAuthorInput
@@ -2829,12 +2648,13 @@ export type UserCreateWithoutBookingsAsProviderInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2854,7 +2674,6 @@ export type UserCreateWithoutBookingsAsProviderInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingCreateNestedManyWithoutClientInput
   reviewsGiven?: Prisma.ReviewCreateNestedManyWithoutAuthorInput
@@ -2870,12 +2689,13 @@ export type UserUncheckedCreateWithoutBookingsAsProviderInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2895,7 +2715,6 @@ export type UserUncheckedCreateWithoutBookingsAsProviderInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingUncheckedCreateNestedManyWithoutClientInput
   reviewsGiven?: Prisma.ReviewUncheckedCreateNestedManyWithoutAuthorInput
@@ -2927,12 +2746,13 @@ export type UserUpdateWithoutBookingsAsClientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2952,7 +2772,6 @@ export type UserUpdateWithoutBookingsAsClientInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUpdateManyWithoutUserNestedInput
   bookingsAsProvider?: Prisma.BookingUpdateManyWithoutProviderNestedInput
   reviewsGiven?: Prisma.ReviewUpdateManyWithoutAuthorNestedInput
@@ -2968,12 +2787,13 @@ export type UserUncheckedUpdateWithoutBookingsAsClientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2993,7 +2813,6 @@ export type UserUncheckedUpdateWithoutBookingsAsClientInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUncheckedUpdateManyWithoutUserNestedInput
   bookingsAsProvider?: Prisma.BookingUncheckedUpdateManyWithoutProviderNestedInput
   reviewsGiven?: Prisma.ReviewUncheckedUpdateManyWithoutAuthorNestedInput
@@ -3020,12 +2839,13 @@ export type UserUpdateWithoutBookingsAsProviderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3045,7 +2865,6 @@ export type UserUpdateWithoutBookingsAsProviderInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUpdateManyWithoutClientNestedInput
   reviewsGiven?: Prisma.ReviewUpdateManyWithoutAuthorNestedInput
@@ -3061,12 +2880,13 @@ export type UserUncheckedUpdateWithoutBookingsAsProviderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3086,7 +2906,6 @@ export type UserUncheckedUpdateWithoutBookingsAsProviderInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUncheckedUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUncheckedUpdateManyWithoutClientNestedInput
   reviewsGiven?: Prisma.ReviewUncheckedUpdateManyWithoutAuthorNestedInput
@@ -3102,12 +2921,13 @@ export type UserCreateWithoutReviewsGivenInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -3127,7 +2947,6 @@ export type UserCreateWithoutReviewsGivenInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingCreateNestedManyWithoutClientInput
   bookingsAsProvider?: Prisma.BookingCreateNestedManyWithoutProviderInput
@@ -3143,12 +2962,13 @@ export type UserUncheckedCreateWithoutReviewsGivenInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -3168,7 +2988,6 @@ export type UserUncheckedCreateWithoutReviewsGivenInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingUncheckedCreateNestedManyWithoutClientInput
   bookingsAsProvider?: Prisma.BookingUncheckedCreateNestedManyWithoutProviderInput
@@ -3189,12 +3008,13 @@ export type UserCreateWithoutReviewsReceivedInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -3214,7 +3034,6 @@ export type UserCreateWithoutReviewsReceivedInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingCreateNestedManyWithoutClientInput
   bookingsAsProvider?: Prisma.BookingCreateNestedManyWithoutProviderInput
@@ -3230,12 +3049,13 @@ export type UserUncheckedCreateWithoutReviewsReceivedInput = {
   id?: string
   name?: string | null
   email?: string | null
-  emailVerified?: Date | string | null
+  emailVerified?: boolean
   phone?: string | null
-  phoneVerified?: Date | string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
   password?: string | null
   image?: string | null
-  role?: $Enums.Role
+  accountType?: $Enums.Role
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -3255,7 +3075,6 @@ export type UserUncheckedCreateWithoutReviewsReceivedInput = {
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
   consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutUserInput
   bookingsAsClient?: Prisma.BookingUncheckedCreateNestedManyWithoutClientInput
   bookingsAsProvider?: Prisma.BookingUncheckedCreateNestedManyWithoutProviderInput
@@ -3287,12 +3106,13 @@ export type UserUpdateWithoutReviewsGivenInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3312,7 +3132,6 @@ export type UserUpdateWithoutReviewsGivenInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUpdateManyWithoutClientNestedInput
   bookingsAsProvider?: Prisma.BookingUpdateManyWithoutProviderNestedInput
@@ -3328,12 +3147,13 @@ export type UserUncheckedUpdateWithoutReviewsGivenInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3353,7 +3173,6 @@ export type UserUncheckedUpdateWithoutReviewsGivenInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUncheckedUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUncheckedUpdateManyWithoutClientNestedInput
   bookingsAsProvider?: Prisma.BookingUncheckedUpdateManyWithoutProviderNestedInput
@@ -3380,12 +3199,13 @@ export type UserUpdateWithoutReviewsReceivedInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3405,7 +3225,6 @@ export type UserUpdateWithoutReviewsReceivedInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUpdateManyWithoutClientNestedInput
   bookingsAsProvider?: Prisma.BookingUpdateManyWithoutProviderNestedInput
@@ -3421,12 +3240,13 @@ export type UserUncheckedUpdateWithoutReviewsReceivedInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3446,7 +3266,6 @@ export type UserUncheckedUpdateWithoutReviewsReceivedInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
   consents?: Prisma.UserConsentUncheckedUpdateManyWithoutUserNestedInput
   bookingsAsClient?: Prisma.BookingUncheckedUpdateManyWithoutClientNestedInput
   bookingsAsProvider?: Prisma.BookingUncheckedUpdateManyWithoutProviderNestedInput
@@ -3466,7 +3285,6 @@ export type UserUncheckedUpdateWithoutReviewsReceivedInput = {
 export type UserCountOutputType = {
   accounts: number
   sessions: number
-  verificationTokens: number
   consents: number
   bookingsAsClient: number
   bookingsAsProvider: number
@@ -3482,7 +3300,6 @@ export type UserCountOutputType = {
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accounts?: boolean | UserCountOutputTypeCountAccountsArgs
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
-  verificationTokens?: boolean | UserCountOutputTypeCountVerificationTokensArgs
   consents?: boolean | UserCountOutputTypeCountConsentsArgs
   bookingsAsClient?: boolean | UserCountOutputTypeCountBookingsAsClientArgs
   bookingsAsProvider?: boolean | UserCountOutputTypeCountBookingsAsProviderArgs
@@ -3517,13 +3334,6 @@ export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends runtime.Types.E
  */
 export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.SessionWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountVerificationTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.VerificationTokenWhereInput
 }
 
 /**
@@ -3603,10 +3413,11 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   email?: boolean
   emailVerified?: boolean
   phone?: boolean
+  phoneCountryCode?: boolean
   phoneVerified?: boolean
   password?: boolean
   image?: boolean
-  role?: boolean
+  accountType?: boolean
   clientType?: boolean
   companyName?: boolean
   rccmNumber?: boolean
@@ -3626,7 +3437,6 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   updatedAt?: boolean
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
-  verificationTokens?: boolean | Prisma.User$verificationTokensArgs<ExtArgs>
   consents?: boolean | Prisma.User$consentsArgs<ExtArgs>
   bookingsAsClient?: boolean | Prisma.User$bookingsAsClientArgs<ExtArgs>
   bookingsAsProvider?: boolean | Prisma.User$bookingsAsProviderArgs<ExtArgs>
@@ -3646,10 +3456,11 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   email?: boolean
   emailVerified?: boolean
   phone?: boolean
+  phoneCountryCode?: boolean
   phoneVerified?: boolean
   password?: boolean
   image?: boolean
-  role?: boolean
+  accountType?: boolean
   clientType?: boolean
   companyName?: boolean
   rccmNumber?: boolean
@@ -3675,10 +3486,11 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   email?: boolean
   emailVerified?: boolean
   phone?: boolean
+  phoneCountryCode?: boolean
   phoneVerified?: boolean
   password?: boolean
   image?: boolean
-  role?: boolean
+  accountType?: boolean
   clientType?: boolean
   companyName?: boolean
   rccmNumber?: boolean
@@ -3704,10 +3516,11 @@ export type UserSelectScalar = {
   email?: boolean
   emailVerified?: boolean
   phone?: boolean
+  phoneCountryCode?: boolean
   phoneVerified?: boolean
   password?: boolean
   image?: boolean
-  role?: boolean
+  accountType?: boolean
   clientType?: boolean
   companyName?: boolean
   rccmNumber?: boolean
@@ -3727,11 +3540,10 @@ export type UserSelectScalar = {
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "phone" | "phoneVerified" | "password" | "image" | "role" | "clientType" | "companyName" | "rccmNumber" | "providerType" | "bio" | "isActive" | "hourlyRate" | "currency" | "verificationStatus" | "verificationLevel" | "verifiedBy" | "verifiedAt" | "verificationNotes" | "isDemo" | "demoExpiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "phone" | "phoneCountryCode" | "phoneVerified" | "password" | "image" | "accountType" | "clientType" | "companyName" | "rccmNumber" | "providerType" | "bio" | "isActive" | "hourlyRate" | "currency" | "verificationStatus" | "verificationLevel" | "verifiedBy" | "verifiedAt" | "verificationNotes" | "isDemo" | "demoExpiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
-  verificationTokens?: boolean | Prisma.User$verificationTokensArgs<ExtArgs>
   consents?: boolean | Prisma.User$consentsArgs<ExtArgs>
   bookingsAsClient?: boolean | Prisma.User$bookingsAsClientArgs<ExtArgs>
   bookingsAsProvider?: boolean | Prisma.User$bookingsAsProviderArgs<ExtArgs>
@@ -3752,7 +3564,6 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     accounts: Prisma.$AccountPayload<ExtArgs>[]
     sessions: Prisma.$SessionPayload<ExtArgs>[]
-    verificationTokens: Prisma.$VerificationTokenPayload<ExtArgs>[]
     consents: Prisma.$UserConsentPayload<ExtArgs>[]
     bookingsAsClient: Prisma.$BookingPayload<ExtArgs>[]
     bookingsAsProvider: Prisma.$BookingPayload<ExtArgs>[]
@@ -3768,12 +3579,13 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     id: string
     name: string | null
     email: string | null
-    emailVerified: Date | null
+    emailVerified: boolean
     phone: string | null
-    phoneVerified: Date | null
+    phoneCountryCode: string | null
+    phoneVerified: boolean
     password: string | null
     image: string | null
-    role: $Enums.Role
+    accountType: $Enums.Role
     clientType: $Enums.ClientType | null
     companyName: string | null
     rccmNumber: string | null
@@ -4187,7 +3999,6 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  verificationTokens<T extends Prisma.User$verificationTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$verificationTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   consents<T extends Prisma.User$consentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$consentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserConsentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   bookingsAsClient<T extends Prisma.User$bookingsAsClientArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$bookingsAsClientArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   bookingsAsProvider<T extends Prisma.User$bookingsAsProviderArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$bookingsAsProviderArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -4230,12 +4041,13 @@ export interface UserFieldRefs {
   readonly id: Prisma.FieldRef<"User", 'String'>
   readonly name: Prisma.FieldRef<"User", 'String'>
   readonly email: Prisma.FieldRef<"User", 'String'>
-  readonly emailVerified: Prisma.FieldRef<"User", 'DateTime'>
+  readonly emailVerified: Prisma.FieldRef<"User", 'Boolean'>
   readonly phone: Prisma.FieldRef<"User", 'String'>
-  readonly phoneVerified: Prisma.FieldRef<"User", 'DateTime'>
+  readonly phoneCountryCode: Prisma.FieldRef<"User", 'String'>
+  readonly phoneVerified: Prisma.FieldRef<"User", 'Boolean'>
   readonly password: Prisma.FieldRef<"User", 'String'>
   readonly image: Prisma.FieldRef<"User", 'String'>
-  readonly role: Prisma.FieldRef<"User", 'Role'>
+  readonly accountType: Prisma.FieldRef<"User", 'Role'>
   readonly clientType: Prisma.FieldRef<"User", 'ClientType'>
   readonly companyName: Prisma.FieldRef<"User", 'String'>
   readonly rccmNumber: Prisma.FieldRef<"User", 'String'>
@@ -4691,30 +4503,6 @@ export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
-}
-
-/**
- * User.verificationTokens
- */
-export type User$verificationTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the VerificationToken
-   */
-  select?: Prisma.VerificationTokenSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the VerificationToken
-   */
-  omit?: Prisma.VerificationTokenOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.VerificationTokenInclude<ExtArgs> | null
-  where?: Prisma.VerificationTokenWhereInput
-  orderBy?: Prisma.VerificationTokenOrderByWithRelationInput | Prisma.VerificationTokenOrderByWithRelationInput[]
-  cursor?: Prisma.VerificationTokenWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.VerificationTokenScalarFieldEnum | Prisma.VerificationTokenScalarFieldEnum[]
 }
 
 /**

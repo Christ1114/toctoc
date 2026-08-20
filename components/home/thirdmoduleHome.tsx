@@ -1,8 +1,12 @@
+"use client";
+
 import { orbitron } from '@/fonts/font';
 import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
 
 const ThirdModuleComponent = () => {
   const t = useTranslations("thirdModuleHome");
+  const router = useRouter();
 
   return (
     <div className='w-full pt-15 xl:pt-20
@@ -21,7 +25,9 @@ const ThirdModuleComponent = () => {
                         leading-relaxed sm:leading-normal`}>
           {t("title1")}
         </h2>
-        <button className={`cursor-pointer bg-[#432dd7] hover:bg-[#432dd7]/80 text-white 
+        <button
+          onClick={() => router.push('/login')}
+          className={`cursor-pointer bg-[#432dd7] hover:bg-[#432dd7]/80 text-white 
                            px-3 py-1.5 sm:px-3.5 sm:py-2 lg:px-4 lg:py-2.5 xl:px-5 xl:py-3
                            text-[11px] sm:text-xs lg:text-sm xl:text-base
                            rounded-md sm:rounded-lg

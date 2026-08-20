@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useRouter, Link } from '@/i18n/navigation';
 import Image from "next/image";
 import Lg from "../../../public/assets/logo/logo.svg";
 import { orbitron } from '@/fonts/font';
@@ -24,8 +23,8 @@ export default function Navbar() {
 
     const NAVBAR: NavbarItem[] = [
         { title: t("resources"), href: "" },
-        { title: t("findProfile"), href: "" },
-        { title: t("candidates"), href: "" },
+        { title: t("findProfile"), href: "/login" },
+        { title: t("candidates"), href: "/login" },
     ];
 
     const handleNavigation = (href: string) => {
@@ -62,7 +61,7 @@ export default function Navbar() {
 
                     <div className="w-full flex items-center justify-between px-3 sm:px-4 lg:px-6 h-14 sm:h-16 lg:h-19">
 
-                    
+
                         <div className="flex items-center gap-x-2 sm:gap-x-3">
                             <Link href="/" className="flex items-center justify-center shrink-0">
                                 <Image
@@ -79,6 +78,7 @@ export default function Navbar() {
                                     <div key={index} className="relative">
                                         <button
                                             onMouseEnter={() => setActiveDropdown(index)}
+                                            onClick={() => handleNavigation(item.href)}
                                             className={`
                                                 flex items-center gap-1 px-2 lg:px-3 py-2
                                                 text-xs lg:text-sm rounded-md font-bold
@@ -95,11 +95,11 @@ export default function Navbar() {
                                 ))}
                             </div>
                         </div>
-                        
+
                         <div className="hidden md:flex items-center gap-1.5 lg:gap-3">
                         <LightNightComponent />
                         <TranslateFunction defaultValue={locale} label="Changer de langue" />
-                       
+
                             <button
                                 onClick={() => handleNavigation('/register')}
                                 className={`flex items-center justify-center gap-1.5 px-2.5 lg:px-4 py-1.5 lg:py-2
@@ -119,8 +119,8 @@ export default function Navbar() {
                                 {t("findProfileBtn2")}
                             </button>
 
-                            
-                           
+
+
                             <button
                                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                                 className="lg:hidden flex items-center justify-center min-w-11 min-h-11 text-black dark:text-white"
@@ -168,10 +168,10 @@ export default function Navbar() {
                                     <button
                                         key={index}
                                         onClick={() => handleNavigation(item.href)}
-                                        className="w-full text-left px-4 py-3 text-sm font-bold
-                                                   text-black dark:text-white hover:text-[#432dd7]
-                                                   hover:bg-zinc-100 dark:hover:bg-zinc-800
-                                                   rounded-lg transition-colors"
+                                        className={`w-full text-left px-4 py-3 text-sm font-bold
+                                        text-black dark:text-white hover:text-[#432dd7]
+                                        hover:bg-zinc-100 dark:hover:bg-zinc-800
+                                        rounded-lg transition-colors ${orbitron.className}`}
                                     >
                                         {item.title}
                                     </button>
@@ -180,9 +180,9 @@ export default function Navbar() {
                             <div className="border-t border-zinc-200 dark:border-zinc-700" />
                             <button
                                 onClick={() => handleNavigation('/register')}
-                                className="w-full flex items-center justify-center gap-2 px-4 py-3
-                                           text-sm font-bold text-white bg-[#432dd7]
-                                           rounded-lg hover:bg-[#442dd7b6] transition-colors"
+                                className={`w-full flex items-center justify-center gap-2 px-4 py-3
+                                text-sm font-bold text-white bg-[#432dd7]
+                                rounded-lg hover:bg-[#442dd7b6] transition-colors ${orbitron.className}`}
                             >
                                 <SignIn size={18} />
                                 {t("findProfileBtn")}

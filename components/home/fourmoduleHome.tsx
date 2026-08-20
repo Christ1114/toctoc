@@ -1,6 +1,6 @@
 import { orbitron } from '@/fonts/font';
 import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import React from 'react';
 import { useTranslations } from 'next-intl';
 
@@ -23,37 +23,37 @@ export default function FourModuleHome() {
       id: 1,
       title: t("items.0.title"),
       icon: '/icons/iconN.svg',
-      btn2: { title: t("btnTocer"), href: '#' },
+      btn2: { title: t("btnTocer"), href: '/login' },
     },
     {
       id: 2,
       title: t("items.1.title"),
       icon: '/icons/iconN1.svg',
-      btn2: { title: t("btnTocer"), href: '#' },
+      btn2: { title: t("btnTocer"), href: '/login' },
     },
     {
       id: 3,
       title: t("items.2.title"),
       icon: '/icons/iconN2.svg',
-      btn2: { title: t("btnTocer"), href: '#' },
+      btn2: { title: t("btnTocer"), href: '/login' },
     },
     {
       id: 4,
       title: t("items.3.title"),
       icon: '/icons/iconN3.svg',
-      btn2: { title: t("btnTocer"), href: '#' },
+      btn2: { title: t("btnTocer"), href: '/login' },
     },
     {
       id: 5,
       title: t("items.4.title"),
       icon: '/icons/iconN4.svg',
-      btn2: { title: t("btnTocer"), href: '#' },
+      btn2: { title: t("btnTocer"), href: '/login' },
     },
     {
       id: 6,
       title: t("items.5.title"),
       icon: '/icons/iconN5.svg',
-      btn2: { title: t("btnTocer"), href: '#' },
+      btn2: { title: t("btnTocer"), href: '/login' },
     },
   ];
 

@@ -3,11 +3,12 @@ import { useEffect, useState } from 'react';
 import ProfileCard from '../lib/ProfilCard';
 import { orbitron } from '@/fonts/font';
 import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 
 export default function SevenDataModuleHome() {
   const [announcements, setAnnouncements] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [visibleCount, setVisibleCount] = useState(4);
+  const [visibleCount] = useState(4);
   const t = useTranslations("profileCard");
 
   useEffect(() => {
@@ -26,16 +27,6 @@ export default function SevenDataModuleHome() {
 
   const visibleProfiles = announcements.slice(0, visibleCount);
   const hasMore = visibleCount < announcements.length;
-  const isAllShown = visibleCount >= announcements.length;
-
-  const handleSeeMore = () => {
-    setVisibleCount((prev) => Math.min(prev + 4, announcements.length));
-  };
-
-  const handleSeeLess = () => {
-    setVisibleCount(4);
-    window.scrollTo({ top: document.getElementById('profiles-section')?.offsetTop || 0, behavior: 'smooth' });
-  };
 
   return (
     <main id="profiles-section" className="w-full min-h-150 max-w-full sm:max-w-4xl lg:max-w-6xl xl:max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 xl:px-8">
@@ -90,8 +81,8 @@ export default function SevenDataModuleHome() {
 
           <div className="flex gap-2 sm:gap-3 xl:gap-4">
             {hasMore && (
-              <button
-                onClick={handleSeeMore}
+              <Link
+                href="/login"
                 className="text-xs sm:text-sm xl:text-base font-semibold
                            px-4 py-2 sm:px-5 sm:py-2.5 xl:px-6 xl:py-3
                            rounded-lg
@@ -100,33 +91,13 @@ export default function SevenDataModuleHome() {
                            shadow-md shadow-[#432dd7]/20
                            transition-all duration-300
                            hover:scale-105 active:scale-95
-                           flex items-center gap-2"
+                           inline-flex items-center gap-2"
               >
-                <span>{t("morelesse")}</span>
+                <span className={`${orbitron.className} antialiased`}>{t("morelesse")}</span>
                 <svg className="w-4 h-4 xl:w-5 xl:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
-              </button>
-            )}
-
-            {isAllShown && announcements.length > 4 && (
-              <button
-                onClick={handleSeeLess}
-                className="text-xs sm:text-sm xl:text-base font-semibold
-                           px-4 py-2 sm:px-5 sm:py-2.5 xl:px-6 xl:py-3
-                           rounded-lg
-                           border-2 border-stone-300 dark:border-stone-500
-                           text-stone-700 dark:text-stone-200
-                           hover:bg-stone-100 dark:hover:bg-stone-800
-                           transition-all duration-300
-                           hover:scale-105 active:scale-95
-                           flex items-center gap-2"
-              >
-                <svg className="w-4 h-4 xl:w-5 xl:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                </svg>
-                <span>{t("lessmore")}</span>
-              </button>
+              </Link>
             )}
           </div>
         </div>

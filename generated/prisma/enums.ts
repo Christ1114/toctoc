@@ -159,3 +159,13 @@ export const VerificationLevel = {
 } as const
 
 export type VerificationLevel = (typeof VerificationLevel)[keyof typeof VerificationLevel]
+
+
+export const Operator = {
+  ORANGE: 'ORANGE',
+  MOOV: 'MOOV',
+  MTN: 'MTN',
+  UNKNOWN: 'UNKNOWN'
+} as const
+
+export type Operator = (typeof Operator)[keyof typeof Operator]

@@ -1,14 +1,21 @@
 {
   "navbar": {
-      "findProfile": "寻找档案",
-      "candidates": "查找职位",
-      "resources": "用户指南",
-      "findProfileBtn": "登录",
-      "findProfileBtn2": "注册",
-      "search" : {
-        "placeholder": "搜索关键词：家务、女佣、保姆、司机、园丁等..."
-      }
+    "findProfile": "寻找档案",
+    "candidates": "查找职位",
+    "resources": "用户指南",
+    "findProfileBtn": "登录",
+    "findProfileBtn2": "注册",
+    "search": {
+      "placeholder": "搜索关键词：家务、女佣、保姆、司机、园丁等..."
+    }
   },
+  "notFound": {
+    "title": "页面未找到",
+    "description": "抱歉，此页面不存在或已被移动。",
+    "info": "找不到您要查找的页面。它可能已被删除，或者链接地址不正确。",
+    "backHome": "返回首页",
+    "backToLogin": "返回登录页"
+},
   "firstModuleHome": {
     "card_title1": "保姆",
     "card_description1": "放心出门，我们经过认证的保姆会像对待自己的孩子一样照顾您的孩子。",
@@ -19,9 +26,9 @@
     "card_title4": "老年人护理",
     "card_description4": "因为变老值得被温柔以待，我们陪伴每一位老人走过有尊严的晚年。",
     "H1_title": "由AI为您找到合适的家政人员",
-    "P1_title":"科特迪瓦第一家政人员平台 !!!",
-    "btn_1":"自2024年起"
- },
+    "P1_title": "科特迪瓦第一家政人员平台 !!!",
+    "btn_1": "自2024年起"
+  },
   "secondModuleHome": {
     "H2_title": "科特迪瓦家政人才搜索引擎",
     "description1": "已找到人选的职位空缺不予显示，或者用户尚未登录的职位空缺也不予显示。",
@@ -33,13 +40,14 @@
       "title3": "装备精良",
       "description3": "配备最先进设备，适应各种情况的专业人员。"
     }
-},
+  },
   "footer": {
     "links": {
       "heading": "公告",
       "all": "全部 >",
       "smsWarning": "警惕此类短信！",
-      "privacyPolicy": "隐私政策"
+      "privacyPolicy": "隐私政策",
+      "termsofuse": "使用条款"
     },
     "hours": "营业时间：周一至周六 08:00-18:00",
     "location": "地点：科特迪瓦，科科迪-多库伊",
@@ -52,219 +60,475 @@
       "womanPhone": "手机用户"
     }
   },
-    "intro": {
-      "slogan": {
-        "subtitle": "一种全新的方式",
-        "title": "招聘员工",
-        "titleBreak": "在家工作",
-        "titleHighlight": "借助人工智能",
-        "aiBadge": "人人可用的人工智能"
-      },
-      "brand": {
-        "name": "TOCTOC"
-      },
-      "map": {
-        "badge": "便捷 & 即时",
-        "description": "根据您的地理位置寻找员工。",
-        "alt": {
-          "avatar": "智能TOCTOC头像"
-        }
-      }
+  "intro": {
+    "slogan": {
+      "subtitle": "一种全新的方式",
+      "title": "招聘员工",
+      "titleBreak": "在家工作",
+      "titleHighlight": "借助人工智能",
+      "aiBadge": "人人可用的人工智能"
     },
-    "home": {
-      "quote": {
-        "text": "在科特迪瓦，我们现在招聘家政人员",
-        "highlight": "借助人工智能。"
-      }
+    "brand": {
+      "name": "TOCTOC"
     },
-      "profileCard": {
-        "title": "个人资料示例",
-        "Loading": "加载中...",
-        "morelesse": "查看更多",
-        "lessmore": "查看更少",
-        "urgent": "紧急",
-        "tocer": "Tocer",
-        "salaryNegotiable": "薪资面议",
-        "workArrangement": {
-          "NAVETTE": "通勤",
-          "LOGE_SUR_PLACE": "住家"
-        },
-        "days": {
-          "LUN": "周一",
-          "MAR": "周二",
-          "MER": "周三",
-          "JEU": "周四",
-          "VEN": "周五",
-          "SAM": "周六",
-          "DIM": "周日"
-        },
-        "contract": {
-          "TEMPORAIRE": "临时",
-          "PERMANENT": "长期"
-        },
-        "aria": {
-          "contact": "联系 {name}"
-        }
+    "map": {
+      "badge": "便捷 & 即时",
+      "description": "根据您的地理位置寻找员工。",
+      "alt": {
+        "avatar": "智能TOCTOC头像"
+      }
+    }
+  },
+  "home": {
+    "quote": {
+      "text": "在科特迪瓦，我们现在招聘家政人员",
+      "highlight": "借助人工智能。"
+    }
+  },
+  "profileCard": {
+    "title": "个人资料示例",
+    "loading": "加载中...",
+    "morelesse": "查看更多",
+    "lessmore": "查看更少",
+    "urgent": "紧急",
+    "tocer": "Tocer",
+    "salaryNegotiable": "薪资面议",
+    "workArrangement": {
+      "NAVETTE": "通勤",
+      "LOGE_SUR_PLACE": "住家"
+    },
+    "days": {
+      "LUN": "周一",
+      "MAR": "周二",
+      "MER": "周三",
+      "JEU": "周四",
+      "VEN": "周五",
+      "SAM": "周六",
+      "DIM": "周日"
+    },
+    "contract": {
+      "TEMPORAIRE": "临时",
+      "PERMANENT": "长期"
+    },
+    "aria": {
+      "contact": "联系 {name}"
+    }
+  },
+  "announcementCard": {
+    "title": "个人资料示例",
+    "loading": "加载中...",
+    "morelesse": "查看更多",
+    "lessmore": "查看更少",
+    "description": "已找到人选的职位空缺不予显示，或者用户尚未登录的职位空缺也不予显示。",
+    "salaryPeriod": "月",
+    "salaryNegotiable": "薪资面议",
+    "noTransport": "无交通补贴",
+    "transportNotSpecified": "交通补贴未说明",
+    "verifiedIdentity": "已验证身份",
+    "urgent": "紧急",
+    "top": "置顶",
+    "contract": {
+      "TEMPORAIRE": "临时",
+      "PERMANENT": "长期"
+    },
+    "contractStart": {
+      "TEMPORAIRE": "开始: 面议",
+      "PERMANENT": "开始: 立即"
+    },
+    "experience": {
+      "required": "经验 {years} 年最低",
+      "notRequired": "经验不限"
+    },
+    "viewCount": "{count} 次浏览",
+    "type": {
+      "OFFER": "通过广告联系",
+      "PROFILE": "候选人资料"
+    },
+    "workArrangement": {
+      "NAVETTE": "通勤",
+      "LOGE_SUR_PLACE": "住家"
+    },
+    "days": {
+      "LUN": "周一",
+      "MAR": "周二",
+      "MER": "周三",
+      "JEU": "周四",
+      "VEN": "周五",
+      "SAM": "周六",
+      "DIM": "周日"
+    }
+  },
+  "fourModuleHome": {
+    "title": "做出选择",
+    "items": [
+      {
+        "title": "保姆"
       },
-        "announcementCard": {
-              "title": "个人资料示例",
-              "loading": "加载中...",
-              "morelesse": "查看更多",
-              "lessmore": "查看更少",
-              "description": "已找到人选的职位空缺不予显示，或者用户尚未登录的职位空缺也不予显示。",
-          "salaryPeriod": "月",
-          "salaryNegotiable": "薪资面议",
-          "noTransport": "无交通补贴",
-          "transportNotSpecified": "交通补贴未说明",
-          "verifiedIdentity": "已验证身份",
-          "urgent": "紧急",
-          "top": "置顶",
-          "contract": {
-            "TEMPORAIRE": "临时",
-            "PERMANENT": "长期"
-          },
-          "contractStart": {
-            "TEMPORAIRE": "开始: 面议",
-            "PERMANENT": "开始: 立即"
-          },
-          "experience": {
-            "required": "经验 {years} 年最低",
-            "notRequired": "经验不限"
-          },
-          "viewCount": "{count} 次浏览",
-          "type": {
-            "OFFER": "通过广告联系",
-            "PROFILE": "候选人资料"
-          },
-          "workArrangement": {
-            "NAVETTE": "通勤",
-            "LOGE_SUR_PLACE": "住家"
-          },
-          "days": {
-            "LUN": "周一",
-            "MAR": "周二",
-            "MER": "周三",
-            "JEU": "周四",
-            "VEN": "周五",
-            "SAM": "周六",
-            "DIM": "周日"
-          }
-        },
-          "fourModuleHome": {
-            "title": "做出选择",
-            "items": [
-              {
-                "title": "保姆"
-              },
-              {
-                "title": "课后托管"
-              },
-              {
-                "title": "清洁 / 维护"
-              },
-              {
-                "title": "老人看护"
-              },
-              {
-                "title": "住家服务"
-              },
-              {
-                "title": "短期"
-              }
-            ],
-            "btnTocer": "Tocer"
-          },
-          "thirdModuleHome": {
-            "title1": "根据您的标准快速搜索",
-            "btnAdvancedSearch": "高级搜索",
-            "title2": "查找其他机构以及我们自己的报价"
-          },
-          "mapComponent": {
-            "title": "按地区分类的招聘信息",
-            "loading": "地图加载中...",
-            "loadingData": "数据加载中...",
-            "citiesCount": "{count, plural, other {个城市}}",
-            "offersCount": "条招聘信息",
-            "more": "更多",
-            "categories": {
-              "NOUNOU": "保姆",
-              "MENAGERE": "家政助理",
-              "CUISINIER": "厨师",
-              "CHAUFFEUR": "司机",
-              "JARDINIER": "园丁",
-              "GARDIEN": "保安",
-              "AIDE_PERSONNE_AGEE": "老年人护理员",
-              "MAJORDOME": "管家"
-            }
-        },
-          "policy": {
-            "table": {
-              "titleHeader": "标题",
-              "dateHeader": "编写日期",
-              "title": "隐私政策修订通知",
-              "date": "24-07-08"
-            },
-            "content": {
-              "intro": "您好，我们在隐私政策中新增了针对服务永久用户的个人信息处理政策。",
-              "modifiedDateLabel": "修订日期：",
-              "modifiedDate": "2026年1月29日。",
-              "detailsLabel": "修订详情：",
-              "detailsText": "新增了第2条第4款，关于为限制被永久停止服务的会员重新注册而保留信息的规定。具体修订内容如下：",
-              "articleTitle": "第2条第4款 为限制被永久停止服务的会员重新注册而保留信息",
-              "point1": "① 对于因违反使用条款、不当使用、妨碍服务正常运行等原因被永久限制使用服务的会员，公司可能会保留最少量的信息，以防止同一人重新注册。",
-              "point2": "② 在此情况下，公司不会直接存储手机号码；仅通过将手机号码与公司唯一标识值（盐）相结合，生成并存储单向加密的标识值（哈希值）。",
-              "point3Label": "③ 上述标识值仅用于以下目的：",
-              "point3Item1": "验证被永久停止服务的会员的重新注册状态",
-              "point3Item2": "防止不当使用",
-              "point4": "④ 公司无法通过上述标识值识别特定个人，且不会将此信息用于限制重新注册以外的任何目的。"
-            }  
-          },
-          "warning": {
-            "table": {
-              "titleHeader": "标题",
-              "dateHeader": "编写日期",
-              "title": "关于修改欺诈短信预警通知的公告",
-              "date": "24-07-08"
-            },
-            "content": {
-              "intro": "您好，这里是TocToc管理员。",
-              "modifiedDateLabel": "修改日期：",
-              "modifiedDate": "2026年1月29日。",
-              "detailsLabel": "预警信息详情：",
-              "detailsText": "我们已更新关于欺诈短信的预警信息。请勿回复此类信息。修改内容如下：",
-              "articleTitle": "欺诈短信预警信息",
-              "point1": "① TocToc绝不会通过短信要求您提供个人信息（密码、验证码、银行卡信息等）。",
-              "point2": "② 如果您收到声称来自TocToc的可疑短信，请勿点击任何链接，也不要回复该信息。",
-              "point3Label": "③ 欺诈短信可能包括：",
-              "point3Item1": "意外的付款或退款要求",
-              "point3Item2": "如不立即回复将冻结账户的威胁",
-              "point4": "④ 如有疑问，请通过官方应用或网站直接联系TocToc客服。切勿使用可疑短信中提供的联系方式。"
-            }
-          },
-          "contact": {
-            "category": "分类",
-            "categories": {
-              "usageQuestion": "使用咨询",
-              "signupRequest": "注册申请",
-              "passwordRequest": "临时密码",
-              "paymentRequest": "付款确认"
-            },
-            "categoryDescriptions": {
-              "usageQuestion": "对平台的使用方式有疑问吗？请在下方描述，我们的团队将尽快回复您。",
-              "signupRequest": "注册账户需要帮助吗？请说明您的需求，我们将为您提供协助。",
-              "passwordRequest": "无法登录？请输入您账户的邮箱地址，我们将发送重置流程给您。",
-              "paymentRequest": "对付款或退款有疑问吗？请详细说明相关交易信息。"
-            },
-            "contact": "电子邮箱",
-            "emailPlaceholder": "请输入您的电子邮箱",
-            "name": "姓名",
-            "namePlaceholder": "请输入您的姓名",
-            "message": "留言内容",
-            "submitBtn": "提交"
-          },
-          "auth": {
-            "loading": "加载中..."
-          }
+      {
+        "title": "课后托管"
+      },
+      {
+        "title": "清洁 / 维护"
+      },
+      {
+        "title": "老人看护"
+      },
+      {
+        "title": "住家服务"
+      },
+      {
+        "title": "短期"
+      }
+    ],
+    "btnTocer": "Tocer"
+  },
+  "thirdModuleHome": {
+    "title1": "根据您的标准快速搜索",
+    "btnAdvancedSearch": "高级搜索",
+    "title2": "查找其他机构以及我们自己的报价"
+  },
+  "mapComponent": {
+    "title": "按地区分类的招聘信息",
+    "loading": "地图加载中...",
+    "loadingData": "数据加载中...",
+    "citiesCount": "{count, plural, other {个城市}}",
+    "offersCount": "条招聘信息",
+    "more": "更多",
+    "categories": {
+      "NOUNOU": "保姆",
+      "MENAGERE": "家政助理",
+      "CUISINIER": "厨师",
+      "CHAUFFEUR": "司机",
+      "JARDINIER": "园丁",
+      "GARDIEN": "保安",
+      "AIDE_PERSONNE_AGEE": "老年人护理员",
+      "MAJORDOME": "管家"
+    }
+  },
+  "policy": {
+    "table": {
+      "titleHeader": "标题",
+      "dateHeader": "编写日期",
+      "title": "隐私政策修订通知",
+      "date": "24-07-08"
+    },
+    "content": {
+      "intro": "您好，我们在隐私政策中新增了针对服务永久用户的个人信息处理政策。",
+      "modifiedDateLabel": "修订日期：",
+      "modifiedDate": "2026年1月29日。",
+      "detailsLabel": "修订详情：",
+      "detailsText": "新增了第2条第4款，关于为限制被永久停止服务的会员重新注册而保留信息的规定。具体修订内容如下：",
+      "articleTitle": "第2条第4款 为限制被永久停止服务的会员重新注册而保留信息",
+      "point1": "① 对于因违反使用条款、不当使用、妨碍服务正常运行等原因被永久限制使用服务的会员，公司可能会保留最少量的信息，以防止同一人重新注册。",
+      "point2": "② 在此情况下，公司不会直接存储手机号码；仅通过将手机号码与公司唯一标识值（盐）相结合，生成并存储单向加密的标识值（哈希值）。",
+      "point3Label": "③ 上述标识值仅用于以下目的：",
+      "point3Item1": "验证被永久停止服务的会员的重新注册状态",
+      "point3Item2": "防止不当使用",
+      "point4": "④ 公司无法通过上述标识值识别特定个人，且不会将此信息用于限制重新注册以外的任何目的。"
+    }
+  },
+  "warning": {
+    "table": {
+      "titleHeader": "标题",
+      "dateHeader": "编写日期",
+      "title": "关于修改欺诈短信预警通知的公告",
+      "date": "24-07-08"
+    },
+    "content": {
+      "intro": "您好，这里是TocToc管理员。",
+      "modifiedDateLabel": "修改日期：",
+      "modifiedDate": "2026年1月29日。",
+      "detailsLabel": "预警信息详情：",
+      "detailsText": "我们已更新关于欺诈短信的预警信息。请勿回复此类信息。修改内容如下：",
+      "articleTitle": "欺诈短信预警信息",
+      "point1": "① TocToc绝不会通过短信要求您提供个人信息（密码、验证码、银行卡信息等）。",
+      "point2": "② 如果您收到声称来自TocToc的可疑短信，请勿点击任何链接，也不要回复该信息。",
+      "point3Label": "③ 欺诈短信可能包括：",
+      "point3Item1": "意外的付款或退款要求",
+      "point3Item2": "如不立即回复将冻结账户的威胁",
+      "point4": "④ 如有疑问，请通过官方应用或网站直接联系TocToc客服。切勿使用可疑短信中提供的联系方式。"
+    }
+  },
+  "contact": {
+    "category": "分类",
+    "categories": {
+      "usageQuestion": "使用咨询",
+      "signupRequest": "注册申请",
+      "passwordRequest": "临时密码",
+      "paymentRequest": "付款确认"
+    },
+    "categoryDescriptions": {
+      "usageQuestion": "对平台的使用方式有疑问吗？请在下方描述，我们的团队将尽快回复您。",
+      "signupRequest": "注册账户需要帮助吗？请说明您的需求，我们将为您提供协助。",
+      "passwordRequest": "无法登录？请输入您账户的邮箱地址，我们将发送重置流程给您。",
+      "paymentRequest": "对付款或退款有疑问吗？请详细说明相关交易信息。"
+    },
+    "contact": "电子邮箱",
+    "emailPlaceholder": "请输入您的电子邮箱",
+    "name": "姓名",
+    "namePlaceholder": "请输入您的姓名",
+    "message": "留言内容",
+    "submitBtn": "提交"
+  },
+  "auth": {
+    "loading": "加载中..."
+  },
+  "register": {
+    "progress": {
+      "step": "步骤",
+      "step1Title": "基本信息",
+      "step2Title": "账户类型",
+      "step3Title": "验证"
+    },
+    "step1": {
+      "title": "创建您的账户",
+      "subtitle": "几分钟内加入TOCTOC社区"
+    },
+    "step2": {
+      "title": "完善您的资料",
+      "subtitle": "告诉我们您是谁，以便更好地为您服务"
+    },
+    "step3": {
+      "title": "最终验证",
+      "subtitle": "检查您的信息并选择验证方式",
+      "summary": "您的信息摘要"
+    },
+    "labels": {
+      "name": "姓名",
+      "email": "电子邮箱",
+      "phone": "电话",
+      "password": "密码",
+      "confirmPassword": "确认",
+      "terms": "条款",
+      "role": "账户类型",
+      "clientType": "客户类型",
+      "companyName": "公司",
+      "rccmNumber": "RCCM编号",
+      "providerType": "服务提供者类型",
+      "bio": "简介",
+      "verification": "验证",
+      "newsletter": "通讯",
+      "operator": "操作员",
+      "location": "定位",
+"noVpn": "不使用VPN",
+"vr": "VR面试"
+    },
+    "placeholders": {
+      "name": "请输入您的全名",
+      "email": "请输入您的电子邮箱",
+      "phone": "请输入您的电话号码",
+      "password": "创建安全密码",
+      "confirmPassword": "确认您的密码",
+      "selectClientType": "选择您的类型",
+      "companyName": "您的公司名称",
+      "rccmNumber": "输入您的RCCM编号",
+      "selectProviderType": "选择您的专业",
+      "bio": "介绍您自己和您的经验..."
+    },
+    "roles": {
+      "client": "客户",
+      "clientDesc": "我在寻找家政人员",
+      "provider": "服务提供者",
+      "providerDesc": "我提供服务"
+    },
+    "clientTypes": {
+      "particulier": "个人",
+      "entreprise": "企业"
+    },
+    "providerTypes": {
+      "salon": "沙龙",
+      "freelance": "自由职业",
+      "shop": "商店"
+    },
+    "verification": {
+      "email": "通过电子邮件",
+      "emailDesc": "通过电子邮件接收验证码",
+      "phone": "通过电话",
+      "phoneDesc": "通过短信接收验证码",
+      "phoneUnavailable": "需要电话号码"
+    },
+    "terms": {
+      "accept": "我接受",
+      "link": "使用条款"
+    },
+    "newsletter": {
+      "accept": "我想接收TOCTOC的新闻和优惠"
+    },
+    "navigation": {
+      "previous": "上一步",
+      "next": "下一步",
+      "step": "步骤",
+      "submit": "创建我的账户",
+      "loading": "创建中..."
+    },
+    "passwordStrength": {
+      "veryWeak": "非常弱",
+      "weak": "弱",
+      "medium": "中等",
+      "strong": "强",
+      "veryStrong": "非常强"
+    },
+    "errors": {
+      "nameRequired": "姓名为必填项（至少2个字符）",
+      "invalidEmail": "请输入有效的电子邮箱地址",
+      "invalidPhone": "请输入有效的电话号码",
+      "weakPassword": "密码太弱",
+      "passwordMismatch": "密码不匹配",
+      "phoneCountryCodeWarning": "国家代码无效。请使用+225、+1、+44、+86等格式。",
+      "acceptTerms": "您必须接受使用条款",
+      "companyNameRequired": "公司名称为必填项",
+      "invalidRccm": "RCCM编号无效",
+      "providerTypeRequired": "请选择您的服务提供者类型",
+      "bioTooShort": "简介至少需要50个字符",
+      "selectVerification": "请选择验证方式",
+      "acceptLocation": "您必须勾选启用定位服务的选项。",
+"acceptNoVpn": "您必须勾选不使用VPN的选项。",
+"acceptVr": "您必须勾选VR面试的选项。"
+    },
+    "consents": {
+      "location": "定位",
+      "noVpn": "不使用VPN",
+      "vr": "VR面试"
+    },
+    "characters": "字符"
+  },
+  "login": {
+    "title": "登录",
+    "subtitle": "访问您的账户",
+    "labels": {
+      "email": "电子邮箱",
+      "password": "密码",
+      "rememberMe": "记住我",
+      "forgotPassword": "忘记密码？"  
+    },
+    "errors": {
+      "invalidEmail": "无效的电子邮件",
+"invalidPassword": "无效的密码",
+"invalidCredentials": "无效的证书"
+    },
+   
+    "placeholders": {
+      "email": "your@email.com",
+      "password": "您的密码"
+    },
+    "buttons": {
+      "submit": "登录",
+      "loading": "加载中..."
+    },
+    "divider": "或使用以下方式继续",
+    "providers": {
+      "google": "使用Google继续",
+     "tiktok": "使用TikTok继续"
+    },
+    "noAccount": "还没有账户？",
+    "registerLink": "注册"
+  },
+  "forgotPassword": {
+    "title": "忘记密码",
+    "subtitle": "恢复对您账户的访问",
+    "info": "输入您的电子邮箱地址，我们将向您发送重置密码的链接。",
+    "labels": {
+      "email": "电子邮箱"
+    },
+    "placeholders": {
+      "email": "your@email.com",
+      "phone":" ex:+86..."
+    },
+    "buttons": {
+      "submit": "发送重置链接",
+      "sending": "发送中...",
+      "resend": "重新发送邮件",
+      "resendIn": "{seconds}秒后重新发送"
+    },
+    "backToLogin": "返回登录",
+    "errors": {
+      "sendFailed": "发送失败。请重试。",
+      "resendFailed": "重新发送失败。请重试。",
+      "invalidEmail": "无效的电子邮件。"
+    },
+    "success": {
+      "title": "邮件已发送！",
+      "message": "请检查您的收件箱以重置密码。",
+      "sentTo": "邮件已发送至："
+    }
+  },
+  "resetPassword": {
+    "title": "重置密码",
+    "subtitle": "输入新密码",
+    "securityInfo": "密码必须包含至少8个字符，并包含大小写字母、数字和特殊字符的组合。",
+    "labels": {
+      "password": "新密码",
+      "confirmPassword": "确认密码"
+    },
+    "placeholders": {
+      "password": "输入新密码",
+      "confirmPassword": "重新输入密码"
+    },
+    "buttons": {
+      "submit": "重置密码",
+      "loading": "正在重置...",
+      "showPassword": "显示密码",
+      "hidePassword": "隐藏密码"
+    },
+    "passwordStrength": {
+      "weak": "弱",
+      "medium": "中等",
+      "good": "良好",
+      "strong": "强"
+    },
+    "passwordsMatch": "密码匹配",
+    "backToLogin": "返回登录",
+    "success": {
+      "title": "密码重置成功！",
+      "message": "您的密码已成功更改。您现在可以使用新密码登录。"
+    },
+    "goToLogin": "前往登录",
+    "invalidToken": {
+      "title": "忘记密码",
+      "message": "此链接无效或已过期。请重试。"
+    },
+    "errors": {
+      "passwordRequired": "密码为必填项。",
+      "passwordTooShort": "密码太短。",
+      "passwordTooLong": "密码太长。",
+      "passwordWeak": "密码强度太弱。",
+      "confirmPasswordRequired": "确认密码为必填项。",
+      "passwordsDoNotMatch": "两次输入的密码不一致。",
+      "invalidToken": "链接无效或已过期。",
+      "resetFailed": "密码重置失败。请重试。"
+    },
+    "backToForgotPassword": "返回密码重置页面"
+  },
+  "terms": {
+    "table": {
+      "titleHeader": "标题",
+      "dateHeader": "编写日期",
+      "title": "TOCTOC使用条款",
+      "date": "15-08-2024"
+    },
+    "content": {
+      "intro": "欢迎使用TOCTOC。使用我们的平台即表示您同意本使用条款。请仔细阅读。",
+      "modifiedDateLabel": "修改日期：",
+      "modifiedDate": "2026年8月15日。",
+      "detailsLabel": "条款详情：",
+      "detailsText": "本使用条款约束您对TOCTOC平台的访问和使用。",
+      "articleTitle": "第1条：接受条款",
+      "point1": "① 访问或使用TOCTOC平台即表示您确认已阅读、理解并同意受本使用条款的约束。",
+      "point2": "② 如果您不同意这些条款，请勿使用TOCTOC平台。",
+      "point3Label": "第2条：服务描述",
+      "point3Item1": "为个人和家政服务专业人士提供对接服务",
+      "point3Item2": "基于人工智能的家政人员搜索",
+      "point4": "③ TOCTOC保留随时修改、暂停或中断平台任何方面的权利。",
+      "point5Label": "第3条：用户义务",
+      "point5Item1": "注册时提供准确和最新的信息",
+      "point5Item2": "不得将平台用于非法或未经授权的目的",
+      "point6": "④ 您有责任保护登录凭据的机密性，并对账户下的所有活动负责。",
+      "point7Label": "第4条：责任",
+      "point7Item1": "TOCTOC仅作为对接中介",
+      "point7Item2": "用户与服务提供者之间的交易由其自行负责",
+      "point8": "⑤ TOCTOC不保证平台的持续可用性，对服务中断不承担责任。",
+      "point9": "第5条：终止：如违反本条款，TOCTOC保留暂停或终止您账户的权利。",
+      "point10": "第6条：联系方式：如对本条款有任何疑问，请通过contact@toctoc.com与我们联系。"
+    }
+  }
 }
-  
-  

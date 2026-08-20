@@ -1,18 +1,21 @@
 {
   "navbar": {
-      "findProfile": "Find a profile",
-      "candidates": "Find a job offer",
-      "resources": "User guide",
-
-    
-
-      "findProfileBtn": "Log in",
-      "findProfileBtn2": "Sign up",
-      "search" : {
-        "placeholder": "Search keywords:Housekeeping / Cleanin, Maid / Housemaid, Nanny,Chauffeur / Driver, Gardener"
-      }
+    "findProfile": "Find a profile",
+    "candidates": "Find a job offer",
+    "resources": "User guide",
+    "findProfileBtn": "Log in",
+    "findProfileBtn2": "Sign up",
+    "search": {
+      "placeholder": "Search keywords:Housekeeping / Cleanin, Maid / Housemaid, Nanny,Chauffeur / Driver, Gardener"
+    }
   },
-
+  "notFound": {
+    "title": "Page not found",
+    "description": "Sorry, this page doesn't exist or has been moved.",
+    "info": "The page you're looking for couldn't be found. It may have been removed or the URL is incorrect.",
+    "backHome": "Back to home",
+    "backToLogin": "Back to login"
+},
   "firstModuleHome": {
     "card_title1": "Nanny",
     "card_description1": "Leave with peace of mind. Our certified nannies take care of your children as if they were their own.",
@@ -23,9 +26,9 @@
     "card_title4": "Senior assistance",
     "card_description4": "Because growing older deserves to be accompanied with love and dignity.",
     "H1_title": "The right household staff, found by AI",
-    "P1_title":"The N°1 platform for household staff in Ivory Coast !!!",
-    "btn_1":"Since 2024"
- },
+    "P1_title": "The N°1 platform for household staff in Ivory Coast !!!",
+    "btn_1": "Since 2024"
+  },
   "secondModuleHome": {
     "H2_title": "Home services talent search engine in Côte d'Ivoire",
     "description1": "Job offers for which a profile has already been found are not displayed, or for which the user has not yet logged in.",
@@ -43,7 +46,8 @@
       "heading": "Announcements",
       "all": "All >",
       "smsWarning": "Beware of this type of SMS!",
-      "privacyPolicy": "Privacy Policy"
+      "privacyPolicy": "Privacy Policy",
+      "termsofuse": "Terms of Use"
     },
     "hours": "Hours: Mon-Sat 08:00-18:00",
     "location": "Location: Côte d'Ivoire, Cocody-Dokui",
@@ -56,218 +60,473 @@
       "womanPhone": "User on phone"
     }
   },
-    "intro": {
-      "slogan": {
-        "subtitle": "A new way to",
-        "title": "RECRUIT STAFF",
-        "titleBreak": "AT HOME",
-        "titleHighlight": "WITH AI",
-        "aiBadge": "AI for everyone"
-      },
-      "brand": {
-        "name": "TOCTOC"
-      },
-      "map": {
-        "badge": "Accessible & Instant",
-        "description": "Find your staff based on your geolocation.",
-        "alt": {
-          "avatar": "Smart TOCTOC avatar"
-        }
-      }
+  "intro": {
+    "slogan": {
+      "subtitle": "A new way to",
+      "title": "RECRUIT STAFF",
+      "titleBreak": "AT HOME",
+      "titleHighlight": "WITH AI",
+      "aiBadge": "AI for everyone"
     },
-    "home": {
-      "quote": {
-        "text": "In Côte d'Ivoire, we now recruit domestic staff",
-        "highlight": "thanks to AI."
-      }
+    "brand": {
+      "name": "TOCTOC"
     },
-      "profileCard": {
-        "title": "Profile examples",
-        "morelesse": "view more",
-        "Loading": "Loading...",
-        "lessmore": "view less",
-        "urgent": "URGENT",
-        "tocer": "Tocer",
-        "salaryNegotiable": "Salary negotiable",
-        "workArrangement": {
-          "NAVETTE": "Shuttle",
-          "LOGE_SUR_PLACE": "Live-in"
-        },
-        "days": {
-          "LUN": "Mon",
-          "MAR": "Tue",
-          "MER": "Wed",
-          "JEU": "Thu",
-          "VEN": "Fri",
-          "SAM": "Sat",
-          "DIM": "Sun"
-        },
-        "contract": {
-          "TEMPORAIRE": "Temp",
-          "PERMANENT": "Perm"
-        },
-        "aria": {
-          "contact": "Contact {name}"
-        }
+    "map": {
+      "badge": "Accessible & Instant",
+      "description": "Find your staff based on your geolocation.",
+      "alt": {
+        "avatar": "Smart TOCTOC avatar"
+      }
+    }
+  },
+  "home": {
+    "quote": {
+      "text": "In Côte d'Ivoire, we now recruit domestic staff",
+      "highlight": "thanks to AI."
+    }
+  },
+  "profileCard": {
+    "title": "Profile examples",
+    "morelesse": "view more",
+    "loading": "Loading...",
+    "lessmore": "view less",
+    "urgent": "URGENT",
+    "tocer": "Tocer",
+    "salaryNegotiable": "Salary negotiable",
+    "workArrangement": {
+      "NAVETTE": "Shuttle",
+      "LOGE_SUR_PLACE": "Live-in"
+    },
+    "days": {
+      "LUN": "Mon",
+      "MAR": "Tue",
+      "MER": "Wed",
+      "JEU": "Thu",
+      "VEN": "Fri",
+      "SAM": "Sat",
+      "DIM": "Sun"
+    },
+    "contract": {
+      "TEMPORAIRE": "Temp",
+      "PERMANENT": "Perm"
+    },
+    "aria": {
+      "contact": "Contact {name}"
+    }
+  },
+  "announcementCard": {
+    "title": "Profile examples",
+    "loading": "Loading...",
+    "morelesse": "view more",
+    "lessmore": "view less",
+    "description": "Job offers for which a profile has already been found are not displayed, or for which the user has not yet logged in.",
+    "salaryPeriod": "month",
+    "salaryNegotiable": "Salary negotiable",
+    "noTransport": "No transport",
+    "transportNotSpecified": "Transport not specified",
+    "verifiedIdentity": "Verified identity",
+    "urgent": "URGENT",
+    "top": "TOP",
+    "contract": {
+      "TEMPORAIRE": "Temporary",
+      "PERMANENT": "Permanent"
+    },
+    "contractStart": {
+      "TEMPORAIRE": "Start: to be negotiated",
+      "PERMANENT": "Start: immediate"
+    },
+    "experience": {
+      "required": "Experience {years} year(s) min.",
+      "notRequired": "Experience not required"
+    },
+    "viewCount": "{count} views",
+    "type": {
+      "OFFER": "Contact via ad",
+      "PROFILE": "Candidate profile"
+    },
+    "workArrangement": {
+      "NAVETTE": "Shuttle",
+      "LOGE_SUR_PLACE": "Live-in"
+    },
+    "days": {
+      "LUN": "Mon",
+      "MAR": "Tue",
+      "MER": "Wed",
+      "JEU": "Thu",
+      "VEN": "Fri",
+      "SAM": "Sat",
+      "DIM": "Sun"
+    }
+  },
+  "fourModuleHome": {
+    "title": "Make a choice",
+    "items": [
+      {
+        "title": "Babysitter"
       },
-        "announcementCard": {
-         
-              "title": "Profile examples",
-              "loading": "Loading...",
-              "morelesse": "view more",
-              "lessmore": "view less",  
-              "description": "Job offers for which a profile has already been found are not displayed, or for which the user has not yet logged in.",
-          "salaryPeriod": "month",
-          "salaryNegotiable": "Salary negotiable",
-          "noTransport": "No transport",
-          "transportNotSpecified": "Transport not specified",
-          "verifiedIdentity": "Verified identity",
-          "urgent": "URGENT",
-          "top": "TOP",
-          "contract": {
-            "TEMPORAIRE": "Temporary",
-            "PERMANENT": "Permanent"
-          },
-          "contractStart": {
-            "TEMPORAIRE": "Start: to be negotiated",
-            "PERMANENT": "Start: immediate"
-          },
-          "experience": {
-            "required": "Experience {years} year(s) min.",
-            "notRequired": "Experience not required"
-          },
-          "viewCount": "{count} views",
-          "type": {
-            "OFFER": "Contact via ad",
-            "PROFILE": "Candidate profile"
-          },
-          "workArrangement": {
-            "NAVETTE": "Shuttle",
-            "LOGE_SUR_PLACE": "Live-in"
-          },
-          "days": {
-            "LUN": "Mon",
-            "MAR": "Tue",
-            "MER": "Wed",
-            "JEU": "Thu",
-            "VEN": "Fri",
-            "SAM": "Sat",
-            "DIM": "Sun"
-          }
-        },
-          "fourModuleHome": {
-            "title": "Make a choice",
-            "items": [
-              {
-                "title": "Babysitter"
-              },
-              {
-                "title": "After-school care"
-              },
-              {
-                "title": "Cleaning / Maintenance"
-              },
-              {
-                "title": "Elderly care"
-              },
-              {
-                "title": "Residential (live-in)"
-              },
-              {
-                "title": "Short term"
-              }
-            ],
-            "btnTocer": "Tocer"
-          },
-          "thirdModuleHome": {
-            "title1": "Quickly search according to your criteria",
-            "btnAdvancedSearch": "Advanced Search",
-            "title2": "Find offers from other agencies as well as ours"
-          },
-          "mapComponent": {
-            "title": "Offers by location",
-            "loading": "Loading map...",
-            "loadingData": "Loading data...",
-            "citiesCount": "{count, plural, =1 {city} other {cities}}",
-            "offersCount": "offers",
-            "more": "more",
-            "categories": {
-              "NOUNOU": "Nanny",
-              "MENAGERE": "Housekeeper",
-              "CUISINIER": "Cook",
-              "CHAUFFEUR": "Driver",
-              "JARDINIER": "Gardener",
-              "GARDIEN": "Security guard",
-              "AIDE_PERSONNE_AGEE": "Elderly caregiver",
-              "MAJORDOME": "Butler / Housekeeper"
-            }
-        },
-          "policy": {
-            "table": {
-              "titleHeader": "Title",
-              "dateHeader": "Date Written",
-              "title": "Notice of Privacy Policy Amendment",
-              "date": "08-07-24"
-            },
-            "content": {
-              "intro": "Hello, we have added a data processing policy for permanent users of our services to our privacy policy.",
-              "modifiedDateLabel": "Date of modification:",
-              "modifiedDate": "January 29, 2026.",
-              "detailsLabel": "Details of changes:",
-              "detailsText": "Article 2, paragraph 4) regarding the retention of information to restrict the re-registration of members whose service is permanently suspended has been added. The changes are as follows:",
-              "articleTitle": "Article 2, paragraph 4) Retention of information to restrict re-registration of members whose service is permanently suspended",
-              "point1": "① The Company may retain a minimum amount of information in order to prevent the re-registration of the same person for members whose use of the Service has been permanently restricted due to violation of the General Terms of Use, fraudulent use, disruption of the smooth operation of the Service, etc.",
-              "point2": "② In this case, the Company does not directly store mobile phone numbers; it generates and retains only a one-way encrypted identification value (hash) by combining the mobile phone number with the Company's unique identification value (salt).",
-              "point3Label": "③ The above identification value is used only for the following purposes:",
-              "point3Item1": "Verification of re-registration status of permanently suspended members",
-              "point3Item2": "Prevention of fraudulent use",
-              "point4": "④ The Company cannot identify individuals through the above identification value and does not use the information for any purpose other than restricting re-registration."
-            }
-          },
-          "warning": {
-            "table": {
-              "titleHeader": "Title",
-              "dateHeader": "Date Written",
-              "title": "Notice of Modification of the Fraudulent SMS Warning Message",
-              "date": "08-07-24"
-            },
-            "content": {
-              "intro": "Hello, this is the TocToc administrator.",
-              "modifiedDateLabel": "Date of modification:",
-              "modifiedDate": "January 29, 2026.",
-              "detailsLabel": "Warning message details:",
-              "detailsText": "We have updated our warning message regarding fraudulent SMS. Please do not respond to these types of messages. The changes are as follows:",
-              "articleTitle": "Fraudulent SMS Warning Message",
-              "point1": "① TocToc will never send you an SMS asking for your personal information (password, verification code, bank details, etc.).",
-              "point2": "② If you receive a suspicious SMS claiming to be from TocToc, do not click on any links and do not respond to the message.",
-              "point3Label": "③ Fraudulent SMS may include:",
-              "point3Item1": "Unexpected payment or refund requests",
-              "point3Item2": "Threats of account suspension if you do not respond immediately",
-              "point4": "④ If in doubt, contact TocToc customer service directly via the official app or website. Never use the contact details provided in the suspicious SMS."
-            }
-          },
-          "contact": {
-            "category": "Category",
-            "categories": {
-              "usageQuestion": "Usage question",
-              "signupRequest": "Signup request",
-              "passwordRequest": "Temporary password",
-              "paymentRequest": "Payment confirmation"
-            },
-            "categoryDescriptions": {
-              "usageQuestion": "Have a question about how the platform works? Describe it below and our team will get back to you quickly.",
-              "signupRequest": "Need help creating your account? Let us know the details and we'll assist you.",
-              "passwordRequest": "Can't log in? Enter your account email and we'll send you a reset procedure.",
-              "paymentRequest": "Question about a payment or a refund? Please detail the transaction concerned."
-            },
-            "contact": "Email",
-            "emailPlaceholder": "Enter your email address",
-            "name": "Name",
-            "namePlaceholder": "Enter your name",
-            "message": "Message",
-            "submitBtn": "Send"
-          },
-          "auth": {
-            "loading": "Loading..."
-          }
-        }
+      {
+        "title": "After-school care"
+      },
+      {
+        "title": "Cleaning / Maintenance"
+      },
+      {
+        "title": "Elderly care"
+      },
+      {
+        "title": "Residential (live-in)"
+      },
+      {
+        "title": "Short term"
+      }
+    ],
+    "btnTocer": "Tocer"
+  },
+  "thirdModuleHome": {
+    "title1": "Quickly search according to your criteria",
+    "btnAdvancedSearch": "Advanced Search",
+    "title2": "Find offers from other agencies as well as ours"
+  },
+  "mapComponent": {
+    "title": "Offers by location",
+    "loading": "Loading map...",
+    "loadingData": "Loading data...",
+    "citiesCount": "{count, plural, =1 {city} other {cities}}",
+    "offersCount": "offers",
+    "more": "more",
+    "categories": {
+      "NOUNOU": "Nanny",
+      "MENAGERE": "Housekeeper",
+      "CUISINIER": "Cook",
+      "CHAUFFEUR": "Driver",
+      "JARDINIER": "Gardener",
+      "GARDIEN": "Security guard",
+      "AIDE_PERSONNE_AGEE": "Elderly caregiver",
+      "MAJORDOME": "Butler / Housekeeper"
+    }
+  },
+  "policy": {
+    "table": {
+      "titleHeader": "Title",
+      "dateHeader": "Date Written",
+      "title": "Notice of Privacy Policy Amendment",
+      "date": "08-07-24"
+    },
+    "content": {
+      "intro": "Hello, we have added a data processing policy for permanent users of our services to our privacy policy.",
+      "modifiedDateLabel": "Date of modification:",
+      "modifiedDate": "January 29, 2026.",
+      "detailsLabel": "Details of changes:",
+      "detailsText": "Article 2, paragraph 4) regarding the retention of information to restrict the re-registration of members whose service is permanently suspended has been added. The changes are as follows:",
+      "articleTitle": "Article 2, paragraph 4) Retention of information to restrict re-registration of members whose service is permanently suspended",
+      "point1": "① The Company may retain a minimum amount of information in order to prevent the re-registration of the same person for members whose use of the Service has been permanently restricted due to violation of the General Terms of Use, fraudulent use, disruption of the smooth operation of the Service, etc.",
+      "point2": "② In this case, the Company does not directly store mobile phone numbers; it generates and retains only a one-way encrypted identification value (hash) by combining the mobile phone number with the Company's unique identification value (salt).",
+      "point3Label": "③ The above identification value is used only for the following purposes:",
+      "point3Item1": "Verification of re-registration status of permanently suspended members",
+      "point3Item2": "Prevention of fraudulent use",
+      "point4": "④ The Company cannot identify individuals through the above identification value and does not use the information for any purpose other than restricting re-registration."
+    }
+  },
+  "warning": {
+    "table": {
+      "titleHeader": "Title",
+      "dateHeader": "Date Written",
+      "title": "Notice of Modification of the Fraudulent SMS Warning Message",
+      "date": "08-07-24"
+    },
+    "content": {
+      "intro": "Hello, this is the TocToc administrator.",
+      "modifiedDateLabel": "Date of modification:",
+      "modifiedDate": "January 29, 2026.",
+      "detailsLabel": "Warning message details:",
+      "detailsText": "We have updated our warning message regarding fraudulent SMS. Please do not respond to these types of messages. The changes are as follows:",
+      "articleTitle": "Fraudulent SMS Warning Message",
+      "point1": "① TocToc will never send you an SMS asking for your personal information (password, verification code, bank details, etc.).",
+      "point2": "② If you receive a suspicious SMS claiming to be from TocToc, do not click on any links and do not respond to the message.",
+      "point3Label": "③ Fraudulent SMS may include:",
+      "point3Item1": "Unexpected payment or refund requests",
+      "point3Item2": "Threats of account suspension if you do not respond immediately",
+      "point4": "④ If in doubt, contact TocToc customer service directly via the official app or website. Never use the contact details provided in the suspicious SMS."
+    }
+  },
+  "contact": {
+    "category": "Category",
+    "categories": {
+      "usageQuestion": "Usage question",
+      "signupRequest": "Signup request",
+      "passwordRequest": "Temporary password",
+      "paymentRequest": "Payment confirmation"
+    },
+    "categoryDescriptions": {
+      "usageQuestion": "Have a question about how the platform works? Describe it below and our team will get back to you quickly.",
+      "signupRequest": "Need help creating your account? Let us know the details and we'll assist you.",
+      "passwordRequest": "Can't log in? Enter your account email and we'll send you a reset procedure.",
+      "paymentRequest": "Question about a payment or a refund? Please detail the transaction concerned."
+    },
+    "contact": "Email",
+    "emailPlaceholder": "Enter your email address",
+    "name": "Name",
+    "namePlaceholder": "Enter your name",
+    "message": "Message",
+    "submitBtn": "Send"
+  },
+  "auth": {
+    "loading": "Loading..."
+  },
+  "register": {
+    "progress": {
+      "step": "Step",
+      "step1Title": "Basic Information",
+      "step2Title": "Account Type",
+      "step3Title": "Verification"
+    },
+    "step1": {
+      "title": "Create your account",
+      "subtitle": "Join the TOCTOC community in minutes"
+    },
+    "step2": {
+      "title": "Complete your profile",
+      "subtitle": "Tell us who you are to serve you better"
+    },
+    "step3": {
+      "title": "Final Verification",
+      "subtitle": "Check your information and choose your verification method",
+      "summary": "Summary of your information"
+    },
+    "labels": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "password": "Password",
+      "confirmPassword": "Confirm",
+      "terms": "Terms",
+      "role": "Account type",
+      "clientType": "Client type",
+      "companyName": "Company",
+      "rccmNumber": "RCCM No.",
+      "providerType": "Provider type",
+      "bio": "Bio",
+      "verification": "Verification",
+      "newsletter": "Newsletter",
+      "operator": "Operator",
+      "location": "Location",
+"noVpn": "No VPN Usage",
+"vr": "VR Interview"
+    },
+    "placeholders": {
+      "name": "Enter your full name",
+      "email": "Enter your email address",
+      "phone": "Enter your phone number ex:+1 or +44",
+      "password": "Create a secure password",
+      "confirmPassword": "Confirm your password",
+      "selectClientType": "Select your type",
+      "companyName": "Your company name",
+      "rccmNumber": "Enter your RCCM number",
+      "selectProviderType": "Select your specialty",
+      "bio": "Tell us about yourself and your experience..."
+    },
+    "roles": {
+      "client": "Client",
+      "clientDesc": "I'm looking for home staff",
+      "provider": "Provider",
+      "providerDesc": "I offer my services"
+    },
+    "clientTypes": {
+      "particulier": "Individual",
+      "entreprise": "Company"
+    },
+    "providerTypes": {
+      "salon": "Salon",
+      "freelance": "Freelance",
+      "shop": "Shop"
+    },
+    "verification": {
+      "email": "By Email",
+      "emailDesc": "Receive a verification code by email",
+      "phone": "By Phone",
+      "phoneDesc": "Receive a code by SMS",
+      "phoneUnavailable": "Phone number required"
+    },
+    "terms": {
+      "accept": "I accept the",
+      "link": "terms of use"
+    },
+    "newsletter": {
+      "accept": "I want to receive TOCTOC news and offers"
+    },
+    "navigation": {
+      "previous": "Previous",
+      "next": "Next",
+      "step": "Step",
+      "submit": "Create my account",
+      "loading": "Creating..."
+    },
+    "passwordStrength": {
+      "veryWeak": "Very weak",
+      "weak": "Weak",
+      "medium": "Medium",
+      "strong": "Strong",
+      "veryStrong": "Very strong"
+    },
+    "errors": {
+      "nameRequired": "Name is required (minimum 2 characters)",
+      "invalidEmail": "Please enter a valid email address",
+      "invalidPhone": "Please enter a valid phone number",
+      "weakPassword": "Password is too weak",
+      "passwordMismatch": "Passwords do not match",
+      "acceptTerms": "You must accept the terms of use",
+      "companyNameRequired": "Company name is required",
+      "invalidRccm": "RCCM number is not valid",
+      "phoneCountryCodeWarning": "Invalid country code. Use format like +225, +1, +44, +86.",
+      "providerTypeRequired": "Please select your provider type",
+      "bioTooShort": "Bio must contain at least 50 characters",
+      "selectVerification": "Please choose a verification method",
+      "acceptLocation": "You must check the location activation box.",
+"acceptNoVpn": "You must check the VPN non-usage box.",
+"acceptVr": "You must check the VR interviews box."
+    },
+    "consents": {
+      "location": "Location",
+      "noVpn": "No VPN Usage",
+      "vr": "VR Interview"
+    },
+    "characters": "characters"
+  },
+  "login": {
+    "title": "Login",
+    "subtitle": "Access your account",
+    "labels": {
+      "email": "Email",
+      "password": "Password",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot password?"
+    },
+    "errors": {
+      "invalidEmail": "Invalid email",
+      "invalidPassword": "Invalid password",
+      "invalidCredentials": "Invalid credentials"
+    },
+    "placeholders": {
+      "email": "your@email.com",
+      "password": "Your password"
+    },
+    "buttons": {
+      "submit": "Sign in",
+      "loading": "Loading..."
+    },
+    "divider": "Or continue with",
+    "providers": {
+      "google": "Continue with Google",
+      "tiktok": "Continue with TikTok"
+    },
+    "noAccount": "Don't have an account?",
+    "registerLink": "Sign up"
+  },
+  "forgotPassword": {
+    "title": "Forgot Password",
+    "subtitle": "Recover access to your account",
+    "info": "Enter your email address and we'll send you a link to reset your password.",
+    "labels": {
+      "email": "Email"
+    },
+    "placeholders": {
+      "email": "your@email.com"
+    },
+    "buttons": {
+      "submit": "Send reset link",
+      "sending": "Sending...",
+      "resend": "Resend email",
+      "resendIn": "Resend in {seconds}s"
+    },
+    "backToLogin": "Back to login",
+    "errors": {
+      "sendFailed": "Failed to send. Please try again.",
+      "resendFailed": "Failed to resend. Please try again.",
+      "invalidEmail": "Invalid email."
+    },
+    "success": {
+      "title": "Email sent!",
+      "message": "Check your inbox to reset your password.",
+      "sentTo": "Email sent to:"
+    }
+  },
+  "resetPassword": {
+    "title": "Reset Password",
+    "subtitle": "Enter your new password",
+    "securityInfo": "Password must be strong and contain at least 8 characters with a mix of uppercase, lowercase, numbers, and symbols.",
+    "labels": {
+      "password": "New Password",
+      "confirmPassword": "Confirm Password"
+    },
+    "placeholders": {
+      "password": "Enter your new password",
+      "confirmPassword": "Re-enter your password"
+    },
+    "buttons": {
+      "submit": "Reset Password",
+      "loading": "Resetting...",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password"
+    },
+    "passwordStrength": {
+      "weak": "Weak",
+      "medium": "Medium",
+      "good": "Good",
+      "strong": "Strong"
+    },
+    "passwordsMatch": "Passwords match",
+    "backToLogin": "Back to login",
+    "success": {
+      "title": "Password Reset Successful!",
+      "message": "Your password has been successfully changed. You can now log in with your new password."
+    },
+    "goToLogin": "Go to login",
+    "invalidToken": {
+      "title": "Forgot Password",
+      "message": "This link is invalid or has expired. Please try again."
+    },
+    "errors": {
+      "passwordRequired": "Password is required.",
+      "passwordTooShort": "Password is too short.",
+      "passwordTooLong": "Password is too long.",
+      "passwordWeak": "Password is too weak.",
+      "confirmPasswordRequired": "Password confirmation is required.",
+      "passwordsDoNotMatch": "Passwords do not match.",
+      "invalidToken": "The link is invalid or has expired.",
+      "resetFailed": "Password reset failed. Please try again."
+    },
+    "backToForgotPassword": "Back to password reset page"
+  },
+  "terms": {
+    "table": {
+      "titleHeader": "Title",
+      "dateHeader": "Date Written",
+      "title": "TOCTOC Terms of Use",
+      "date": "15-08-2024"
+    },
+    "content": {
+      "intro": "Welcome to TOCTOC. By using our platform, you agree to these terms of use. Please read them carefully.",
+      "modifiedDateLabel": "Date of modification:",
+      "modifiedDate": "August 15, 2026.",
+      "detailsLabel": "Terms details:",
+      "detailsText": "These terms of use govern your access and use of the TOCTOC platform.",
+      "articleTitle": "Article 1: Acceptance of Terms",
+      "point1": "① By accessing or using the TOCTOC platform, you acknowledge that you have read, understood, and agree to be bound by these terms of use.",
+      "point2": "② If you do not agree to these terms, please do not use the TOCTOC platform.",
+      "point3Label": "Article 2: Service Description",
+      "point3Item1": "Connecting individuals with home service professionals",
+      "point3Item2": "AI-based domestic staff search",
+      "point4": "③ TOCTOC reserves the right to modify, suspend, or discontinue any aspect of the platform at any time.",
+      "point5Label": "Article 3: User Obligations",
+      "point5Item1": "Provide accurate and up-to-date information during registration",
+      "point5Item2": "Do not use the platform for illegal or unauthorized purposes",
+      "point6": "④ You are responsible for maintaining the confidentiality of your login credentials and for all activities under your account.",
+      "point7Label": "Article 4: Responsibilities",
+      "point7Item1": "TOCTOC acts solely as a matching intermediary",
+      "point7Item2": "Transactions between users and providers are their sole responsibility",
+      "point8": "⑤ TOCTOC does not guarantee continuous platform availability and cannot be held responsible for service interruptions.",
+      "point9": "Article 5: Termination: TOCTOC reserves the right to suspend or terminate your account in case of violation of these terms.",
+      "point10": "Article 6: Contact: For any questions regarding these terms, contact us at contact@toctoc.com."
+    }
+  }
+}
