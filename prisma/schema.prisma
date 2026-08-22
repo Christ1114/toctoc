@@ -267,12 +267,12 @@ model User {
   image         String?
   accountType   Role    @default(CLIENT)
 
-  // --- Champs requis par le plugin admin() de Better Auth ---
+
   role       String?   @default("user")
   banned     Boolean?  @default(false)
   banReason  String?
   banExpires DateTime?
-  // ------------------------------------------------------------
+
 
   clientType  ClientType?
   companyName String?

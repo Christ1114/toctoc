@@ -1,15 +1,11 @@
-'use client';
 import { getTranslations } from 'next-intl/server';
 import { orbitron } from '@/fonts/font';
-import React from 'react';
 import { Home, ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import Img from "@/public/assets/pictures/masquote_404.png";
-
-export default async function NotFoundPage() {
+export default async function NotFound() {
   const t = await getTranslations('notFound');
-
   return (
     <div className="min-h-screen py-4 sm:py-6 md:py-8 lg:py-10 px-3 sm:px-4 md:px-6 flex items-center justify-center">
       <div className="w-full max-w-4xl mx-auto">
@@ -28,7 +24,7 @@ export default async function NotFoundPage() {
               />
             </div>
             
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold bg-linear-to-r from-[#432dd7] to-[#554c8f] bg-clip-text text-transparent">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold bg-linear-to-r-to-r from-[#432dd7] to-[#554c8f] bg-clip-text text-transparent">
               404
             </h1>
             
