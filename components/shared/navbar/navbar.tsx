@@ -179,7 +179,7 @@ export default function Navbar() {
                             </nav>
                             <div className="border-t border-zinc-200 dark:border-zinc-700" />
                             <button
-                                onClick={() => handleNavigation('/register')}
+                                onClick={() => handleNavigation('/login')}
                                 className={`w-full flex items-center justify-center gap-2 px-4 py-3
                                 text-sm font-bold text-white bg-[#432dd7]
                                 rounded-lg hover:bg-[#442dd7b6] transition-colors ${orbitron.className}`}
