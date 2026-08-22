@@ -188,14 +188,7 @@ export default function Navbar() {
                                 {t("findProfileBtn")}
                             </button>
 
-                            <button
-                                onClick={() => handleNavigation('/register')}
-                                className="w-full flex items-center justify-center gap-2 px-4 py-3
-                                           text-sm font-bold border-2 border-[#432dd7] rounded-lg
-                                           text-black dark:text-white transition-colors"
-                            >
-                                {t("findProfileBtn2")}
-                            </button>
+                            
                         </div>
                     </div>
                 </div>
