@@ -27,8 +27,11 @@ import {
   isRccmValid
 } from "@/app/lib/validation/registerValidation";
 
+// ✅ Alignés sur l'enum Prisma ClientType (INDIVIDUAL | AGENCY)
 type Role = 'CLIENT' | 'PROVIDER';
-type ClientType = 'PARTICULIER' | 'ENTREPRISE';
+type ClientType = 'INDIVIDUAL' | 'AGENCY';
+// ⚠️ ProviderType reste à confirmer — ne correspond pas encore à l'enum Prisma
+// (BABYSITTER | GARDE_PERISCOLAIRE | MENAGE | AIDE_PERSONNES_AGEES | RESIDENTIEL | COURT_TERME)
 type ProviderType = 'SALON' | 'FREELANCE' | 'SHOP';
 
 interface Step1Data {
@@ -284,7 +287,6 @@ const RegisterForm = () => {
     }
     
     try {
-      
       const response = await fetch('/api/auth/sign-up/email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -294,7 +296,7 @@ const RegisterForm = () => {
           phone: step1Data.phone,
           password: step1Data.password,
           accountType: step2Data.role,
-          clientType: step2Data.clientType,
+          clientType: step2Data.clientType, // déjà "INDIVIDUAL" | "AGENCY", plus besoin de mapping
           companyName: step2Data.companyName,
           rccmNumber: step2Data.rccmNumber,
           providerType: step2Data.providerType,
@@ -314,7 +316,6 @@ const RegisterForm = () => {
         setSubmitError(errorData?.message ?? t('errors.submitFailed'));
       } else {
         console.log('Inscription réussie');
-        
       }
     } catch (error) {
       console.error('Erreur réseau:', error);
@@ -453,7 +454,6 @@ const RegisterForm = () => {
                 {isVerifyingPhone && (
                   <div className="mt-1 flex items-center gap-1 text-[10px] sm:text-xs text-blue-500">
                     <div className="w-3 h-3 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-                    
                   </div>
                 )}
                 {detectedOperator && !errors.phone && (
@@ -755,19 +755,19 @@ const RegisterForm = () => {
                         const value = e.target.value;
                         setStep2Data({ 
                           ...step2Data, 
-                          clientType: value === 'PARTICULIER' || value === 'ENTREPRISE' ? value : undefined 
+                          clientType: value === 'INDIVIDUAL' || value === 'AGENCY' ? value : undefined 
                         });
                       }}
                       className="w-full border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-900 px-3 py-2 text-xs sm:text-sm outline-none focus:border-[#432dd7] rounded-md"
                     >
                       <option value="">{t('placeholders.selectClientType')}</option>
-                      <option value="PARTICULIER">{t('clientTypes.particulier')}</option>
-                      <option value="ENTREPRISE">{t('clientTypes.entreprise')}</option>
+                      <option value="INDIVIDUAL">{t('clientTypes.particulier')}</option>
+                      <option value="AGENCY">{t('clientTypes.entreprise')}</option>
                     </select>
                   </div>
                 </div>
 
-                {step2Data.clientType === 'ENTREPRISE' && (
+                {step2Data.clientType === 'AGENCY' && (
                   <>
                     <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
                       <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
@@ -963,7 +963,7 @@ const RegisterForm = () => {
                         <User className="w-4 h-4 shrink-0" />
                         <span className="font-semibold">{t('labels.clientType')}:</span>
                         <span className="truncate">
-                          {step2Data.clientType === 'PARTICULIER' ? t('clientTypes.particulier') : t('clientTypes.entreprise')}
+                          {step2Data.clientType === 'INDIVIDUAL' ? t('clientTypes.particulier') : t('clientTypes.entreprise')}
                         </span>
                       </p>
                     )}
