@@ -3,7 +3,7 @@ import { inferAdditionalFields, phoneNumberClient } from "better-auth/client/plu
 import type { auth } from "@/app/lib/auth";
 
 export const authClient = createAuthClient({
-	baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "http://localhost:3000",
+	baseURL: process.env.NEXT_PUBLIC_APP_ORIGIN || "http://localhost:3000",
 	plugins: [
 		inferAdditionalFields < typeof auth > (),
 		phoneNumberClient(),
