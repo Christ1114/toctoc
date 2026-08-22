@@ -267,12 +267,10 @@ model User {
   image         String?
   accountType   Role    @default(CLIENT)
 
-
   role       String?   @default("user")
   banned     Boolean?  @default(false)
   banReason  String?
   banExpires DateTime?
-
 
   clientType  ClientType?
   companyName String?
