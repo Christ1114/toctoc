@@ -72,18 +72,6 @@ async function runSecurityChecks(ctx: Parameters<Parameters<typeof createAuthMid
       userAgent: ctx.headers?.get("user-agent") || "unknown",
     });
   }
-
-  if (process.env.NODE_ENV === "production") {
-    const sensitiveRoutes = ["/sign-up/email", "/change-password", "/update-user"];
-    if (sensitiveRoutes.includes(ctx.path)) {
-      const csrfToken = ctx.headers?.get("x-csrf-token");
-      if (!csrfToken) {
-        throw new APIError("UNAUTHORIZED", {
-          message: "CSRF token manquant",
-        });
-      }
-    }
-  }
 }
 
 export const auth = betterAuth({
@@ -330,16 +318,15 @@ export const auth = betterAuth({
       },
     },
     tiktok: {
-      clientKey: process.env.TIKTOK_CLIENT_KEY as string, 
+      clientKey: process.env.TIKTOK_CLIENT_KEY as string,
       clientSecret: process.env.TIKTOK_CLIENT_SECRET as string,
-      disablePKCE: true, 
+      disablePKCE: true,
     },
   },
 
   trustedOrigins: [
     process.env.BETTER_AUTH_URL as string,
     "http://localhost:3000",
-    "http://localhost:3001",
     "https://toctoc1.vercel.app",
   ],
 });
