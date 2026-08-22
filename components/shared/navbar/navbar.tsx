@@ -101,7 +101,7 @@ export default function Navbar() {
                         <TranslateFunction defaultValue={locale} label="Changer de langue" />
 
                             <button
-                                onClick={() => handleNavigation('/register')}
+                                onClick={() => handleNavigation('/login')}
                                 className={`flex items-center justify-center gap-1.5 px-2.5 lg:px-4 py-1.5 lg:py-2
                                            text-[11px] lg:text-sm font-bold whitespace-nowrap
                                            text-white bg-[#432dd7] rounded-lg hover:bg-[#442dd7b6]
@@ -188,7 +188,14 @@ export default function Navbar() {
                                 {t("findProfileBtn")}
                             </button>
 
-                            
+                            <button
+                                onClick={() => handleNavigation('/register')}
+                                className="w-full flex items-center justify-center gap-2 px-4 py-3
+                                           text-sm font-bold border-2 border-[#432dd7] rounded-lg
+                                           text-black dark:text-white transition-colors"
+                            >
+                                {t("findProfileBtn2")}
+                            </button>
                         </div>
                     </div>
                 </div>
