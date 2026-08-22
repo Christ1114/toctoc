@@ -272,6 +272,8 @@ model User {
   banReason  String?
   banExpires DateTime?
 
+  acceptNewsletter Boolean @default(false)
+
   clientType  ClientType?
   companyName String?
   rccmNumber  String?
