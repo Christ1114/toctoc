@@ -11,6 +11,37 @@
         "placeholder": "Mots-clés: Ménage, servante, nounou, chauffeure, jardinier..."
       }
   },
+  "precheck": {
+    "location": {
+      "title": "Localisation requise",
+      "subtitle": "Nous avons besoin de votre position pour continuer.",
+      "notActivated": "Localisation non activée",
+      "requesting": "Demande d'autorisation en cours...",
+      "granted": "Localisation activée",
+      "denied": "Localisation refusée",
+      "deniedHelp": "Merci d'activer la localisation dans les paramètres de votre navigateur, puis réessayez.",
+      "activate": "Activer",
+      "activated": "Activée"
+    },
+    "vpn": {
+      "title": "Vérification de sécurité",
+      "subtitle": "Nous vérifions votre connexion.",
+      "idle": "En attente",
+      "checking": "Vérification en cours...",
+      "clean": "Aucun VPN détecté",
+      "detected": "VPN détecté",
+      "retry": "Réessayer",
+      "popupTitle": "VPN détecté",
+      "popupSubtitle": "Accès bloqué pour votre sécurité",
+      "popupMessage": "Nous avons détecté l'utilisation d'un VPN ou d'un proxy. Pour votre sécurité et celle de la communauté TocToc, veuillez le désactiver.",
+      "popupInstruction": "Désactivez votre VPN, puis cliquez sur \"Réessayer\".",
+      "popupRetry": "Réessayer"
+    },
+    "navigation": {
+      "next": "Suivant",
+      "continue": "Continuer"
+    }
+  },
   "notFound" : {
     "title": "Page non trouvée",
     "description": "Désolé, cette page n'existe pas ou a été déplacée.",

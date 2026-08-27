@@ -27,11 +27,10 @@ import {
   isRccmValid
 } from "@/app/lib/validation/registerValidation";
 
-// ✅ Alignés sur l'enum Prisma ClientType (INDIVIDUAL | AGENCY)
+
 type Role = 'CLIENT' | 'PROVIDER';
 type ClientType = 'INDIVIDUAL' | 'AGENCY';
-// ⚠️ ProviderType reste à confirmer — ne correspond pas encore à l'enum Prisma
-// (BABYSITTER | GARDE_PERISCOLAIRE | MENAGE | AIDE_PERSONNES_AGEES | RESIDENTIEL | COURT_TERME)
+
 type ProviderType = 'SALON' | 'FREELANCE' | 'SHOP';
 
 interface Step1Data {
@@ -1079,4 +1078,4 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+export default RegisterForm; 

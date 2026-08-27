@@ -49,6 +49,7 @@ export type UserMinAggregateOutputType = {
   banned: boolean | null
   banReason: string | null
   banExpires: Date | null
+  acceptNewsletter: boolean | null
   clientType: $Enums.ClientType | null
   companyName: string | null
   rccmNumber: string | null
@@ -83,6 +84,7 @@ export type UserMaxAggregateOutputType = {
   banned: boolean | null
   banReason: string | null
   banExpires: Date | null
+  acceptNewsletter: boolean | null
   clientType: $Enums.ClientType | null
   companyName: string | null
   rccmNumber: string | null
@@ -117,6 +119,7 @@ export type UserCountAggregateOutputType = {
   banned: number
   banReason: number
   banExpires: number
+  acceptNewsletter: number
   clientType: number
   companyName: number
   rccmNumber: number
@@ -161,6 +164,7 @@ export type UserMinAggregateInputType = {
   banned?: true
   banReason?: true
   banExpires?: true
+  acceptNewsletter?: true
   clientType?: true
   companyName?: true
   rccmNumber?: true
@@ -195,6 +199,7 @@ export type UserMaxAggregateInputType = {
   banned?: true
   banReason?: true
   banExpires?: true
+  acceptNewsletter?: true
   clientType?: true
   companyName?: true
   rccmNumber?: true
@@ -229,6 +234,7 @@ export type UserCountAggregateInputType = {
   banned?: true
   banReason?: true
   banExpires?: true
+  acceptNewsletter?: true
   clientType?: true
   companyName?: true
   rccmNumber?: true
@@ -350,6 +356,7 @@ export type UserGroupByOutputType = {
   banned: boolean | null
   banReason: string | null
   banExpires: Date | null
+  acceptNewsletter: boolean
   clientType: $Enums.ClientType | null
   companyName: string | null
   rccmNumber: string | null
@@ -407,6 +414,7 @@ export type UserWhereInput = {
   banned?: Prisma.BoolNullableFilter<"User"> | boolean | null
   banReason?: Prisma.StringNullableFilter<"User"> | string | null
   banExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  acceptNewsletter?: Prisma.BoolFilter<"User"> | boolean
   clientType?: Prisma.EnumClientTypeNullableFilter<"User"> | $Enums.ClientType | null
   companyName?: Prisma.StringNullableFilter<"User"> | string | null
   rccmNumber?: Prisma.StringNullableFilter<"User"> | string | null
@@ -453,6 +461,7 @@ export type UserOrderByWithRelationInput = {
   banned?: Prisma.SortOrderInput | Prisma.SortOrder
   banReason?: Prisma.SortOrderInput | Prisma.SortOrder
   banExpires?: Prisma.SortOrderInput | Prisma.SortOrder
+  acceptNewsletter?: Prisma.SortOrder
   clientType?: Prisma.SortOrderInput | Prisma.SortOrder
   companyName?: Prisma.SortOrderInput | Prisma.SortOrder
   rccmNumber?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -502,6 +511,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   banned?: Prisma.BoolNullableFilter<"User"> | boolean | null
   banReason?: Prisma.StringNullableFilter<"User"> | string | null
   banExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  acceptNewsletter?: Prisma.BoolFilter<"User"> | boolean
   clientType?: Prisma.EnumClientTypeNullableFilter<"User"> | $Enums.ClientType | null
   companyName?: Prisma.StringNullableFilter<"User"> | string | null
   rccmNumber?: Prisma.StringNullableFilter<"User"> | string | null
@@ -548,6 +558,7 @@ export type UserOrderByWithAggregationInput = {
   banned?: Prisma.SortOrderInput | Prisma.SortOrder
   banReason?: Prisma.SortOrderInput | Prisma.SortOrder
   banExpires?: Prisma.SortOrderInput | Prisma.SortOrder
+  acceptNewsletter?: Prisma.SortOrder
   clientType?: Prisma.SortOrderInput | Prisma.SortOrder
   companyName?: Prisma.SortOrderInput | Prisma.SortOrder
   rccmNumber?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -590,6 +601,7 @@ export type UserScalarWhereWithAggregatesInput = {
   banned?: Prisma.BoolNullableWithAggregatesFilter<"User"> | boolean | null
   banReason?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   banExpires?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  acceptNewsletter?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   clientType?: Prisma.EnumClientTypeNullableWithAggregatesFilter<"User"> | $Enums.ClientType | null
   companyName?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   rccmNumber?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
@@ -624,6 +636,7 @@ export type UserCreateInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -670,6 +683,7 @@ export type UserUncheckedCreateInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -716,6 +730,7 @@ export type UserUpdateInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -762,6 +777,7 @@ export type UserUncheckedUpdateInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -808,6 +824,7 @@ export type UserCreateManyInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -842,6 +859,7 @@ export type UserUpdateManyMutationInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -876,6 +894,7 @@ export type UserUncheckedUpdateManyInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -915,6 +934,7 @@ export type UserCountOrderByAggregateInput = {
   banned?: Prisma.SortOrder
   banReason?: Prisma.SortOrder
   banExpires?: Prisma.SortOrder
+  acceptNewsletter?: Prisma.SortOrder
   clientType?: Prisma.SortOrder
   companyName?: Prisma.SortOrder
   rccmNumber?: Prisma.SortOrder
@@ -953,6 +973,7 @@ export type UserMaxOrderByAggregateInput = {
   banned?: Prisma.SortOrder
   banReason?: Prisma.SortOrder
   banExpires?: Prisma.SortOrder
+  acceptNewsletter?: Prisma.SortOrder
   clientType?: Prisma.SortOrder
   companyName?: Prisma.SortOrder
   rccmNumber?: Prisma.SortOrder
@@ -987,6 +1008,7 @@ export type UserMinOrderByAggregateInput = {
   banned?: Prisma.SortOrder
   banReason?: Prisma.SortOrder
   banExpires?: Prisma.SortOrder
+  acceptNewsletter?: Prisma.SortOrder
   clientType?: Prisma.SortOrder
   companyName?: Prisma.SortOrder
   rccmNumber?: Prisma.SortOrder
@@ -1224,6 +1246,7 @@ export type UserCreateWithoutAnnouncementsInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -1269,6 +1292,7 @@ export type UserUncheckedCreateWithoutAnnouncementsInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -1330,6 +1354,7 @@ export type UserUpdateWithoutAnnouncementsInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1375,6 +1400,7 @@ export type UserUncheckedUpdateWithoutAnnouncementsInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1420,6 +1446,7 @@ export type UserCreateWithoutAccountsInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -1465,6 +1492,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -1526,6 +1554,7 @@ export type UserUpdateWithoutAccountsInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1571,6 +1600,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1616,6 +1646,7 @@ export type UserCreateWithoutSessionsInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -1661,6 +1692,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -1722,6 +1754,7 @@ export type UserUpdateWithoutSessionsInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1767,6 +1800,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1812,6 +1846,7 @@ export type UserCreateWithoutConsentsInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -1857,6 +1892,7 @@ export type UserUncheckedCreateWithoutConsentsInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -1918,6 +1954,7 @@ export type UserUpdateWithoutConsentsInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1963,6 +2000,7 @@ export type UserUncheckedUpdateWithoutConsentsInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2008,6 +2046,7 @@ export type UserCreateWithoutFavoriteProvidersInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2053,6 +2092,7 @@ export type UserUncheckedCreateWithoutFavoriteProvidersInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2103,6 +2143,7 @@ export type UserCreateWithoutFavoritedByInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2148,6 +2189,7 @@ export type UserUncheckedCreateWithoutFavoritedByInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2209,6 +2251,7 @@ export type UserUpdateWithoutFavoriteProvidersInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2254,6 +2297,7 @@ export type UserUncheckedUpdateWithoutFavoriteProvidersInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2310,6 +2354,7 @@ export type UserUpdateWithoutFavoritedByInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2355,6 +2400,7 @@ export type UserUncheckedUpdateWithoutFavoritedByInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2400,6 +2446,7 @@ export type UserCreateWithoutAvailabilitiesInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2445,6 +2492,7 @@ export type UserUncheckedCreateWithoutAvailabilitiesInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2506,6 +2554,7 @@ export type UserUpdateWithoutAvailabilitiesInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2551,6 +2600,7 @@ export type UserUncheckedUpdateWithoutAvailabilitiesInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2596,6 +2646,7 @@ export type UserCreateWithoutUnavailableDatesInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2641,6 +2692,7 @@ export type UserUncheckedCreateWithoutUnavailableDatesInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2702,6 +2754,7 @@ export type UserUpdateWithoutUnavailableDatesInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2747,6 +2800,7 @@ export type UserUncheckedUpdateWithoutUnavailableDatesInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2792,6 +2846,7 @@ export type UserCreateWithoutBookingsAsClientInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2837,6 +2892,7 @@ export type UserUncheckedCreateWithoutBookingsAsClientInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2887,6 +2943,7 @@ export type UserCreateWithoutBookingsAsProviderInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2932,6 +2989,7 @@ export type UserUncheckedCreateWithoutBookingsAsProviderInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -2993,6 +3051,7 @@ export type UserUpdateWithoutBookingsAsClientInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3038,6 +3097,7 @@ export type UserUncheckedUpdateWithoutBookingsAsClientInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3094,6 +3154,7 @@ export type UserUpdateWithoutBookingsAsProviderInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3139,6 +3200,7 @@ export type UserUncheckedUpdateWithoutBookingsAsProviderInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3184,6 +3246,7 @@ export type UserCreateWithoutReviewsGivenInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -3229,6 +3292,7 @@ export type UserUncheckedCreateWithoutReviewsGivenInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -3279,6 +3343,7 @@ export type UserCreateWithoutReviewsReceivedInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -3324,6 +3389,7 @@ export type UserUncheckedCreateWithoutReviewsReceivedInput = {
   banned?: boolean | null
   banReason?: string | null
   banExpires?: Date | string | null
+  acceptNewsletter?: boolean
   clientType?: $Enums.ClientType | null
   companyName?: string | null
   rccmNumber?: string | null
@@ -3385,6 +3451,7 @@ export type UserUpdateWithoutReviewsGivenInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3430,6 +3497,7 @@ export type UserUncheckedUpdateWithoutReviewsGivenInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3486,6 +3554,7 @@ export type UserUpdateWithoutReviewsReceivedInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3531,6 +3600,7 @@ export type UserUncheckedUpdateWithoutReviewsReceivedInput = {
   banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
   clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3706,6 +3776,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   banned?: boolean
   banReason?: boolean
   banExpires?: boolean
+  acceptNewsletter?: boolean
   clientType?: boolean
   companyName?: boolean
   rccmNumber?: boolean
@@ -3753,6 +3824,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   banned?: boolean
   banReason?: boolean
   banExpires?: boolean
+  acceptNewsletter?: boolean
   clientType?: boolean
   companyName?: boolean
   rccmNumber?: boolean
@@ -3787,6 +3859,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   banned?: boolean
   banReason?: boolean
   banExpires?: boolean
+  acceptNewsletter?: boolean
   clientType?: boolean
   companyName?: boolean
   rccmNumber?: boolean
@@ -3821,6 +3894,7 @@ export type UserSelectScalar = {
   banned?: boolean
   banReason?: boolean
   banExpires?: boolean
+  acceptNewsletter?: boolean
   clientType?: boolean
   companyName?: boolean
   rccmNumber?: boolean
@@ -3840,7 +3914,7 @@ export type UserSelectScalar = {
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "phone" | "phoneCountryCode" | "phoneVerified" | "password" | "image" | "accountType" | "role" | "banned" | "banReason" | "banExpires" | "clientType" | "companyName" | "rccmNumber" | "providerType" | "bio" | "isActive" | "hourlyRate" | "currency" | "verificationStatus" | "verificationLevel" | "verifiedBy" | "verifiedAt" | "verificationNotes" | "isDemo" | "demoExpiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "phone" | "phoneCountryCode" | "phoneVerified" | "password" | "image" | "accountType" | "role" | "banned" | "banReason" | "banExpires" | "acceptNewsletter" | "clientType" | "companyName" | "rccmNumber" | "providerType" | "bio" | "isActive" | "hourlyRate" | "currency" | "verificationStatus" | "verificationLevel" | "verifiedBy" | "verifiedAt" | "verificationNotes" | "isDemo" | "demoExpiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
@@ -3890,6 +3964,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     banned: boolean | null
     banReason: string | null
     banExpires: Date | null
+    acceptNewsletter: boolean
     clientType: $Enums.ClientType | null
     companyName: string | null
     rccmNumber: string | null
@@ -4356,6 +4431,7 @@ export interface UserFieldRefs {
   readonly banned: Prisma.FieldRef<"User", 'Boolean'>
   readonly banReason: Prisma.FieldRef<"User", 'String'>
   readonly banExpires: Prisma.FieldRef<"User", 'DateTime'>
+  readonly acceptNewsletter: Prisma.FieldRef<"User", 'Boolean'>
   readonly clientType: Prisma.FieldRef<"User", 'ClientType'>
   readonly companyName: Prisma.FieldRef<"User", 'String'>
   readonly rccmNumber: Prisma.FieldRef<"User", 'String'>

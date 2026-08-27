@@ -205,6 +205,7 @@ export const UserScalarFieldEnum = {
   banned: 'banned',
   banReason: 'banReason',
   banExpires: 'banExpires',
+  acceptNewsletter: 'acceptNewsletter',
   clientType: 'clientType',
   companyName: 'companyName',
   rccmNumber: 'rccmNumber',

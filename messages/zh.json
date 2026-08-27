@@ -8,6 +8,36 @@
     "search": {
       "placeholder": "搜索关键词：家务、女佣、保姆、司机、园丁等..."
     }
+  },"precheck": {
+    "location": {
+      "title": "需要定位权限",
+      "subtitle": "我们需要您的位置信息才能继续。",
+      "notActivated": "尚未开启定位",
+      "requesting": "正在请求授权...",
+      "granted": "定位已开启",
+      "denied": "定位被拒绝",
+      "deniedHelp": "请在浏览器设置中开启定位权限，然后重试。",
+      "activate": "开启",
+      "activated": "已开启"
+    },
+    "vpn": {
+      "title": "安全检查",
+      "subtitle": "正在验证您的网络连接。",
+      "idle": "等待中",
+      "checking": "检测中...",
+      "clean": "未检测到VPN",
+      "detected": "检测到VPN",
+      "retry": "重试",
+      "popupTitle": "检测到VPN",
+      "popupSubtitle": "为了您的安全，访问已被阻止",
+      "popupMessage": "我们检测到您正在使用VPN或代理。为了您和TocToc社区的安全，请将其关闭。",
+      "popupInstruction": "关闭VPN后，点击“重试”。",
+      "popupRetry": "重试"
+    },
+    "navigation": {
+      "next": "下一步",
+      "continue": "继续"
+    }
   },
   "notFound": {
     "title": "页面未找到",

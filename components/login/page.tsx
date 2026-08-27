@@ -96,7 +96,7 @@ const LoginForm = () => {
       } else {
         console.log('Connexion réussie:', result);
       
-        window.location.href = '/dashboard';
+        window.location.href = '/preloading';
       }
     } catch (err) {
       console.error('Erreur réseau:', err);

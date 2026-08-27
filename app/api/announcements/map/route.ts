@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const language = searchParams.get('language') || 'fr'
 
-    // Regrouper par ville avec comptage
+ 
     const locationAggregation = await prisma.announcement.groupBy({
       by: ['city'],
       where: {

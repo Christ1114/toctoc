@@ -9,6 +9,37 @@
       "placeholder": "Search keywords:Housekeeping / Cleanin, Maid / Housemaid, Nanny,Chauffeur / Driver, Gardener"
     }
   },
+  "precheck": {
+    "location": {
+      "title": "Location required",
+      "subtitle": "We need your location to continue.",
+      "notActivated": "Location not activated",
+      "requesting": "Requesting permission...",
+      "granted": "Location activated",
+      "denied": "Location denied",
+      "deniedHelp": "Please enable location in your browser settings, then try again.",
+      "activate": "Activate",
+      "activated": "Activated"
+    },
+    "vpn": {
+      "title": "Security check",
+      "subtitle": "We're verifying your connection.",
+      "idle": "Waiting",
+      "checking": "Checking...",
+      "clean": "No VPN detected",
+      "detected": "VPN detected",
+      "retry": "Retry",
+      "popupTitle": "VPN detected",
+      "popupSubtitle": "Access blocked for your security",
+      "popupMessage": "We detected the use of a VPN or proxy. For your security and that of the TocToc community, please disable it.",
+      "popupInstruction": "Disable your VPN, then click \"Retry\".",
+      "popupRetry": "Retry"
+    },
+    "navigation": {
+      "next": "Next",
+      "continue": "Continue"
+    }
+  },
   "notFound": {
     "title": "Page not found",
     "description": "Sorry, this page doesn't exist or has been moved.",

@@ -8,3 +8,5 @@ allowBuilds:
   unrs-resolver: true
   zeptomatch: "^2.1.0"
   ngrok: false
+  msgpackr-extract: set this to true or false
+  workerd: set this to true or false
