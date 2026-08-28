@@ -2,6 +2,7 @@
 import { orbitron } from '@/fonts/font';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
+import { useRouter } from "@/i18n/navigation";
 import { 
   Eye, EyeOff, Lock, Mail, Phone, User, Shield, AlertCircle, 
   CheckCircle, Briefcase, Building2, ChevronLeft, ChevronRight,
@@ -61,6 +62,7 @@ interface Step3Data {
 
 const RegisterForm = () => {
   const t = useTranslations('register');
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [errors, setErrors] = useState<RegisterFormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -295,7 +297,7 @@ const RegisterForm = () => {
           phone: step1Data.phone,
           password: step1Data.password,
           accountType: step2Data.role,
-          clientType: step2Data.clientType, // déjà "INDIVIDUAL" | "AGENCY", plus besoin de mapping
+          clientType: step2Data.clientType, 
           companyName: step2Data.companyName,
           rccmNumber: step2Data.rccmNumber,
           providerType: step2Data.providerType,
@@ -310,12 +312,12 @@ const RegisterForm = () => {
       });
       
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        console.error('Erreur serveur:', errorData);
-        setSubmitError(errorData?.message ?? t('errors.submitFailed'));
-      } else {
-        console.log('Inscription réussie');
-      }
+  const errorData = await response.json().catch(() => ({}));
+  console.error('Erreur serveur:', errorData);
+  setSubmitError(errorData?.message ?? t('errors.submitFailed'));
+} else {
+  router.push('/login'); 
+}
     } catch (error) {
       console.error('Erreur réseau:', error);
       setSubmitError(t('errors.networkFailed'));
@@ -378,7 +380,7 @@ const RegisterForm = () => {
           </div>
 
           <div className="space-y-3 sm:space-y-4">
-            {/* Nom */}
+            
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
                 <User className="w-4 h-4 shrink-0" />
@@ -405,7 +407,7 @@ const RegisterForm = () => {
               </div>
             </div>
 
-            {/* Email */}
+            
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
                 <Mail className="w-4 h-4 shrink-0" />
@@ -432,7 +434,7 @@ const RegisterForm = () => {
               </div>
             </div>
 
-            {/* Téléphone avec vérification API */}
+          
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
                 <Phone className="w-4 h-4 shrink-0" />
@@ -470,7 +472,7 @@ const RegisterForm = () => {
               </div>
             </div>
 
-            {/* Mot de passe */}
+          
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
                 <Lock className="w-4 h-4 shrink-0" />
@@ -511,7 +513,7 @@ const RegisterForm = () => {
               </div>
             </div>
 
-            {/* Confirmation */}
+    
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
                 <Lock className="w-4 h-4 shrink-0" />
@@ -552,7 +554,7 @@ const RegisterForm = () => {
               </div>
             </div>
 
-            {/* Conditions d'utilisation */}
+            
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
                 <Shield className="w-4 h-4 shrink-0" />
@@ -582,7 +584,7 @@ const RegisterForm = () => {
               </div>
             </div>
 
-            {/* Localisation */}
+          
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
                 <MapPin className="w-4 h-4 shrink-0" />
@@ -609,7 +611,7 @@ const RegisterForm = () => {
               </div>
             </div>
 
-            {/* Non-utilisation de VPN */}
+            
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
                 <ShieldOff className="w-4 h-4 shrink-0" />
@@ -636,7 +638,7 @@ const RegisterForm = () => {
               </div>
             </div>
 
-            {/* Conférences VR */}
+            
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
                 <Glasses className="w-4 h-4 shrink-0" />

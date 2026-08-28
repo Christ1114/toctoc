@@ -94,7 +94,7 @@ const LoginForm = () => {
           password: t('errors.invalidCredentials') 
         });
       } else {
-        console.log('Connexion réussie:', result);
+       
       
         window.location.href = '/preloading';
       }
@@ -109,11 +109,9 @@ const LoginForm = () => {
     setIsLoading('google');
     try {
       const { error: signInError } = await signInWithGoogle();
-      if (signInError) {
-        console.error('Erreur Google:', signInError);
-      }
+     
     } catch (err) {
-      console.error('Erreur Google (exception):', err instanceof Error ? err.message : err);
+     
     } finally {
       setIsLoading(null);
     }
@@ -123,11 +121,9 @@ const LoginForm = () => {
     setIsLoading('tiktok');
     try {
       const { error: signInError } = await signInWithTikTok();
-      if (signInError) {
-        console.error('Erreur TikTok:', signInError);
-      }
+     
     } catch (err) {
-      console.error('Erreur TikTok (exception):', err); 
+      
     } finally {
       setIsLoading(null);
     }
