@@ -1,4 +1,3 @@
-// app/[locale]/precheck/page.tsx
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "@/i18n/navigation";
@@ -18,7 +17,7 @@ export default function PrecheckPage() {
   useEffect(() => {
     const performSecurityCheck = async () => {
       try {
-        // 1. Vérifier la localisation
+       
         const locationValid = await checkLocation();
         
         if (!locationValid) {
@@ -26,7 +25,7 @@ export default function PrecheckPage() {
           return;
         }
 
-        // 2. Vérifier le VPN
+        
         const vpnValid = await checkVpn();
         
         if (!vpnValid) {
@@ -34,14 +33,14 @@ export default function PrecheckPage() {
           return;
         }
 
-        // 3. Tout est valide
+      
         setLocationStatus('valid');
         
-        // Marquer la vérification comme passée
+       
         document.cookie = "security_check_passed=true; path=/; max-age=1800";
         document.cookie = `security_check_timestamp=${Date.now()}; path=/; max-age=1800`;
 
-        // Rediriger
+       
         const callbackUrl = searchParams.get("callbackUrl") || "/preloading";
         setTimeout(() => {
           router.push(callbackUrl);
@@ -66,8 +65,6 @@ export default function PrecheckPage() {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const { latitude, longitude } = position.coords;
-          
-          // Utiliser votre validation
           const { validateLocation } = await import("@/app/lib/security/locationCheck");
           const result = validateLocation(latitude, longitude, {
             usePolygon: true,
@@ -91,7 +88,7 @@ export default function PrecheckPage() {
 
   const checkVpn = async (): Promise<boolean> => {
     try {
-      const response = await fetch('/api/check-vpn');
+      const response = await fetch('/api/security/vpn-check');
       const data = await response.json();
       return !data.isVpn;
     } catch (error) {
