@@ -11,6 +11,10 @@
   },"precheck": {
     "title": "安全检查...",
     "message": "请稍候，我们正在验证您的连接。",
+    "success": "验证成功！",
+    "error": "位置无效",
+    "redirecting": "重定向中...",
+    "locationRequired": "您必须在科特迪瓦才能使用我们的服务。",
     "location": {
       "title": "需要定位权限",
       "subtitle": "我们需要您的位置信息才能继续。",

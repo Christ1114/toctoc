@@ -12,6 +12,10 @@
   "precheck": {
      "title": "Security check...",
     "message": "Please wait while we verify your connection.",
+    "success": "Verification successful!",
+    "error": "Invalid location",
+    "redirecting": "Redirecting...",
+    "locationRequired": "You must be in Côte d'Ivoire to use our services.",
     "location": {
       "title": "Location required",
       "subtitle": "We need your location to continue.",

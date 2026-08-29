@@ -1,121 +1,234 @@
-export interface VpnCheckResult {
-    isVpn: boolean;
-    reason?: string;
-  }
-  
-  const vpnCache = new Map<string, { result: VpnCheckResult; timestamp: number }>();
-  const CACHE_TTL = 5 * 60 * 1000; 
-  const API_TIMEOUT = 4000;
-  
-  function getClientIp(headers: Headers): string | null {
-    const forwarded = headers.get("x-forwarded-for");
-    if (forwarded) {
-      const firstIp = forwarded.split(",")[0].trim();
-      return isValidIp(firstIp) ? firstIp : null;
-    }
-    
-    const realIp = headers.get("x-real-ip");
-    return realIp && isValidIp(realIp) ? realIp : null;
-  }
-  
-  function isValidIp(ip: string): boolean {
-    const ipv4Regex = /^(\d{1,3}\.){3}\d{1,3}$/;
-    const ipv6Regex = /^([0-9a-fA-F]{0,4}:){2,7}[0-9a-fA-F]{0,4}$/;
-    
-    if (ipv4Regex.test(ip)) {
-      return ip.split('.').every(part => {
-        const num = parseInt(part, 10);
-        return num >= 0 && num <= 255;
-      });
-    }
-    
-    return ipv6Regex.test(ip);
-  }
-  
-  function isLocalIp(ip: string): boolean {
-    return ip === "::1" || 
-           ip === "127.0.0.1" || 
-           ip.startsWith("10.") || 
-           ip.startsWith("192.168.") ||
-           ip.startsWith("172.16.");
-  }
-  
-  function getCachedResult(ip: string): VpnCheckResult | null {
-    const cached = vpnCache.get(ip);
-    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
-      return cached.result;
-    }
+// app/lib/security/vpnCheck.ts
+import { NextRequest } from "next/server";
 
-    if (vpnCache.size > 1000) {
-      const oldestTime = Date.now() - CACHE_TTL;
-      for (const [key, value] of vpnCache) {
-        if (value.timestamp < oldestTime) {
-          vpnCache.delete(key);
-        }
-      }
-    }
+interface VpnCheckResult {
+  isVpn: boolean;
+  provider?: string;
+  country?: string;
+  timezone?: string;
+  confidence?: number;
+  details: {
+    ipwhois?: any;
+    ipapi?: any;
+    ipquality?: any;
+    error?: string; // ← Ajoutez "error" comme propriété optionnelle
+  };
+}
+
+const KNOWN_VPN_PROVIDERS = [
+  'cyberghost',
+  'cyberghostvpn',
+  'nordvpn',
+  'expressvpn',
+  'surfshark',
+  'protonvpn',
+  'privateinternetaccess',
+  'ipvanish',
+  'hotspotshield',
+  'tunnelbear',
+  'vyprvpn',
+  'windscribe',
+  'hideMyAss',
+  'purevpn',
+  'mullvad',
+  'atlasvpn',
+];
+
+const ALLOWED_COUNTRIES = ['CI'];
+const EXPECTED_TIMEZONE = 'Africa/Abidjan';
+
+export async function checkVpnStatus(headers: Headers): Promise<VpnCheckResult> {
+  const ip = getClientIp(headers);
+  
+  if (!ip || ip === 'unknown') {
+    return {
+      isVpn: false,
+      confidence: 0,
+      details: { error: 'IP non détectable' }
+    };
+  }
+
+  const [ipwhoisResult, ipapiResult, ipqualityResult] = await Promise.allSettled([
+    checkWithIpwhois(ip),
+    checkWithIpapi(ip),
+    checkWithIpQuality(ip),
+  ]);
+
+  const results = {
+    ipwhois: ipwhoisResult.status === 'fulfilled' ? ipwhoisResult.value : null,
+    ipapi: ipapiResult.status === 'fulfilled' ? ipapiResult.value : null,
+    ipquality: ipqualityResult.status === 'fulfilled' ? ipqualityResult.value : null,
+  };
+
+  const vpnIndicators = [
+    results.ipwhois?.isVpn,
+    results.ipapi?.isVpn,
+    results.ipquality?.isVpn,
+  ].filter(Boolean).length;
+
+  const proxyIndicators = [
+    results.ipwhois?.isProxy,
+    results.ipapi?.isProxy,
+    results.ipquality?.isProxy,
+  ].filter(Boolean).length;
+
+  const torIndicators = [
+    results.ipwhois?.isTor,
+    results.ipapi?.isTor,
+    results.ipquality?.isTor,
+  ].filter(Boolean).length;
+
+  const provider = detectProvider(results);
+
+  const country = results.ipwhois?.country || results.ipapi?.country || results.ipquality?.country;
+  const isAllowedCountry = country ? ALLOWED_COUNTRIES.includes(country) : true;
+
+  const timezone = results.ipwhois?.timezone || results.ipapi?.timezone;
+  const timezoneMismatch = timezone && timezone !== EXPECTED_TIMEZONE;
+
+  let confidence = Math.min(
+    100,
+    (vpnIndicators * 40) + (proxyIndicators * 30) + (torIndicators * 30)
+  );
+
+  if (!isAllowedCountry) {
+    confidence += 50;
+  }
+
+  if (timezoneMismatch) {
+    confidence += 30;
+  }
+
+  confidence = Math.min(100, confidence);
+
+  const isVpn = vpnIndicators > 0 || 
+                proxyIndicators > 0 || 
+                torIndicators > 0 || 
+                !isAllowedCountry ||
+                timezoneMismatch;
+
+  return {
+    isVpn,
+    provider: provider || undefined, // ← Convertir null en undefined
+    country,
+    timezone,
+    confidence,
+    details: results,
+  };
+}
+
+function getClientIp(headers: Headers): string {
+  const forwarded = headers.get("x-forwarded-for");
+  if (forwarded) return forwarded.split(",")[0].trim();
+  
+  const realIp = headers.get("x-real-ip");
+  if (realIp) return realIp.trim();
+  
+  return headers.get("x-forwarded") || 'unknown';
+}
+
+async function checkWithIpwhois(ip: string) {
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+
+    const response = await fetch(`https://ipwho.is/${ip}`, {
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+
+    const data = await response.json();
     
-    return null;
+    return {
+      isVpn: data.security?.vpn || false,
+      isProxy: data.security?.proxy || false,
+      isTor: data.security?.tor || false,
+      country: data.country_code,
+      timezone: data.timezone?.id,
+      provider: data.connection?.org,
+      type: data.connection?.type,
+    };
+  } catch (error) {
+    return { isVpn: false, isProxy: false, isTor: false };
+  }
+}
+
+async function checkWithIpapi(ip: string) {
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+
+    const response = await fetch(`https://ipapi.co/${ip}/json/`, {
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+
+    const data = await response.json();
+    
+    return {
+      isVpn: data.security?.vpn || false,
+      isProxy: data.security?.proxy || false,
+      isTor: data.security?.tor || false,
+      country: data.country_code,
+      timezone: data.timezone,
+      provider: data.org,
+    };
+  } catch (error) {
+    return { isVpn: false, isProxy: false, isTor: false };
+  }
+}
+
+async function checkWithIpQuality(ip: string) {
+  const apiKey = process.env.IPQUALITYSCORE_API_KEY;
+  if (!apiKey) return { isVpn: false, isProxy: false, isTor: false };
+
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+
+    const response = await fetch(
+      `https://ipqualityscore.com/api/json/ip/${apiKey}/${ip}`,
+      { signal: controller.signal }
+    );
+    clearTimeout(timeout);
+
+    const data = await response.json();
+    
+    return {
+      isVpn: data.vpn || false,
+      isProxy: data.proxy || false,
+      isTor: data.tor || false,
+      country: data.country_code,
+      provider: data.isp,
+      fraudScore: data.fraud_score,
+      activeVpn: data.active_vpn,
+    };
+  } catch (error) {
+    return { isVpn: false, isProxy: false, isTor: false };
+  }
+}
+
+function detectProvider(results: any): string | null {
+  const allData = JSON.stringify(results).toLowerCase();
+  
+  for (const provider of KNOWN_VPN_PROVIDERS) {
+    if (allData.includes(provider)) {
+      return provider;
+    }
   }
   
-  export async function checkVpnStatus(headers: Headers): Promise<VpnCheckResult> {
-    const ip = getClientIp(headers);
-  
-    if (!ip) {
-      return { isVpn: false, reason: "IP invalide ou introuvable" };
-    }
-  
-    if (isLocalIp(ip)) {
-      return { isVpn: false, reason: "dev-local" };
-    }
-  
-    const cachedResult = getCachedResult(ip);
-    if (cachedResult) {
-      return cachedResult;
-    }
-  
-    const apiKey = process.env.VPNAPI_KEY;
-    if (!apiKey) {
-      console.error("VPNAPI_KEY non définie");
-      return { isVpn: false, reason: "service-indisponible" };
-    }
-  
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT);
-  
-      const res = await fetch(`https://vpnapi.io/api/${ip}?key=${apiKey}`, {
-        signal: controller.signal,
-      });
-  
-      clearTimeout(timeoutId);
-  
-      if (!res.ok) {
-        console.error("Erreur vpnapi.io:", res.status);
-        return { isVpn: false, reason: "verification-echouee" };
-      }
-  
-      const data = await res.json();
-      const isVpn = Boolean(
-        data?.security?.vpn || 
-        data?.security?.proxy || 
-        data?.security?.tor || 
-        data?.security?.relay
-      );
-  
-      const result = { isVpn };
-      
-      
-      vpnCache.set(ip, { result, timestamp: Date.now() });
-      
-      return result;
-    } catch (err) {
-      if (err instanceof Error && err.name === 'AbortError') {
-        console.error("Timeout détection VPN");
-        return { isVpn: false, reason: "timeout" };
-      }
-      
-      console.error("Erreur détection VPN:", err);
-      return { isVpn: false, reason: "timeout" };
+  const providers = [
+    results.ipwhois?.provider,
+    results.ipapi?.provider,
+    results.ipquality?.provider,
+  ].filter(Boolean);
+
+  for (const provider of providers) {
+    const normalized = provider.toLowerCase();
+    if (KNOWN_VPN_PROVIDERS.some(vpn => normalized.includes(vpn))) {
+      return provider;
     }
   }
+  
+  return null;
+}
