@@ -28,10 +28,14 @@ export type AggregateUser = {
 
 export type UserAvgAggregateOutputType = {
   hourlyRate: runtime.Decimal | null
+  lastLatitude: number | null
+  lastLongitude: number | null
 }
 
 export type UserSumAggregateOutputType = {
   hourlyRate: runtime.Decimal | null
+  lastLatitude: number | null
+  lastLongitude: number | null
 }
 
 export type UserMinAggregateOutputType = {
@@ -66,6 +70,11 @@ export type UserMinAggregateOutputType = {
   verificationNotes: string | null
   isDemo: boolean | null
   demoExpiresAt: Date | null
+  lastLatitude: number | null
+  lastLongitude: number | null
+  lastLocationUpdatedAt: Date | null
+  lastKnownRegion: string | null
+  locationVerified: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -102,6 +111,11 @@ export type UserMaxAggregateOutputType = {
   verificationNotes: string | null
   isDemo: boolean | null
   demoExpiresAt: Date | null
+  lastLatitude: number | null
+  lastLongitude: number | null
+  lastLocationUpdatedAt: Date | null
+  lastKnownRegion: string | null
+  locationVerified: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -138,6 +152,11 @@ export type UserCountAggregateOutputType = {
   verificationNotes: number
   isDemo: number
   demoExpiresAt: number
+  lastLatitude: number
+  lastLongitude: number
+  lastLocationUpdatedAt: number
+  lastKnownRegion: number
+  locationVerified: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -146,10 +165,14 @@ export type UserCountAggregateOutputType = {
 
 export type UserAvgAggregateInputType = {
   hourlyRate?: true
+  lastLatitude?: true
+  lastLongitude?: true
 }
 
 export type UserSumAggregateInputType = {
   hourlyRate?: true
+  lastLatitude?: true
+  lastLongitude?: true
 }
 
 export type UserMinAggregateInputType = {
@@ -184,6 +207,11 @@ export type UserMinAggregateInputType = {
   verificationNotes?: true
   isDemo?: true
   demoExpiresAt?: true
+  lastLatitude?: true
+  lastLongitude?: true
+  lastLocationUpdatedAt?: true
+  lastKnownRegion?: true
+  locationVerified?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -220,6 +248,11 @@ export type UserMaxAggregateInputType = {
   verificationNotes?: true
   isDemo?: true
   demoExpiresAt?: true
+  lastLatitude?: true
+  lastLongitude?: true
+  lastLocationUpdatedAt?: true
+  lastKnownRegion?: true
+  locationVerified?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -256,6 +289,11 @@ export type UserCountAggregateInputType = {
   verificationNotes?: true
   isDemo?: true
   demoExpiresAt?: true
+  lastLatitude?: true
+  lastLongitude?: true
+  lastLocationUpdatedAt?: true
+  lastKnownRegion?: true
+  locationVerified?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -379,6 +417,11 @@ export type UserGroupByOutputType = {
   verificationNotes: string | null
   isDemo: boolean
   demoExpiresAt: Date | null
+  lastLatitude: number | null
+  lastLongitude: number | null
+  lastLocationUpdatedAt: Date | null
+  lastKnownRegion: string | null
+  locationVerified: boolean
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -438,6 +481,11 @@ export type UserWhereInput = {
   verificationNotes?: Prisma.StringNullableFilter<"User"> | string | null
   isDemo?: Prisma.BoolFilter<"User"> | boolean
   demoExpiresAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  lastLatitude?: Prisma.FloatNullableFilter<"User"> | number | null
+  lastLongitude?: Prisma.FloatNullableFilter<"User"> | number | null
+  lastLocationUpdatedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  lastKnownRegion?: Prisma.StringNullableFilter<"User"> | string | null
+  locationVerified?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   accounts?: Prisma.AccountListRelationFilter
@@ -486,6 +534,11 @@ export type UserOrderByWithRelationInput = {
   verificationNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   isDemo?: Prisma.SortOrder
   demoExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastLatitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastLongitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastLocationUpdatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastKnownRegion?: Prisma.SortOrderInput | Prisma.SortOrder
+  locationVerified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   accounts?: Prisma.AccountOrderByRelationAggregateInput
@@ -537,6 +590,11 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   verificationNotes?: Prisma.StringNullableFilter<"User"> | string | null
   isDemo?: Prisma.BoolFilter<"User"> | boolean
   demoExpiresAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  lastLatitude?: Prisma.FloatNullableFilter<"User"> | number | null
+  lastLongitude?: Prisma.FloatNullableFilter<"User"> | number | null
+  lastLocationUpdatedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  lastKnownRegion?: Prisma.StringNullableFilter<"User"> | string | null
+  locationVerified?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   accounts?: Prisma.AccountListRelationFilter
@@ -585,6 +643,11 @@ export type UserOrderByWithAggregationInput = {
   verificationNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   isDemo?: Prisma.SortOrder
   demoExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastLatitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastLongitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastLocationUpdatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastKnownRegion?: Prisma.SortOrderInput | Prisma.SortOrder
+  locationVerified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -629,6 +692,11 @@ export type UserScalarWhereWithAggregatesInput = {
   verificationNotes?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   isDemo?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   demoExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  lastLatitude?: Prisma.FloatNullableWithAggregatesFilter<"User"> | number | null
+  lastLongitude?: Prisma.FloatNullableWithAggregatesFilter<"User"> | number | null
+  lastLocationUpdatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  lastKnownRegion?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  locationVerified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -665,6 +733,11 @@ export type UserCreateInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -713,6 +786,11 @@ export type UserUncheckedCreateInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -761,6 +839,11 @@ export type UserUpdateInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -809,6 +892,11 @@ export type UserUncheckedUpdateInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -857,6 +945,11 @@ export type UserCreateManyInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -893,6 +986,11 @@ export type UserUpdateManyMutationInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -929,6 +1027,11 @@ export type UserUncheckedUpdateManyInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -970,12 +1073,19 @@ export type UserCountOrderByAggregateInput = {
   verificationNotes?: Prisma.SortOrder
   isDemo?: Prisma.SortOrder
   demoExpiresAt?: Prisma.SortOrder
+  lastLatitude?: Prisma.SortOrder
+  lastLongitude?: Prisma.SortOrder
+  lastLocationUpdatedAt?: Prisma.SortOrder
+  lastKnownRegion?: Prisma.SortOrder
+  locationVerified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type UserAvgOrderByAggregateInput = {
   hourlyRate?: Prisma.SortOrder
+  lastLatitude?: Prisma.SortOrder
+  lastLongitude?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -1010,6 +1120,11 @@ export type UserMaxOrderByAggregateInput = {
   verificationNotes?: Prisma.SortOrder
   isDemo?: Prisma.SortOrder
   demoExpiresAt?: Prisma.SortOrder
+  lastLatitude?: Prisma.SortOrder
+  lastLongitude?: Prisma.SortOrder
+  lastLocationUpdatedAt?: Prisma.SortOrder
+  lastKnownRegion?: Prisma.SortOrder
+  locationVerified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -1046,12 +1161,19 @@ export type UserMinOrderByAggregateInput = {
   verificationNotes?: Prisma.SortOrder
   isDemo?: Prisma.SortOrder
   demoExpiresAt?: Prisma.SortOrder
+  lastLatitude?: Prisma.SortOrder
+  lastLongitude?: Prisma.SortOrder
+  lastLocationUpdatedAt?: Prisma.SortOrder
+  lastKnownRegion?: Prisma.SortOrder
+  locationVerified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type UserSumOrderByAggregateInput = {
   hourlyRate?: Prisma.SortOrder
+  lastLatitude?: Prisma.SortOrder
+  lastLongitude?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -1285,6 +1407,11 @@ export type UserCreateWithoutAnnouncementsInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -1332,6 +1459,11 @@ export type UserUncheckedCreateWithoutAnnouncementsInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -1395,6 +1527,11 @@ export type UserUpdateWithoutAnnouncementsInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -1442,6 +1579,11 @@ export type UserUncheckedUpdateWithoutAnnouncementsInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -1489,6 +1631,11 @@ export type UserCreateWithoutAccountsInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -1536,6 +1683,11 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -1599,6 +1751,11 @@ export type UserUpdateWithoutAccountsInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -1646,6 +1803,11 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1693,6 +1855,11 @@ export type UserCreateWithoutSessionsInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -1740,6 +1907,11 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -1803,6 +1975,11 @@ export type UserUpdateWithoutSessionsInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -1850,6 +2027,11 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -1897,6 +2079,11 @@ export type UserCreateWithoutConsentsInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -1944,6 +2131,11 @@ export type UserUncheckedCreateWithoutConsentsInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -2007,6 +2199,11 @@ export type UserUpdateWithoutConsentsInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -2054,6 +2251,11 @@ export type UserUncheckedUpdateWithoutConsentsInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -2101,6 +2303,11 @@ export type UserCreateWithoutFavoriteProvidersInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -2148,6 +2355,11 @@ export type UserUncheckedCreateWithoutFavoriteProvidersInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -2200,6 +2412,11 @@ export type UserCreateWithoutFavoritedByInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -2247,6 +2464,11 @@ export type UserUncheckedCreateWithoutFavoritedByInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -2310,6 +2532,11 @@ export type UserUpdateWithoutFavoriteProvidersInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -2357,6 +2584,11 @@ export type UserUncheckedUpdateWithoutFavoriteProvidersInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -2415,6 +2647,11 @@ export type UserUpdateWithoutFavoritedByInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -2462,6 +2699,11 @@ export type UserUncheckedUpdateWithoutFavoritedByInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -2509,6 +2751,11 @@ export type UserCreateWithoutAvailabilitiesInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -2556,6 +2803,11 @@ export type UserUncheckedCreateWithoutAvailabilitiesInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -2619,6 +2871,11 @@ export type UserUpdateWithoutAvailabilitiesInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -2666,6 +2923,11 @@ export type UserUncheckedUpdateWithoutAvailabilitiesInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -2713,6 +2975,11 @@ export type UserCreateWithoutUnavailableDatesInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -2760,6 +3027,11 @@ export type UserUncheckedCreateWithoutUnavailableDatesInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -2823,6 +3095,11 @@ export type UserUpdateWithoutUnavailableDatesInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -2870,6 +3147,11 @@ export type UserUncheckedUpdateWithoutUnavailableDatesInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -2917,6 +3199,11 @@ export type UserCreateWithoutBookingsAsClientInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -2964,6 +3251,11 @@ export type UserUncheckedCreateWithoutBookingsAsClientInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -3016,6 +3308,11 @@ export type UserCreateWithoutBookingsAsProviderInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -3063,6 +3360,11 @@ export type UserUncheckedCreateWithoutBookingsAsProviderInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -3126,6 +3428,11 @@ export type UserUpdateWithoutBookingsAsClientInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -3173,6 +3480,11 @@ export type UserUncheckedUpdateWithoutBookingsAsClientInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -3231,6 +3543,11 @@ export type UserUpdateWithoutBookingsAsProviderInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -3278,6 +3595,11 @@ export type UserUncheckedUpdateWithoutBookingsAsProviderInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -3325,6 +3647,11 @@ export type UserCreateWithoutReviewsGivenInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -3372,6 +3699,11 @@ export type UserUncheckedCreateWithoutReviewsGivenInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -3424,6 +3756,11 @@ export type UserCreateWithoutReviewsReceivedInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -3471,6 +3808,11 @@ export type UserUncheckedCreateWithoutReviewsReceivedInput = {
   verificationNotes?: string | null
   isDemo?: boolean
   demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -3534,6 +3876,11 @@ export type UserUpdateWithoutReviewsGivenInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -3581,6 +3928,11 @@ export type UserUncheckedUpdateWithoutReviewsGivenInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -3639,6 +3991,11 @@ export type UserUpdateWithoutReviewsReceivedInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -3686,6 +4043,11 @@ export type UserUncheckedUpdateWithoutReviewsReceivedInput = {
   verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -3863,6 +4225,11 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   verificationNotes?: boolean
   isDemo?: boolean
   demoExpiresAt?: boolean
+  lastLatitude?: boolean
+  lastLongitude?: boolean
+  lastLocationUpdatedAt?: boolean
+  lastKnownRegion?: boolean
+  locationVerified?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
@@ -3912,6 +4279,11 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   verificationNotes?: boolean
   isDemo?: boolean
   demoExpiresAt?: boolean
+  lastLatitude?: boolean
+  lastLongitude?: boolean
+  lastLocationUpdatedAt?: boolean
+  lastKnownRegion?: boolean
+  locationVerified?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -3948,6 +4320,11 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   verificationNotes?: boolean
   isDemo?: boolean
   demoExpiresAt?: boolean
+  lastLatitude?: boolean
+  lastLongitude?: boolean
+  lastLocationUpdatedAt?: boolean
+  lastKnownRegion?: boolean
+  locationVerified?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -3984,11 +4361,16 @@ export type UserSelectScalar = {
   verificationNotes?: boolean
   isDemo?: boolean
   demoExpiresAt?: boolean
+  lastLatitude?: boolean
+  lastLongitude?: boolean
+  lastLocationUpdatedAt?: boolean
+  lastKnownRegion?: boolean
+  locationVerified?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "phone" | "phoneCountryCode" | "phoneVerified" | "password" | "image" | "accountType" | "role" | "verificationMethod" | "banned" | "banReason" | "banExpires" | "acceptNewsletter" | "clientType" | "companyName" | "rccmNumber" | "providerType" | "bio" | "isActive" | "hourlyRate" | "currency" | "verificationStatus" | "verificationLevel" | "verifiedBy" | "verifiedAt" | "verificationNotes" | "isDemo" | "demoExpiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "phone" | "phoneCountryCode" | "phoneVerified" | "password" | "image" | "accountType" | "role" | "verificationMethod" | "banned" | "banReason" | "banExpires" | "acceptNewsletter" | "clientType" | "companyName" | "rccmNumber" | "providerType" | "bio" | "isActive" | "hourlyRate" | "currency" | "verificationStatus" | "verificationLevel" | "verifiedBy" | "verifiedAt" | "verificationNotes" | "isDemo" | "demoExpiresAt" | "lastLatitude" | "lastLongitude" | "lastLocationUpdatedAt" | "lastKnownRegion" | "locationVerified" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
@@ -4055,6 +4437,11 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     verificationNotes: string | null
     isDemo: boolean
     demoExpiresAt: Date | null
+    lastLatitude: number | null
+    lastLongitude: number | null
+    lastLocationUpdatedAt: Date | null
+    lastKnownRegion: string | null
+    locationVerified: boolean
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -4523,6 +4910,11 @@ export interface UserFieldRefs {
   readonly verificationNotes: Prisma.FieldRef<"User", 'String'>
   readonly isDemo: Prisma.FieldRef<"User", 'Boolean'>
   readonly demoExpiresAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly lastLatitude: Prisma.FieldRef<"User", 'Float'>
+  readonly lastLongitude: Prisma.FieldRef<"User", 'Float'>
+  readonly lastLocationUpdatedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly lastKnownRegion: Prisma.FieldRef<"User", 'String'>
+  readonly locationVerified: Prisma.FieldRef<"User", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }

@@ -20,7 +20,7 @@ import Img2 from "@/public/assets/pictures/msPr2.webp";
 type LocationState = "idle" | "requesting" | "granted" | "denied";
 type VpnState = "idle" | "checking" | "clean" | "detected";
 
-const PrecheckPage = () => {
+const PreloadingPage = () => {
   const t = useTranslations("precheck");
   const router = useRouter();
 
@@ -40,7 +40,7 @@ const PrecheckPage = () => {
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        // Sauvegarder les coordonnées
+       
         setCoordinates({
           lat: position.coords.latitude,
           lng: position.coords.longitude,
@@ -67,16 +67,16 @@ const PrecheckPage = () => {
     setShowVpnPopup(false);
     
     try {
-      // Vérifier le VPN avec le header de sécurité
+      
       const res = await fetch("/api/security/vpn-check", {
         headers: {
           "x-internal-request": process.env.NEXT_PUBLIC_INTERNAL_REQUEST_SECRET || "",
         },
-        credentials: "include", // Important pour envoyer les cookies de session
+        credentials: "include",
       });
 
       if (res.status === 401) {
-        // Session expirée ou non authentifié
+        
         console.error("Non authentifié");
         router.replace("/login");
         return;
@@ -84,13 +84,13 @@ const PrecheckPage = () => {
 
       if (res.status === 403) {
         console.error("Accès non autorisé");
-        setVpnState("clean"); // Ou gérer différemment
+        setVpnState("clean"); 
         return;
       }
 
       if (res.status === 429) {
         console.error("Trop de requêtes");
-        setVpnState("clean"); // Ou afficher un message
+        setVpnState("clean"); 
         return;
       }
 
@@ -107,10 +107,29 @@ const PrecheckPage = () => {
       setVpnState("clean");
     }
   }, [router]);
+  const saveUserLocation = useCallback(async (lat: number, lng: number, region?: string) => {
+  try {
+    const res = await fetch("/api/security/update-user-location", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-internal-request": process.env.NEXT_PUBLIC_INTERNAL_REQUEST_SECRET || "",
+      },
+      credentials: "include",
+      body: JSON.stringify({ lat, lng, region }),
+    });
+
+    if (!res.ok) {
+      console.error("Erreur sauvegarde localisation:", res.status);
+    }
+  } catch (error) {
+    console.error("Erreur réseau sauvegarde localisation:", error);
+  }
+}, []);
 
   const validateLocation = useCallback(async (lat: number, lng: number) => {
     try {
-      const res = await fetch("/api/security/validate-location", {
+      const res = await fetch("/api/security/location-check", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -144,26 +163,23 @@ const PrecheckPage = () => {
     }
   }, [router]);
 
-  const handleContinueToDashboard = async () => {
-    // Vérifier la localisation avant de continuer
-    if (!coordinates) {
-      console.error("Coordonnées manquantes");
-      return;
-    }
+ const handleContinueToDashboard = async () => {
+  if (!coordinates) {
+    console.error("Coordonnées manquantes");
+    return;
+  }
 
-    const locationResult = await validateLocation(coordinates.lat, coordinates.lng);
+  const locationResult = await validateLocation(coordinates.lat, coordinates.lng);
 
-    if (locationResult.isValid) {
-      // Localisation valide, continuer vers le dashboard
-      router.replace("/dashboard");
-    } else {
-      // Localisation invalide, afficher un message
-      console.error("Localisation invalide:", locationResult.reason);
-      // Tu peux ajouter un état pour afficher l'erreur
-      // setLocationError(locationResult.reason);
-      alert(t("location.invalidLocation"));
-    }
-  };
+  if (locationResult.isValid) {
+    
+    await saveUserLocation(coordinates.lat, coordinates.lng, locationResult.region);
+    router.replace("/dashboard");
+  } else {
+    console.error("Localisation invalide:", locationResult.reason);
+    alert(t("location.invalidLocation"));
+  }
+};
 
   return (
     <div className={`min-h-screen flex items-center justify-center px-4 py-8 ${orbitron.className}`}>
@@ -355,4 +371,4 @@ const PrecheckPage = () => {
   );
 };
 
-export default PrecheckPage;
+export default PreloadingPage;

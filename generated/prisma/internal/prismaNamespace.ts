@@ -1940,6 +1940,11 @@ export const UserScalarFieldEnum = {
   verificationNotes: 'verificationNotes',
   isDemo: 'isDemo',
   demoExpiresAt: 'demoExpiresAt',
+  lastLatitude: 'lastLatitude',
+  lastLongitude: 'lastLongitude',
+  lastLocationUpdatedAt: 'lastLocationUpdatedAt',
+  lastKnownRegion: 'lastKnownRegion',
+  locationVerified: 'locationVerified',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

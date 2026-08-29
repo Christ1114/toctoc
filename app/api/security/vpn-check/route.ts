@@ -1,15 +1,14 @@
-// app/api/check-vpn/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { checkVpnStatus } from "@/app/lib/security/vpnCheck";
 import { auth } from "@/app/lib/auth";
 import { headers } from "next/headers";
 
-// Rate limiting avec nettoyage automatique
+
 const rateLimitMap = new Map<string, { count: number; timestamp: number }>();
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
 const RATE_LIMIT_MAX = 10; // 10 requêtes par minute
 
-// Nettoyer les entrées expirées toutes les 5 minutes
+
 setInterval(() => {
   const now = Date.now();
   for (const [key, value] of rateLimitMap.entries()) {
@@ -21,7 +20,7 @@ setInterval(() => {
 
 export async function GET(req: NextRequest) {
   try {
-    // 1. Vérifier l'authentification
+    
     const session = await auth.api.getSession({
       headers: await headers(),
     });
@@ -36,12 +35,11 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // 2. Vérifier l'origine de la requête (CSRF protection)
     const origin = req.headers.get("origin");
     const host = req.headers.get("host");
     const referer = req.headers.get("referer");
 
-    // Vérifier l'origine si elle existe
+
     if (origin && host && new URL(origin).host !== host) {
       return NextResponse.json(
         { 
@@ -52,7 +50,7 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Vérifier le referer si l'origine n'est pas disponible
+  
     if (!origin && referer && host) {
       const refererHost = new URL(referer).host;
       if (refererHost !== host) {
@@ -66,7 +64,7 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // 3. Vérifier le header personnalisé (si configuré)
+  
     const internalHeader = req.headers.get("x-internal-request");
     if (process.env.INTERNAL_REQUEST_SECRET && 
         internalHeader !== process.env.INTERNAL_REQUEST_SECRET) {
@@ -79,7 +77,7 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // 4. Rate limiting
+
     const userId = session.user.id;
     const rateLimitResult = checkRateLimit(userId);
     

@@ -294,6 +294,12 @@ model User {
   isDemo        Boolean   @default(false)
   demoExpiresAt DateTime?
 
+  lastLatitude          Float?
+  lastLongitude         Float?
+  lastLocationUpdatedAt DateTime?
+  lastKnownRegion       String?
+  locationVerified      Boolean   @default(false)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -318,6 +324,7 @@ model User {
   @@index([accountType])
   @@index([email])
   @@index([phone])
+  @@index([lastLatitude, lastLongitude])
   @@map("users")
 }
 

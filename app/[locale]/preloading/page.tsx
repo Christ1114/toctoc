@@ -1,10 +1,10 @@
-import PrecheckPage from '@/components/preloading/comp'
+import PreloadingPage from '@/components/preloading/comp'
 import React from 'react'
 
 const page = () => {
   return (
     <div>
-      <PrecheckPage/>
+      <PreloadingPage/>
     </div>
   )
 }
