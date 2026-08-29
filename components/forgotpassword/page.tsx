@@ -15,6 +15,8 @@ import {
   type ForgotPasswordFormErrors,
 } from "@/app/lib/validation/forgotPasswordValidation";
 import { forgotPassword } from "@/app/lib/auth-client";
+import Img1 from "@/public/assets/pictures/masquote3.webp";
+
 
 const ForgotPasswordForm = () => {
   const t = useTranslations('forgotPassword');
@@ -199,7 +201,7 @@ const ForgotPasswordForm = () => {
             <>
               <div className="mb-4 sm:mb-6 md:mb-8 text-center">
                 <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 mx-auto mb-2 sm:mb-3 md:mb-4 bg-linear-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-lg">
-                  <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 text-white" />
+                  <Image src={Img1} alt="Logo" width={100} height={100} />
                 </div>
                 <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-green-600 dark:text-green-500">
                   {t('success.title')}
