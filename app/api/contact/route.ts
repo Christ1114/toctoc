@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { headers } from 'next/headers';
@@ -107,22 +106,41 @@ export async function POST(request: Request) {
     const headersList = await headers();
     const origin = headersList.get('origin');
     const referer = headersList.get('referer');
-    
-  
-    const allowedOrigins = [
-      process.env.NEXT_PUBLIC_SITE_URL,
-      'http://localhost:3000',
-    ].filter(Boolean);
+    const host = headersList.get('host');
 
-    
-    if (process.env.NODE_ENV === 'production' && origin) {
-      const isAllowed = allowedOrigins.some(allowed => origin.startsWith(allowed!));
-      if (!isAllowed) {
-        console.warn('🚫 Tentative d\'accès depuis origine non autorisée:', origin);
+    // Vérifier l'origine par rapport au host réel de la requête
+    if (origin && host) {
+      try {
+        const originHost = new URL(origin).host;
+        if (originHost !== host) {
+          console.warn('🚫 Tentative d\'accès depuis origine non autorisée:', origin, 'vs host:', host);
+          return NextResponse.json(
+            { error: 'Origine non autorisée' },
+            { status: 403 }
+          );
+        }
+      } catch {
+        console.warn('🚫 Origine malformée:', origin);
         return NextResponse.json(
           { error: 'Origine non autorisée' },
           { status: 403 }
         );
+      }
+    }
+
+    // Vérifier le referer si l'origine n'est pas disponible
+    if (!origin && referer && host) {
+      try {
+        const refererHost = new URL(referer).host;
+        if (refererHost !== host) {
+          console.warn('🚫 Tentative d\'accès depuis referer non autorisé:', referer, 'vs host:', host);
+          return NextResponse.json(
+            { error: 'Origine non autorisée' },
+            { status: 403 }
+          );
+        }
+      } catch {
+        console.warn('🚫 Referer malformé:', referer);
       }
     }
 

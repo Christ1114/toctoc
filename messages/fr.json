@@ -314,6 +314,9 @@
           "contact": {
             "category": "Catégorie",
            "messagePlaceholder": "Écrivez votre message ici...",
+           "emailValid": "Adresse email valide",
+    "validatingEmail": "Validation de l'email en cours...",
+    "sending": "Envoi en cours...",
             "categories": {
               "usageQuestion": "Question d'utilisation",
               "signupRequest": "Demande d'inscription",

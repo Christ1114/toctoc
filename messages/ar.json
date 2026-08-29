@@ -335,6 +335,9 @@
   "contact": {
     "category": "الفئة",
      "messagePlaceholder": "اكتب رسالتك هنا...",
+  "emailValid": "البريد الإلكتروني صالح",
+  "validatingEmail": "جاري التحقق من البريد الإلكتروني...",
+  "sending": "جاري الإرسال...",
     "categories": {
       "usageQuestion": "استفسار عن الاستخدام",
       "signupRequest": "طلب تسجيل",

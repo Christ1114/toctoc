@@ -289,6 +289,9 @@
   "contact": {
     "category": "Category",
      "messagePlaceholder": "Write your message here...",
+      "emailValid": "Valid email address",
+  "validatingEmail": "Validating email...",
+  "sending": "Sending...",
     "categories": {
       "usageQuestion": "Usage question",
       "signupRequest": "Signup request",

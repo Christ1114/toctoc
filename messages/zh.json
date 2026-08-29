@@ -288,6 +288,9 @@
   "contact": {
     "category": "分类",
     "messagePlaceholder": "在这里写下您的信息...",
+     "emailValid": "电子邮件地址有效",
+  "validatingEmail": "正在验证电子邮件...",
+  "sending": "正在发送...",
     "categories": {
       "usageQuestion": "使用咨询",
       "signupRequest": "注册申请",
