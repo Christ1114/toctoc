@@ -366,9 +366,14 @@
       "entreprise": "企业"
     },
     "providerTypes": {
-      "salon": "沙龙",
-      "freelance": "自由职业",
-      "shop": "商店"
+     
+  "babysitter": "临时看护",
+  "gardePeriscolaire": "课后托管",
+  "menage": "家政保洁",
+  "aidePersonnesAgees": "老年人照护",
+  "residentiel": "住家服务",
+  "courtTerme": "短期服务"
+
     },
     "verification": {
       "email": "通过电子邮件",
@@ -479,7 +484,11 @@
     "success": {
       "title": "邮件已发送！",
       "message": "请检查您的收件箱以重置密码。",
-      "sentTo": "邮件已发送至："
+      "sentTo": "邮件已发送至：",
+      "title1": "注册成功！",
+  "emailMessage": "验证邮件已发送至 {email}。请点击收到的链接激活您的账户。",
+  "phoneMessage": "验证码已发送至 {phone}。请查看您的手机。",
+  "goToLogin": "前往登录"
     }
   },
   "resetPassword": {

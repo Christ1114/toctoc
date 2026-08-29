@@ -392,9 +392,12 @@
               "entreprise": "Entreprise"
             },
             "providerTypes": {
-              "salon": "Salon",
-              "freelance": "Freelance",
-              "shop": "Boutique"
+              "babysitter": "Baby-sitting",
+  "gardePeriscolaire": "Garde périscolaire",
+  "menage": "Ménage",
+  "aidePersonnesAgees": "Aide aux personnes âgées",
+  "residentiel": "Résidentiel (logé sur place)",
+  "courtTerme": "Court terme"
             },
             "verification": {
               "email": "Par Email",
@@ -506,7 +509,11 @@
             "success": {
               "title": "Email envoyé !",
               "message": "Vérifiez votre boîte de réception pour réinitialiser votre mot de passe.",
-              "sentTo": "Email envoyé à :"
+              "sentTo": "Email envoyé à :",
+              "title1": "Inscription réussie !",
+  "emailMessage": "Un email de vérification a été envoyé à {email}. Cliquez sur le lien reçu pour activer votre compte.",
+  "phoneMessage": "Un code de vérification a été envoyé au {phone}. Vérifiez votre téléphone.",
+  "goToLogin": "Aller à la connexion"
             }
           },
           

@@ -4,22 +4,22 @@ import { prisma } from "@/lib/prisma";
 import { username } from "better-auth/plugins/username";
 import { admin, phoneNumber } from "better-auth/plugins";
 import { createAuthMiddleware, APIError } from "better-auth/api";
+import { Resend } from 'resend';
 import {
   isPasswordValid,
   isPasswordPwned,
   isEmailValidWithVerification,
 } from "@/app/lib/validation/registerValidation";
-
-import nodemailer from "nodemailer";
 import { nextCookies } from "better-auth/next-js";
+
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const REQUIRED_ENV = [
   "BETTER_AUTH_URL",
   "BETTER_AUTH_SECRET",
-  "SMTP_HOST",
-  "SMTP_PORT",
-  "SMTP_USER",
-  "SMTP_PASS",
+  "RESEND_API_KEY",        
+  "RESEND_FROM_EMAIL",     
   "GOOGLE_CLIENT_ID",
   "GOOGLE_CLIENT_SECRET",
   "TIKTOK_CLIENT_KEY",
@@ -32,19 +32,6 @@ for (const key of REQUIRED_ENV) {
     throw new Error(`[auth] Variable d'environnement manquante: ${key}`);
   }
 }
-
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
-  secure: Number(process.env.SMTP_PORT) === 465,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-  connectionTimeout: 10000,
-  greetingTimeout: 5000,
-  socketTimeout: 15000,
-});
 
 const REQUIRED_CONSENTS = [
   "LOCATION_ACCESS",
@@ -90,24 +77,24 @@ export const auth = betterAuth({
     autoSignIn: false,
 
     sendVerificationEmail: async ({ user, url }: { user: { email: string }, url: string }) => {
-      try {
-        await transporter.sendMail({
-          from: `"TOCTOC" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
-          to: user.email,
-          subject: "Verify your TOCTOC email address",
-          html: `
-            <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
-              <h2 style="color: #432dd7;">Welcome to TOCTOC!</h2>
-              <p>Click the button below to verify your email address.</p>
-              <a href="${url}" style="display:inline-block; background:#432dd7; color:#fff; padding:12px 24px; border-radius:8px; text-decoration:none; font-weight:bold;">
-                Verify my email
-              </a>
-              <p style="color:#888; font-size:12px; margin-top:24px;">
-                This link expires in 24 hours. If you did not request this, please ignore this email.
-              </p>
-            </div>
-          `,
-        });
+     try {
+  await resend.emails.send({
+    from: `TOCTOC <${process.env.RESEND_FROM_EMAIL}>`,
+    to: user.email,
+    subject: "Verify your TOCTOC email address",
+    html: `
+      <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
+        <h2 style="color: #432dd7;">Welcome to TOCTOC!</h2>
+        <p>Click the button below to verify your email address.</p>
+        <a href="${url}" style="display:inline-block; background:#432dd7; color:#fff; padding:12px 24px; border-radius:8px; text-decoration:none; font-weight:bold;">
+          Verify my email
+        </a>
+        <p style="color:#888; font-size:12px; margin-top:24px;">
+          This link expires in 24 hours. If you did not request this, please ignore this email.
+        </p>
+      </div>
+    `,
+  });
       } catch (err) {
         console.error("Erreur envoi email de vérification:", err);
       }
@@ -115,8 +102,8 @@ export const auth = betterAuth({
 
     sendResetPassword: async ({ user, url }: { user: { email: string }, url: string }) => {
       try {
-        await transporter.sendMail({
-          from: `"TOCTOC" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
+        await resend.emails.send({
+          from: `TOCTOC <${process.env.RESEND_FROM_EMAIL}>`,
           to: user.email,
           subject: "Réinitialisation de votre mot de passe TOCTOC",
           html: `
@@ -289,6 +276,7 @@ export const auth = betterAuth({
       rccmNumber: { type: "string", required: false },
       providerType: { type: "string", required: false },
       bio: { type: "string", required: false },
+      verificationMethod: { type: "string", required: false, defaultValue: "email" },
       isActive: { type: "boolean", required: false, defaultValue: true },
       hourlyRate: { type: "number", required: false },
       currency: { type: "string", required: false, defaultValue: "XOF" },
@@ -304,6 +292,7 @@ export const auth = betterAuth({
       acceptNewsletter: { type: "boolean", required: false, defaultValue: false },
     },
   },
+  
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID as string,

@@ -1,9 +1,15 @@
 import { parsePhoneNumber, CountryCode } from "libphonenumber-js";
 
-// ============ TYPES ============
+
 export type Role = "CLIENT" | "PROVIDER";
 export type ClientType = "INDIVIDUAL" | "AGENCY";
-export type ProviderType = "SALON" | "FREELANCE" | "SHOP";
+export type ProviderType =
+  | "BABYSITTER"
+  | "GARDE_PERISCOLAIRE"
+  | "MENAGE"
+  | "AIDE_PERSONNES_AGEES"
+  | "RESIDENTIEL"
+  | "COURT_TERME";
 export type VerificationMethod = "email" | "phone";
 
 export interface RegisterFormValues {
@@ -181,8 +187,7 @@ export async function verifyEmailWithKickbox(email: string): Promise<KickboxResp
       return null;
     }
 
-    const data: KickboxResponse = await res.json();
-    return data;
+    return await res.json();
   } catch (err) {
     console.error("Erreur Kickbox:", err);
     return null;
@@ -190,25 +195,19 @@ export async function verifyEmailWithKickbox(email: string): Promise<KickboxResp
 }
 
 export async function isEmailValidWithVerification(email: string): Promise<boolean> {
-  const isDisposable = await isDisposableEmailWithDisify(email);
-  if (isDisposable) {
+  if (await isDisposableEmailWithDisify(email)) {
     return false;
   }
 
   const kickboxResult = await verifyEmailWithKickbox(email);
-  if (kickboxResult) {
-    if (kickboxResult.disposable) {
-      return false;
-    }
-    if (kickboxResult.result === "undeliverable") {
-      return false;
-    }
-    if (kickboxResult.sendex < 0.3) {
-      return false;
-    }
+  
+  if (!kickboxResult) {
+    return true;
   }
 
-  return true;
+  return !kickboxResult.disposable 
+    && kickboxResult.result !== "undeliverable"
+    && kickboxResult.sendex >= 0.3;
 }
 
 function isLocalPartValid(localPart: string): boolean {
@@ -220,12 +219,10 @@ function isLocalPartValid(localPart: string): boolean {
 }
 
 function isDomainValid(domain: string): boolean {
-  if (!domain || domain.startsWith("-") || domain.endsWith("-")) {
+  if (!domain || domain.startsWith("-") || domain.endsWith("-") || domain.includes("..")) {
     return false;
   }
-  if (domain.includes("..")) {
-    return false;
-  }
+
   if (BLOCKED_DOMAINS.has(domain)) {
     return false;
   }
@@ -252,18 +249,14 @@ function isTldValid(domainParts: string[]): boolean {
 export function isEmailValid(email: string): boolean {
   const normalized = normalizeEmail(email);
 
-  if (normalized.length > MAX_EMAIL_LENGTH) {
-    return false;
-  }
-  if (/[<>"'`]/.test(normalized)) {
-    return false;
-  }
-  if (!EMAIL_REGEX.test(normalized)) {
-    return false;
-  }
+  const checks = [
+    () => normalized.length <= MAX_EMAIL_LENGTH,
+    () => !/[<>"'`]/.test(normalized),
+    () => EMAIL_REGEX.test(normalized),
+    () => (normalized.match(/@/g) || []).length === 1,
+  ];
 
-  const atCount = (normalized.match(/@/g) || []).length;
-  if (atCount !== 1) {
+  if (!checks.every(check => check())) {
     return false;
   }
 
@@ -279,13 +272,15 @@ export function isEmailValid(email: string): boolean {
 export function isPhoneValid(phone: string, country: string = "CI"): boolean {
   const cleaned = normalizePhone(phone);
 
-  if (!cleaned || !cleaned.startsWith("+")) {
-    return false;
-  }
-  if (cleaned.length < 10 || cleaned.length > MAX_PHONE_LENGTH) {
-    return false;
-  }
-  if (!/^\+\d+$/.test(cleaned)) {
+  const basicChecks = [
+    () => cleaned.length > 0,
+    () => cleaned.startsWith("+"),
+    () => cleaned.length >= 10,
+    () => cleaned.length <= MAX_PHONE_LENGTH,
+    () => /^\+\d+$/.test(cleaned),
+  ];
+
+  if (!basicChecks.every(check => check())) {
     return false;
   }
 
@@ -299,6 +294,7 @@ export function isPhoneValid(phone: string, country: string = "CI"): boolean {
 
 export function extractCountryCode(phone: string): string | null {
   const cleaned = normalizePhone(phone);
+  
   if (!cleaned.startsWith("+")) {
     return null;
   }
@@ -313,28 +309,22 @@ export function extractCountryCode(phone: string): string | null {
 
 export function isValidCountryCode(phone: string): boolean {
   const cleaned = normalizePhone(phone);
-  if (!cleaned.startsWith("+")) {
-    return false;
-  }
-
-  return VALID_COUNTRY_CODES.some(code => cleaned.startsWith(code));
+  
+  return cleaned.startsWith("+") 
+    && VALID_COUNTRY_CODES.some(code => cleaned.startsWith(code));
 }
 
 // ============ VALIDATION MOT DE PASSE ============
 export function isPasswordValid(password: string): boolean {
-  if (password.length < MIN_PASSWORD_LENGTH || password.length > MAX_PASSWORD_LENGTH) {
-    return false;
-  }
-  if (!PASSWORD_REGEX.test(password)) {
-    return false;
-  }
-  if (COMMON_PASSWORDS.has(password.toLowerCase())) {
-    return false;
-  }
-  if (/^(.)\1+$/.test(password)) {
-    return false;
-  }
-  return true;
+  const checks = [
+    () => password.length >= MIN_PASSWORD_LENGTH,
+    () => password.length <= MAX_PASSWORD_LENGTH,
+    () => PASSWORD_REGEX.test(password),
+    () => !COMMON_PASSWORDS.has(password.toLowerCase()),
+    () => !/^(.)\1+$/.test(password),
+  ];
+
+  return checks.every(check => check());
 }
 
 export function isPasswordConfirmed(password: string, confirmPassword: string): boolean {
@@ -367,57 +357,42 @@ export async function isPasswordPwned(password: string): Promise<boolean> {
 // ============ VALIDATION DIVERS ============
 export function isRccmValid(rccm: string): boolean {
   const cleaned = rccm.trim().toUpperCase();
-  if (cleaned.length < 5 || cleaned.length > MAX_RCCM_LENGTH) {
-    return false;
-  }
-  if (!/^[A-Z0-9\/\-\.\s]+$/.test(cleaned)) {
-    return false;
-  }
-  return true;
+  return cleaned.length >= 5 
+    && cleaned.length <= MAX_RCCM_LENGTH 
+    && /^[A-Z0-9\/\-\.\s]+$/.test(cleaned);
 }
 
 export function isNameValid(name: string): boolean {
   const normalized = normalizeName(name);
-  if (!normalized || normalized.length < 2) {
-    return false;
-  }
-  if (/[<>{}]/.test(normalized)) {
-    return false;
-  }
-  if (/[\u0000-\u001F\u007F]/.test(normalized)) {
-    return false;
-  }
-  if (/[\\$^*+?()[\]|]/.test(normalized)) {
-    return false;
-  }
-  return true;
+  
+  const checks = [
+    () => normalized.length >= 2,
+    () => !/[<>{}]/.test(normalized),
+    () => !/[\u0000-\u001F\u007F]/.test(normalized),
+    () => !/[\\$^*+?()[\]|]/.test(normalized),
+  ];
+
+  return checks.every(check => check());
 }
 
 export function isBioValid(bio: string): boolean {
-  if (!bio || bio.length > MAX_BIO_LENGTH) {
-    return false;
-  }
-  if (/[<>{}]/.test(bio)) {
-    return false;
-  }
-  return true;
+  return bio.length <= MAX_BIO_LENGTH 
+    && !/[<>{}]/.test(bio);
 }
 
 export function isCompanyNameValid(companyName: string): boolean {
   const normalized = normalizeName(companyName);
-  if (!normalized || normalized.length < 2) {
-    return false;
-  }
-  if (normalized.length > MAX_COMPANY_NAME_LENGTH) {
-    return false;
-  }
-  if (/[<>{}]/.test(normalized)) {
-    return false;
-  }
-  return true;
+  
+  const checks = [
+    () => normalized.length >= 2,
+    () => normalized.length <= MAX_COMPANY_NAME_LENGTH,
+    () => !/[<>{}]/.test(normalized),
+  ];
+
+  return checks.every(check => check());
 }
 
-// ============ VALIDATION DES ÉTAPES ============
+// ============ VALIDATION PAR ÉTAPES ============
 type Step1Data = Pick<
   RegisterFormValues,
   | "name"
@@ -439,13 +414,16 @@ type Step2Data = Pick<
 export function validateStep1(data: Step1Data, content: ValidationContent): RegisterFormErrors {
   const errors: RegisterFormErrors = {};
 
-  if (!isNameValid(data.name)) {
-    errors.name = content.nameWarning?.value ?? "Le nom est requis (minimum 2 caractères).";
-  }
-
-  if (!isEmailValid(data.email)) {
-    errors.email = content.emailWarning?.value ?? "Adresse email invalide.";
-  }
+  const validations = [
+    { condition: !isNameValid(data.name), key: "name", message: content.nameWarning?.value ?? "Le nom est requis (minimum 2 caractères)." },
+    { condition: !isEmailValid(data.email), key: "email", message: content.emailWarning?.value ?? "Adresse email invalide." },
+    { condition: !isPasswordValid(data.password), key: "password", message: content.passwordWarning?.value ?? `Le mot de passe doit contenir au moins ${MIN_PASSWORD_LENGTH} caractères, une majuscule, un chiffre et un caractère spécial.` },
+    { condition: !isPasswordConfirmed(data.password, data.confirmPassword), key: "confirmPassword", message: content.confirmPasswordWarning?.value ?? "Les mots de passe ne correspondent pas." },
+    { condition: !data.acceptTerms, key: "acceptTerms", message: content.termsWarning?.value ?? "Vous devez accepter les conditions d'utilisation." },
+    { condition: !data.acceptLocation, key: "acceptLocation", message: content.locationWarning?.value ?? "Vous devez accepter l'activation de la localisation." },
+    { condition: !data.acceptNoVpn, key: "acceptNoVpn", message: content.noVpnWarning?.value ?? "Vous devez accepter de ne pas utiliser de VPN." },
+    { condition: !data.acceptVr, key: "acceptVr", message: content.vrWarning?.value ?? "Vous devez accepter les conférences en VR." },
+  ];
 
   if (!isPhoneValid(data.phone)) {
     errors.phone = content.phoneNumberWarning?.value ?? "Numéro de téléphone invalide. Veuillez inclure l'indicatif pays (ex: +225).";
@@ -453,31 +431,11 @@ export function validateStep1(data: Step1Data, content: ValidationContent): Regi
     errors.phone = content.phoneCountryCodeWarning?.value ?? "Indicatif pays invalide. Utilisez un format comme +225, +1, +44, +86.";
   }
 
-  if (!isPasswordValid(data.password)) {
-    errors.password =
-      content.passwordWarning?.value ??
-      `Le mot de passe doit contenir au moins ${MIN_PASSWORD_LENGTH} caractères, une majuscule, un chiffre et un caractère spécial.`;
-  }
-
-  if (!isPasswordConfirmed(data.password, data.confirmPassword)) {
-    errors.confirmPassword = content.confirmPasswordWarning?.value ?? "Les mots de passe ne correspondent pas.";
-  }
-
-  if (!data.acceptTerms) {
-    errors.acceptTerms = content.termsWarning?.value ?? "Vous devez accepter les conditions d'utilisation.";
-  }
-
-  if (!data.acceptLocation) {
-    errors.acceptLocation = content.locationWarning?.value ?? "Vous devez accepter l'activation de la localisation.";
-  }
-
-  if (!data.acceptNoVpn) {
-    errors.acceptNoVpn = content.noVpnWarning?.value ?? "Vous devez accepter de ne pas utiliser de VPN.";
-  }
-
-  if (!data.acceptVr) {
-    errors.acceptVr = content.vrWarning?.value ?? "Vous devez accepter les conférences en VR.";
-  }
+  validations.forEach(({ condition, key, message }) => {
+    if (condition) {
+      errors[key as keyof RegisterFormErrors] = message;
+    }
+  });
 
   return errors;
 }
@@ -486,12 +444,26 @@ export function validateStep2(data: Step2Data, content: ValidationContent): Regi
   const errors: RegisterFormErrors = {};
 
   if (data.role === "CLIENT" && data.clientType === "AGENCY") {
-    if (!isCompanyNameValid(data.companyName || "")) {
-      errors.companyName = content.companyNameWarning?.value ?? "Le nom de l'entreprise est requis.";
-    }
-    if (!data.rccmNumber?.trim()) {
-      errors.rccmNumber = content.rccmNumberWarning?.value ?? "Le numéro RCCM est requis.";
-    } else if (!isRccmValid(data.rccmNumber)) {
+    const agencyValidations = [
+      { 
+        condition: !isCompanyNameValid(data.companyName || ""), 
+        key: "companyName", 
+        message: content.companyNameWarning?.value ?? "Le nom de l'entreprise est requis." 
+      },
+      { 
+        condition: !data.rccmNumber?.trim(), 
+        key: "rccmNumber", 
+        message: content.rccmNumberWarning?.value ?? "Le numéro RCCM est requis." 
+      },
+    ];
+
+    agencyValidations.forEach(({ condition, key, message }) => {
+      if (condition) {
+        errors[key as keyof RegisterFormErrors] = message;
+      }
+    });
+
+    if (data.rccmNumber?.trim() && !isRccmValid(data.rccmNumber)) {
       errors.rccmNumber = content.rccmFormatWarning?.value ?? "Format RCCM invalide.";
     }
   }

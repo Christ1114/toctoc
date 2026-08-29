@@ -202,6 +202,7 @@ export const UserScalarFieldEnum = {
   image: 'image',
   accountType: 'accountType',
   role: 'role',
+  verificationMethod: 'verificationMethod',
   banned: 'banned',
   banReason: 'banReason',
   banExpires: 'banExpires',

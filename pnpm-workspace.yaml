@@ -6,20 +6,7 @@ allowBuilds:
   prisma: true
   sharp: true
   unrs-resolver: true
-  zeptomatch: true
+  zeptomatch: false
   ngrok: false
-  msgpackr-extract: true
-  workerd: true
-
-overrides:
-  hono: 4.12.34
-  '@hono/node-server': 1.19.15
-  lodash: 4.17.23
-  valibot: 1.4.2
-  uuid: 11.1.1
-  xlsx: ^0.18.5
-  brace-expansion: 1.1.18
-  fast-uri: 3.1.5
-  js-yaml: 4.3.1
-  deepmerge-ts: 8.0.0
-  extract-zip: 2.0.1
+  msgpackr-extract: false
+  workerd: false

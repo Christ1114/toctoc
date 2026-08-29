@@ -25,14 +25,12 @@ import {
   isPasswordValid,
   isPasswordConfirmed,
   isCompanyNameValid,
-  isRccmValid
+  isRccmValid,
+  Role,
+  ClientType,
+  ProviderType
 } from "@/app/lib/validation/registerValidation";
-
-
-type Role = 'CLIENT' | 'PROVIDER';
-type ClientType = 'INDIVIDUAL' | 'AGENCY';
-
-type ProviderType = 'SALON' | 'FREELANCE' | 'SHOP';
+import { signUpWithEmail } from "@/app/lib/auth-client";
 
 interface Step1Data {
   name: string;
@@ -69,6 +67,7 @@ const RegisterForm = () => {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [detectedOperator, setDetectedOperator] = useState<string | null>(null);
   const [isVerifyingPhone, setIsVerifyingPhone] = useState(false);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
   
   const [step1Data, setStep1Data] = useState<Step1Data>({
     name: '',
@@ -288,36 +287,34 @@ const RegisterForm = () => {
     }
     
     try {
-      const response = await fetch('/api/auth/sign-up/email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: step1Data.name,
-          email: step1Data.email,
-          phone: step1Data.phone,
-          password: step1Data.password,
-          accountType: step2Data.role,
-          clientType: step2Data.clientType, 
-          companyName: step2Data.companyName,
-          rccmNumber: step2Data.rccmNumber,
-          providerType: step2Data.providerType,
-          bio: step2Data.bio,
-          consents: {
-            TERMS_OF_USE: step1Data.acceptTerms,
-            LOCATION_ACCESS: step1Data.acceptLocation,
-            NO_VPN: step1Data.acceptNoVpn,
-            VR_CONFERENCE: step1Data.acceptVr,
-          },
-        }),
+      const { error } = await signUpWithEmail({
+        name: step1Data.name,
+        email: step1Data.email,
+        phone: step1Data.phone,
+        password: step1Data.password,
+        accountType: step2Data.role,
+        clientType: step2Data.clientType,
+        companyName: step2Data.companyName,
+        rccmNumber: step2Data.rccmNumber,
+        providerType: step2Data.providerType,
+        bio: step2Data.bio,
+        verificationMethod: step3Data.verificationMethod,
+        acceptNewsletter: step3Data.acceptNewsletter,
+        consents: {
+          TERMS_OF_USE: step1Data.acceptTerms,
+          LOCATION_ACCESS: step1Data.acceptLocation,
+          NO_VPN: step1Data.acceptNoVpn,
+          VR_CONFERENCE: step1Data.acceptVr,
+        },
       });
       
-      if (!response.ok) {
-  const errorData = await response.json().catch(() => ({}));
-  console.error('Erreur serveur:', errorData);
-  setSubmitError(errorData?.message ?? t('errors.submitFailed'));
-} else {
-  router.push('/login'); 
-}
+      if (error) {
+        console.error('Erreur serveur:', error);
+        setSubmitError(error.message ?? t('errors.submitFailed'));
+      } else {
+        setRegistrationSuccess(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     } catch (error) {
       console.error('Erreur réseau:', error);
       setSubmitError(t('errors.networkFailed'));
@@ -363,9 +360,35 @@ const RegisterForm = () => {
 
   return (
     <div className="min-h-screen py-4 sm:py-6 md:py-8 px-2 sm:px-4">
-      <ProgressBar />
+      {!registrationSuccess && <ProgressBar />}
+
+      {registrationSuccess && (
+        <div className={`w-full max-w-4xl mx-auto pt-6 sm:pt-8 pb-6 sm:pb-8 px-3 sm:px-6 md:px-8 text-black dark:text-zinc-300 ${orbitron.className}`}>
+          <div className="text-center">
+            <div className="mx-auto mb-4 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-green-100 dark:bg-green-900/20 flex items-center justify-center">
+              <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-green-600" />
+            </div>
+            <h2 className="text-lg sm:text-xl font-bold mb-2">
+              {t('success.title')}
+            </h2>
+            <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mb-6 max-w-md mx-auto">
+              {step3Data.verificationMethod === 'email' 
+                ? t('success.emailMessage', { email: step1Data.email })
+                : t('success.phoneMessage', { phone: step1Data.phone })
+              }
+            </p>
+            <button
+              type="button"
+              onClick={() => router.push('/login')}
+              className="bg-[#432dd7] hover:bg-[#554c8f] text-white font-bold text-xs sm:text-sm px-6 sm:px-10 py-2.5 sm:py-3 transition-colors rounded-md"
+            >
+              {t('success.goToLogin')}
+            </button>
+          </div>
+        </div>
+      )}
       
-      {currentStep === 1 && (
+      {!registrationSuccess && currentStep === 1 && (
         <form onSubmit={handleStep1Submit} className={`w-full max-w-4xl mx-auto pt-4 sm:pt-6 md:pt-8 pb-4 sm:pb-6 md:pb-8 px-3 sm:px-6 md:px-8  text-black dark:text-zinc-300 ${orbitron.className}`}>
           <div className="mb-4 sm:mb-6 text-center">
             <Image
@@ -690,7 +713,7 @@ const RegisterForm = () => {
         </form>
       )}
 
-      {currentStep === 2 && (
+      {!registrationSuccess && currentStep === 2 && (
         <form onSubmit={handleStep2Submit} className={`w-full max-w-4xl mx-auto pt-4 sm:pt-6 md:pt-8 pb-4 sm:pb-6 md:pb-8 px-3 sm:px-6 md:px-8  text-black dark:text-zinc-300 ${orbitron.className}`}>
           <div className="mb-4 sm:mb-6 text-center">
             <Image
@@ -837,18 +860,22 @@ const RegisterForm = () => {
                     <select
                       value={step2Data.providerType || ''}
                       onChange={(e) => {
-                        const value = e.target.value;
+                        const value = e.target.value as ProviderType | '';
+                        const validTypes: ProviderType[] = ['BABYSITTER', 'GARDE_PERISCOLAIRE', 'MENAGE', 'AIDE_PERSONNES_AGEES', 'RESIDENTIEL', 'COURT_TERME'];
                         setStep2Data({ 
                           ...step2Data, 
-                          providerType: value === 'SALON' || value === 'FREELANCE' || value === 'SHOP' ? value : undefined 
+                          providerType: validTypes.includes(value as ProviderType) ? (value as ProviderType) : undefined 
                         });
                       }}
                       className="w-full border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-900 px-3 py-2 text-xs sm:text-sm outline-none focus:border-[#432dd7] rounded-md"
                     >
                       <option value="">{t('placeholders.selectProviderType')}</option>
-                      <option value="SALON">{t('providerTypes.salon')}</option>
-                      <option value="FREELANCE">{t('providerTypes.freelance')}</option>
-                      <option value="SHOP">{t('providerTypes.shop')}</option>
+                      <option value="BABYSITTER">{t('providerTypes.babysitter')}</option>
+                      <option value="GARDE_PERISCOLAIRE">{t('providerTypes.gardePeriscolaire')}</option>
+                      <option value="MENAGE">{t('providerTypes.menage')}</option>
+                      <option value="AIDE_PERSONNES_AGEES">{t('providerTypes.aidePersonnesAgees')}</option>
+                      <option value="RESIDENTIEL">{t('providerTypes.residentiel')}</option>
+                      <option value="COURT_TERME">{t('providerTypes.courtTerme')}</option>
                     </select>
                   </div>
                 </div>
@@ -901,7 +928,7 @@ const RegisterForm = () => {
         </form>
       )}
 
-      {currentStep === 3 && (
+      {!registrationSuccess && currentStep === 3 && (
         <form onSubmit={handleFinalSubmit} className={`w-full max-w-4xl mx-auto pt-4 sm:pt-6 md:pt-8 pb-4 sm:pb-6 md:pb-8 px-3 sm:px-6 md:px-8  text-black dark:text-zinc-300 ${orbitron.className}`}>
           <div className="mb-4 sm:mb-6 text-center">
             <Image
@@ -973,9 +1000,14 @@ const RegisterForm = () => {
                         <Briefcase className="w-4 h-4 shrink-0" />
                         <span className="font-semibold">{t('labels.providerType')}:</span>
                         <span className="truncate">
-                          {step2Data.providerType === 'SALON' ? t('providerTypes.salon') : 
-                           step2Data.providerType === 'FREELANCE' ? t('providerTypes.freelance') : 
-                           t('providerTypes.shop')}
+                          {t(`providerTypes.${
+                            step2Data.providerType === 'BABYSITTER' ? 'babysitter' :
+                            step2Data.providerType === 'GARDE_PERISCOLAIRE' ? 'gardePeriscolaire' :
+                            step2Data.providerType === 'MENAGE' ? 'menage' :
+                            step2Data.providerType === 'AIDE_PERSONNES_AGEES' ? 'aidePersonnesAgees' :
+                            step2Data.providerType === 'RESIDENTIEL' ? 'residentiel' :
+                            'courtTerme'
+                          }`)}
                         </span>
                       </p>
                     )}
@@ -1080,4 +1112,4 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm; 
+export default RegisterForm;

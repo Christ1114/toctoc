@@ -367,9 +367,12 @@
       "entreprise": "Company"
     },
     "providerTypes": {
-      "salon": "Salon",
-      "freelance": "Freelance",
-      "shop": "Shop"
+      "babysitter": "Babysitting",
+  "gardePeriscolaire": "After-school childcare",
+  "menage": "Housekeeping",
+  "aidePersonnesAgees": "Elderly care",
+  "residentiel": "Live-in (residential)",
+  "courtTerme": "Short-term"
     },
     "verification": {
       "email": "By Email",
@@ -478,7 +481,11 @@
     "success": {
       "title": "Email sent!",
       "message": "Check your inbox to reset your password.",
-      "sentTo": "Email sent to:"
+      "sentTo": "Email sent to:",
+       "title1": "Registration successful!",
+  "emailMessage": "A verification email has been sent to {email}. Click on the link received to activate your account.",
+  "phoneMessage": "A verification code has been sent to {phone}. Please check your phone.",
+  "goToLogin": "Go to login"
     }
   },
   "resetPassword": {
