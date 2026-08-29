@@ -11,6 +11,7 @@ import {
 import Img1 from "@/public/assets/pictures/Mstep1.webp";
 import Img2 from "@/public/assets/pictures/Mstep2.webp";
 import Img3 from "@/public/assets/pictures/Mstep3.webp";
+import Img from "@/public/assets/pictures/masquote1.png";
 import Image from 'next/image';
 import { 
   validateStep1, 
@@ -365,8 +366,8 @@ const RegisterForm = () => {
       {registrationSuccess && (
         <div className={`w-full max-w-4xl mx-auto pt-6 sm:pt-8 pb-6 sm:pb-8 px-3 sm:px-6 md:px-8 text-black dark:text-zinc-300 ${orbitron.className}`}>
           <div className="text-center">
-            <div className="mx-auto mb-4 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-green-100 dark:bg-green-900/20 flex items-center justify-center">
-              <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-green-600" />
+            <div className="mx-auto mb-4 w-16 h-16 sm:w-20 sm:h-20  flex items-center justify-center">
+                <Image src={Img} alt="Logo" width={100} height={100} />
             </div>
             <h2 className="text-lg sm:text-xl font-bold mb-2">
               {t('success.title')}

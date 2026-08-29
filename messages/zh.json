@@ -310,6 +310,12 @@
       "step2Title": "账户类型",
       "step3Title": "验证"
     },
+    "success": {
+      "title": "注册成功！",
+  "emailMessage": "验证邮件已发送至 {email}。请点击收到的链接激活您的账户。",
+  "phoneMessage": "验证码已发送至 {phone}。请查看您的手机。",
+  "goToLogin": "前往登录"
+    },
     "step1": {
       "title": "创建您的账户",
       "subtitle": "几分钟内加入TOCTOC社区"

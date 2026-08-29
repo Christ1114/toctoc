@@ -311,6 +311,12 @@
       "step2Title": "Account Type",
       "step3Title": "Verification"
     },
+    "success": {
+       "title": "Registration successful!",
+  "emailMessage": "A verification email has been sent to {email}. Click on the link received to activate your account.",
+  "phoneMessage": "A verification code has been sent to {phone}. Please check your phone.",
+  "goToLogin": "Go to login"
+    },
     "step1": {
       "title": "Create your account",
       "subtitle": "Join the TOCTOC community in minutes"

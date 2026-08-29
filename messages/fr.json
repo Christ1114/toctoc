@@ -336,6 +336,12 @@
               "step2Title": "Type de compte",
               "step3Title": "Vérification"
             },
+            "success": {
+              "title": "Inscription réussie !",
+  "emailMessage": "Un email de vérification a été envoyé à {email}. Cliquez sur le lien reçu pour activer votre compte.",
+  "phoneMessage": "Un code de vérification a été envoyé au {phone}. Vérifiez votre téléphone.",
+  "goToLogin": "Aller à la connexion"
+            },
             "step1": {
               "title": "Créez votre compte",
               "subtitle": "Rejoignez la communauté TOCTOC en quelques minutes"
