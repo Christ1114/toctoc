@@ -288,6 +288,7 @@
   },
   "contact": {
     "category": "Category",
+     "messagePlaceholder": "Write your message here...",
     "categories": {
       "usageQuestion": "Usage question",
       "signupRequest": "Signup request",

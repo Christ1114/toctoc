@@ -313,6 +313,7 @@
           },
           "contact": {
             "category": "Catégorie",
+           "messagePlaceholder": "Écrivez votre message ici...",
             "categories": {
               "usageQuestion": "Question d'utilisation",
               "signupRequest": "Demande d'inscription",

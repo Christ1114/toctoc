@@ -334,6 +334,7 @@
   },
   "contact": {
     "category": "الفئة",
+     "messagePlaceholder": "اكتب رسالتك هنا...",
     "categories": {
       "usageQuestion": "استفسار عن الاستخدام",
       "signupRequest": "طلب تسجيل",
