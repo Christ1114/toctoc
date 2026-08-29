@@ -12,6 +12,8 @@
       }
   },
   "precheck": {
+    "title": "Vérification de sécurité...",
+    "message": "Veuillez patienter pendant que nous vérifions votre connexion.",
     "location": {
       "title": "Localisation requise",
       "subtitle": "Nous avons besoin de votre position pour continuer.",

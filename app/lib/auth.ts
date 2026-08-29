@@ -73,7 +73,7 @@ export const auth = betterAuth({
     enabled: true,
     minPasswordLength: 12,
     maxPasswordLength: 128,
-    requireEmailVerification: false,
+    requireEmailVerification: false,// apres un nom de demaine legale je change en true
     autoSignIn: false,
 
     sendVerificationEmail: async ({ user, url }: { user: { email: string }, url: string }) => {

@@ -10,6 +10,8 @@
     }
   },
   "precheck": {
+     "title": "Security check...",
+    "message": "Please wait while we verify your connection.",
     "location": {
       "title": "Location required",
       "subtitle": "We need your location to continue.",
