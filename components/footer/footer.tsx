@@ -55,7 +55,7 @@ export default function FooterComponent() {
                    
                     <button
                         onClick={() => router.push('/download')}
-                        className="lg:hidden cursor-pointer bg-[#432dd7] w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 text-[10px] sm:text-xs font-bold text-white rounded-lg transition-all duration-300 hover:bg-[#3524b0] active:scale-95"
+                        className="lg:hidden cursor-not-allowed bg-[#432dd7] w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 text-[10px] sm:text-xs font-bold text-white rounded-lg transition-all duration-300 hover:bg-[#3524b0] active:scale-95"
                     >
                         <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         {t("downloadApp")}

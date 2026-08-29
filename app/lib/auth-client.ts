@@ -41,6 +41,7 @@ export const signUpWithEmail = async (data: {
     bio: data.bio,
     verificationMethod: data.verificationMethod,
     acceptNewsletter: data.acceptNewsletter,
+    
   });
 
   return { result, error };
