@@ -2,7 +2,7 @@
 import { orbitron } from '@/fonts/font';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
-import { Mail, User, MessageSquare, Tag, Send } from 'lucide-react';
+import { Mail, User, MessageSquare, Tag, Send, Loader, CheckCircle, XCircle } from 'lucide-react';
 
 const categories = ['usageQuestion', 'signupRequest', 'passwordRequest', 'paymentRequest'] as const;
 
@@ -12,10 +12,57 @@ const ContactFormComponent = () => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ selectedCategory, email, name, message });
+    setStatus('loading');
+    setErrorMessage('');
+
+    try {
+      // Préparer les données avec la catégorie traduite
+      const formData = {
+        category: selectedCategory,
+        email: email.trim(),
+        name: name.trim(),
+        message: message.trim(),
+        categoryLabel: t(`categories.${selectedCategory}`), // Envoyer aussi le libellé traduit
+      };
+
+      console.log('📤 Envoi des données:', formData);
+
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Erreur lors de l\'envoi');
+      }
+
+      console.log('✅ Message envoyé avec succès:', data);
+      setStatus('success');
+      
+      // Réinitialiser le formulaire
+      setEmail('');
+      setName('');
+      setMessage('');
+      setSelectedCategory('usageQuestion');
+
+      // Réinitialiser le statut après 5 secondes
+      setTimeout(() => setStatus('idle'), 5000);
+
+    } catch (error) {
+      console.error('❌ Erreur:', error);
+      setStatus('error');
+      setErrorMessage(error instanceof Error ? error.message : 'Erreur inconnue');
+    }
   };
 
   return (
@@ -25,6 +72,7 @@ const ContactFormComponent = () => {
     >
       <div className="space-y-3 sm:space-y-4">
       
+        {/* Catégorie */}
         <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
           <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
             <Tag className="w-4 h-4 shrink-0" />
@@ -37,6 +85,7 @@ const ContactFormComponent = () => {
                   key={cat}
                   type="button"
                   onClick={() => setSelectedCategory(cat)}
+                  disabled={status === 'loading'}
                   className={`px-2.5 py-1.5 sm:px-4 sm:py-2 text-[10px] sm:text-xs font-bold border rounded-md transition-colors ${
                     selectedCategory === cat
                       ? 'bg-[#432dd7] text-white border-[#432dd7]'
@@ -53,7 +102,7 @@ const ContactFormComponent = () => {
           </div>
         </div>
 
-      
+        {/* Email */}
         <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
           <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
             <Mail className="w-4 h-4 shrink-0" />
@@ -65,12 +114,14 @@ const ContactFormComponent = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={t('emailPlaceholder')}
+              required
+              disabled={status === 'loading'}
               className="w-full border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-900 px-3 py-2 text-xs sm:text-sm outline-none focus:border-[#432dd7] rounded-md"
             />
           </div>
         </div>
 
-      
+        {/* Nom */}
         <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
           <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
             <User className="w-4 h-4 shrink-0" />
@@ -82,12 +133,14 @@ const ContactFormComponent = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder={t('namePlaceholder')}
+              required
+              disabled={status === 'loading'}
               className="w-full border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-900 px-3 py-2 text-xs sm:text-sm outline-none focus:border-[#432dd7] rounded-md"
             />
           </div>
         </div>
 
-       
+        {/* Message */}
         <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
           <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
             <MessageSquare className="w-4 h-4 shrink-0" />
@@ -98,20 +151,48 @@ const ContactFormComponent = () => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               rows={5}
+              required
+              disabled={status === 'loading'}
+              placeholder={t('messagePlaceholder')}
               className="w-full resize-none border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-900 px-3 py-2 text-xs sm:text-sm outline-none focus:border-[#432dd7] rounded-md sm:rows-6 md:rows-8"
             />
           </div>
         </div>
       </div>
 
-     
+      {/* Messages de statut */}
+      {status === 'success' && (
+        <div className="mt-4 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg flex items-center gap-2 text-green-700 dark:text-green-400">
+          <CheckCircle className="w-5 h-5 shrink-0" />
+          <span className="text-xs sm:text-sm">{t('successMessage')}</span>
+        </div>
+      )}
+
+      {status === 'error' && (
+        <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg flex items-center gap-2 text-red-700 dark:text-red-400">
+          <XCircle className="w-5 h-5 shrink-0" />
+          <span className="text-xs sm:text-sm">{errorMessage || t('errorMessage')}</span>
+        </div>
+      )}
+
+      {/* Bouton d'envoi */}
       <div className="flex justify-center mt-4 sm:mt-6 pt-4 border-t border-zinc-300 dark:border-zinc-700">
         <button
           type="submit"
-          className="w-full sm:w-auto bg-[#432dd7] hover:bg-[#554c8f] text-white font-bold text-xs sm:text-sm px-6 sm:px-10 py-2.5 sm:py-3 transition-colors flex items-center justify-center gap-2 rounded-md"
+          disabled={status === 'loading'}
+          className="w-full sm:w-auto bg-[#432dd7] hover:bg-[#554c8f] text-white font-bold text-xs sm:text-sm px-6 sm:px-10 py-2.5 sm:py-3 transition-colors flex items-center justify-center gap-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <Send className="w-4 h-4" />
-          {t('submitBtn')}
+          {status === 'loading' ? (
+            <>
+              <Loader className="w-4 h-4 animate-spin" />
+              {t('sending')}
+            </>
+          ) : (
+            <>
+              <Send className="w-4 h-4" />
+              {t('submitBtn')}
+            </>
+          )}
         </button>
       </div>
     </form>

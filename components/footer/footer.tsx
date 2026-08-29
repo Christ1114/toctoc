@@ -14,7 +14,6 @@ interface FooterProps {
     title: string;
     href?: string;
 }
-
 export default function FooterComponent() {
     const t = useTranslations("footer");
     const router = useRouter();
@@ -31,11 +30,8 @@ export default function FooterComponent() {
     const currentYear = new Date().getFullYear();
 
     return (
-        <div className={`w-full bg-white dark:bg-zinc-950 ${orbitron.className} border-t-2 sm:border-t-3 border-zinc-400 dark:border-zinc-700`}>
-       
+        <div className={`w-full bg-white dark:bg-neutral-900 ${orbitron.className} border-t-2 sm:border-t-3 border-zinc-400 dark:border-zinc-700`}>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-0 border-b border-zinc-300 dark:border-zinc-700">
-                
-             
                 <div className="flex sm:grid sm:grid-rows-[auto_auto] items-center justify-center sm:justify-items-center gap-3 sm:gap-y-2 py-3 px-2 sm:border-r border-b sm:border-b-0 border-zinc-300 dark:border-zinc-700">
                
                     <div className="hidden lg:flex lg:flex-col items-center gap-2">
@@ -118,8 +114,6 @@ export default function FooterComponent() {
                     <ChevronDown className="w-3.5 h-3.5" />
                 }
             </button>
-
-          
             {showMore && (
                 <div className="sm:hidden grid gap-y-2 py-3 px-4 border-b border-zinc-300 dark:border-zinc-700 justify-items-center bg-zinc-50 dark:bg-zinc-900">
                     <div className="grid gap-y-2 justify-items-center">
