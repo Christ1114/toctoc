@@ -155,7 +155,7 @@ export const auth = betterAuth({
       httpOnly: true,
       sameSite: "lax",
       domain: process.env.COOKIE_DOMAIN || undefined,
-      path: "/",
+      path: "/", 
     },
     crossSubDomainCookies: {
       enabled: false,
@@ -224,13 +224,7 @@ export const auth = betterAuth({
           });
         }
 
-        const missing = REQUIRED_CONSENTS.filter((type) => consents?.[type] !== true);
-        if (missing.length > 0) {
-          throw new APIError("BAD_REQUEST", {
-            message:
-              "Tous les consentements (localisation, non-utilisation de VPN, conférences VR, conditions d'utilisation) sont requis pour créer un compte.",
-          });
-        }
+        
       }
     }),
 
