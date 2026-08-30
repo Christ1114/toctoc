@@ -103,22 +103,22 @@ export const auth = betterAuth({
     sendResetPassword: async ({ user, url }: { user: { email: string }, url: string }) => {
       try {
         await resend.emails.send({
-          from: `TOCTOC <${process.env.RESEND_FROM_EMAIL}>`,
-          to: user.email,
-          subject: "Réinitialisation de votre mot de passe TOCTOC",
-          html: `
-            <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
-              <h2 style="color: #432dd7;">Réinitialisation de mot de passe</h2>
-              <p>Cliquez sur le bouton ci-dessous pour réinitialiser votre mot de passe.</p>
-              <a href="${url}" style="display:inline-block; background:#432dd7; color:#fff; padding:12px 24px; border-radius:8px; text-decoration:none; font-weight:bold;">
-                Réinitialiser mon mot de passe
-              </a>
-              <p style="color:#888; font-size:12px; margin-top:24px;">
-                Si vous n'avez pas demandé cette réinitialisation, ignorez cet email — votre mot de passe actuel reste valide.
-              </p>
-            </div>
-          `,
-        });
+  from: `TOCTOC <${process.env.RESEND_FROM_EMAIL}>`,
+  to: user.email,
+  subject: "Reset your TOCTOC password",
+  html: `
+    <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
+      <h2 style="color: #432dd7;">Password Reset</h2>
+      <p>Click the button below to reset your password.</p>
+      <a href="${url}" style="display:inline-block; background:#432dd7; color:#fff; padding:12px 24px; border-radius:8px; text-decoration:none; font-weight:bold;">
+        Reset my password
+      </a>
+      <p style="color:#888; font-size:12px; margin-top:24px;">
+        If you did not request this reset, please ignore this email — your current password remains valid.
+      </p>
+    </div>
+  `,
+});
       } catch (err) {
         console.error("Erreur envoi email de réinitialisation:", err);
       }

@@ -200,7 +200,7 @@ const ForgotPasswordForm = () => {
           ) : (
             <>
               <div className="mb-4 sm:mb-6 md:mb-8 text-center">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 mx-auto mb-2 sm:mb-3 md:mb-4 bg-linear-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-lg">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 mx-auto mb-2 sm:mb-3 md:mb-4 bg-linear-to-br flex items-center justify-center shadow-lg">
                   <Image src={Img1} alt="Logo" width={100} height={100} />
                 </div>
                 <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-green-600 dark:text-green-500">

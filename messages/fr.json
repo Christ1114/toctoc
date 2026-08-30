@@ -272,6 +272,27 @@
             }
           },
           "resetPassword": {
+            "title": "Réinitialiser votre mot de passe",
+  "subtitle": "Choisissez un nouveau mot de passe sécurisé",
+  "securityInfo": "Votre mot de passe doit contenir au moins 12 caractères, une majuscule, un chiffre et un caractère spécial.",
+  "labels": {
+    "password": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le mot de passe"
+  },
+  "placeholders": {
+    "password": "Entrez votre nouveau mot de passe",
+    "confirmPassword": "Confirmez votre nouveau mot de passe"
+  },
+  "buttons": {
+    "showPassword": "Afficher le mot de passe",
+    "submit": "Réinitialiser le mot de passe"
+  },
+  "backToLogin": "Retour à la connexion",
+  "passwordStrength": {
+    "weak": "Faible",
+    "medium": "Moyen",
+    "strong": "Fort"
+  },
             "invalidToken": {
               "title": "Mot de passe oublié",
               "message": "Ce lien est invalide ou a expiré. Veuillez réessayer."
