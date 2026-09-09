@@ -2,7 +2,7 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "@/lib/prisma";
 import { username } from "better-auth/plugins/username";
-import { admin, phoneNumber } from "better-auth/plugins";
+import { admin, phoneNumber, customSession } from "better-auth/plugins";
 import { createAuthMiddleware, APIError } from "better-auth/api";
 import { Resend } from 'resend';
 import {
@@ -188,6 +188,43 @@ export const auth = betterAuth({
         }
         console.log(`[DEV] OTP réinitialisation pour ${phoneNumber}: ${code}`);
       },
+    }),
+
+    // Filtre les champs renvoyés par /get-session au client.
+    // Sans ce plugin, better-auth expose TOUS les additionalFields du user
+    // (voir user.additionalFields ci-dessous), y compris des champs internes
+    // ou sensibles (notes d'admin, IDs de vérificateur, tarifs, consentements
+    // bruts...). On ne renvoie ici que ce dont le frontend a réellement besoin.
+    customSession(async ({ user, session }) => {
+      return {
+        session,
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          emailVerified: user.emailVerified,
+          image: (user as any).image,
+          phone: (user as any).phone,
+          phoneVerified: (user as any).phoneVerified,
+          accountType: (user as any).accountType,
+          clientType: (user as any).clientType,
+          companyName: (user as any).companyName,
+          providerType: (user as any).providerType,
+          bio: (user as any).bio,
+          isActive: (user as any).isActive,
+          currency: (user as any).currency,
+          verificationStatus: (user as any).verificationStatus,
+          acceptNewsletter: (user as any).acceptNewsletter,
+          isDemo: (user as any).isDemo,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+          // Volontairement exclus : rccmNumber, hourlyRate, consents,
+          // verificationNotes, verifiedBy, verifiedAt, verificationLevel,
+          // demoExpiresAt, verificationMethod.
+          // Si le frontend a besoin d'un de ces champs, ajoute-le ici
+          // explicitement plutôt que de tout renvoyer par défaut.
+        },
+      };
     }),
   ],
 
