@@ -1,7 +1,4 @@
-import type { Prisma } from "@/generated/prisma/client";
-
-type User = Prisma.UserGetPayload<{}>;
-
+import type { User } from "@/app/lib/auth-client";
 
 export default async function IndividualDashboard({ user }: { user: User }) {
   return (
