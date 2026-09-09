@@ -313,7 +313,7 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                               <button
                                 onClick={handleVerifyEmail}
                                 disabled={emailSending}
-                                className="text-xs px-2.5 py-1 rounded-lg border border-[#432dd7]/40 text-[#432dd7] hover:bg-[#432dd7]/10 cursor-pointer disabled:opacity-40 shrink-0 transition-colors"
+                                className={`text-xs px-2.5 py-1 rounded-lg border border-[#432dd7]/40 text-[#432dd7] hover:bg-[#432dd7]/10 cursor-pointer disabled:opacity-40 shrink-0 transition-colors ${orbitron.className}`}
                               >
                                 {emailSending ? t("sending") : t("verify")}
                               </button>
@@ -351,7 +351,7 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                               <button
                                 onClick={handleSendPhoneOtp}
                                 disabled={phoneSending || !phoneInput.trim()}
-                                className="text-xs px-3 py-1.5 rounded-lg border border-[#432dd7]/40 text-[#432dd7] hover:bg-[#432dd7]/10 cursor-pointer disabled:opacity-40 transition-colors sm:shrink-0"
+                                className={`text-xs px-3 py-1.5 rounded-lg border border-[#432dd7]/40 text-[#432dd7] hover:bg-[#432dd7]/10 cursor-pointer disabled:opacity-40 transition-colors sm:shrink-0 ${orbitron.className}`} 
                               >
                                 {phoneSending ? t("sending") : t("verify")}
                               </button>
@@ -383,7 +383,7 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                       <span className="text-xs sm:text-sm text-black/50 dark:text-white/50">{t("logout")}</span>
                       <button
                         onClick={handleLogout}
-                        className="text-xs px-3 py-1.5 rounded-lg border border-red-500/40 text-red-500 dark:text-red-400 hover:bg-red-500/10 cursor-pointer transition-colors"
+                        className={`text-xs px-3 py-1.5 rounded-lg border border-red-500/40 text-red-500 dark:text-red-400 hover:bg-red-500/10 cursor-pointer transition-colors ${orbitron.className}`}
                       >
                         {t("logoutButton")}
                       </button>
@@ -395,7 +395,7 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                         <button
                           onClick={handleDeleteAccount}
                           disabled={deleting}
-                          className="text-xs px-3 py-1.5 rounded-lg border border-red-500/40 text-red-500 dark:text-red-400 hover:bg-red-500/10 cursor-pointer disabled:opacity-40 transition-colors"
+                          className={`text-xs px-3 py-1.5 rounded-lg border border-red-500/40 text-red-500 dark:text-red-400 hover:bg-red-500/10 cursor-pointer disabled:opacity-40 transition-colors ${orbitron.className}`} 
                         >
                           {deleting ? t("deleting") : t("deleteButton")}
                         </button>
