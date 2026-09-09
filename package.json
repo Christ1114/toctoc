@@ -3,14 +3,14 @@
   "packageManager": "pnpm@11.9.0",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build node scripts/copy-maplibre-worker.mjs && next build",
-    "start": "next start",
-    "lint": "eslint",
-    "prisma:generate": "prisma generate",
-    "postinstall": "node scripts/copy-maplibre-worker.mjs"
-  },
+ "scripts": {
+  "dev": "next dev",
+  "build": "node scripts/copy-maplibre-worker.mjs && next build",
+  "start": "next start",
+  "postinstall": "node scripts/copy-maplibre-worker.mjs",
+  "lint": "eslint",
+  "prisma:generate": "prisma generate"
+},
   "dependencies": {
     "@base-ui/react": "^1.5.0",
     "@hono/node-server": "^1.19.15",
