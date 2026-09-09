@@ -44,7 +44,7 @@ export default function NearbyMap() {
   // Récupérer la position initiale
   useEffect(() => {
     let isMounted = true;
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
     const loadStoredPosition = async () => {
       try {
@@ -65,25 +65,35 @@ export default function NearbyMap() {
         console.error("❌ Erreur récupération session:", err);
       }
       
-      // Demander la géolocalisation
+      // Fallback immédiat avec position par défaut
+      if (isMounted && !initialCenterRef.current) {
+        console.log("📍 Utilisation de la position par défaut (Paris)");
+        initialCenterRef.current = DEFAULT_CENTER;
+        setInitialCenter(DEFAULT_CENTER);
+        setLoadingPosition(false);
+      }
+      
+      // Demander la géolocalisation en arrière-plan
       requestLocation();
       
-      // Fallback après 5 secondes
+      // Timeout de secours pour la géolocalisation
       timeoutId = setTimeout(() => {
         if (isMounted && !initialCenterRef.current) {
-          console.log("⚠️ Fallback: position par défaut");
+          console.log("⚠️ Timeout géolocalisation, utilisation de Paris");
           initialCenterRef.current = DEFAULT_CENTER;
           setInitialCenter(DEFAULT_CENTER);
           setLoadingPosition(false);
         }
-      }, 5000);
+      }, 10000);
     };
 
     loadStoredPosition();
 
     return () => {
       isMounted = false;
-      if (timeoutId) clearTimeout(timeoutId);
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
     };
   }, [requestLocation]);
 
@@ -112,14 +122,14 @@ export default function NearbyMap() {
   useEffect(() => {
     if (!mapContainer.current || mapRef.current || !initialCenter) return;
 
-    const styleUrl = resolvedTheme === "dark" ? STYLES.dark : STYLES.light;
-    console.log("🗺️ Initialisation carte 3D avec style:", styleUrl);
+    console.log("🗺️ Tentative d'initialisation de la carte");
     console.log("📍 Centre:", initialCenter);
+    console.log("📦 Container:", mapContainer.current);
 
     try {
       const map = new maplibregl.Map({
         container: mapContainer.current,
-        style: styleUrl,
+        style: STYLES.light, // Commencer avec le style light par défaut
         center: initialCenter,
         zoom: DEFAULT_ZOOM,
         pitch: DEFAULT_PITCH,
@@ -128,8 +138,6 @@ export default function NearbyMap() {
         maxPitch: 85,
         minZoom: 3,
         maxZoom: 20,
-        // Supprimer antialias car il n'est pas supporté dans les options
-        // ou utiliser canvasContextAttributes si nécessaire
       });
 
       mapRef.current = map;
@@ -144,11 +152,6 @@ export default function NearbyMap() {
         "top-right"
       );
 
-      map.addControl(
-        new maplibregl.ScaleControl(),
-        "bottom-right"
-      );
-
       // Activer les contrôles 3D
       map.dragRotate.enable();
       map.touchZoomRotate.enableRotation();
@@ -156,52 +159,19 @@ export default function NearbyMap() {
       // Gérer les erreurs
       map.on("error", (e) => {
         console.error("❌ Erreur carte:", e);
-        setMapError(t("mapError"));
+        setMapError("Erreur de chargement de la carte");
       });
 
-      // Ajouter la couche 3D des bâtiments
-      const add3DBuildings = () => {
-        if (!map.getSource("composite")) return;
-
-        try {
-          if (!map.getLayer("3d-buildings")) {
-            map.addLayer({
-              id: "3d-buildings",
-              source: "composite",
-              "source-layer": "building",
-              filter: ["==", "extrude", "true"],
-              type: "fill-extrusion",
-              minzoom: 15,
-              paint: {
-                "fill-extrusion-color": resolvedTheme === "dark" ? "#666" : "#aaa",
-                "fill-extrusion-height": [
-                  "interpolate",
-                  ["linear"],
-                  ["zoom"],
-                  15,
-                  0,
-                  15.05,
-                  ["get", "height"]
-                ],
-                "fill-extrusion-base": ["get", "min_height"],
-                "fill-extrusion-opacity": resolvedTheme === "dark" ? 0.4 : 0.6
-              }
-            });
-            console.log("✅ Couche 3D bâtiments ajoutée");
-          }
-        } catch (err) {
-          console.log("⚠️ Pas de couche 3D bâtiments disponible:", err);
-        }
-      };
+      // Quand le style est chargé
+      map.on("style.load", () => {
+        console.log("✅ Style chargé");
+      });
 
       // Quand la carte est chargée
       map.on("load", () => {
         console.log("✅ Carte chargée avec succès");
         setMapLoaded(true);
         
-        // Ajouter les bâtiments 3D
-        add3DBuildings();
-
         // Ajouter le marqueur utilisateur
         try {
           const userMarkerEl = createAvatarMarkerElement({
@@ -214,12 +184,6 @@ export default function NearbyMap() {
             anchor: "bottom",
           })
             .setLngLat(initialCenter)
-            .setPopup(
-              new maplibregl.Popup({ 
-                offset: 30, 
-                className: "custom-popup" 
-              }).setHTML(`<span>${t("youAreHere")}</span>`)
-            )
             .addTo(map);
             
           console.log("✅ Marqueur utilisateur ajouté");
@@ -230,7 +194,7 @@ export default function NearbyMap() {
 
     } catch (err) {
       console.error("❌ Erreur initialisation carte:", err);
-      setMapError(t("mapInitError"));
+      setMapError("Erreur d'initialisation de la carte");
     }
 
     // Cleanup
@@ -243,84 +207,27 @@ export default function NearbyMap() {
         setMapLoaded(false);
       }
     };
-  }, [initialCenter, t]); // Dépendances stables
+  }, [initialCenter, t]);
 
   // Gérer le changement de thème
   useEffect(() => {
-    const map = mapRef.current;
-    if (!map || !mapLoaded || !resolvedTheme) return;
+    if (!mapRef.current || !mapLoaded) return;
 
     const styleUrl = resolvedTheme === "dark" ? STYLES.dark : STYLES.light;
     console.log("🔄 Changement de style:", styleUrl);
     
-    // Sauvegarder l'état actuel
-    const currentState = {
-      center: map.getCenter(),
-      zoom: map.getZoom(),
-      pitch: map.getPitch(),
-      bearing: map.getBearing(),
-    };
-
-    const handleStyleLoad = () => {
-      if (!mapRef.current) return;
-      
-      // Restaurer l'état
-      mapRef.current.jumpTo(currentState);
-      
-      // Réajouter les bâtiments 3D avec la bonne couleur
-      try {
-        if (mapRef.current.getLayer("3d-buildings")) {
-          mapRef.current.setPaintProperty(
-            "3d-buildings",
-            "fill-extrusion-color",
-            resolvedTheme === "dark" ? "#666" : "#aaa"
-          );
-          mapRef.current.setPaintProperty(
-            "3d-buildings",
-            "fill-extrusion-opacity",
-            resolvedTheme === "dark" ? 0.4 : 0.6
-          );
-        }
-      } catch (err) {
-        console.log("⚠️ Impossible de mettre à jour les bâtiments 3D:", err);
-      }
-    };
-
-    map.once("style.load", handleStyleLoad);
-    map.setStyle(styleUrl);
-
-    return () => {
-      map.off("style.load", handleStyleLoad);
-    };
+    try {
+      mapRef.current.setStyle(styleUrl);
+    } catch (err) {
+      console.error("❌ Erreur changement de style:", err);
+    }
   }, [resolvedTheme, mapLoaded]);
 
-  // Mettre à jour la position en temps réel
-  const updateUserPosition = useCallback(() => {
-    if (latitude && longitude && mapRef.current && userMarkerRef.current) {
-      console.log("🔄 Mise à jour position:", latitude, longitude);
-      const newPosition: [number, number] = [longitude, latitude];
-      
-      userMarkerRef.current.setLngLat(newPosition);
-      mapRef.current.flyTo({ 
-        center: newPosition, 
-        zoom: DEFAULT_ZOOM,
-        pitch: DEFAULT_PITCH,
-        bearing: DEFAULT_BEARING,
-        essential: true,
-        duration: 2000,
-      });
-    }
-  }, [latitude, longitude]);
-
-  useEffect(() => {
-    updateUserPosition();
-  }, [updateUserPosition]);
-
-  // Réinitialiser la vue 3D
+  // Réinitialiser la vue
   const resetView = useCallback(() => {
-    if (mapRef.current) {
+    if (mapRef.current && initialCenter) {
       mapRef.current.flyTo({ 
-        center: initialCenter || DEFAULT_CENTER, 
+        center: initialCenter, 
         zoom: DEFAULT_ZOOM,
         pitch: DEFAULT_PITCH,
         bearing: DEFAULT_BEARING,
@@ -333,26 +240,23 @@ export default function NearbyMap() {
   // Relocaliser l'utilisateur
   const handleLocate = useCallback(() => {
     requestLocation();
-    if (initialCenter) {
-      resetView();
-    }
-  }, [requestLocation, initialCenter, resetView]);
+  }, [requestLocation]);
 
   return (
-    <div className="relative w-full h-full overflow-hidden bg-gray-100 dark:bg-gray-800">
+    <div className="relative w-full h-full" style={{ minHeight: "500px" }}>
       {/* Loading */}
       {loadingPosition && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/5 dark:bg-white/5 z-10">
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 z-20">
           <div className="flex flex-col items-center gap-3">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black/30 dark:border-white/30" />
-            <p className="text-sm text-gray-500">{t("loadingPosition")}</p>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
+            <p className="text-sm text-gray-600">Chargement de la carte...</p>
           </div>
         </div>
       )}
       
       {/* Message d'erreur */}
       {mapError && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 bg-red-100 text-red-700 p-4 rounded-lg shadow-lg">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30 bg-red-100 text-red-700 p-4 rounded-lg shadow-lg">
           <p>{mapError}</p>
           <button 
             onClick={() => {
@@ -361,31 +265,35 @@ export default function NearbyMap() {
             }}
             className="mt-2 text-sm underline hover:no-underline"
           >
-            {t("retry")}
+            Réessayer
           </button>
         </div>
       )}
       
-      {/* Container carte */}
+      {/* Container carte - TOUJOURS visible */}
       <div 
         ref={mapContainer} 
-        className="w-full h-full" 
+        className="w-full h-full"
         style={{ 
-          height: "100%", 
-          minHeight: "400px",
-          cursor: "grab",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          width: "100%",
+          height: "100%",
+          backgroundColor: "#e5e7eb", // Gris clair de secours
         }}
       />
 
       <TopToolbar onOpenAiSearch={() => setAiSearchOpen(true)} />
       <AiSearchPanel open={aiSearchOpen} onClose={() => setAiSearchOpen(false)} />
 
-      {/* Bouton réinitialiser la vue 3D */}
+      {/* Bouton réinitialiser la vue */}
       <button
         onClick={resetView}
-        className="absolute bottom-4 right-4 z-10 bg-black/60 hover:bg-black/75 backdrop-blur-sm text-white text-sm px-3 py-2 rounded-lg shadow-md border border-white/10 cursor-pointer transition-colors"
-        title={t("reset3DView")}
-        aria-label={t("reset3DView")}
+        className="absolute bottom-4 right-4 z-10 bg-black/60 hover:bg-black/75 backdrop-blur-sm text-white text-sm px-3 py-2 rounded-lg shadow-md cursor-pointer"
+        title="Réinitialiser la vue"
       >
         🏔️ 3D
       </button>
@@ -393,7 +301,7 @@ export default function NearbyMap() {
       {/* Bouton localiser */}
       <button
         onClick={handleLocate}
-        className={`absolute bottom-4 left-4 z-10 bg-black/60 hover:bg-black/75 backdrop-blur-sm text-white text-sm px-3 py-2 rounded-lg shadow-md border border-white/10 cursor-pointer transition-colors ${orbitron.className}`}
+        className={`absolute bottom-4 left-4 z-10 bg-black/60 hover:bg-black/75 backdrop-blur-sm text-white text-sm px-3 py-2 rounded-lg shadow-md cursor-pointer ${orbitron.className}`}
       >
         📍 {t("locateMe")}
       </button>
