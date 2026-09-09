@@ -5,21 +5,22 @@ import { username } from "better-auth/plugins/username";
 import { admin, phoneNumber, customSession } from "better-auth/plugins";
 import { createAuthMiddleware, APIError } from "better-auth/api";
 import { Resend } from 'resend';
+import { sendMail } from "@/app/lib/mailer";
 import {
   isPasswordValid,
   isPasswordPwned,
   isEmailValidWithVerification,
 } from "@/app/lib/validation/registerValidation";
 import { nextCookies } from "better-auth/next-js";
-
-
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const REQUIRED_ENV = [
   "BETTER_AUTH_URL",
   "BETTER_AUTH_SECRET",
   "RESEND_API_KEY",        
-  "RESEND_FROM_EMAIL",     
+  "RESEND_FROM_EMAIL",
+  "GMAIL_USER",
+  "GMAIL_APP_PASSWORD",
   "GOOGLE_CLIENT_ID",
   "GOOGLE_CLIENT_SECRET",
   "TIKTOK_CLIENT_KEY",
@@ -76,30 +77,6 @@ export const auth = betterAuth({
     requireEmailVerification: false,
     autoSignIn: false,
 
-    sendVerificationEmail: async ({ user, url }: { user: { email: string }, url: string }) => {
-     try {
-  await resend.emails.send({
-    from: `TOCTOC <${process.env.RESEND_FROM_EMAIL}>`,
-    to: user.email,
-    subject: "Verify your TOCTOC email address",
-    html: `
-      <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
-        <h2 style="color: #432dd7;">Welcome to TOCTOC!</h2>
-        <p>Click the button below to verify your email address.</p>
-        <a href="${url}" style="display:inline-block; background:#432dd7; color:#fff; padding:12px 24px; border-radius:8px; text-decoration:none; font-weight:bold;">
-          Verify my email
-        </a>
-        <p style="color:#888; font-size:12px; margin-top:24px;">
-          This link expires in 24 hours. If you did not request this, please ignore this email.
-        </p>
-      </div>
-    `,
-  });
-      } catch (err) {
-        console.error("Erreur envoi email de vérification:", err);
-      }
-    },
-
     sendResetPassword: async ({ user, url }: { user: { email: string }, url: string }) => {
       try {
         await resend.emails.send({
@@ -122,6 +99,26 @@ export const auth = betterAuth({
       } catch (err) {
         console.error("Erreur envoi email de réinitialisation:", err);
       }
+    },
+  },
+  emailVerification: {
+    sendVerificationEmail: async ({ user, url }: { user: { email: string }, url: string }) => {
+      await sendMail({
+        to: user.email,
+        subject: "Verify your TOCTOC email address",
+        html: `
+          <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
+            <h2 style="color: #432dd7;">Welcome to TOCTOC!</h2>
+            <p>Click the button below to verify your email address.</p>
+            <a href="${url}" style="display:inline-block; background:#432dd7; color:#fff; padding:12px 24px; border-radius:8px; text-decoration:none; font-weight:bold;">
+              Verify my email
+            </a>
+            <p style="color:#888; font-size:12px; margin-top:24px;">
+              This link expires in 24 hours. If you did not request this, please ignore this email.
+            </p>
+          </div>
+        `,
+      });
     },
   },
 
@@ -189,12 +186,6 @@ export const auth = betterAuth({
         console.log(`[DEV] OTP réinitialisation pour ${phoneNumber}: ${code}`);
       },
     }),
-
-    // Filtre les champs renvoyés par /get-session au client.
-    // Sans ce plugin, better-auth expose TOUS les additionalFields du user
-    // (voir user.additionalFields ci-dessous), y compris des champs internes
-    // ou sensibles (notes d'admin, IDs de vérificateur, tarifs, consentements
-    // bruts...). On ne renvoie ici que ce dont le frontend a réellement besoin.
     customSession(async ({ user, session }) => {
       return {
         session,
@@ -218,11 +209,6 @@ export const auth = betterAuth({
           isDemo: (user as any).isDemo,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
-          // Volontairement exclus : rccmNumber, hourlyRate, consents,
-          // verificationNotes, verifiedBy, verifiedAt, verificationLevel,
-          // demoExpiresAt, verificationMethod.
-          // Si le frontend a besoin d'un de ces champs, ajoute-le ici
-          // explicitement plutôt que de tout renvoyer par défaut.
         },
       };
     }),
@@ -298,7 +284,6 @@ export const auth = betterAuth({
       }
     }),
   },
-
  user: {
   additionalFields: {
     accountType: { type: "string", required: false, defaultValue: "CLIENT" },
@@ -324,7 +309,6 @@ export const auth = betterAuth({
     acceptNewsletter: { type: "boolean", required: false, defaultValue: false },
   },
 },
-  
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID as string,

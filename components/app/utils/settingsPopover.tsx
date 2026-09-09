@@ -13,6 +13,9 @@ import {
   GooglePlayLogo,
   AppleLogo,
   DownloadSimpleIcon,
+  SignOutIcon,
+  TrashIcon,
+  WarningCircleIcon,
 } from "@phosphor-icons/react";
 import Popover from "../utils/Popover";
 import { orbitron } from "@/fonts/font";
@@ -75,6 +78,10 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
   const [phoneVerifying, setPhoneVerifying] = useState(false);
   const [phoneError, setPhoneError] = useState<string | null>(null);
 
+  const [loggingOut, setLoggingOut] = useState(false);
+  const [logoutError, setLogoutError] = useState<string | null>(null);
+
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
 
@@ -89,14 +96,23 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
 
   const loadUser = async () => {
     setLoadingUser(true);
-    const { session } = await getSession();
-    if (session?.user) {
-      setUser(session.user as UserData);
-      setPhoneInput(session.user.phone || "");
+    try {
+      const { session } = await getSession();
+      if (session?.user) {
+        setUser(session.user as UserData);
+        setPhoneInput(session.user.phone || "");
+      } else {
+        setUser(null);
+      }
+    } catch (err) {
+      console.error("Erreur chargement utilisateur:", err);
+      setUser(null);
+    } finally {
+      setLoadingUser(false);
     }
-    setLoadingUser(false);
   };
 
+  // Réinitialisation complète à chaque ouverture du popover
   useEffect(() => {
     if (open) {
       loadUser();
@@ -105,7 +121,17 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
       setOtpStep("idle");
       setOtpCode("");
       setPhoneError(null);
+      setLogoutError(null);
       setDeleteError(null);
+      setShowDeleteConfirm(false);
+    }
+  }, [open]);
+
+  // Si l'utilisateur ferme le popover pendant qu'une confirmation de suppression
+  // est ouverte, on la réinitialise pour éviter un état "collé" à la prochaine ouverture.
+  useEffect(() => {
+    if (!open) {
+      setShowDeleteConfirm(false);
     }
   }, [open]);
 
@@ -130,71 +156,97 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
     if (!user?.email) return;
     setEmailSending(true);
     setEmailError(null);
-    const { error } = await sendVerificationEmail(user.email);
-    if (error) {
-      setEmailError(error.message || t("errors.emailSendFailed"));
-    } else {
-      setEmailSent(true);
+    try {
+      const { error } = await sendVerificationEmail(user.email);
+      if (error) {
+        setEmailError(error.message || t("errors.emailSendFailed"));
+      } else {
+        setEmailSent(true);
+      }
+    } catch (err) {
+      setEmailError(t("errors.emailSendFailed"));
+    } finally {
+      setEmailSending(false);
     }
-    setEmailSending(false);
   };
 
   const handleSendPhoneOtp = async () => {
     if (!phoneInput.trim()) return;
     setPhoneSending(true);
     setPhoneError(null);
-    const { error } = await sendPhoneOTP(phoneInput.trim());
-    if (error) {
-      setPhoneError(error.message || t("errors.phoneSendFailed"));
-    } else {
-      setOtpStep("sent");
+    try {
+      const { error } = await sendPhoneOTP(phoneInput.trim());
+      if (error) {
+        setPhoneError(error.message || t("errors.phoneSendFailed"));
+      } else {
+        setOtpStep("sent");
+      }
+    } catch (err) {
+      setPhoneError(t("errors.phoneSendFailed"));
+    } finally {
+      setPhoneSending(false);
     }
-    setPhoneSending(false);
   };
 
   const handleVerifyPhoneOtp = async () => {
     if (!otpCode.trim()) return;
     setPhoneVerifying(true);
     setPhoneError(null);
-    const { error } = await verifyPhoneOTP({
-      phoneNumber: phoneInput.trim(),
-      code: otpCode.trim(),
-    });
-    if (error) {
-      setPhoneError(error.message || t("errors.phoneVerifyFailed"));
-    } else {
-      await loadUser();
-      setOtpStep("idle");
-      setOtpCode("");
+    try {
+      const { error } = await verifyPhoneOTP({
+        phoneNumber: phoneInput.trim(),
+        code: otpCode.trim(),
+      });
+      if (error) {
+        setPhoneError(error.message || t("errors.phoneVerifyFailed"));
+      } else {
+        await loadUser();
+        setOtpStep("idle");
+        setOtpCode("");
+      }
+    } catch (err) {
+      setPhoneError(t("errors.phoneVerifyFailed"));
+    } finally {
+      setPhoneVerifying(false);
     }
-    setPhoneVerifying(false);
   };
 
   const handleLogout = async () => {
-    await signOut();
-    onClose();
-    router.push("/sign-in");
-    router.refresh();
+    setLoggingOut(true);
+    setLogoutError(null);
+    try {
+      const { error } = await signOut();
+      if (error) {
+        setLogoutError(error.message || t("errors.logoutFailed"));
+        setLoggingOut(false);
+        return;
+      }
+      onClose();
+      router.push("/sign-in");
+      router.refresh();
+    } catch (err) {
+      setLogoutError(t("errors.logoutFailed"));
+      setLoggingOut(false);
+    }
   };
 
   const handleDeleteAccount = async () => {
-    const confirmed = window.confirm(t("confirmDelete"));
-    if (!confirmed) return;
-
     setDeleting(true);
     setDeleteError(null);
     try {
       const { error } = await authClient.deleteUser();
       if (error) {
         setDeleteError(error.message || t("errors.deleteFailed"));
-      } else {
-        onClose();
-        router.push("/");
-        router.refresh();
+        setShowDeleteConfirm(false);
+        setDeleting(false);
+        return;
       }
+      onClose();
+      router.push("/");
+      router.refresh();
     } catch (err) {
       setDeleteError(t("errors.deleteFailed"));
-    } finally {
+      setShowDeleteConfirm(false);
       setDeleting(false);
     }
   };
@@ -216,16 +268,16 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
   };
 
   return (
-    <Popover 
-      open={open} 
-      onClose={onClose} 
-      title={t("title")} 
+    <Popover
+      open={open}
+      onClose={onClose}
+      title={t("title")}
       widthClassName="w-[95vw] max-w-[560px] sm:w-[560px]"
     >
       <div dir={isRTL ? "rtl" : "ltr"} className="max-h-[80vh] overflow-y-auto">
-       
-        <div className={`flex items-center justify-between mb-4 sm:mb-5 ${isRTL ? "" : orbitron.className}`}>
-          <h2 className={`text-sm sm:text-base font-medium text-black dark:text-white/90 ${isRTL ? "" : orbitron.className}`}>
+        {/* Header */}
+        <div className="flex items-center justify-between mb-4 sm:mb-5">
+          <h2 className={`text-sm sm:text-base font-medium text-black dark:text-white/90 ${orbitron.className}`}>
             {t("title")}
           </h2>
           <button
@@ -237,9 +289,9 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
           </button>
         </div>
 
-       
+        {/* Navigation Tabs */}
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-6">
-          
+          {/* Tab Navigation */}
           <nav className="w-full sm:w-36 shrink-0 flex sm:flex-col gap-1 overflow-x-auto pb-1 sm:pb-0 -mx-1 px-1">
             {TABS.map(({ key, icon: Icon, label }) => (
               <button
@@ -249,7 +301,7 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                   tab === key
                     ? "bg-black/10 text-black dark:bg-white/10 dark:text-white/95"
                     : "text-black/60 hover:bg-black/5 hover:text-black dark:text-white/60 dark:hover:bg-white/5 dark:hover:text-white/90"
-                } ${isRTL ? "sm:flex-row-reverse sm:text-right" : "sm:text-left"} ${orbitron.className}`}
+                } ${orbitron.className}`}
               >
                 <Icon size={16} />
                 <span>{label}</span>
@@ -257,9 +309,9 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
             ))}
           </nav>
 
-        
+          {/* Content Area */}
           <div className="flex-1 min-w-0">
-           
+            {/* General Tab */}
             {tab === "general" && (
               <div>
                 <p className="text-xs text-black/40 dark:text-white/40 mb-2">{t("theme")}</p>
@@ -282,9 +334,9 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
               </div>
             )}
 
-          
+            {/* Profile Tab */}
             {tab === "profile" && (
-              <div className={`flex flex-col gap-3 sm:gap-4 ${orbitron.className}`}>
+              <div className="flex flex-col gap-3 sm:gap-4">
                 {loadingUser ? (
                   <div className="flex items-center justify-center py-8">
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-black/30 dark:border-white/30" />
@@ -346,12 +398,12 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                                 value={phoneInput}
                                 onChange={(e) => setPhoneInput(e.target.value)}
                                 placeholder={t("phonePlaceholder")}
-                                className="flex-1 h-9 px-3 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm text-black dark:text-white/90 placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7]/60 w-full"
+                                className="flex-1 h-9 px-3 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm text-black dark:text-white/90 placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7] w-full"
                               />
                               <button
                                 onClick={handleSendPhoneOtp}
                                 disabled={phoneSending || !phoneInput.trim()}
-                                className={`text-xs px-3 py-1.5 rounded-lg border border-[#432dd7]/40 text-[#432dd7] hover:bg-[#432dd7]/10 cursor-pointer disabled:opacity-40 transition-colors sm:shrink-0 ${orbitron.className}`} 
+                                className={`text-xs px-3 py-1.5 rounded-lg border border-[#432dd7]/40 text-[#432dd7] hover:bg-[#432dd7]/10 cursor-pointer disabled:opacity-40 transition-colors sm:shrink-0 ${orbitron.className}`}
                               >
                                 {phoneSending ? t("sending") : t("verify")}
                               </button>
@@ -363,7 +415,7 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                                 onChange={(e) => setOtpCode(e.target.value)}
                                 placeholder={t("otpPlaceholder")}
                                 maxLength={6}
-                                className="flex-1 h-9 px-3 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm text-black dark:text-white/90 placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7]/60 w-full"
+                                className="flex-1 h-9 px-3 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm text-black dark:text-white/90 placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7] w-full"
                               />
                               <button
                                 onClick={handleVerifyPhoneOtp}
@@ -379,35 +431,74 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                       )}
                     </div>
 
-                    <div className="flex items-center justify-between pt-1">
-                      <span className="text-xs sm:text-sm text-black/50 dark:text-white/50">{t("logout")}</span>
-                      <button
-                        onClick={handleLogout}
-                        className={`text-xs px-3 py-1.5 rounded-lg border border-red-500/40 text-red-500 dark:text-red-400 hover:bg-red-500/10 cursor-pointer transition-colors ${orbitron.className}`}
-                      >
-                        {t("logoutButton")}
-                      </button>
-                    </div>
-
-                    <div>
+                    {/* Déconnexion */}
+                    <div className="pt-1">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs sm:text-sm text-black/50 dark:text-white/50">{t("deleteAccount")}</span>
+                        <span className="text-xs sm:text-sm text-black/50 dark:text-white/50">{t("logout")}</span>
                         <button
-                          onClick={handleDeleteAccount}
-                          disabled={deleting}
-                          className={`text-xs px-3 py-1.5 rounded-lg border border-red-500/40 text-red-500 dark:text-red-400 hover:bg-red-500/10 cursor-pointer disabled:opacity-40 transition-colors ${orbitron.className}`} 
+                          onClick={handleLogout}
+                          disabled={loggingOut}
+                          className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border border-red-500/40 text-red-500 dark:text-red-400 hover:bg-red-500/10 cursor-pointer disabled:opacity-40 transition-colors ${orbitron.className}`}
                         >
-                          {deleting ? t("deleting") : t("deleteButton")}
+                          <SignOutIcon size={14} weight="bold" />
+                          {loggingOut ? t("loggingOut") : t("logoutButton")}
                         </button>
                       </div>
-                      {deleteError && <p className="text-xs text-red-500 dark:text-red-400 mt-1">{deleteError}</p>}
+                      {logoutError && <p className="text-xs text-red-500 dark:text-red-400 mt-1">{logoutError}</p>}
+                    </div>
+
+                    {/* Suppression du compte */}
+                    <div className="rounded-lg border border-red-500/20 bg-red-500/5 p-3">
+                      {!showDeleteConfirm ? (
+                        <div className="flex items-center justify-between">
+                          <div className="flex flex-col">
+                            <span className="text-xs sm:text-sm text-black/70 dark:text-white/70">{t("deleteAccount")}</span>
+                            <span className="text-[11px] text-black/40 dark:text-white/40">{t("deleteAccountHint")}</span>
+                          </div>
+                          <button
+                            onClick={() => setShowDeleteConfirm(true)}
+                            disabled={deleting}
+                            className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border border-red-500/40 text-red-500 dark:text-red-400 hover:bg-red-500/10 cursor-pointer disabled:opacity-40 transition-colors shrink-0 ${orbitron.className}`}
+                          >
+                            <TrashIcon size={14} weight="bold" />
+                            {t("deleteButton")}
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col gap-2.5">
+                          <div className="flex items-start gap-2">
+                            <WarningCircleIcon size={16} weight="fill" className="text-red-500 dark:text-red-400 shrink-0 mt-0.5" />
+                            <p className="text-xs text-black/70 dark:text-white/70 leading-relaxed">
+                              {t("confirmDelete")}
+                            </p>
+                          </div>
+                          <div className="flex gap-2 justify-end">
+                            <button
+                              onClick={() => setShowDeleteConfirm(false)}
+                              disabled={deleting}
+                              className={`text-xs px-3 py-1.5 rounded-lg border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer disabled:opacity-40 transition-colors ${orbitron.className}`}
+                            >
+                              {t("cancel")}
+                            </button>
+                            <button
+                              onClick={handleDeleteAccount}
+                              disabled={deleting}
+                              className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-red-500 text-white hover:bg-red-600 cursor-pointer disabled:opacity-40 transition-colors ${orbitron.className}`}
+                            >
+                              <TrashIcon size={14} weight="bold" />
+                              {deleting ? t("deleting") : t("deleteConfirmButton")}
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                      {deleteError && <p className="text-xs text-red-500 dark:text-red-400 mt-2">{deleteError}</p>}
                     </div>
                   </>
                 )}
               </div>
             )}
 
-           
+            {/* Download Tab */}
             {tab === "download" && (
               <div>
                 <div className="flex items-center gap-2 mb-3">
@@ -417,49 +508,33 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                   </span>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
-                  <div className={`hidden sm:block relative w-28 h-28 shrink-0 rounded-xl overflow-hidden border-2 border-black/10 dark:border-white/10 bg-white p-2 ${orbitron.className}`}>
-                    {qrDataUrl ? (
-                      <img
-                        src={qrDataUrl}
-                        alt="QR Code de téléchargement"
-                        className="w-full h-full object-contain"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#432dd7]" />
-                      </div>
-                    )}
-                  </div>
+                {qrDataUrl && (
+                  <div className="flex flex-col items-center gap-4">
+                    <div className="bg-white p-4 rounded-lg">
+                      <img src={qrDataUrl} alt="QR Code" className="w-48 h-48" />
+                    </div>
 
-                  <div className="flex flex-col gap-2 items-center sm:items-start text-center sm:text-left w-full">
-                   
-                    <p className={`text-xs text-black/50 dark:text-white/50 leading-relaxed sm:hidden ${orbitron.className}`}>
-                      {t("mobileDownloadHint")}
-                    </p>
-                    
-                 
-                    <p className={`text-xs text-black/50 dark:text-white/50 leading-relaxed hidden sm:block ${orbitron.className}`}>
-                      {t("scanToDownload")}
-                    </p>
-                    <button
-                      onClick={handleDownloadQr}
-                      disabled={!qrDataUrl || downloading}
-                      className={`hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[#432dd7]/40 text-[#432dd7] hover:bg-[#432dd7]/10 text-xs cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-colors w-fit ${orbitron.className}`}
-                    >
-                      <DownloadSimpleIcon size={14} weight="bold" />
-                      {downloading ? t("downloading") : t("downloadQr")}
-                    </button>
-                    <div className="flex gap-1.5 mt-1 w-full">
-  <div className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-black/10 dark:bg-white/10 text-black/40 dark:text-white/40 text-xs cursor-not-allowed">
-    <GooglePlayLogo size={16} weight="fill" />
-  </div>
-  <div className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-black/10 dark:bg-white/10 text-black/40 dark:text-white/40 text-xs cursor-not-allowed">
-    <AppleLogo size={16} weight="fill" />
-  </div>
-</div>
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      <button
+                        onClick={handleDownloadQr}
+                        disabled={downloading}
+                        className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#432dd7] text-white hover:bg-[#432dd7]/90 cursor-pointer disabled:opacity-40 transition-colors"
+                      >
+                        <DownloadSimpleIcon size={16} />
+                        {downloading ? t("downloading") : t("downloadQr")}
+                      </button>
+
+                      <div className="flex gap-2">
+                        <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-black text-white hover:bg-black/90 cursor-pointer transition-colors">
+                          <GooglePlayLogo size={16} />
+                        </button>
+                        <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-black text-white hover:bg-black/90 cursor-pointer transition-colors">
+                          <AppleLogo size={16} />
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             )}
           </div>

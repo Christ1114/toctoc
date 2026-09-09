@@ -10,3 +10,5 @@ allowBuilds:
   ngrok: false
   msgpackr-extract: false
   workerd: false
+  '@firebase/util': set this to true or false
+  protobufjs: set this to true or false

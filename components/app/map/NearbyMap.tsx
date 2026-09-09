@@ -249,7 +249,7 @@ export default function NearbyMap() {
         <div className="absolute inset-0 flex items-center justify-center bg-gray-100 z-20">
           <div className="flex flex-col items-center gap-3">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
-            <p className={`text-sm text-gray-600`}>Chargement de la carte...</p>
+            <p className={`text-sm text-gray-600 ${orbitron.className}`}>Chargement de la carte...</p>
           </div>
         </div>
       )}
@@ -261,7 +261,7 @@ export default function NearbyMap() {
               setMapError(null);
               window.location.reload();
             }}
-            className={`mt-2 text-sm underline hover:no-underline`}
+            className={`mt-2 text-sm underline hover:no-underline ${orbitron.className}`}
           >
             Réessayer
           </button>

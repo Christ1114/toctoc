@@ -45,6 +45,10 @@ export function useGeolocation() {
         let message = "Impossible de récupérer la position";
         if (err.code === err.PERMISSION_DENIED) {
           message = "Permission de géolocalisation refusée";
+        } else if (err.code === err.POSITION_UNAVAILABLE) {
+          message = "Position indisponible";
+        } else if (err.code === err.TIMEOUT) {
+          message = "La demande de position a expiré";
         }
         setState((s) => ({ ...s, loading: false, error: message }));
       },
