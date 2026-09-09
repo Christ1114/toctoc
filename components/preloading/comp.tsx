@@ -174,7 +174,7 @@ const PreloadingPage = () => {
   if (locationResult.isValid) {
     
     await saveUserLocation(coordinates.lat, coordinates.lng, locationResult.region);
-    router.replace("/dashboard");
+    router.replace("/app");
   } else {
     console.error("Localisation invalide:", locationResult.reason);
     alert(t("location.invalidLocation"));
