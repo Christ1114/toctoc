@@ -284,7 +284,7 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
 
           
             {tab === "profile" && (
-              <div className="flex flex-col gap-3 sm:gap-4">
+              <div className={`flex flex-col gap-3 sm:gap-4 ${orbitron.className}`}>
                 {loadingUser ? (
                   <div className="flex items-center justify-center py-8">
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-black/30 dark:border-white/30" />
