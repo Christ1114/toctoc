@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import * as maplibregl from "maplibre-gl";
+import { setWorkerUrl } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
@@ -11,6 +12,14 @@ import { createAvatarMarkerElement } from "./AvatarMarker";
 import TopToolbar from "./TopToolbar";
 import AiSearchPanel from "./AiSearchPanel";
 import { orbitron } from "@/fonts/font";
+
+// Fix MapLibre v6 : requis avec tout bundler (webpack/Turbopack via Next.js).
+// Sans ceci, le Web Worker de MapLibre ne se résout pas correctement et
+// aucune tuile ne s'affiche (la requête part vers la page HTML au lieu du
+// fichier .mjs du worker).
+setWorkerUrl(
+  new URL("maplibre-gl/dist/maplibre-gl-worker.mjs", import.meta.url).toString()
+);
 
 // Styles avec support 3D
 const STYLES = {
