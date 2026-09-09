@@ -17,7 +17,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const REQUIRED_ENV = [
   "BETTER_AUTH_URL",
   "BETTER_AUTH_SECRET",
-  "RESEND_API_KEY",        
+  "RESEND_API_KEY",
   "RESEND_FROM_EMAIL",
   "GMAIL_USER",
   "GMAIL_APP_PASSWORD",
@@ -28,9 +28,13 @@ const REQUIRED_ENV = [
   "KICKBOX_API_KEY",
 ] as const;
 
-for (const key of REQUIRED_ENV) {
-  if (!process.env[key]) {
-    throw new Error(`[auth] Variable d'environnement manquante: ${key}`);
+// On saute la validation pendant la phase de build Next.js (collecte de pages),
+// où les vraies variables d'environnement runtime ne sont pas nécessaires.
+if (process.env.NEXT_PHASE !== "phase-production-build") {
+  for (const key of REQUIRED_ENV) {
+    if (!process.env[key]) {
+      throw new Error(`[auth] Variable d'environnement manquante: ${key}`);
+    }
   }
 }
 
@@ -80,22 +84,22 @@ export const auth = betterAuth({
     sendResetPassword: async ({ user, url }: { user: { email: string }, url: string }) => {
       try {
         await resend.emails.send({
-  from: `TOCTOC <${process.env.RESEND_FROM_EMAIL}>`,
-  to: user.email,
-  subject: "Reset your TOCTOC password",
-  html: `
-    <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
-      <h2 style="color: #432dd7;">Password Reset</h2>
-      <p>Click the button below to reset your password.</p>
-      <a href="${url}" style="display:inline-block; background:#432dd7; color:#fff; padding:12px 24px; border-radius:8px; text-decoration:none; font-weight:bold;">
-        Reset my password
-      </a>
-      <p style="color:#888; font-size:12px; margin-top:24px;">
-        If you did not request this reset, please ignore this email — your current password remains valid.
-      </p>
-    </div>
-  `,
-});
+          from: `TOCTOC <${process.env.RESEND_FROM_EMAIL}>`,
+          to: user.email,
+          subject: "Reset your TOCTOC password",
+          html: `
+            <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
+              <h2 style="color: #432dd7;">Password Reset</h2>
+              <p>Click the button below to reset your password.</p>
+              <a href="${url}" style="display:inline-block; background:#432dd7; color:#fff; padding:12px 24px; border-radius:8px; text-decoration:none; font-weight:bold;">
+                Reset my password
+              </a>
+              <p style="color:#888; font-size:12px; margin-top:24px;">
+                If you did not request this reset, please ignore this email — your current password remains valid.
+              </p>
+            </div>
+          `,
+        });
       } catch (err) {
         console.error("Erreur envoi email de réinitialisation:", err);
       }
@@ -152,7 +156,7 @@ export const auth = betterAuth({
       httpOnly: true,
       sameSite: "lax",
       domain: process.env.COOKIE_DOMAIN || undefined,
-      path: "/", 
+      path: "/",
     },
     crossSubDomainCookies: {
       enabled: false,
@@ -246,8 +250,6 @@ export const auth = betterAuth({
               "Ce mot de passe a été trouvé dans une fuite de données connue. Merci d'en choisir un autre.",
           });
         }
-
-        
       }
     }),
 
@@ -284,31 +286,31 @@ export const auth = betterAuth({
       }
     }),
   },
- user: {
-  additionalFields: {
-    accountType: { type: "string", required: false, defaultValue: "CLIENT" },
-    clientType: { type: "string", required: false },
-    companyName: { type: "string", required: false },
-    rccmNumber: { type: "string", required: false },
-    providerType: { type: "string", required: false },
-    bio: { type: "string", required: false },
-    verificationMethod: { type: "string", required: false, defaultValue: "email" },
-    consents: { type: "string", required: false }, 
-    isActive: { type: "boolean", required: false, defaultValue: true },
-    hourlyRate: { type: "number", required: false },
-    currency: { type: "string", required: false, defaultValue: "XOF" },
-    verificationStatus: { type: "string", required: false, defaultValue: "PENDING" },
-    verificationLevel: { type: "string", required: false },
-    verifiedBy: { type: "string", required: false },
-    verifiedAt: { type: "date", required: false },
-    verificationNotes: { type: "string", required: false },
-    isDemo: { type: "boolean", required: false, defaultValue: false },
-    demoExpiresAt: { type: "date", required: false },
-    phone: { type: "string", required: false },
-    phoneVerified: { type: "boolean", required: false, defaultValue: false },
-    acceptNewsletter: { type: "boolean", required: false, defaultValue: false },
+  user: {
+    additionalFields: {
+      accountType: { type: "string", required: false, defaultValue: "CLIENT" },
+      clientType: { type: "string", required: false },
+      companyName: { type: "string", required: false },
+      rccmNumber: { type: "string", required: false },
+      providerType: { type: "string", required: false },
+      bio: { type: "string", required: false },
+      verificationMethod: { type: "string", required: false, defaultValue: "email" },
+      consents: { type: "string", required: false },
+      isActive: { type: "boolean", required: false, defaultValue: true },
+      hourlyRate: { type: "number", required: false },
+      currency: { type: "string", required: false, defaultValue: "XOF" },
+      verificationStatus: { type: "string", required: false, defaultValue: "PENDING" },
+      verificationLevel: { type: "string", required: false },
+      verifiedBy: { type: "string", required: false },
+      verifiedAt: { type: "date", required: false },
+      verificationNotes: { type: "string", required: false },
+      isDemo: { type: "boolean", required: false, defaultValue: false },
+      demoExpiresAt: { type: "date", required: false },
+      phone: { type: "string", required: false },
+      phoneVerified: { type: "boolean", required: false, defaultValue: false },
+      acceptNewsletter: { type: "boolean", required: false, defaultValue: false },
+    },
   },
-},
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID as string,
