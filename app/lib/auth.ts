@@ -271,7 +271,7 @@ export const auth = betterAuth({
     providerType: { type: "string", required: false },
     bio: { type: "string", required: false },
     verificationMethod: { type: "string", required: false, defaultValue: "email" },
-    consents: { type: "string", required: false }, // ← Ajoutez cette ligne (stocké comme JSON string)
+    consents: { type: "string", required: false }, 
     isActive: { type: "boolean", required: false, defaultValue: true },
     hourlyRate: { type: "number", required: false },
     currency: { type: "string", required: false, defaultValue: "XOF" },

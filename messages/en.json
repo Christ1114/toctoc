@@ -1,4 +1,111 @@
 {
+  "TopToolbar": {
+    "quickSearchPlaceholder": "Quick search...",
+    "searchByAi": "Search by AI"
+  },
+  "AiSearchPanel": {
+    "title": "AI Search",
+    "close": "Close",
+    "emptyState": "Describe what you're looking for, AI will find the right profile.",
+    "inputPlaceholder": "Ex: I'm looking for a nanny in Cocody...",
+    "send": "Send",
+    "mockResponse": "I found a profile that matches your search:"
+  },
+  "NearbyMap": {
+    "me": "Me",
+    "youAreHere": "You are here",
+    "locateMe": "Locate me"
+  },
+  "VrConfirmPopover": {
+    "title": "Virtual interview",
+    "description": "This interview takes place in an immersive space. A compatible VR headset is required to participate.",
+    "checkboxLabel": "I confirm I have a compatible VR headset",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "close": "Close"
+  },
+  "downloadApp": "Download the app",
+  "scanToDownload": "Scan this code to download the TocToc app on your phone.",
+  "mobileDownloadHint": "Download the app directly from your store",
+  "downloadQr": "Download QR code",
+  "downloading": "Downloading...",
+  "Sidebar": {
+    "search": "Search",
+    "home": "Home",
+    "video": "Video calls",
+    "chat": "Messages",
+    "phone": "Calls",
+    "vr": "Virtual interview",
+    "settings": "Settings",
+    "navLabel": "Main navigation",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "collapse": "Collapse",
+    "expand": "Expand"
+  },
+  "SettingsPopover": {
+    "title": "Settings",
+    "close": "Close",
+    "general": "General",
+    "profile": "Profile",
+    "download": "Download",
+    "theme": "Theme",
+    "themes": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    },
+    "language": "Language",
+    "name": "Name",
+    "email": "Email address",
+    "phone": "Phone number",
+    "verified": "Verified",
+    "verify": "Verify",
+    "sending": "Sending...",
+    "verifying": "Verifying...",
+    "confirm": "Confirm",
+    "deleting": "Deleting...",
+    "emailSentHint": "Email sent, check your inbox",
+    "phonePlaceholder": "+225 XX XX XX XX",
+    "otpPlaceholder": "6-digit code",
+    "confirmDelete": "Are you sure you want to delete your account? This action is irreversible.",
+    "logout": "Log out from all devices",
+    "logoutButton": "Log out",
+    "deleteAccount": "Delete account",
+    "deleteButton": "Delete",
+    "downloadApp": "Download the app",
+    "scanToDownload": "Scan the QR code to download the mobile app",
+    "mobileDownloadHint": "Download the app directly from your store",
+    "downloadQr": "Download QR code",
+    "downloading": "Downloading...",
+    "comingSoon": "Coming soon",
+    "appNotAvailable": "The mobile app will be available soon. Stay tuned!",
+    "qrCodeAlt": "Download QR code",
+    "googlePlay": "Google Play",
+    "appStore": "App Store",
+    "errors": {
+      "emailSendFailed": "Failed to send verification email",
+      "phoneSendFailed": "Failed to send code",
+      "phoneVerifyFailed": "Invalid or expired code",
+      "deleteFailed": "Failed to delete account"
+    }
+  },
+  "SearchPopover": {
+    "title": "Search",
+    "close": "Close",
+    "placeholder": "Job, profile...",
+    "recentSearches": "Recent searches",
+    "clearAll": "Clear all",
+    "noSearches": "No searches yet",
+    "noSearchesHint": "Your recent searches will appear here",
+    "deleteSearch": "Delete",
+    "errors": {
+      "loadFailed": "Unable to load history",
+      "saveFailed": "Error while saving",
+      "deleteFailed": "Error while deleting",
+      "clearFailed": "Error while clearing history"
+    }
+  },
   "navbar": {
     "findProfile": "Find a profile",
     "candidates": "Find a job offer",
@@ -6,11 +113,11 @@
     "findProfileBtn": "Log in",
     "findProfileBtn2": "Sign up",
     "search": {
-      "placeholder": "Search keywords:Housekeeping / Cleanin, Maid / Housemaid, Nanny,Chauffeur / Driver, Gardener"
+      "placeholder": "Keywords: Housekeeping, Maid, Nanny, Driver, Gardener..."
     }
   },
   "precheck": {
-     "title": "Security check...",
+    "title": "Security check...",
     "message": "Please wait while we verify your connection.",
     "success": "Verification successful!",
     "error": "Invalid location",
@@ -52,7 +159,7 @@
     "info": "The page you're looking for couldn't be found. It may have been removed or the URL is incorrect.",
     "backHome": "Back to home",
     "backToLogin": "Back to login"
-},
+  },
   "firstModuleHome": {
     "card_title1": "Nanny",
     "card_description1": "Leave with peace of mind. Our certified nannies take care of your children as if they were their own.",
@@ -123,10 +230,12 @@
     }
   },
   "profileCard": {
-    "title": "Profile examples",
+    "title": "Offer examples",
     "morelesse": "view more",
     "loading": "Loading...",
     "lessmore": "view less",
+    "warning": "no profile for now",
+    "title2": "Excellence of our experts",
     "urgent": "URGENT",
     "tocer": "Tocer",
     "salaryNegotiable": "Salary negotiable",
@@ -157,6 +266,7 @@
     "morelesse": "view more",
     "lessmore": "view less",
     "description": "Job offers for which a profile has already been found are not displayed, or for which the user has not yet logged in.",
+    "nooffer": "No offers for now.",
     "salaryPeriod": "month",
     "salaryNegotiable": "Salary negotiable",
     "noTransport": "No transport",
@@ -198,24 +308,12 @@
   "fourModuleHome": {
     "title": "Make a choice",
     "items": [
-      {
-        "title": "Babysitter"
-      },
-      {
-        "title": "After-school care"
-      },
-      {
-        "title": "Cleaning / Maintenance"
-      },
-      {
-        "title": "Elderly care"
-      },
-      {
-        "title": "Residential (live-in)"
-      },
-      {
-        "title": "Short term"
-      }
+      { "title": "Babysitter" },
+      { "title": "After-school care" },
+      { "title": "Cleaning / Maintenance" },
+      { "title": "Elderly care" },
+      { "title": "Residential (live-in)" },
+      { "title": "Short term" }
     ],
     "btnTocer": "Tocer"
   },
@@ -288,10 +386,10 @@
   },
   "contact": {
     "category": "Category",
-     "messagePlaceholder": "Write your message here...",
-      "emailValid": "Valid email address",
-  "validatingEmail": "Validating email...",
-  "sending": "Sending...",
+    "messagePlaceholder": "Write your message here...",
+    "emailValid": "Valid email address",
+    "validatingEmail": "Validating email...",
+    "sending": "Sending...",
     "categories": {
       "usageQuestion": "Usage question",
       "signupRequest": "Signup request",
@@ -322,10 +420,10 @@
       "step3Title": "Verification"
     },
     "success": {
-       "title": "Registration successful!",
-  "emailMessage": "A verification email has been sent to {email}. Click on the link received to activate your account.",
-  "phoneMessage": "A verification code has been sent to {phone}. Please check your phone.",
-  "goToLogin": "Go to login"
+      "title": "Registration successful!",
+      "emailMessage": "A verification email has been sent to {email}. Click on the link received to activate your account.",
+      "phoneMessage": "A verification code has been sent to {phone}. Please check your phone.",
+      "goToLogin": "Go to login"
     },
     "step1": {
       "title": "Create your account",
@@ -357,13 +455,13 @@
       "newsletter": "Newsletter",
       "operator": "Operator",
       "location": "Location",
-"noVpn": "No VPN Usage",
-"vr": "VR Interview"
+      "noVpn": "No VPN Usage",
+      "vr": "VR Interview"
     },
     "placeholders": {
       "name": "Enter your full name",
       "email": "Enter your email address",
-      "phone": "Enter your phone number ex:+1 or +44",
+      "phone": "Enter your phone number ex:+2250707070707",
       "password": "Create a secure password",
       "confirmPassword": "Confirm your password",
       "selectClientType": "Select your type",
@@ -384,11 +482,11 @@
     },
     "providerTypes": {
       "babysitter": "Babysitting",
-  "gardePeriscolaire": "After-school childcare",
-  "menage": "Housekeeping",
-  "aidePersonnesAgees": "Elderly care",
-  "residentiel": "Live-in (residential)",
-  "courtTerme": "Short-term"
+      "gardePeriscolaire": "After-school childcare",
+      "menage": "Housekeeping",
+      "aidePersonnesAgees": "Elderly care",
+      "residentiel": "Live-in (residential)",
+      "courtTerme": "Short-term"
     },
     "verification": {
       "email": "By Email",
@@ -418,29 +516,28 @@
       "strong": "Strong",
       "veryStrong": "Very strong"
     },
+    "characters": "characters",
     "errors": {
       "nameRequired": "Name is required (minimum 2 characters)",
       "invalidEmail": "Please enter a valid email address",
       "invalidPhone": "Please enter a valid phone number",
-      "weakPassword": "Password is too weak",
+      "weakPassword": "Password must contain at least 12 characters, one uppercase letter, one number and one special character.",
       "passwordMismatch": "Passwords do not match",
       "acceptTerms": "You must accept the terms of use",
       "companyNameRequired": "Company name is required",
       "invalidRccm": "RCCM number is not valid",
-      "phoneCountryCodeWarning": "Invalid country code. Use format like +225, +1, +44, +86.",
-      "providerTypeRequired": "Please select your provider type",
       "bioTooShort": "Bio must contain at least 50 characters",
       "selectVerification": "Please choose a verification method",
+      "phoneCountryCodeWarning": "Invalid country code. Use format like +225, +1, +44, +86.",
       "acceptLocation": "You must check the location activation box.",
-"acceptNoVpn": "You must check the VPN non-usage box.",
-"acceptVr": "You must check the VR interviews box."
+      "acceptNoVpn": "You must check the VPN non-usage box.",
+      "acceptVr": "You must check the VR interviews box."
     },
     "consents": {
       "location": "Location",
       "noVpn": "No VPN Usage",
       "vr": "VR Interview"
-    },
-    "characters": "characters"
+    }
   },
   "login": {
     "title": "Login",
@@ -451,26 +548,27 @@
       "rememberMe": "Remember me",
       "forgotPassword": "Forgot password?"
     },
-    "errors": {
-      "invalidEmail": "Invalid email",
-      "invalidPassword": "Invalid password",
-      "invalidCredentials": "Invalid credentials"
-    },
     "placeholders": {
       "email": "your@email.com",
       "password": "Your password"
     },
     "buttons": {
       "submit": "Sign in",
-      "loading": "Loading..."
+      "loading": "Signing in..."
     },
     "divider": "Or continue with",
     "providers": {
       "google": "Continue with Google",
+      "wechat": "Continue with WeChat",
       "tiktok": "Continue with TikTok"
     },
     "noAccount": "Don't have an account?",
-    "registerLink": "Sign up"
+    "registerLink": "Sign up",
+    "errors": {
+      "invalidEmail": "Invalid email",
+      "invalidPassword": "Invalid password",
+      "invalidCredentials": "Invalid credentials"
+    }
   },
   "forgotPassword": {
     "title": "Forgot Password",
@@ -498,45 +596,36 @@
       "title": "Email sent!",
       "message": "Check your inbox to reset your password.",
       "sentTo": "Email sent to:",
-       "title1": "Registration successful!",
-  "emailMessage": "A verification email has been sent to {email}. Click on the link received to activate your account.",
-  "phoneMessage": "A verification code has been sent to {phone}. Please check your phone.",
-  "goToLogin": "Go to login"
+      "title1": "Registration successful!",
+      "emailMessage": "A verification email has been sent to {email}. Click on the link received to activate your account.",
+      "phoneMessage": "A verification code has been sent to {phone}. Please check your phone.",
+      "goToLogin": "Go to login"
     }
   },
   "resetPassword": {
-    "title": "Reset Password",
-    "subtitle": "Enter your new password",
-    "securityInfo": "Password must be strong and contain at least 8 characters with a mix of uppercase, lowercase, numbers, and symbols.",
+    "title": "Reset your password",
+    "subtitle": "Choose a new secure password",
+    "securityInfo": "Your password must contain at least 12 characters, one uppercase letter, one number and one special character.",
     "labels": {
-      "password": "New Password",
-      "confirmPassword": "Confirm Password"
+      "password": "New password",
+      "confirmPassword": "Confirm password"
     },
     "placeholders": {
       "password": "Enter your new password",
-      "confirmPassword": "Re-enter your password"
+      "confirmPassword": "Confirm your new password"
     },
     "buttons": {
-      "submit": "Reset Password",
-      "loading": "Resetting...",
       "showPassword": "Show password",
-      "hidePassword": "Hide password"
+      "submit": "Reset password"
     },
+    "backToLogin": "Back to login",
     "passwordStrength": {
       "weak": "Weak",
       "medium": "Medium",
-      "good": "Good",
       "strong": "Strong"
     },
-    "passwordsMatch": "Passwords match",
-    "backToLogin": "Back to login",
-    "success": {
-      "title": "Password Reset Successful!",
-      "message": "Your password has been successfully changed. You can now log in with your new password."
-    },
-    "goToLogin": "Go to login",
     "invalidToken": {
-      "title": "Forgot Password",
+      "title": "Forgot password",
       "message": "This link is invalid or has expired. Please try again."
     },
     "errors": {
@@ -546,8 +635,7 @@
       "passwordWeak": "Password is too weak.",
       "confirmPasswordRequired": "Password confirmation is required.",
       "passwordsDoNotMatch": "Passwords do not match.",
-      "invalidToken": "The link is invalid or has expired.",
-      "resetFailed": "Password reset failed. Please try again."
+      "invalidToken": "The link is invalid or has expired."
     },
     "backToForgotPassword": "Back to password reset page"
   },
@@ -582,5 +670,17 @@
       "point9": "Article 5: Termination: TOCTOC reserves the right to suspend or terminate your account in case of violation of these terms.",
       "point10": "Article 6: Contact: For any questions regarding these terms, contact us at contact@toctoc.com."
     }
+  },
+  
+  "AgencyDashboard": {
+    "welcome": "Welcome, {name}",
+    "subtitle": "Manage your agency and profiles from this dashboard.",
+    "companyName": "Company name",
+    "rccm": "RCCM Number",
+    "verificationStatus": "Verification status"
+  },
+  "IndividualDashboard": {
+    "welcome": "Welcome, {name}",
+    "subtitle": "Find domestic staff near you."
   }
 }

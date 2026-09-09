@@ -147,3 +147,115 @@
     0%   { opacity: 1; transform: scale(1) translate(0, 0); }
     100% { opacity: 0; transform: scale(0) translate(20px, 20px); }
 }
+.avatar-marker {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  animation: avatar-float 3s ease-in-out infinite;
+}
+
+.avatar-marker__bubble {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 3px solid;
+  background: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.avatar-marker__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-marker__fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.avatar-marker__pointer {
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 10px solid;
+  margin-top: -3px;
+  z-index: 1;
+}
+
+.avatar-marker__shadow {
+  width: 24px;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  margin-top: 2px;
+  filter: blur(1px);
+  animation: shadow-pulse 3s ease-in-out infinite;
+}
+
+@keyframes avatar-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes shadow-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(0.7);
+    opacity: 0.15;
+  }
+}
+.maplibregl-popup.custom-popup .maplibregl-popup-content {
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  color: white;
+  padding: 8px 28px 8px 14px; /* plus de padding à droite pour laisser la place au X */
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  font-size: 13px;
+  font-weight: 500;
+  position: relative;
+}
+
+.maplibregl-popup.custom-popup .maplibregl-popup-tip {
+  border-top-color: rgba(0, 0, 0, 0.85) !important;
+  border-bottom-color: rgba(0, 0, 0, 0.85) !important;
+}
+
+.maplibregl-popup.custom-popup .maplibregl-popup-close-button {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 16px;
+  line-height: 1;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.maplibregl-popup.custom-popup .maplibregl-popup-close-button:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+}

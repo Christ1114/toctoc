@@ -58,6 +58,7 @@ export const ModelName = {
   DailyStats: 'DailyStats',
   GlobalCounter: 'GlobalCounter',
   User: 'User',
+  Search: 'Search',
   Account: 'Account',
   Session: 'Session',
   Verification: 'Verification',
@@ -232,6 +233,17 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const SearchScalarFieldEnum = {
+  id: 'id',
+  query: 'query',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SearchScalarFieldEnum = (typeof SearchScalarFieldEnum)[keyof typeof SearchScalarFieldEnum]
 
 
 export const AccountScalarFieldEnum = {

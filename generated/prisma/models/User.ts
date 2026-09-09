@@ -500,6 +500,7 @@ export type UserWhereInput = {
   availabilities?: Prisma.AvailabilityListRelationFilter
   unavailableDates?: Prisma.UnavailableDateListRelationFilter
   announcements?: Prisma.AnnouncementListRelationFilter
+  searches?: Prisma.SearchListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -553,6 +554,7 @@ export type UserOrderByWithRelationInput = {
   availabilities?: Prisma.AvailabilityOrderByRelationAggregateInput
   unavailableDates?: Prisma.UnavailableDateOrderByRelationAggregateInput
   announcements?: Prisma.AnnouncementOrderByRelationAggregateInput
+  searches?: Prisma.SearchOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -609,6 +611,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   availabilities?: Prisma.AvailabilityListRelationFilter
   unavailableDates?: Prisma.UnavailableDateListRelationFilter
   announcements?: Prisma.AnnouncementListRelationFilter
+  searches?: Prisma.SearchListRelationFilter
 }, "id" | "email" | "phone">
 
 export type UserOrderByWithAggregationInput = {
@@ -752,6 +755,7 @@ export type UserCreateInput = {
   availabilities?: Prisma.AvailabilityCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -805,6 +809,7 @@ export type UserUncheckedCreateInput = {
   availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateUncheckedCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -858,6 +863,7 @@ export type UserUpdateInput = {
   availabilities?: Prisma.AvailabilityUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -911,6 +917,7 @@ export type UserUncheckedUpdateInput = {
   availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUncheckedUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -1221,6 +1228,20 @@ export type NullableEnumVerificationLevelFieldUpdateOperationsInput = {
   set?: $Enums.VerificationLevel | null
 }
 
+export type UserCreateNestedOneWithoutSearchesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSearchesInput, Prisma.UserUncheckedCreateWithoutSearchesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSearchesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSearchesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSearchesInput, Prisma.UserUncheckedCreateWithoutSearchesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSearchesInput
+  upsert?: Prisma.UserUpsertWithoutSearchesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSearchesInput, Prisma.UserUpdateWithoutSearchesInput>, Prisma.UserUncheckedUpdateWithoutSearchesInput>
+}
+
 export type UserCreateNestedOneWithoutAccountsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutAccountsInput
@@ -1425,6 +1446,7 @@ export type UserCreateWithoutAnnouncementsInput = {
   favoritedBy?: Prisma.FavoriteCreateNestedManyWithoutProviderInput
   availabilities?: Prisma.AvailabilityCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateCreateNestedManyWithoutProviderInput
+  searches?: Prisma.SearchCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAnnouncementsInput = {
@@ -1477,6 +1499,7 @@ export type UserUncheckedCreateWithoutAnnouncementsInput = {
   favoritedBy?: Prisma.FavoriteUncheckedCreateNestedManyWithoutProviderInput
   availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateUncheckedCreateNestedManyWithoutProviderInput
+  searches?: Prisma.SearchUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAnnouncementsInput = {
@@ -1545,6 +1568,7 @@ export type UserUpdateWithoutAnnouncementsInput = {
   favoritedBy?: Prisma.FavoriteUpdateManyWithoutProviderNestedInput
   availabilities?: Prisma.AvailabilityUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUpdateManyWithoutProviderNestedInput
+  searches?: Prisma.SearchUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAnnouncementsInput = {
@@ -1597,6 +1621,235 @@ export type UserUncheckedUpdateWithoutAnnouncementsInput = {
   favoritedBy?: Prisma.FavoriteUncheckedUpdateManyWithoutProviderNestedInput
   availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUncheckedUpdateManyWithoutProviderNestedInput
+  searches?: Prisma.SearchUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutSearchesInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  emailVerified?: boolean
+  phone?: string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
+  password?: string | null
+  image?: string | null
+  accountType?: $Enums.Role
+  role?: string | null
+  verificationMethod?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  acceptNewsletter?: boolean
+  clientType?: $Enums.ClientType | null
+  companyName?: string | null
+  rccmNumber?: string | null
+  providerType?: $Enums.ProviderType | null
+  bio?: string | null
+  isActive?: boolean
+  hourlyRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: string
+  verificationStatus?: $Enums.VerificationStatus
+  verificationLevel?: $Enums.VerificationLevel | null
+  verifiedBy?: string | null
+  verifiedAt?: Date | string | null
+  verificationNotes?: string | null
+  isDemo?: boolean
+  demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  consents?: Prisma.UserConsentCreateNestedManyWithoutUserInput
+  bookingsAsClient?: Prisma.BookingCreateNestedManyWithoutClientInput
+  bookingsAsProvider?: Prisma.BookingCreateNestedManyWithoutProviderInput
+  reviewsGiven?: Prisma.ReviewCreateNestedManyWithoutAuthorInput
+  reviewsReceived?: Prisma.ReviewCreateNestedManyWithoutReceiverInput
+  favoriteProviders?: Prisma.FavoriteCreateNestedManyWithoutClientInput
+  favoritedBy?: Prisma.FavoriteCreateNestedManyWithoutProviderInput
+  availabilities?: Prisma.AvailabilityCreateNestedManyWithoutProviderInput
+  unavailableDates?: Prisma.UnavailableDateCreateNestedManyWithoutProviderInput
+  announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSearchesInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  emailVerified?: boolean
+  phone?: string | null
+  phoneCountryCode?: string | null
+  phoneVerified?: boolean
+  password?: string | null
+  image?: string | null
+  accountType?: $Enums.Role
+  role?: string | null
+  verificationMethod?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  acceptNewsletter?: boolean
+  clientType?: $Enums.ClientType | null
+  companyName?: string | null
+  rccmNumber?: string | null
+  providerType?: $Enums.ProviderType | null
+  bio?: string | null
+  isActive?: boolean
+  hourlyRate?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: string
+  verificationStatus?: $Enums.VerificationStatus
+  verificationLevel?: $Enums.VerificationLevel | null
+  verifiedBy?: string | null
+  verifiedAt?: Date | string | null
+  verificationNotes?: string | null
+  isDemo?: boolean
+  demoExpiresAt?: Date | string | null
+  lastLatitude?: number | null
+  lastLongitude?: number | null
+  lastLocationUpdatedAt?: Date | string | null
+  lastKnownRegion?: string | null
+  locationVerified?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutUserInput
+  bookingsAsClient?: Prisma.BookingUncheckedCreateNestedManyWithoutClientInput
+  bookingsAsProvider?: Prisma.BookingUncheckedCreateNestedManyWithoutProviderInput
+  reviewsGiven?: Prisma.ReviewUncheckedCreateNestedManyWithoutAuthorInput
+  reviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutReceiverInput
+  favoriteProviders?: Prisma.FavoriteUncheckedCreateNestedManyWithoutClientInput
+  favoritedBy?: Prisma.FavoriteUncheckedCreateNestedManyWithoutProviderInput
+  availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutProviderInput
+  unavailableDates?: Prisma.UnavailableDateUncheckedCreateNestedManyWithoutProviderInput
+  announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSearchesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSearchesInput, Prisma.UserUncheckedCreateWithoutSearchesInput>
+}
+
+export type UserUpsertWithoutSearchesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSearchesInput, Prisma.UserUncheckedUpdateWithoutSearchesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSearchesInput, Prisma.UserUncheckedCreateWithoutSearchesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSearchesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSearchesInput, Prisma.UserUncheckedUpdateWithoutSearchesInput>
+}
+
+export type UserUpdateWithoutSearchesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerType?: Prisma.NullableEnumProviderTypeFieldUpdateOperationsInput | $Enums.ProviderType | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  hourlyRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  verificationStatus?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  verificationLevel?: Prisma.NullableEnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel | null
+  verifiedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  consents?: Prisma.UserConsentUpdateManyWithoutUserNestedInput
+  bookingsAsClient?: Prisma.BookingUpdateManyWithoutClientNestedInput
+  bookingsAsProvider?: Prisma.BookingUpdateManyWithoutProviderNestedInput
+  reviewsGiven?: Prisma.ReviewUpdateManyWithoutAuthorNestedInput
+  reviewsReceived?: Prisma.ReviewUpdateManyWithoutReceiverNestedInput
+  favoriteProviders?: Prisma.FavoriteUpdateManyWithoutClientNestedInput
+  favoritedBy?: Prisma.FavoriteUpdateManyWithoutProviderNestedInput
+  availabilities?: Prisma.AvailabilityUpdateManyWithoutProviderNestedInput
+  unavailableDates?: Prisma.UnavailableDateUpdateManyWithoutProviderNestedInput
+  announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSearchesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneCountryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accountType?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptNewsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clientType?: Prisma.NullableEnumClientTypeFieldUpdateOperationsInput | $Enums.ClientType | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rccmNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  providerType?: Prisma.NullableEnumProviderTypeFieldUpdateOperationsInput | $Enums.ProviderType | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  hourlyRate?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  verificationStatus?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  verificationLevel?: Prisma.NullableEnumVerificationLevelFieldUpdateOperationsInput | $Enums.VerificationLevel | null
+  verifiedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verificationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isDemo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  demoExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLatitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLongitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lastLocationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastKnownRegion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  consents?: Prisma.UserConsentUncheckedUpdateManyWithoutUserNestedInput
+  bookingsAsClient?: Prisma.BookingUncheckedUpdateManyWithoutClientNestedInput
+  bookingsAsProvider?: Prisma.BookingUncheckedUpdateManyWithoutProviderNestedInput
+  reviewsGiven?: Prisma.ReviewUncheckedUpdateManyWithoutAuthorNestedInput
+  reviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutReceiverNestedInput
+  favoriteProviders?: Prisma.FavoriteUncheckedUpdateManyWithoutClientNestedInput
+  favoritedBy?: Prisma.FavoriteUncheckedUpdateManyWithoutProviderNestedInput
+  availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutProviderNestedInput
+  unavailableDates?: Prisma.UnavailableDateUncheckedUpdateManyWithoutProviderNestedInput
+  announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -1649,6 +1902,7 @@ export type UserCreateWithoutAccountsInput = {
   availabilities?: Prisma.AvailabilityCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -1701,6 +1955,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateUncheckedCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -1769,6 +2024,7 @@ export type UserUpdateWithoutAccountsInput = {
   availabilities?: Prisma.AvailabilityUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -1821,6 +2077,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUncheckedUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -1873,6 +2130,7 @@ export type UserCreateWithoutSessionsInput = {
   availabilities?: Prisma.AvailabilityCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -1925,6 +2183,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateUncheckedCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -1993,6 +2252,7 @@ export type UserUpdateWithoutSessionsInput = {
   availabilities?: Prisma.AvailabilityUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -2045,6 +2305,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUncheckedUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutConsentsInput = {
@@ -2097,6 +2358,7 @@ export type UserCreateWithoutConsentsInput = {
   availabilities?: Prisma.AvailabilityCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutConsentsInput = {
@@ -2149,6 +2411,7 @@ export type UserUncheckedCreateWithoutConsentsInput = {
   availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateUncheckedCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutConsentsInput = {
@@ -2217,6 +2480,7 @@ export type UserUpdateWithoutConsentsInput = {
   availabilities?: Prisma.AvailabilityUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutConsentsInput = {
@@ -2269,6 +2533,7 @@ export type UserUncheckedUpdateWithoutConsentsInput = {
   availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUncheckedUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFavoriteProvidersInput = {
@@ -2321,6 +2586,7 @@ export type UserCreateWithoutFavoriteProvidersInput = {
   availabilities?: Prisma.AvailabilityCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFavoriteProvidersInput = {
@@ -2373,6 +2639,7 @@ export type UserUncheckedCreateWithoutFavoriteProvidersInput = {
   availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateUncheckedCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFavoriteProvidersInput = {
@@ -2430,6 +2697,7 @@ export type UserCreateWithoutFavoritedByInput = {
   availabilities?: Prisma.AvailabilityCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFavoritedByInput = {
@@ -2482,6 +2750,7 @@ export type UserUncheckedCreateWithoutFavoritedByInput = {
   availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateUncheckedCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFavoritedByInput = {
@@ -2550,6 +2819,7 @@ export type UserUpdateWithoutFavoriteProvidersInput = {
   availabilities?: Prisma.AvailabilityUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFavoriteProvidersInput = {
@@ -2602,6 +2872,7 @@ export type UserUncheckedUpdateWithoutFavoriteProvidersInput = {
   availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUncheckedUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutFavoritedByInput = {
@@ -2665,6 +2936,7 @@ export type UserUpdateWithoutFavoritedByInput = {
   availabilities?: Prisma.AvailabilityUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFavoritedByInput = {
@@ -2717,6 +2989,7 @@ export type UserUncheckedUpdateWithoutFavoritedByInput = {
   availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUncheckedUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAvailabilitiesInput = {
@@ -2769,6 +3042,7 @@ export type UserCreateWithoutAvailabilitiesInput = {
   favoritedBy?: Prisma.FavoriteCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAvailabilitiesInput = {
@@ -2821,6 +3095,7 @@ export type UserUncheckedCreateWithoutAvailabilitiesInput = {
   favoritedBy?: Prisma.FavoriteUncheckedCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateUncheckedCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAvailabilitiesInput = {
@@ -2889,6 +3164,7 @@ export type UserUpdateWithoutAvailabilitiesInput = {
   favoritedBy?: Prisma.FavoriteUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAvailabilitiesInput = {
@@ -2941,6 +3217,7 @@ export type UserUncheckedUpdateWithoutAvailabilitiesInput = {
   favoritedBy?: Prisma.FavoriteUncheckedUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUncheckedUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutUnavailableDatesInput = {
@@ -2993,6 +3270,7 @@ export type UserCreateWithoutUnavailableDatesInput = {
   favoritedBy?: Prisma.FavoriteCreateNestedManyWithoutProviderInput
   availabilities?: Prisma.AvailabilityCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutUnavailableDatesInput = {
@@ -3045,6 +3323,7 @@ export type UserUncheckedCreateWithoutUnavailableDatesInput = {
   favoritedBy?: Prisma.FavoriteUncheckedCreateNestedManyWithoutProviderInput
   availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutUnavailableDatesInput = {
@@ -3113,6 +3392,7 @@ export type UserUpdateWithoutUnavailableDatesInput = {
   favoritedBy?: Prisma.FavoriteUpdateManyWithoutProviderNestedInput
   availabilities?: Prisma.AvailabilityUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUnavailableDatesInput = {
@@ -3165,6 +3445,7 @@ export type UserUncheckedUpdateWithoutUnavailableDatesInput = {
   favoritedBy?: Prisma.FavoriteUncheckedUpdateManyWithoutProviderNestedInput
   availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutBookingsAsClientInput = {
@@ -3217,6 +3498,7 @@ export type UserCreateWithoutBookingsAsClientInput = {
   availabilities?: Prisma.AvailabilityCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBookingsAsClientInput = {
@@ -3269,6 +3551,7 @@ export type UserUncheckedCreateWithoutBookingsAsClientInput = {
   availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateUncheckedCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBookingsAsClientInput = {
@@ -3326,6 +3609,7 @@ export type UserCreateWithoutBookingsAsProviderInput = {
   availabilities?: Prisma.AvailabilityCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBookingsAsProviderInput = {
@@ -3378,6 +3662,7 @@ export type UserUncheckedCreateWithoutBookingsAsProviderInput = {
   availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateUncheckedCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBookingsAsProviderInput = {
@@ -3446,6 +3731,7 @@ export type UserUpdateWithoutBookingsAsClientInput = {
   availabilities?: Prisma.AvailabilityUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBookingsAsClientInput = {
@@ -3498,6 +3784,7 @@ export type UserUncheckedUpdateWithoutBookingsAsClientInput = {
   availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUncheckedUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutBookingsAsProviderInput = {
@@ -3561,6 +3848,7 @@ export type UserUpdateWithoutBookingsAsProviderInput = {
   availabilities?: Prisma.AvailabilityUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBookingsAsProviderInput = {
@@ -3613,6 +3901,7 @@ export type UserUncheckedUpdateWithoutBookingsAsProviderInput = {
   availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUncheckedUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutReviewsGivenInput = {
@@ -3665,6 +3954,7 @@ export type UserCreateWithoutReviewsGivenInput = {
   availabilities?: Prisma.AvailabilityCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReviewsGivenInput = {
@@ -3717,6 +4007,7 @@ export type UserUncheckedCreateWithoutReviewsGivenInput = {
   availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateUncheckedCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReviewsGivenInput = {
@@ -3774,6 +4065,7 @@ export type UserCreateWithoutReviewsReceivedInput = {
   availabilities?: Prisma.AvailabilityCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReviewsReceivedInput = {
@@ -3826,6 +4118,7 @@ export type UserUncheckedCreateWithoutReviewsReceivedInput = {
   availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutProviderInput
   unavailableDates?: Prisma.UnavailableDateUncheckedCreateNestedManyWithoutProviderInput
   announcements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUserInput
+  searches?: Prisma.SearchUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReviewsReceivedInput = {
@@ -3894,6 +4187,7 @@ export type UserUpdateWithoutReviewsGivenInput = {
   availabilities?: Prisma.AvailabilityUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewsGivenInput = {
@@ -3946,6 +4240,7 @@ export type UserUncheckedUpdateWithoutReviewsGivenInput = {
   availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUncheckedUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutReviewsReceivedInput = {
@@ -4009,6 +4304,7 @@ export type UserUpdateWithoutReviewsReceivedInput = {
   availabilities?: Prisma.AvailabilityUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewsReceivedInput = {
@@ -4061,6 +4357,7 @@ export type UserUncheckedUpdateWithoutReviewsReceivedInput = {
   availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutProviderNestedInput
   unavailableDates?: Prisma.UnavailableDateUncheckedUpdateManyWithoutProviderNestedInput
   announcements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUserNestedInput
+  searches?: Prisma.SearchUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -4081,6 +4378,7 @@ export type UserCountOutputType = {
   availabilities: number
   unavailableDates: number
   announcements: number
+  searches: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4096,6 +4394,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   availabilities?: boolean | UserCountOutputTypeCountAvailabilitiesArgs
   unavailableDates?: boolean | UserCountOutputTypeCountUnavailableDatesArgs
   announcements?: boolean | UserCountOutputTypeCountAnnouncementsArgs
+  searches?: boolean | UserCountOutputTypeCountSearchesArgs
 }
 
 /**
@@ -4192,6 +4491,13 @@ export type UserCountOutputTypeCountAnnouncementsArgs<ExtArgs extends runtime.Ty
   where?: Prisma.AnnouncementWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSearchesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SearchWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -4244,6 +4550,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   availabilities?: boolean | Prisma.User$availabilitiesArgs<ExtArgs>
   unavailableDates?: boolean | Prisma.User$unavailableDatesArgs<ExtArgs>
   announcements?: boolean | Prisma.User$announcementsArgs<ExtArgs>
+  searches?: boolean | Prisma.User$searchesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -4384,6 +4691,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   availabilities?: boolean | Prisma.User$availabilitiesArgs<ExtArgs>
   unavailableDates?: boolean | Prisma.User$unavailableDatesArgs<ExtArgs>
   announcements?: boolean | Prisma.User$announcementsArgs<ExtArgs>
+  searches?: boolean | Prisma.User$searchesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -4404,6 +4712,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     availabilities: Prisma.$AvailabilityPayload<ExtArgs>[]
     unavailableDates: Prisma.$UnavailableDatePayload<ExtArgs>[]
     announcements: Prisma.$AnnouncementPayload<ExtArgs>[]
+    searches: Prisma.$SearchPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -4850,6 +5159,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   availabilities<T extends Prisma.User$availabilitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$availabilitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AvailabilityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   unavailableDates<T extends Prisma.User$unavailableDatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$unavailableDatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UnavailableDatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   announcements<T extends Prisma.User$announcementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$announcementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  searches<T extends Prisma.User$searchesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$searchesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SearchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5595,6 +5905,30 @@ export type User$announcementsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.AnnouncementScalarFieldEnum | Prisma.AnnouncementScalarFieldEnum[]
+}
+
+/**
+ * User.searches
+ */
+export type User$searchesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Search
+   */
+  select?: Prisma.SearchSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Search
+   */
+  omit?: Prisma.SearchOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SearchInclude<ExtArgs> | null
+  where?: Prisma.SearchWhereInput
+  orderBy?: Prisma.SearchOrderByWithRelationInput | Prisma.SearchOrderByWithRelationInput[]
+  cursor?: Prisma.SearchWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SearchScalarFieldEnum | Prisma.SearchScalarFieldEnum[]
 }
 
 /**

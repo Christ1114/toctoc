@@ -404,6 +404,7 @@ export const ModelName = {
   DailyStats: 'DailyStats',
   GlobalCounter: 'GlobalCounter',
   User: 'User',
+  Search: 'Search',
   Account: 'Account',
   Session: 'Session',
   Verification: 'Verification',
@@ -430,7 +431,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "region" | "jobType" | "source" | "announcement" | "dailyStats" | "globalCounter" | "user" | "account" | "session" | "verification" | "userConsent" | "favorite" | "availability" | "unavailableDate" | "booking" | "review" | "verifiedPhone" | "rateLimit"
+    modelProps: "region" | "jobType" | "source" | "announcement" | "dailyStats" | "globalCounter" | "user" | "search" | "account" | "session" | "verification" | "userConsent" | "favorite" | "availability" | "unavailableDate" | "booking" | "review" | "verifiedPhone" | "rateLimit"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -949,6 +950,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number
+        }
+      }
+    }
+    Search: {
+      payload: Prisma.$SearchPayload<ExtArgs>
+      fields: Prisma.SearchFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SearchFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SearchPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SearchFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SearchPayload>
+        }
+        findFirst: {
+          args: Prisma.SearchFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SearchPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SearchFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SearchPayload>
+        }
+        findMany: {
+          args: Prisma.SearchFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SearchPayload>[]
+        }
+        create: {
+          args: Prisma.SearchCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SearchPayload>
+        }
+        createMany: {
+          args: Prisma.SearchCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SearchCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SearchPayload>[]
+        }
+        delete: {
+          args: Prisma.SearchDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SearchPayload>
+        }
+        update: {
+          args: Prisma.SearchUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SearchPayload>
+        }
+        deleteMany: {
+          args: Prisma.SearchDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SearchUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SearchUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SearchPayload>[]
+        }
+        upsert: {
+          args: Prisma.SearchUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SearchPayload>
+        }
+        aggregate: {
+          args: Prisma.SearchAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSearch>
+        }
+        groupBy: {
+          args: Prisma.SearchGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SearchGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SearchCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SearchCountAggregateOutputType> | number
         }
       }
     }
@@ -1952,6 +2027,17 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const SearchScalarFieldEnum = {
+  id: 'id',
+  query: 'query',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SearchScalarFieldEnum = (typeof SearchScalarFieldEnum)[keyof typeof SearchScalarFieldEnum]
+
+
 export const AccountScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -2640,6 +2726,7 @@ export type GlobalOmitConfig = {
   dailyStats?: Prisma.DailyStatsOmit
   globalCounter?: Prisma.GlobalCounterOmit
   user?: Prisma.UserOmit
+  search?: Prisma.SearchOmit
   account?: Prisma.AccountOmit
   session?: Prisma.SessionOmit
   verification?: Prisma.VerificationOmit

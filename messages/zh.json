@@ -1,4 +1,99 @@
 {
+  "NearbyMap": {
+    "me": "我",
+    "youAreHere": "您在这里",
+    "locateMe": "定位我"
+  },
+  "VrConfirmPopover": {
+    "title": "虚拟面试",
+    "description": "此次面试将在沉浸式虚拟空间中进行。参与需要一台兼容的VR头显设备。",
+    "checkboxLabel": "我确认拥有一台兼容的VR头显设备",
+    "cancel": "取消",
+    "continue": "继续",
+    "close": "关闭"
+  },
+  "downloadApp": "下载应用",
+  "scanToDownload": "扫描此二维码在您的手机上下载 TocToc 应用。",
+  "mobileDownloadHint": "直接从您的应用商店下载应用",
+  "downloadQr": "下载二维码",
+  "downloading": "下载中...",
+  "Sidebar": {
+    "search": "搜索",
+    "home": "首页",
+    "video": "视频通话",
+    "chat": "消息",
+    "phone": "通话",
+    "vr": "虚拟面试",
+    "settings": "设置",
+    "navLabel": "主导航",
+    "openMenu": "打开菜单",
+    "closeMenu": "关闭菜单",
+    "collapse": "收起",
+    "expand": "展开"
+  },
+  "SettingsPopover": {
+    "title": "设置",
+    "close": "关闭",
+    "general": "通用",
+    "profile": "个人资料",
+    "download": "下载",
+    "theme": "主题",
+    "themes": {
+      "light": "浅色",
+      "dark": "深色",
+      "system": "系统"
+    },
+    "language": "语言",
+    "name": "姓名",
+    "email": "电子邮箱",
+    "phone": "电话号码",
+    "verified": "已验证",
+    "verify": "验证",
+    "sending": "发送中...",
+    "verifying": "验证中...",
+    "confirm": "确认",
+    "deleting": "删除中...",
+    "emailSentHint": "邮件已发送，请查收您的收件箱",
+    "phonePlaceholder": "+225 XX XX XX XX",
+    "otpPlaceholder": "6位数字验证码",
+    "confirmDelete": "您确定要删除您的账户吗？此操作不可撤销。",
+    "logout": "从所有设备退出登录",
+    "logoutButton": "退出登录",
+    "deleteAccount": "删除账户",
+    "deleteButton": "删除",
+    "downloadApp": "下载应用",
+    "scanToDownload": "扫描二维码下载移动应用",
+    "mobileDownloadHint": "直接从您的应用商店下载应用",
+    "downloadQr": "下载二维码",
+    "downloading": "下载中...",
+    "comingSoon": "即将推出",
+    "appNotAvailable": "移动应用即将推出，敬请期待！",
+    "qrCodeAlt": "下载二维码",
+    "googlePlay": "谷歌应用商店",
+    "appStore": "苹果应用商店",
+    "errors": {
+      "emailSendFailed": "发送验证邮件失败",
+      "phoneSendFailed": "发送验证码失败",
+      "phoneVerifyFailed": "验证码无效或已过期",
+      "deleteFailed": "删除账户失败"
+    }
+  },
+  "SearchPopover": {
+    "title": "搜索",
+    "close": "关闭",
+    "placeholder": "职位、简历...",
+    "recentSearches": "最近搜索",
+    "clearAll": "清除全部",
+    "noSearches": "暂无搜索记录",
+    "noSearchesHint": "您的最近搜索将显示在这里",
+    "deleteSearch": "删除",
+    "errors": {
+      "loadFailed": "无法加载历史记录",
+      "saveFailed": "保存时出错",
+      "deleteFailed": "删除时出错",
+      "clearFailed": "清除历史记录时出错"
+    }
+  },
   "navbar": {
     "findProfile": "寻找档案",
     "candidates": "查找职位",
@@ -8,7 +103,8 @@
     "search": {
       "placeholder": "搜索关键词：家务、女佣、保姆、司机、园丁等..."
     }
-  },"precheck": {
+  },
+  "precheck": {
     "title": "安全检查...",
     "message": "请稍候，我们正在验证您的连接。",
     "success": "验证成功！",
@@ -37,7 +133,7 @@
       "popupTitle": "检测到VPN",
       "popupSubtitle": "为了您的安全，访问已被阻止",
       "popupMessage": "我们检测到您正在使用VPN或代理。为了您和TocToc社区的安全，请将其关闭。",
-      "popupInstruction": "关闭VPN后，点击“重试”。",
+      "popupInstruction": "关闭VPN后，点击\"重试\"。",
       "popupRetry": "重试"
     },
     "navigation": {
@@ -51,7 +147,7 @@
     "info": "找不到您要查找的页面。它可能已被删除，或者链接地址不正确。",
     "backHome": "返回首页",
     "backToLogin": "返回登录页"
-},
+  },
   "firstModuleHome": {
     "card_title1": "保姆",
     "card_description1": "放心出门，我们经过认证的保姆会像对待自己的孩子一样照顾您的孩子。",
@@ -122,10 +218,12 @@
     }
   },
   "profileCard": {
-    "title": "个人资料示例",
+    "title": "职位示例",
     "loading": "加载中...",
     "morelesse": "查看更多",
     "lessmore": "查看更少",
+    "warning": "暂无个人资料",
+    "title2": "我们专家的卓越服务",
     "urgent": "紧急",
     "tocer": "Tocer",
     "salaryNegotiable": "薪资面议",
@@ -156,6 +254,7 @@
     "morelesse": "查看更多",
     "lessmore": "查看更少",
     "description": "已找到人选的职位空缺不予显示，或者用户尚未登录的职位空缺也不予显示。",
+    "nooffer": "暂无职位信息。",
     "salaryPeriod": "月",
     "salaryNegotiable": "薪资面议",
     "noTransport": "无交通补贴",
@@ -197,24 +296,12 @@
   "fourModuleHome": {
     "title": "做出选择",
     "items": [
-      {
-        "title": "保姆"
-      },
-      {
-        "title": "课后托管"
-      },
-      {
-        "title": "清洁 / 维护"
-      },
-      {
-        "title": "老人看护"
-      },
-      {
-        "title": "住家服务"
-      },
-      {
-        "title": "短期"
-      }
+      { "title": "保姆" },
+      { "title": "课后托管" },
+      { "title": "清洁 / 维护" },
+      { "title": "老人看护" },
+      { "title": "住家服务" },
+      { "title": "短期" }
     ],
     "btnTocer": "Tocer"
   },
@@ -246,7 +333,7 @@
       "titleHeader": "标题",
       "dateHeader": "编写日期",
       "title": "隐私政策修订通知",
-      "date": "24-07-08"
+      "date": "08-07-24"
     },
     "content": {
       "intro": "您好，我们在隐私政策中新增了针对服务永久用户的个人信息处理政策。",
@@ -268,7 +355,7 @@
       "titleHeader": "标题",
       "dateHeader": "编写日期",
       "title": "关于修改欺诈短信预警通知的公告",
-      "date": "24-07-08"
+      "date": "08-07-24"
     },
     "content": {
       "intro": "您好，这里是TocToc管理员。",
@@ -288,9 +375,9 @@
   "contact": {
     "category": "分类",
     "messagePlaceholder": "在这里写下您的信息...",
-     "emailValid": "电子邮件地址有效",
-  "validatingEmail": "正在验证电子邮件...",
-  "sending": "正在发送...",
+    "emailValid": "电子邮件地址有效",
+    "validatingEmail": "正在验证电子邮件...",
+    "sending": "正在发送...",
     "categories": {
       "usageQuestion": "使用咨询",
       "signupRequest": "注册申请",
@@ -322,9 +409,9 @@
     },
     "success": {
       "title": "注册成功！",
-  "emailMessage": "验证邮件已发送至 {email}。请点击收到的链接激活您的账户。",
-  "phoneMessage": "验证码已发送至 {phone}。请查看您的手机。",
-  "goToLogin": "前往登录"
+      "emailMessage": "验证邮件已发送至 {email}。请点击收到的链接激活您的账户。",
+      "phoneMessage": "验证码已发送至 {phone}。请查看您的手机。",
+      "goToLogin": "前往登录"
     },
     "step1": {
       "title": "创建您的账户",
@@ -356,13 +443,13 @@
       "newsletter": "通讯",
       "operator": "操作员",
       "location": "定位",
-"noVpn": "不使用VPN",
-"vr": "VR面试"
+      "noVpn": "不使用VPN",
+      "vr": "VR面试"
     },
     "placeholders": {
       "name": "请输入您的全名",
       "email": "请输入您的电子邮箱",
-      "phone": "请输入您的电话号码",
+      "phone": "请输入您的电话号码 例:+2250707070707",
       "password": "创建安全密码",
       "confirmPassword": "确认您的密码",
       "selectClientType": "选择您的类型",
@@ -382,14 +469,12 @@
       "entreprise": "企业"
     },
     "providerTypes": {
-     
-  "babysitter": "临时看护",
-  "gardePeriscolaire": "课后托管",
-  "menage": "家政保洁",
-  "aidePersonnesAgees": "老年人照护",
-  "residentiel": "住家服务",
-  "courtTerme": "短期服务"
-
+      "babysitter": "临时看护",
+      "gardePeriscolaire": "课后托管",
+      "menage": "家政保洁",
+      "aidePersonnesAgees": "老年人照护",
+      "residentiel": "住家服务",
+      "courtTerme": "短期服务"
     },
     "verification": {
       "email": "通过电子邮件",
@@ -419,29 +504,28 @@
       "strong": "强",
       "veryStrong": "非常强"
     },
+    "characters": "字符",
     "errors": {
       "nameRequired": "姓名为必填项（至少2个字符）",
       "invalidEmail": "请输入有效的电子邮箱地址",
       "invalidPhone": "请输入有效的电话号码",
-      "weakPassword": "密码太弱",
+      "weakPassword": "密码必须包含至少12个字符，包括一个大写字母、一个数字和一个特殊字符。",
       "passwordMismatch": "密码不匹配",
-      "phoneCountryCodeWarning": "国家代码无效。请使用+225、+1、+44、+86等格式。",
       "acceptTerms": "您必须接受使用条款",
       "companyNameRequired": "公司名称为必填项",
       "invalidRccm": "RCCM编号无效",
-      "providerTypeRequired": "请选择您的服务提供者类型",
       "bioTooShort": "简介至少需要50个字符",
       "selectVerification": "请选择验证方式",
+      "phoneCountryCodeWarning": "国家代码无效。请使用+225、+1、+44、+86等格式。",
       "acceptLocation": "您必须勾选启用定位服务的选项。",
-"acceptNoVpn": "您必须勾选不使用VPN的选项。",
-"acceptVr": "您必须勾选VR面试的选项。"
+      "acceptNoVpn": "您必须勾选不使用VPN的选项。",
+      "acceptVr": "您必须勾选VR面试的选项。"
     },
     "consents": {
       "location": "定位",
       "noVpn": "不使用VPN",
       "vr": "VR面试"
-    },
-    "characters": "字符"
+    }
   },
   "login": {
     "title": "登录",
@@ -450,29 +534,29 @@
       "email": "电子邮箱",
       "password": "密码",
       "rememberMe": "记住我",
-      "forgotPassword": "忘记密码？"  
+      "forgotPassword": "忘记密码？"
     },
-    "errors": {
-      "invalidEmail": "无效的电子邮件",
-"invalidPassword": "无效的密码",
-"invalidCredentials": "无效的证书"
-    },
-   
     "placeholders": {
       "email": "your@email.com",
       "password": "您的密码"
     },
     "buttons": {
       "submit": "登录",
-      "loading": "加载中..."
+      "loading": "登录中..."
     },
     "divider": "或使用以下方式继续",
     "providers": {
       "google": "使用Google继续",
-     "tiktok": "使用TikTok继续"
+      "wechat": "使用微信继续",
+      "tiktok": "使用TikTok继续"
     },
     "noAccount": "还没有账户？",
-    "registerLink": "注册"
+    "registerLink": "注册",
+    "errors": {
+      "invalidEmail": "无效的电子邮件",
+      "invalidPassword": "无效的密码",
+      "invalidCredentials": "无效的凭据"
+    }
   },
   "forgotPassword": {
     "title": "忘记密码",
@@ -482,8 +566,7 @@
       "email": "电子邮箱"
     },
     "placeholders": {
-      "email": "your@email.com",
-      "phone":" ex:+86..."
+      "email": "your@email.com"
     },
     "buttons": {
       "submit": "发送重置链接",
@@ -502,42 +585,33 @@
       "message": "请检查您的收件箱以重置密码。",
       "sentTo": "邮件已发送至：",
       "title1": "注册成功！",
-  "emailMessage": "验证邮件已发送至 {email}。请点击收到的链接激活您的账户。",
-  "phoneMessage": "验证码已发送至 {phone}。请查看您的手机。",
-  "goToLogin": "前往登录"
+      "emailMessage": "验证邮件已发送至 {email}。请点击收到的链接激活您的账户。",
+      "phoneMessage": "验证码已发送至 {phone}。请查看您的手机。",
+      "goToLogin": "前往登录"
     }
   },
   "resetPassword": {
-    "title": "重置密码",
-    "subtitle": "输入新密码",
-    "securityInfo": "密码必须包含至少8个字符，并包含大小写字母、数字和特殊字符的组合。",
+    "title": "重置您的密码",
+    "subtitle": "选择一个安全的新密码",
+    "securityInfo": "您的密码必须包含至少12个字符，包括一个大写字母、一个数字和一个特殊字符。",
     "labels": {
       "password": "新密码",
       "confirmPassword": "确认密码"
     },
     "placeholders": {
-      "password": "输入新密码",
-      "confirmPassword": "重新输入密码"
+      "password": "输入您的新密码",
+      "confirmPassword": "确认您的新密码"
     },
     "buttons": {
-      "submit": "重置密码",
-      "loading": "正在重置...",
       "showPassword": "显示密码",
-      "hidePassword": "隐藏密码"
+      "submit": "重置密码"
     },
+    "backToLogin": "返回登录",
     "passwordStrength": {
       "weak": "弱",
       "medium": "中等",
-      "good": "良好",
       "strong": "强"
     },
-    "passwordsMatch": "密码匹配",
-    "backToLogin": "返回登录",
-    "success": {
-      "title": "密码重置成功！",
-      "message": "您的密码已成功更改。您现在可以使用新密码登录。"
-    },
-    "goToLogin": "前往登录",
     "invalidToken": {
       "title": "忘记密码",
       "message": "此链接无效或已过期。请重试。"
@@ -549,8 +623,7 @@
       "passwordWeak": "密码强度太弱。",
       "confirmPasswordRequired": "确认密码为必填项。",
       "passwordsDoNotMatch": "两次输入的密码不一致。",
-      "invalidToken": "链接无效或已过期。",
-      "resetFailed": "密码重置失败。请重试。"
+      "invalidToken": "链接无效或已过期。"
     },
     "backToForgotPassword": "返回密码重置页面"
   },
@@ -585,5 +658,17 @@
       "point9": "第5条：终止：如违反本条款，TOCTOC保留暂停或终止您账户的权利。",
       "point10": "第6条：联系方式：如对本条款有任何疑问，请通过contact@toctoc.com与我们联系。"
     }
+  },
+  
+  "AgencyDashboard": {
+    "welcome": "欢迎，{name}",
+    "subtitle": "从此仪表板管理您的机构和档案。",
+    "companyName": "公司名称",
+    "rccm": "RCCM编号",
+    "verificationStatus": "验证状态"
+  },
+  "IndividualDashboard": {
+    "welcome": "欢迎，{name}",
+    "subtitle": "在您附近寻找家政人员。"
   }
 }

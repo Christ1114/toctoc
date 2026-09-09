@@ -320,12 +320,25 @@ model User {
   unavailableDates UnavailableDate[]
 
   announcements Announcement[]
+  searches      Search[]
 
   @@index([accountType])
   @@index([email])
   @@index([phone])
   @@index([lastLatitude, lastLongitude])
   @@map("users")
+}
+
+model Search {
+  id        String   @id @default(cuid())
+  query     String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, createdAt])
+  @@map("searches")
 }
 
 model Account {

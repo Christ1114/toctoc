@@ -1,20 +1,135 @@
 {
+  "TopToolbar": {
+    "quickSearchPlaceholder": "Recherche rapide...",
+    "searchByAi": "Rechercher par IA"
+  },
+  "AiSearchPanel": {
+    "title": "Recherche IA",
+    "close": "Fermer",
+    "emptyState": "Décris ce que tu recherches, l'IA te trouvera le bon profil.",
+    "inputPlaceholder": "Ex: je cherche une nounou à Cocody...",
+    "send": "Envoyer",
+    "mockResponse": "J'ai trouvé un profil qui correspond à ta recherche :"
+  },
+  
+  "AgencyDashboard": {
+    "welcome": "Bienvenue, {name}",
+    "subtitle": "Gère ton agence et tes profils depuis ce tableau de bord.",
+    "companyName": "Nom de l'entreprise",
+    "rccm": "Numéro RCCM",
+    "verificationStatus": "Statut de vérification"
+  },
+  "IndividualDashboard": {
+    "welcome": "Bienvenue, {name}",
+    "subtitle": "Trouve du personnel de maison près de chez toi."
+  },
+
+  "NearbyMap": {
+    "me": "Moi",
+    "youAreHere": "Vous êtes ici",
+    "locateMe": "Me localiser"
+  },
+  "downloadApp": "Télécharger l'application",
+  "scanToDownload": "Scanne ce code pour télécharger l'application TocToc sur ton téléphone.",
+  "mobileDownloadHint": "Téléchargez l'application directement depuis votre store",
+  "downloadQr": "Télécharger le QR code",
+  "downloading": "Téléchargement...",
+  "VrConfirmPopover": {
+    "title": "Confirmation entretien VR",
+    "description": "Voulez-vous vraiment passer un entretien en réalité virtuelle ?",
+    "message": "Voulez-vous vraiment passer un entretien en réalité virtuelle ?",
+    "checkboxLabel": "J'accepte de passer un entretien en réalité virtuelle",
+    "confirm": "Confirmer",
+    "continue": "Continuer",
+    "cancel": "Annuler",
+    "close": "Fermer"
+  },
+  "Sidebar": {
+    "search": "Rechercher",
+    "home": "Accueil",
+    "video": "Appels vidéo",
+    "chat": "Messages",
+    "phone": "Appels",
+    "vr": "Entretien virtuel",
+    "settings": "Paramètres",
+    "navLabel": "Navigation principale",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "collapse": "Réduire",
+    "expand": "Déplier"
+  },
+  "SettingsPopover": {
+    "title": "Paramètres",
+    "close": "Fermer",
+    "general": "Général",
+    "profile": "Profil",
+    "download": "Télécharger",
+    "theme": "Thème",
+    "themes": {
+      "light": "Clair",
+      "dark": "Sombre",
+      "system": "Système"
+    },
+    "language": "Langue",
+    "name": "Nom",
+    "email": "Adresse e-mail",
+    "phone": "Numéro de téléphone",
+    "verified": "Vérifié",
+    "verify": "Vérifier",
+    "sending": "Envoi...",
+    "verifying": "Vérification...",
+    "confirm": "Confirmer",
+    "deleting": "Suppression...",
+    "emailSentHint": "Email envoyé, vérifie ta boîte de réception",
+    "phonePlaceholder": "+225 XX XX XX XX",
+    "otpPlaceholder": "Code à 6 chiffres",
+    "confirmDelete": "Es-tu sûr de vouloir supprimer ton compte ? Cette action est irréversible.",
+    "logout": "Déconnexion de tous les appareils",
+    "logoutButton": "Déconnexion",
+    "deleteAccount": "Supprimer le compte",
+    "deleteButton": "Supprimer",
+    "downloadApp": "Télécharger l'application",
+    "scanToDownload": "Scannez ce QR code avec votre téléphone pour télécharger l'application",
+    "mobileDownloadHint": "Téléchargez l'application directement depuis votre store",
+    "downloadQr": "Télécharger le QR code",
+    "downloading": "Téléchargement...",
+    "errors": {
+      "emailSendFailed": "Échec de l'envoi de l'email de vérification",
+      "phoneSendFailed": "Échec de l'envoi du code",
+      "phoneVerifyFailed": "Code invalide ou expiré",
+      "deleteFailed": "Échec de la suppression du compte"
+    }
+  },
+  "SearchPopover": {
+    "title": "Rechercher",
+    "close": "Fermer",
+    "placeholder": "Offre, profil...",
+    "recentSearches": "Recherches récentes",
+    "clearAll": "Tout effacer",
+    "noSearches": "Aucune recherche pour le moment",
+    "noSearchesHint": "Vos recherches récentes apparaîtront ici",
+    "deleteSearch": "Supprimer",
+    "errors": {
+      "loadFailed": "Impossible de charger l'historique",
+      "saveFailed": "Erreur lors de la sauvegarde",
+      "deleteFailed": "Erreur lors de la suppression",
+      "clearFailed": "Erreur lors de la suppression de l'historique"
+    }
+  },
   "navbar": {
-      "findProfile": "Trouver un profil",
-      "candidates": "Trouver une offre",
-      "resources": "Guide d'utilisation",
-
-      "findProfileBtn": "Se connecter",
-      "findProfileBtn2": "S'inscrire",
-
-      "search" : {
-        "placeholder": "Mots-clés: Ménage, servante, nounou, chauffeure, jardinier..."
-      }
+    "findProfile": "Trouver un profil",
+    "candidates": "Trouver une offre",
+    "resources": "Guide d'utilisation",
+    "findProfileBtn": "Se connecter",
+    "findProfileBtn2": "S'inscrire",
+    "search": {
+      "placeholder": "Mots-clés: Ménage, servante, nounou, chauffeure, jardinier..."
+    }
   },
   "precheck": {
     "title": "Vérification de sécurité...",
     "message": "Veuillez patienter pendant que nous vérifions votre connexion.",
-  "success": "Vérification réussie !",
+    "success": "Vérification réussie !",
     "error": "Localisation invalide",
     "redirecting": "Redirection...",
     "locationRequired": "Vous devez être en Côte d'Ivoire pour utiliser nos services.",
@@ -48,59 +163,57 @@
       "continue": "Continuer"
     }
   },
-  "notFound" : {
+  "notFound": {
     "title": "Page non trouvée",
     "description": "Désolé, cette page n'existe pas ou a été déplacée.",
     "info": "La page que vous recherchez est introuvable. Elle a peut-être été supprimée ou l'URL est incorrecte.",
     "backHome": "Retour à l'accueil",
     "backToLogin": "Retour à la connexion"
-},
-
+  },
   "firstModuleHome": {
     "card_title1": "Nounou",
     "card_description1": "Partez l'esprit tranquille. Nos nounous certifiées prennent soin de vos enfants comme si c'était les leurs.",
-    "card_title2":"Jardinier",
-    "card_description2":"Des jardiniers qualifiés, disponibles près de chez vous, pour un extérieur toujours impeccable.",
-    "card_title3":"Chauffeur",
+    "card_title2": "Jardinier",
+    "card_description2": "Des jardiniers qualifiés, disponibles près de chez vous, pour un extérieur toujours impeccable.",
+    "card_title3": "Chauffeur",
     "card_description3": "Trouvez un chauffeur de confiance près de chez vous, disponible quand vous en avez besoin.",
-    "card_title4":"Assistance senior",
-    "card_description4":"Parce que vieillir mérite d'être accompagné avec amour et dignité.",
+    "card_title4": "Assistance senior",
+    "card_description4": "Parce que vieillir mérite d'être accompagné avec amour et dignité.",
     "H1_title": "Le bon personnel à domicile, trouvé par l'IA",
-    "P1_title":"La plateforme N°1 du personnel à domicile en Côte d'Ivoire !!!",
-    "btn_1":"Depuis 2024"
- },
- "secondModuleHome": {
-  "H2_title": "Search engine des talents à domicile en Côte d'Ivoire",
-  "description1": "Les offres d'emplois pour lesquelles un profil a déjà été trouvé ne sont  pas affichées ou  pour lesquelles l'utilisateur ne s'est pas encore connecté.",
-   "Card_Item": {
-    "title1": "Libre fixation des tarifs",
-    "description1":"Fixez votre prix ou convenez d'un tarif à l'amiable avant de réserver.",
-    "title2": "L'excellence de nos experts",
-    "description2":"Nos professionnels hautement qualifiés bénéficient d'une solide expertise de terrain.",
-    "title3": "Parfaitement outillés",
-    "description3":"Des intervenants dotés d'un équipement de pointe et adaptés à toutes les situations."
-   }
-},
-
-"footer": {
-  "links": {
-    "heading": "Annonces",
-    "all": "Tous >",
-    "smsWarning": "Méfiez-vous de ce genre de SMS !",
-    "privacyPolicy": "Politique de confidentialité",
-    "termsofuse": "Conditions d'utilisation"
+    "P1_title": "La plateforme N°1 du personnel à domicile en Côte d'Ivoire !!!",
+    "btn_1": "Depuis 2024"
   },
-  "hours": "Horaire : lun-sam 08h-18h",
-  "location": "Lieu : Côte d'Ivoire, Cocody-Dokui",
-  "contactBtn": "Nous contacter",
-  "downloadApp": "Télécharger l'application",
-  "copyright": "© {years} TOCTOC. Tous droits réservés.",
-  "alt": {
-    "numberIcon": "Numéro",
-    "qrCode": "Code QR de téléchargement",
-    "womanPhone": "Utilisatrice sur téléphone"
-  }
-},
+  "secondModuleHome": {
+    "H2_title": "Search engine des talents à domicile en Côte d'Ivoire",
+    "description1": "Les offres d'emplois pour lesquelles un profil a déjà été trouvé ne sont pas affichées ou pour lesquelles l'utilisateur ne s'est pas encore connecté.",
+    "Card_Item": {
+      "title1": "Libre fixation des tarifs",
+      "description1": "Fixez votre prix ou convenez d'un tarif à l'amiable avant de réserver.",
+      "title2": "L'excellence de nos experts",
+      "description2": "Nos professionnels hautement qualifiés bénéficient d'une solide expertise de terrain.",
+      "title3": "Parfaitement outillés",
+      "description3": "Des intervenants dotés d'un équipement de pointe et adaptés à toutes les situations."
+    }
+  },
+  "footer": {
+    "links": {
+      "heading": "Annonces",
+      "all": "Tous >",
+      "smsWarning": "Méfiez-vous de ce genre de SMS !",
+      "privacyPolicy": "Politique de confidentialité",
+      "termsofuse": "Conditions d'utilisation"
+    },
+    "hours": "Horaire : lun-sam 08h-18h",
+    "location": "Lieu : Côte d'Ivoire, Cocody-Dokui",
+    "contactBtn": "Nous contacter",
+    "downloadApp": "Télécharger l'application",
+    "copyright": "© {years} TOCTOC. Tous droits réservés.",
+    "alt": {
+      "numberIcon": "Numéro",
+      "qrCode": "Code QR de téléchargement",
+      "womanPhone": "Utilisatrice sur téléphone"
+    }
+  },
   "intro": {
     "slogan": {
       "subtitle": "Une nouvelle façon de",
@@ -120,473 +233,452 @@
       }
     }
   },
-    "home": {
-      "quote": {
-        "text": "En Côte d'Ivoire, on recrute désormais son personnel de maison",
-        "highlight": "grâce à l'IA."
-      }
+  "home": {
+    "quote": {
+      "text": "En Côte d'Ivoire, on recrute désormais son personnel de maison",
+      "highlight": "grâce à l'IA."
+    }
+  },
+  "profileCard": {
+    "title": "Exemples d'offre",
+    "morelesse": "voir plus",
+    "lessmore": "voir moins",
+    "warning": "aucun profil pour le moment",
+    "title2": "L'excellence de nos experts",
+    "urgent": "URGENT",
+    "tocer": "Tocer",
+    "loading": "Chargement...",
+    "salaryNegotiable": "Salaire à négocier",
+    "workArrangement": {
+      "NAVETTE": "Navette",
+      "LOGE_SUR_PLACE": "Logé sur place"
     },
-      "profileCard": {
-        "title": "Exemples d'offre",
-        "morelesse": "voir plus",
-        "lessmore": "voir moins",
-        "warning":"aucun profil pour le moment",
-        "title2":"L'excellence de nos experts",
-        "urgent": "URGENT",
-        "tocer": "Tocer",
-        "loading": "Chargement...",
-        "salaryNegotiable": "Salaire à négocier",
-        "workArrangement": {
-          "NAVETTE": "Navette",
-          "LOGE_SUR_PLACE": "Logé sur place"
-        },
-        "days": {
-          "LUN": "Lun",
-          "MAR": "Mar",
-          "MER": "Mer",
-          "JEU": "Jeu",
-          "VEN": "Ven",
-          "SAM": "Sam",
-          "DIM": "Dim"
-        },
-        "contract": {
-          "TEMPORAIRE": "Temp",
-          "PERMANENT": "Perm"
-        },
-        "aria": {
-          "contact": "Contacter {name}"
-        }
-      },
-        "announcementCard": {
-          "title":"Exemples de profil",
-          "description":"Les offres d'emplois pour lesquelles un profil a déjà été trouvé ne sont  pas affichées ou  pour lesquelles l'utilisateur ne s'est pas encore connecté.",
-          "nooffer":"Aucune offre pour le moment.",
-          "morelesse": "voir plus",
-          "loading":"Chargement...",
-          "lessmore": "voir moins",
-          "salaryPeriod": "mois",
-          "salaryNegotiable": "Salaire à négocier",
-          "noTransport": "Sans transport",
-          "transportNotSpecified": "Transport non précisé",
-          "verifiedIdentity": "Identité vérifiée",
-          "urgent": "URGENT",
-          "top": "TOP",
-          "contract": {
-            "TEMPORAIRE": "Temporaire",
-            "PERMANENT": "Permanent"
-          },
-          "contractStart": {
-            "TEMPORAIRE": "Début: à négocier",
-            "PERMANENT": "Début: immédiat"
-          },
-          "experience": {
-            "required": "Expérience {years} an(s) min.",
-            "notRequired": "Expérience non exigée"
-          },
-          "viewCount": "{count} vues",
-          "type": {
-            "OFFER": "Contact via annonce",
-            "PROFILE": "Profil candidat"
-          },
-          "workArrangement": {
-            "NAVETTE": "Navette",
-            "LOGE_SUR_PLACE": "Logé sur place"
-          },
-          "days": {
-            "LUN": "Lun",
-            "MAR": "Mar",
-            "MER": "Mer",
-            "JEU": "Jeu",
-            "VEN": "Ven",
-            "SAM": "Sam",
-            "DIM": "Dim"
-          }
-        },
-          "fourModuleHome": {
-            "title": "Faîtes un choix",
-            "items": [
-              {
-                "title": "Baby-sitter"
-              },
-              {
-                "title": "Garde périscolaire"
-              },
-              {
-                "title": "Ménage / Entretien"
-              },
-              {
-                "title": "Aide aux personnes âgées"
-              },
-              {
-                "title": "Résidentiel (vit sur place)"
-              },
-              {
-                "title": "Court terme"
-              }
-            ],
-            "btnTocer": "Tocer"
-          },
-          "thirdModuleHome": {
-            "title1": "Recherchez rapidement en fonction de vos critères",
-            "btnAdvancedSearch": "Recherche Avancée",
-            "title2": "Retrouvez des offres d'autres agences ainsi que la notre"
-          },
-          "mapComponent": {
-            "title": "Offres par localité",
-            "loading": "Chargement de la carte...",
-            "loadingData": "Chargement des données...",
-            "citiesCount": "{count, plural, =1 {ville} other {villes}}",
-            "offersCount": "offres",
-            "more": "autres",
-            "categories": {
-              "NOUNOU": "Nounou",
-              "MENAGERE": "Aide ménagère",
-              "CUISINIER": "Cuisinier·ère",
-              "CHAUFFEUR": "Chauffeur",
-              "JARDINIER": "Jardinier",
-              "GARDIEN": "Gardien",
-              "AIDE_PERSONNE_AGEE": "Aide personne âgée",
-              "MAJORDOME": "Majordome / Gouvernante"
-            }
-        },
-          "policy": {
-            "table": {
-              "titleHeader": "Titre",
-              "dateHeader": "Date écrite",
-              "title": "Avis de modification de la politique de confidentialité",
-              "date": "08-07-24"
-            },
-            "content": {
-              "intro": "Salut, nous avons ajouté une politique de traitement des données pour les utilisateurs permanents de nos services à notre politique de confidentialité.",
-              "modifiedDateLabel": "Date de modification :",
-              "modifiedDate": "29 janvier 2026.",
-              "detailsLabel": "Détails des modifications :",
-              "detailsText": "L'article 2, paragraphe 4), relatif à la conservation des informations pour restreindre la réinscription des membres dont le service est définitivement suspendu, a été ajouté. Les modifications sont les suivantes :",
-              "articleTitle": "Article 2, paragraphe 4) Conservation des informations pour restreindre la réinscription des membres dont le service est définitivement suspendu",
-              "point1": "① La Société peut conserver un minimum d'informations afin d'empêcher la réinscription d'une même personne pour les membres dont l'utilisation du Service a été définitivement restreinte pour violation des Conditions générales d'utilisation, utilisation frauduleuse, atteinte au bon fonctionnement du Service, etc.",
-              "point2": "② Dans ce cas, la Société ne stocke pas directement les numéros de téléphone mobile ; elle génère et conserve uniquement une valeur d'identification chiffrée de manière unidirectionnelle (hachage) en combinant le numéro de téléphone mobile avec la valeur d'identification unique de la Société (sel).",
-              "point3Label": "③ La valeur d'identification susmentionnée est utilisée uniquement aux fins suivantes :",
-              "point3Item1": "Vérification du statut de réinscription des membres dont le service est suspendu définitivement",
-              "point3Item2": "Prévention de l'utilisation frauduleuse",
-              "point4": "④ La Société ne peut pas identifier les personnes physiques grâce à la valeur d'identification ci-dessus et n'utilise pas les informations à d'autres fins que la restriction de la réinscription."
-            }
-          },
-          "resetPassword": {
-            "title": "Réinitialiser votre mot de passe",
-  "subtitle": "Choisissez un nouveau mot de passe sécurisé",
-  "securityInfo": "Votre mot de passe doit contenir au moins 12 caractères, une majuscule, un chiffre et un caractère spécial.",
-  "labels": {
-    "password": "Nouveau mot de passe",
-    "confirmPassword": "Confirmer le mot de passe"
+    "days": {
+      "LUN": "Lun",
+      "MAR": "Mar",
+      "MER": "Mer",
+      "JEU": "Jeu",
+      "VEN": "Ven",
+      "SAM": "Sam",
+      "DIM": "Dim"
+    },
+    "contract": {
+      "TEMPORAIRE": "Temp",
+      "PERMANENT": "Perm"
+    },
+    "aria": {
+      "contact": "Contacter {name}"
+    }
   },
-  "placeholders": {
-    "password": "Entrez votre nouveau mot de passe",
-    "confirmPassword": "Confirmez votre nouveau mot de passe"
+  "announcementCard": {
+    "title": "Exemples de profil",
+    "description": "Les offres d'emplois pour lesquelles un profil a déjà été trouvé ne sont pas affichées ou pour lesquelles l'utilisateur ne s'est pas encore connecté.",
+    "nooffer": "Aucune offre pour le moment.",
+    "morelesse": "voir plus",
+    "loading": "Chargement...",
+    "lessmore": "voir moins",
+    "salaryPeriod": "mois",
+    "salaryNegotiable": "Salaire à négocier",
+    "noTransport": "Sans transport",
+    "transportNotSpecified": "Transport non précisé",
+    "verifiedIdentity": "Identité vérifiée",
+    "urgent": "URGENT",
+    "top": "TOP",
+    "contract": {
+      "TEMPORAIRE": "Temporaire",
+      "PERMANENT": "Permanent"
+    },
+    "contractStart": {
+      "TEMPORAIRE": "Début: à négocier",
+      "PERMANENT": "Début: immédiat"
+    },
+    "experience": {
+      "required": "Expérience {years} an(s) min.",
+      "notRequired": "Expérience non exigée"
+    },
+    "viewCount": "{count} vues",
+    "type": {
+      "OFFER": "Contact via annonce",
+      "PROFILE": "Profil candidat"
+    },
+    "workArrangement": {
+      "NAVETTE": "Navette",
+      "LOGE_SUR_PLACE": "Logé sur place"
+    },
+    "days": {
+      "LUN": "Lun",
+      "MAR": "Mar",
+      "MER": "Mer",
+      "JEU": "Jeu",
+      "VEN": "Ven",
+      "SAM": "Sam",
+      "DIM": "Dim"
+    }
   },
-  "buttons": {
-    "showPassword": "Afficher le mot de passe",
-    "submit": "Réinitialiser le mot de passe"
+  "fourModuleHome": {
+    "title": "Faîtes un choix",
+    "items": [
+      { "title": "Baby-sitter" },
+      { "title": "Garde périscolaire" },
+      { "title": "Ménage / Entretien" },
+      { "title": "Aide aux personnes âgées" },
+      { "title": "Résidentiel (vit sur place)" },
+      { "title": "Court terme" }
+    ],
+    "btnTocer": "Tocer"
   },
-  "backToLogin": "Retour à la connexion",
-  "passwordStrength": {
-    "weak": "Faible",
-    "medium": "Moyen",
-    "strong": "Fort"
+  "thirdModuleHome": {
+    "title1": "Recherchez rapidement en fonction de vos critères",
+    "btnAdvancedSearch": "Recherche Avancée",
+    "title2": "Retrouvez des offres d'autres agences ainsi que la notre"
   },
-            "invalidToken": {
-              "title": "Mot de passe oublié",
-              "message": "Ce lien est invalide ou a expiré. Veuillez réessayer."
-            },
-            "errors": {
-              "passwordRequired": "Le mot de passe est requis.",
-              "passwordTooShort": "Le mot de passe est trop court.",
-              "passwordTooLong": "Le mot de passe est trop long.",
-              "passwordWeak": "Le mot de passe est trop faible.",
-              "confirmPasswordRequired": "La confirmation du mot de passe est requise.",
-              "passwordsDoNotMatch": "Les mots de passe ne correspondent pas.",
-              "invalidToken": "Le lien est invalide ou a expiré."
-              
-            },
-            "backToForgotPassword": "Retour à la page de réinitialisation du mot de passe"
-            
-          },
-          "warning": {
-            "table": {
-              "titleHeader": "Titre",
-              "dateHeader": "Date écrite",
-              "title": "Avis de modification du message d'alerte contre les SMS frauduleux",
-              "date": "08-07-24"
-            },
-            "content": {
-              "intro": "Salut, ici c'est l'administrateur de TocToc.",
-              "modifiedDateLabel": "Date de modification :",
-              "modifiedDate": "29 janvier 2026.",
-              "detailsLabel": "Détails du message d'alerte :",
-              "detailsText": "Nous avons mis à jour notre message d'alerte concernant les SMS frauduleux. Veuillez ne pas répondre à ces genres de messages. Les modifications sont les suivantes :",
-              "articleTitle": "Message d'alerte contre les SMS frauduleux",
-              "point1": "① TocToc ne vous enverra jamais de SMS vous demandant vos informations personnelles (mot de passe, code de vérification, coordonnées bancaires, etc.).",
-              "point2": "② Si vous recevez un SMS suspect prétendant provenir de TocToc, ne cliquez sur aucun lien et ne répondez pas au message.",
-              "point3Label": "③ Les SMS frauduleux peuvent inclure :",
-              "point3Item1": "Des demandes de paiement ou de remboursement inattendues",
-              "point3Item2": "Des menaces de suspension de compte si vous ne répondez pas immédiatement",
-              "point4": "④ En cas de doute, contactez directement le service client de TocToc via l'application officielle ou le site web. Ne passez jamais par les coordonnées fournies dans le SMS suspect."
-            }
-          },
-          "contact": {
-            "category": "Catégorie",
-           "messagePlaceholder": "Écrivez votre message ici...",
-           "emailValid": "Adresse email valide",
+  "mapComponent": {
+    "title": "Offres par localité",
+    "loading": "Chargement de la carte...",
+    "loadingData": "Chargement des données...",
+    "citiesCount": "{count, plural, =1 {ville} other {villes}}",
+    "offersCount": "offres",
+    "more": "autres",
+    "categories": {
+      "NOUNOU": "Nounou",
+      "MENAGERE": "Aide ménagère",
+      "CUISINIER": "Cuisinier·ère",
+      "CHAUFFEUR": "Chauffeur",
+      "JARDINIER": "Jardinier",
+      "GARDIEN": "Gardien",
+      "AIDE_PERSONNE_AGEE": "Aide personne âgée",
+      "MAJORDOME": "Majordome / Gouvernante"
+    }
+  },
+  "policy": {
+    "table": {
+      "titleHeader": "Titre",
+      "dateHeader": "Date écrite",
+      "title": "Avis de modification de la politique de confidentialité",
+      "date": "08-07-24"
+    },
+    "content": {
+      "intro": "Salut, nous avons ajouté une politique de traitement des données pour les utilisateurs permanents de nos services à notre politique de confidentialité.",
+      "modifiedDateLabel": "Date de modification :",
+      "modifiedDate": "29 janvier 2026.",
+      "detailsLabel": "Détails des modifications :",
+      "detailsText": "L'article 2, paragraphe 4), relatif à la conservation des informations pour restreindre la réinscription des membres dont le service est définitivement suspendu, a été ajouté. Les modifications sont les suivantes :",
+      "articleTitle": "Article 2, paragraphe 4) Conservation des informations pour restreindre la réinscription des membres dont le service est définitivement suspendu",
+      "point1": "① La Société peut conserver un minimum d'informations afin d'empêcher la réinscription d'une même personne pour les membres dont l'utilisation du Service a été définitivement restreinte pour violation des Conditions générales d'utilisation, utilisation frauduleuse, atteinte au bon fonctionnement du Service, etc.",
+      "point2": "② Dans ce cas, la Société ne stocke pas directement les numéros de téléphone mobile ; elle génère et conserve uniquement une valeur d'identification chiffrée de manière unidirectionnelle (hachage) en combinant le numéro de téléphone mobile avec la valeur d'identification unique de la Société (sel).",
+      "point3Label": "③ La valeur d'identification susmentionnée est utilisée uniquement aux fins suivantes :",
+      "point3Item1": "Vérification du statut de réinscription des membres dont le service est suspendu définitivement",
+      "point3Item2": "Prévention de l'utilisation frauduleuse",
+      "point4": "④ La Société ne peut pas identifier les personnes physiques grâce à la valeur d'identification ci-dessus et n'utilise pas les informations à d'autres fins que la restriction de la réinscription."
+    }
+  },
+  "resetPassword": {
+    "title": "Réinitialiser votre mot de passe",
+    "subtitle": "Choisissez un nouveau mot de passe sécurisé",
+    "securityInfo": "Votre mot de passe doit contenir au moins 12 caractères, une majuscule, un chiffre et un caractère spécial.",
+    "labels": {
+      "password": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le mot de passe"
+    },
+    "placeholders": {
+      "password": "Entrez votre nouveau mot de passe",
+      "confirmPassword": "Confirmez votre nouveau mot de passe"
+    },
+    "buttons": {
+      "showPassword": "Afficher le mot de passe",
+      "submit": "Réinitialiser le mot de passe"
+    },
+    "backToLogin": "Retour à la connexion",
+    "passwordStrength": {
+      "weak": "Faible",
+      "medium": "Moyen",
+      "strong": "Fort"
+    },
+    "invalidToken": {
+      "title": "Mot de passe oublié",
+      "message": "Ce lien est invalide ou a expiré. Veuillez réessayer."
+    },
+    "errors": {
+      "passwordRequired": "Le mot de passe est requis.",
+      "passwordTooShort": "Le mot de passe est trop court.",
+      "passwordTooLong": "Le mot de passe est trop long.",
+      "passwordWeak": "Le mot de passe est trop faible.",
+      "confirmPasswordRequired": "La confirmation du mot de passe est requise.",
+      "passwordsDoNotMatch": "Les mots de passe ne correspondent pas.",
+      "invalidToken": "Le lien est invalide ou a expiré."
+    },
+    "backToForgotPassword": "Retour à la page de réinitialisation du mot de passe"
+  },
+  "warning": {
+    "table": {
+      "titleHeader": "Titre",
+      "dateHeader": "Date écrite",
+      "title": "Avis de modification du message d'alerte contre les SMS frauduleux",
+      "date": "08-07-24"
+    },
+    "content": {
+      "intro": "Salut, ici c'est l'administrateur de TocToc.",
+      "modifiedDateLabel": "Date de modification :",
+      "modifiedDate": "29 janvier 2026.",
+      "detailsLabel": "Détails du message d'alerte :",
+      "detailsText": "Nous avons mis à jour notre message d'alerte concernant les SMS frauduleux. Veuillez ne pas répondre à ces genres de messages. Les modifications sont les suivantes :",
+      "articleTitle": "Message d'alerte contre les SMS frauduleux",
+      "point1": "① TocToc ne vous enverra jamais de SMS vous demandant vos informations personnelles (mot de passe, code de vérification, coordonnées bancaires, etc.).",
+      "point2": "② Si vous recevez un SMS suspect prétendant provenir de TocToc, ne cliquez sur aucun lien et ne répondez pas au message.",
+      "point3Label": "③ Les SMS frauduleux peuvent inclure :",
+      "point3Item1": "Des demandes de paiement ou de remboursement inattendues",
+      "point3Item2": "Des menaces de suspension de compte si vous ne répondez pas immédiatement",
+      "point4": "④ En cas de doute, contactez directement le service client de TocToc via l'application officielle ou le site web. Ne passez jamais par les coordonnées fournies dans le SMS suspect."
+    }
+  },
+  "contact": {
+    "category": "Catégorie",
+    "messagePlaceholder": "Écrivez votre message ici...",
+    "emailValid": "Adresse email valide",
     "validatingEmail": "Validation de l'email en cours...",
     "sending": "Envoi en cours...",
-            "categories": {
-              "usageQuestion": "Question d'utilisation",
-              "signupRequest": "Demande d'inscription",
-              "passwordRequest": "Mot de passe temporaire",
-              "paymentRequest": "Confirmation de paiement"
-            },
-            "categoryDescriptions": {
-              "usageQuestion": "Une question sur le fonctionnement de la plateforme ? Décrivez-la ci-dessous, notre équipe vous répondra rapidement.",
-              "signupRequest": "Besoin d'aide pour créer votre compte ? Précisez votre demande, nous vous accompagnons.",
-              "passwordRequest": "Vous n'arrivez pas à vous connecter ? Indiquez votre email de compte, nous vous enverrons une procédure de réinitialisation.",
-              "paymentRequest": "Une question sur un paiement ou un remboursement ? Détaillez la transaction concernée."
-            },
-            "contact": "Email",
-            "emailPlaceholder": "Entrez votre adresse email",
-            "name": "Nom",
-            "namePlaceholder": "Entrez votre nom",
-            "message": "Message",
-            "submitBtn": "Envoyer"
-          },
-          "auth": {
-            "loading": "Chargement..."
-          },
-          "register": {
-            "progress": {
-              "step": "Étape",
-              "step1Title": "Informations de base",
-              "step2Title": "Type de compte",
-              "step3Title": "Vérification"
-            },
-            "success": {
-              "title": "Inscription réussie !",
-  "emailMessage": "Un email de vérification a été envoyé à {email}. Cliquez sur le lien reçu pour activer votre compte.",
-  "phoneMessage": "Un code de vérification a été envoyé au {phone}. Vérifiez votre téléphone.",
-  "goToLogin": "Aller à la connexion"
-            },
-            "step1": {
-              "title": "Créez votre compte",
-              "subtitle": "Rejoignez la communauté TOCTOC en quelques minutes"
-            },
-            "step2": {
-              "title": "Complétez votre profil",
-              "subtitle": "Dites-nous qui vous êtes pour mieux vous servir"
-            },
-            "step3": {
-              "title": "Vérification finale",
-              "subtitle": "Vérifiez vos informations et choisissez votre méthode de vérification",
-              "summary": "Récapitulatif de vos informations"
-            },
-            "labels": {
-              "name": "Nom",
-              "email": "Email",
-              "phone": "Téléphone",
-              "password": "Mot de passe",
-              "confirmPassword": "Confirmer",
-              "terms": "Conditions",
-              "role": "Type de compte",
-              "clientType": "Type de client",
-              "companyName": "Entreprise",
-              "rccmNumber": "N° RCCM",
-              "providerType": "Type de prestataire",
-              "bio": "Bio",
-              "verification": "Vérification",
-              "newsletter": "Newsletter",
-              "operator": "Opérateur Téléphonique",
-              "location": "Localisation",
-              "noVpn": "Non-utilisation de VPN",
-              "vr": "Entretien en VR"
-            },
-            "placeholders": {
-              "name": "Entrez votre nom complet",
-              "email": "Entrez votre adresse email",
-              "phone": "Entrez votre numéro ex:+2250707070707",
-              "password": "Créez un mot de passe sécurisé",
-              "confirmPassword": "Confirmez votre mot de passe",
-              "selectClientType": "Sélectionnez votre type",
-              "companyName": "Nom de votre entreprise",
-              "rccmNumber": "Entrez votre numéro RCCM",
-              "selectProviderType": "Sélectionnez votre spécialité",
-              "bio": "Parlez-nous de vous et de votre expérience..."
-            },
-            "roles": {
-              "client": "Client",
-              "clientDesc": "Je cherche du personnel à domicile",
-              "provider": "Prestataire",
-              "providerDesc": "Je propose mes services"
-            },
-            "clientTypes": {
-              "particulier": "Particulier",
-              "entreprise": "Entreprise"
-            },
-            "providerTypes": {
-              "babysitter": "Baby-sitting",
-  "gardePeriscolaire": "Garde périscolaire",
-  "menage": "Ménage",
-  "aidePersonnesAgees": "Aide aux personnes âgées",
-  "residentiel": "Résidentiel (logé sur place)",
-  "courtTerme": "Court terme"
-            },
-            "verification": {
-              "email": "Par Email",
-              "emailDesc": "Recevez un code de vérification par email",
-              "phone": "Par Téléphone",
-              "phoneDesc": "Recevez un code par SMS",
-              "phoneUnavailable": "Numéro de téléphone requis"
-            },
-            "terms": {
-              "accept": "J'accepte les",
-              "link": "conditions d'utilisation"
-            },
-            "newsletter": {
-              "accept": "Je souhaite recevoir les actualités et offres de TOCTOC"
-            },
-            "navigation": {
-              "previous": "Précédent",
-              "next": "Suivant",
-              "step": "Étape",
-              "submit": "Créer mon compte",
-              "loading": "Création..."
-            },
-            "passwordStrength": {
-              "veryWeak": "Très faible",
-              "weak": "Faible",
-              "medium": "Moyen",
-              "strong": "Fort",
-              "veryStrong": "Très fort"
-            },
-            "characters": "caractères",
-            "errors": {
-              "nameRequired": "Le nom est requis (minimum 2 caractères).",
-              "invalidEmail": "Veuillez entrer une adresse email valide.",
-              "invalidPhone": "Veuillez entrer un numéro de téléphone valide.",
-              "weakPassword": "Le mot de passe doit contenir au moins 12 caractères, une majuscule, un chiffre et un caractère spécial.",
-              "passwordMismatch": "Les mots de passe ne correspondent pas.",
-              "acceptTerms": "Vous devez accepter les conditions d'utilisation.",
-              "companyNameRequired": "Le nom de l'entreprise est requis.",
-              "invalidRccm": "Le numéro RCCM est invalide.",
-              "bioTooShort": "La bio doit contenir au moins 50 caractères",
-              "selectVerification": "Veuillez choisir une méthode de vérification",
-              "phoneCountryCodeWarning": "Indicatif pays invalide. Utilisez un format comme +225, +1, +44, +86.",
-              "acceptLocation":"Vous devez cochez l'activation de la localisation.",
-              "acceptNoVpn":"Vous devez cocher de ne pas utiliser de VPN.",
-              "acceptVr":"Vous devez cocher les entretiens en VR."
-            },
-            "consents" : {
-              "location": "Localisation",
-              "noVpn": "Non-utilisation de VPN",
-              "vr": "Entretien en VR"
-
-            }
-          },
-          "login": {
-            "title": "Connexion",
-            "subtitle": "Accédez à votre compte",
-            "labels": {
-              "email": "Email",
-              "password": "Mot de passe",
-              "rememberMe": "Se souvenir de moi",
-              "forgotPassword": "Mot de passe oublié ?"
-            },
-            "placeholders": {
-              "email": "votre@email.com",
-              "password": "Votre mot de passe"
-            },
-            "buttons": {
-              "submit": "Se connecter",
-              "loading": "Connexion..."
-
-            },
-            "divider": "Ou continuer avec",
-            "providers": {
-              "google": "Continuer avec Google",
-              "wechat": "Continuer avec WeChat",
-              "tiktok": "Continuer avec TikTok"
-            },
-            "noAccount": "Pas encore de compte ?",
-            "registerLink": "S'inscrire",
-            "errors": {
-              "invalidEmail": "Email invalide",
-              "invalidPassword": "Mot de passe invalide",
-              "invalidCredentials": "Identifiants invalides"
-            }
-          },
-          "forgotPassword": {
-            "title": "Mot de passe oublié",
-            "subtitle": "Récupérez l'accès à votre compte",
-            "info": "Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
-            "labels": {
-              "email": "Email"
-            },
-            
-            "placeholders": {
-              "email": "votre@email.com"
-            },
-            "buttons": {
-              "submit": "Envoyer le lien",
-              "sending": "Envoi en cours...",
-              "resend": "Renvoyer l'email",
-              "resendIn": "Renvoyer dans {seconds}s"
-            },
-            "backToLogin": "Retour à la connexion",
-            "errors": {
-              "sendFailed": "Échec de l'envoi. Veuillez réessayer.",
-              "resendFailed": "Échec du renvoi. Veuillez réessayer.",
-              "invalidEmail": "L'email est invalide."
-            },
-            "success": {
-              "title": "Email envoyé !",
-              "message": "Vérifiez votre boîte de réception pour réinitialiser votre mot de passe.",
-              "sentTo": "Email envoyé à :",
-              "title1": "Inscription réussie !",
-  "emailMessage": "Un email de vérification a été envoyé à {email}. Cliquez sur le lien reçu pour activer votre compte.",
-  "phoneMessage": "Un code de vérification a été envoyé au {phone}. Vérifiez votre téléphone.",
-  "goToLogin": "Aller à la connexion"
-            }
-          },
-          
-            "terms": {
-              "table": {
-                "titleHeader": "Titre",
-                "dateHeader": "Date d'écriture",
-                "title": "Conditions d'utilisation de TOCTOC",
-                "date": "15-08-2024"
-              },
-              "content": {
-                "intro": "Bienvenue sur TOCTOC. En utilisant notre plateforme, vous acceptez les présentes conditions d'utilisation. Veuillez les lire attentivement.",
-                "modifiedDateLabel": "Date de modification :",
-                "modifiedDate": "15 août 2026.",
-                "detailsLabel": "Détails des conditions :",
-                "detailsText": "Les présentes conditions d'utilisation régissent votre accès et votre utilisation de la plateforme TOCTOC.",
-                "articleTitle": "Article 1 : Acceptation des conditions",
-                "point1": "① En accédant ou en utilisant la plateforme TOCTOC, vous reconnaissez avoir lu, compris et accepté d'être lié par les présentes conditions d'utilisation.",
-                "point2": "② Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser la plateforme TOCTOC.",
-                "point3Label": "Article 2 : Description des services",
-                "point3Item1": "Mise en relation entre les particuliers et les professionnels des services à domicile",
-                "point3Item2": "Recherche de personnel domestique basée sur l'intelligence artificielle",
-                "point4": "③ TOCTOC se réserve le droit de modifier, suspendre ou interrompre tout aspect de la plateforme à tout moment.",
-                "point5Label": "Article 3 : Obligations des utilisateurs",
-                "point5Item1": "Fournir des informations exactes et à jour lors de l'inscription",
-                "point5Item2": "Ne pas utiliser la plateforme à des fins illégales ou non autorisées",
-                "point6": "④ Vous êtes responsable de la confidentialité de vos identifiants de connexion et de toutes les activités effectuées sous votre compte.",
-                "point7Label": "Article 4 : Responsabilités",
-                "point7Item1": "TOCTOC agit uniquement comme intermédiaire de mise en relation",
-                "point7Item2": "Les transactions entre utilisateurs et prestataires relèvent de leur seule responsabilité",
-                "point8": "⑤ TOCTOC ne garantit pas la disponibilité continue de la plateforme et ne peut être tenu responsable des interruptions de service.",
-                "point9": "Article 5 : Résiliation : TOCTOC se réserve le droit de suspendre ou de résilier votre compte en cas de violation des présentes conditions.",
-                "point10": "Article 6 : Contact : Pour toute question concernant ces conditions, contactez-nous à contact@toctoc.com."
-              }
-              
-            }
-            
-          
-          }
+    "categories": {
+      "usageQuestion": "Question d'utilisation",
+      "signupRequest": "Demande d'inscription",
+      "passwordRequest": "Mot de passe temporaire",
+      "paymentRequest": "Confirmation de paiement"
+    },
+    "categoryDescriptions": {
+      "usageQuestion": "Une question sur le fonctionnement de la plateforme ? Décrivez-la ci-dessous, notre équipe vous répondra rapidement.",
+      "signupRequest": "Besoin d'aide pour créer votre compte ? Précisez votre demande, nous vous accompagnons.",
+      "passwordRequest": "Vous n'arrivez pas à vous connecter ? Indiquez votre email de compte, nous vous enverrons une procédure de réinitialisation.",
+      "paymentRequest": "Une question sur un paiement ou un remboursement ? Détaillez la transaction concernée."
+    },
+    "contact": "Email",
+    "emailPlaceholder": "Entrez votre adresse email",
+    "name": "Nom",
+    "namePlaceholder": "Entrez votre nom",
+    "message": "Message",
+    "submitBtn": "Envoyer"
+  },
+  "auth": {
+    "loading": "Chargement..."
+  },
+  "register": {
+    "progress": {
+      "step": "Étape",
+      "step1Title": "Informations de base",
+      "step2Title": "Type de compte",
+      "step3Title": "Vérification"
+    },
+    "success": {
+      "title": "Inscription réussie !",
+      "emailMessage": "Un email de vérification a été envoyé à {email}. Cliquez sur le lien reçu pour activer votre compte.",
+      "phoneMessage": "Un code de vérification a été envoyé au {phone}. Vérifiez votre téléphone.",
+      "goToLogin": "Aller à la connexion"
+    },
+    "step1": {
+      "title": "Créez votre compte",
+      "subtitle": "Rejoignez la communauté TOCTOC en quelques minutes"
+    },
+    "step2": {
+      "title": "Complétez votre profil",
+      "subtitle": "Dites-nous qui vous êtes pour mieux vous servir"
+    },
+    "step3": {
+      "title": "Vérification finale",
+      "subtitle": "Vérifiez vos informations et choisissez votre méthode de vérification",
+      "summary": "Récapitulatif de vos informations"
+    },
+    "labels": {
+      "name": "Nom",
+      "email": "Email",
+      "phone": "Téléphone",
+      "password": "Mot de passe",
+      "confirmPassword": "Confirmer",
+      "terms": "Conditions",
+      "role": "Type de compte",
+      "clientType": "Type de client",
+      "companyName": "Entreprise",
+      "rccmNumber": "N° RCCM",
+      "providerType": "Type de prestataire",
+      "bio": "Bio",
+      "verification": "Vérification",
+      "newsletter": "Newsletter",
+      "operator": "Opérateur Téléphonique",
+      "location": "Localisation",
+      "noVpn": "Non-utilisation de VPN",
+      "vr": "Entretien en VR"
+    },
+    "placeholders": {
+      "name": "Entrez votre nom complet",
+      "email": "Entrez votre adresse email",
+      "phone": "Entrez votre numéro ex:+2250707070707",
+      "password": "Créez un mot de passe sécurisé",
+      "confirmPassword": "Confirmez votre mot de passe",
+      "selectClientType": "Sélectionnez votre type",
+      "companyName": "Nom de votre entreprise",
+      "rccmNumber": "Entrez votre numéro RCCM",
+      "selectProviderType": "Sélectionnez votre spécialité",
+      "bio": "Parlez-nous de vous et de votre expérience..."
+    },
+    "roles": {
+      "client": "Client",
+      "clientDesc": "Je cherche du personnel à domicile",
+      "provider": "Prestataire",
+      "providerDesc": "Je propose mes services"
+    },
+    "clientTypes": {
+      "particulier": "Particulier",
+      "entreprise": "Entreprise"
+    },
+    "providerTypes": {
+      "babysitter": "Baby-sitting",
+      "gardePeriscolaire": "Garde périscolaire",
+      "menage": "Ménage",
+      "aidePersonnesAgees": "Aide aux personnes âgées",
+      "residentiel": "Résidentiel (logé sur place)",
+      "courtTerme": "Court terme"
+    },
+    "verification": {
+      "email": "Par Email",
+      "emailDesc": "Recevez un code de vérification par email",
+      "phone": "Par Téléphone",
+      "phoneDesc": "Recevez un code par SMS",
+      "phoneUnavailable": "Numéro de téléphone requis"
+    },
+    "terms": {
+      "accept": "J'accepte les",
+      "link": "conditions d'utilisation"
+    },
+    "newsletter": {
+      "accept": "Je souhaite recevoir les actualités et offres de TOCTOC"
+    },
+    "navigation": {
+      "previous": "Précédent",
+      "next": "Suivant",
+      "step": "Étape",
+      "submit": "Créer mon compte",
+      "loading": "Création..."
+    },
+    "passwordStrength": {
+      "veryWeak": "Très faible",
+      "weak": "Faible",
+      "medium": "Moyen",
+      "strong": "Fort",
+      "veryStrong": "Très fort"
+    },
+    "characters": "caractères",
+    "errors": {
+      "nameRequired": "Le nom est requis (minimum 2 caractères).",
+      "invalidEmail": "Veuillez entrer une adresse email valide.",
+      "invalidPhone": "Veuillez entrer un numéro de téléphone valide.",
+      "weakPassword": "Le mot de passe doit contenir au moins 12 caractères, une majuscule, un chiffre et un caractère spécial.",
+      "passwordMismatch": "Les mots de passe ne correspondent pas.",
+      "acceptTerms": "Vous devez accepter les conditions d'utilisation.",
+      "companyNameRequired": "Le nom de l'entreprise est requis.",
+      "invalidRccm": "Le numéro RCCM est invalide.",
+      "bioTooShort": "La bio doit contenir au moins 50 caractères",
+      "selectVerification": "Veuillez choisir une méthode de vérification",
+      "phoneCountryCodeWarning": "Indicatif pays invalide. Utilisez un format comme +225, +1, +44, +86.",
+      "acceptLocation": "Vous devez cochez l'activation de la localisation.",
+      "acceptNoVpn": "Vous devez cocher de ne pas utiliser de VPN.",
+      "acceptVr": "Vous devez cocher les entretiens en VR."
+    },
+    "consents": {
+      "location": "Localisation",
+      "noVpn": "Non-utilisation de VPN",
+      "vr": "Entretien en VR"
+    }
+  },
+  "login": {
+    "title": "Connexion",
+    "subtitle": "Accédez à votre compte",
+    "labels": {
+      "email": "Email",
+      "password": "Mot de passe",
+      "rememberMe": "Se souvenir de moi",
+      "forgotPassword": "Mot de passe oublié ?"
+    },
+    "placeholders": {
+      "email": "votre@email.com",
+      "password": "Votre mot de passe"
+    },
+    "buttons": {
+      "submit": "Se connecter",
+      "loading": "Connexion..."
+    },
+    "divider": "Ou continuer avec",
+    "providers": {
+      "google": "Continuer avec Google",
+      "wechat": "Continuer avec WeChat",
+      "tiktok": "Continuer avec TikTok"
+    },
+    "noAccount": "Pas encore de compte ?",
+    "registerLink": "S'inscrire",
+    "errors": {
+      "invalidEmail": "Email invalide",
+      "invalidPassword": "Mot de passe invalide",
+      "invalidCredentials": "Identifiants invalides"
+    }
+  },
+  "forgotPassword": {
+    "title": "Mot de passe oublié",
+    "subtitle": "Récupérez l'accès à votre compte",
+    "info": "Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
+    "labels": {
+      "email": "Email"
+    },
+    "placeholders": {
+      "email": "votre@email.com"
+    },
+    "buttons": {
+      "submit": "Envoyer le lien",
+      "sending": "Envoi en cours...",
+      "resend": "Renvoyer l'email",
+      "resendIn": "Renvoyer dans {seconds}s"
+    },
+    "backToLogin": "Retour à la connexion",
+    "errors": {
+      "sendFailed": "Échec de l'envoi. Veuillez réessayer.",
+      "resendFailed": "Échec du renvoi. Veuillez réessayer.",
+      "invalidEmail": "L'email est invalide."
+    },
+    "success": {
+      "title": "Email envoyé !",
+      "message": "Vérifiez votre boîte de réception pour réinitialiser votre mot de passe.",
+      "sentTo": "Email envoyé à :",
+      "title1": "Inscription réussie !",
+      "emailMessage": "Un email de vérification a été envoyé à {email}. Cliquez sur le lien reçu pour activer votre compte.",
+      "phoneMessage": "Un code de vérification a été envoyé au {phone}. Vérifiez votre téléphone.",
+      "goToLogin": "Aller à la connexion"
+    }
+  },
+  "terms": {
+    "table": {
+      "titleHeader": "Titre",
+      "dateHeader": "Date d'écriture",
+      "title": "Conditions d'utilisation de TOCTOC",
+      "date": "15-08-2024"
+    },
+    "content": {
+      "intro": "Bienvenue sur TOCTOC. En utilisant notre plateforme, vous acceptez les présentes conditions d'utilisation. Veuillez les lire attentivement.",
+      "modifiedDateLabel": "Date de modification :",
+      "modifiedDate": "15 août 2026.",
+      "detailsLabel": "Détails des conditions :",
+      "detailsText": "Les présentes conditions d'utilisation régissent votre accès et votre utilisation de la plateforme TOCTOC.",
+      "articleTitle": "Article 1 : Acceptation des conditions",
+      "point1": "① En accédant ou en utilisant la plateforme TOCTOC, vous reconnaissez avoir lu, compris et accepté d'être lié par les présentes conditions d'utilisation.",
+      "point2": "② Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser la plateforme TOCTOC.",
+      "point3Label": "Article 2 : Description des services",
+      "point3Item1": "Mise en relation entre les particuliers et les professionnels des services à domicile",
+      "point3Item2": "Recherche de personnel domestique basée sur l'intelligence artificielle",
+      "point4": "③ TOCTOC se réserve le droit de modifier, suspendre ou interrompre tout aspect de la plateforme à tout moment.",
+      "point5Label": "Article 3 : Obligations des utilisateurs",
+      "point5Item1": "Fournir des informations exactes et à jour lors de l'inscription",
+      "point5Item2": "Ne pas utiliser la plateforme à des fins illégales ou non autorisées",
+      "point6": "④ Vous êtes responsable de la confidentialité de vos identifiants de connexion et de toutes les activités effectuées sous votre compte.",
+      "point7Label": "Article 4 : Responsabilités",
+      "point7Item1": "TOCTOC agit uniquement comme intermédiaire de mise en relation",
+      "point7Item2": "Les transactions entre utilisateurs et prestataires relèvent de leur seule responsabilité",
+      "point8": "⑤ TOCTOC ne garantit pas la disponibilité continue de la plateforme et ne peut être tenu responsable des interruptions de service.",
+      "point9": "Article 5 : Résiliation : TOCTOC se réserve le droit de suspendre ou de résilier votre compte en cas de violation des présentes conditions.",
+      "point10": "Article 6 : Contact : Pour toute question concernant ces conditions, contactez-nous à contact@toctoc.com."
+    }
+  }
+}

@@ -77,6 +77,11 @@ export type GlobalCounter = Prisma.GlobalCounterModel
  */
 export type User = Prisma.UserModel
 /**
+ * Model Search
+ * 
+ */
+export type Search = Prisma.SearchModel
+/**
  * Model Account
  * 
  */
