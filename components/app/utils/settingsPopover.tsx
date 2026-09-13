@@ -270,7 +270,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
       widthClassName="w-[95vw] max-w-[560px] sm:w-[560px]"
     >
       <div dir={isRTL ? "rtl" : "ltr"} className="max-h-[80vh] overflow-y-auto">
-        {/* Header */}
         <div className="flex items-center justify-between mb-4 sm:mb-5">
           <h2 className={`text-sm sm:text-base font-medium text-black dark:text-white/90 ${orbitron.className}`}>
             {t("title")}
@@ -418,8 +417,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                         </div>
                       )}
                     </div>
-
-                    {/* Déconnexion */}
                     <div className="pt-1">
                       <div className="flex items-center justify-between">
                         <span className={`text-xs sm:text-sm text-black/50 dark:text-white/50 ${orbitron.className}`}>{t("logout")}</span>
@@ -434,8 +431,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                       </div>
                       {logoutError && <p className={`text-xs text-red-500 dark:text-red-400 mt-1 ${orbitron.className}`}>{logoutError}</p>}
                     </div>
-
-                    {/* Suppression du compte */}
                     <div className="rounded-lg border border-red-500/20 bg-red-500/5 p-3">
                       {!showDeleteConfirm ? (
                         <div className="flex items-center justify-between">
@@ -485,8 +480,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                 )}
               </div>
             )}
-
-            {/* Download Tab */}
             {tab === "download" && (
               <div>
                 <div className="flex items-center gap-2 mb-3">
