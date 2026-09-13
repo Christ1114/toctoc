@@ -59,7 +59,10 @@
     "expand": "Déplier"
   },
   "SettingsPopover": {
+    "resendCode": "Renvoyer le code",
+    "deleteAccountHint": "Supprimer définitivement votre compte et toutes vos données",
     "title": "Paramètres",
+    "logoutFailed": "Échec de la déconnexion",
     "close": "Fermer",
     "general": "Général",
     "profile": "Profil",
@@ -94,11 +97,29 @@
     "downloadQr": "Télécharger le QR code",
     "downloading": "Téléchargement...",
     "errors": {
-      "emailSendFailed": "Échec de l'envoi de l'email de vérification",
-      "phoneSendFailed": "Échec de l'envoi du code",
-      "phoneVerifyFailed": "Code invalide ou expiré",
-      "deleteFailed": "Échec de la suppression du compte"
-    }
+  "emailSendFailed": "Échec de l'envoi de l'email de vérification",
+  "emailVerifyFailed": "Code invalide ou expiré.",
+  "phoneSendFailed": "Échec de l'envoi du code",
+  "phoneVerifyFailed": "Code invalide ou expiré",
+  "logoutFailed": "Échec de la déconnexion",
+  "deleteFailed": "Échec de la suppression du compte",
+  "nameRequired": "Le nom est requis (minimum 2 caractères).",
+  "invalidEmail": "Veuillez entrer une adresse email valide.",
+  "invalidPhone": "Veuillez entrer un numéro de téléphone valide.",
+  "weakPassword": "Le mot de passe doit contenir au moins 12 caractères, une majuscule, un chiffre et un caractère spécial.",
+  "passwordMismatch": "Les mots de passe ne correspondent pas.",
+  "acceptTerms": "Vous devez accepter les conditions d'utilisation.",
+  "companyNameRequired": "Le nom de l'entreprise est requis.",
+  "invalidRccm": "Le numéro RCCM est invalide.",
+  "bioTooShort": "La bio doit contenir au moins 50 caractères",
+  "selectVerification": "Veuillez choisir une méthode de vérification",
+  "phoneCountryCodeWarning": "Indicatif pays invalide. Utilisez un format comme +225, +1, +44, +86.",
+  "acceptLocation": "Vous devez cochez l'activation de la localisation.",
+  "acceptNoVpn": "Vous devez cocher de ne pas utiliser de VPN.",
+  "acceptVr": "Vous devez cocher les entretiens en VR.",
+  "submitFailed": "Échec de l'inscription. Veuillez réessayer.",
+  "networkFailed": "Erreur réseau. Vérifiez votre connexion et réessayez."
+}
   },
   "SearchPopover": {
     "title": "Rechercher",

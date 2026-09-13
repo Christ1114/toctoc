@@ -33,6 +33,7 @@ import {
 } from "@/app/lib/validation/registerValidation";
 import { signUpWithEmail } from "@/app/lib/auth-client";
 
+
 interface Step1Data {
   name: string;
   email: string;

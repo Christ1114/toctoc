@@ -45,6 +45,7 @@
   },
   "SettingsPopover": {
     "title": "Settings",
+    "resendCode": "Resend code",
     "close": "Close",
     "general": "General",
     "profile": "Profile",
@@ -65,6 +66,7 @@
     "verifying": "Verifying...",
     "confirm": "Confirm",
     "deleting": "Deleting...",
+    "loggingOut": "Logging out...",
     "emailSentHint": "Email sent, check your inbox",
     "phonePlaceholder": "+225 XX XX XX XX",
     "otpPlaceholder": "6-digit code",
@@ -72,7 +74,9 @@
     "logout": "Log out from all devices",
     "logoutButton": "Log out",
     "deleteAccount": "Delete account",
+    "deleteAccountHint": "Permanently delete your account and all data",
     "deleteButton": "Delete",
+    "deleteConfirmButton": "Yes, delete",
     "downloadApp": "Download the app",
     "scanToDownload": "Scan the QR code to download the mobile app",
     "mobileDownloadHint": "Download the app directly from your store",
@@ -84,10 +88,15 @@
     "googlePlay": "Google Play",
     "appStore": "App Store",
     "errors": {
+     
+
       "emailSendFailed": "Failed to send verification email",
       "phoneSendFailed": "Failed to send code",
       "phoneVerifyFailed": "Invalid or expired code",
-      "deleteFailed": "Failed to delete account"
+      "logoutFailed": "Failed to log out",
+      "deleteFailed": "Failed to delete account",
+      "submitFailed": "Registration failed. Please try again.",
+"networkFailed": "Network error. Check your connection and try again."
     }
   },
   "SearchPopover": {

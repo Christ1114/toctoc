@@ -1,4 +1,16 @@
 {
+  "TopToolbar": {
+    "quickSearchPlaceholder": "快速搜索...",
+    "searchByAi": "使用AI搜索"
+  },
+  "AiSearchPanel": {
+    "title": "AI搜索",
+    "close": "关闭",
+    "emptyState": "描述您正在寻找的内容，AI将为您找到合适的档案。",
+    "inputPlaceholder": "例如：我在科科迪找一位保姆...",
+    "send": "发送",
+    "mockResponse": "我找到了一个与您搜索匹配的档案："
+  },
   "NearbyMap": {
     "me": "我",
     "youAreHere": "您在这里",
@@ -32,6 +44,7 @@
     "expand": "展开"
   },
   "SettingsPopover": {
+    "resendCode": "重新发送验证码",
     "title": "设置",
     "close": "关闭",
     "general": "通用",
@@ -52,7 +65,9 @@
     "sending": "发送中...",
     "verifying": "验证中...",
     "confirm": "确认",
+    "cancel": "取消",
     "deleting": "删除中...",
+    "loggingOut": "退出中...",
     "emailSentHint": "邮件已发送，请查收您的收件箱",
     "phonePlaceholder": "+225 XX XX XX XX",
     "otpPlaceholder": "6位数字验证码",
@@ -60,7 +75,9 @@
     "logout": "从所有设备退出登录",
     "logoutButton": "退出登录",
     "deleteAccount": "删除账户",
+    "deleteAccountHint": "永久删除您的账户和所有数据",
     "deleteButton": "删除",
+    "deleteConfirmButton": "是的，删除",
     "downloadApp": "下载应用",
     "scanToDownload": "扫描二维码下载移动应用",
     "mobileDownloadHint": "直接从您的应用商店下载应用",
@@ -75,6 +92,7 @@
       "emailSendFailed": "发送验证邮件失败",
       "phoneSendFailed": "发送验证码失败",
       "phoneVerifyFailed": "验证码无效或已过期",
+      "logoutFailed": "退出登录失败",
       "deleteFailed": "删除账户失败"
     }
   },
@@ -519,7 +537,9 @@
       "phoneCountryCodeWarning": "国家代码无效。请使用+225、+1、+44、+86等格式。",
       "acceptLocation": "您必须勾选启用定位服务的选项。",
       "acceptNoVpn": "您必须勾选不使用VPN的选项。",
-      "acceptVr": "您必须勾选VR面试的选项。"
+      "acceptVr": "您必须勾选VR面试的选项。",
+      "submitFailed": "注册失败。请重试。",
+"networkFailed": "网络错误。请检查您的连接并重试。"
     },
     "consents": {
       "location": "定位",

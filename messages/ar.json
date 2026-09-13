@@ -45,6 +45,7 @@
   },
   "SettingsPopover": {
     "title": "الإعدادات",
+    "resendCode": "إعادة إرسال الرمز",
     "close": "إغلاق",
     "general": "عام",
     "profile": "الملف الشخصي",
@@ -64,7 +65,9 @@
     "sending": "جاري الإرسال...",
     "verifying": "جاري التحقق...",
     "confirm": "تأكيد",
+    "cancel": "إلغاء",
     "deleting": "جاري الحذف...",
+    "loggingOut": "جاري تسجيل الخروج...",
     "emailSentHint": "تم إرسال البريد الإلكتروني، تحقق من صندوق الوارد",
     "phonePlaceholder": "+225 XX XX XX XX",
     "otpPlaceholder": "رمز من 6 أرقام",
@@ -72,7 +75,9 @@
     "logout": "تسجيل الخروج من جميع الأجهزة",
     "logoutButton": "تسجيل الخروج",
     "deleteAccount": "حذف الحساب",
+    "deleteAccountHint": "حذف حسابك وجميع بياناتك نهائياً",
     "deleteButton": "حذف",
+    "deleteConfirmButton": "نعم، احذف",
     "downloadApp": "تحميل التطبيق",
     "scanToDownload": "امسح رمز QR بهاتفك لتحميل التطبيق",
     "mobileDownloadHint": "حمّل التطبيق مباشرة من متجرك",
@@ -84,10 +89,14 @@
     "googlePlay": "جوجل بلاي",
     "appStore": "آب ستور",
     "errors": {
+      
       "emailSendFailed": "فشل إرسال البريد الإلكتروني للتحقق",
       "phoneSendFailed": "فشل إرسال الرمز",
       "phoneVerifyFailed": "رمز غير صالح أو منتهي الصلاحية",
-      "deleteFailed": "فشل حذف الحساب"
+      "logoutFailed": "فشل تسجيل الخروج",
+      "deleteFailed": "فشل حذف الحساب",
+      "submitFailed": "فشل التسجيل. يرجى المحاولة مرة أخرى.",
+"networkFailed": "خطأ في الشبكة. تحقق من اتصالك وحاول مرة أخرى."
     }
   },
   "SearchPopover": {

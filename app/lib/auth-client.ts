@@ -1,13 +1,14 @@
 "use client";
 
 import { createAuthClient } from "better-auth/react";
-import { inferAdditionalFields, phoneNumberClient } from "better-auth/client/plugins";
+import { inferAdditionalFields, phoneNumberClient, emailOTPClient } from "better-auth/client/plugins";
 import type { auth } from "@/app/lib/auth";
 export const authClient = createAuthClient({
   baseURL: process.env.NEXT_PUBLIC_APP_ORIGIN || "http://localhost:3000",
   plugins: [
     inferAdditionalFields<typeof auth>(),
     phoneNumberClient(),
+    emailOTPClient(),
   ],
 });
 export type Session = typeof authClient.$Infer.Session;
@@ -176,6 +177,43 @@ export const sendVerificationEmail = async (email: string) => {
     return { result, error };
   } catch (err) {
     console.error("SendVerificationEmail error:", err);
+    return { result: null, error: err as Error };
+  }
+};
+
+export const sendEmailOTP = async (
+  email: string,
+  type: "sign-in" | "email-verification" | "forget-password" = "email-verification"
+) => {
+  try {
+    console.log("Envoi OTP email à:", email);
+
+    const { data: result, error } = await authClient.emailOtp.sendVerificationOtp({
+      email,
+      type,
+    });
+
+    console.log("Résultat envoi OTP email:", { result, error });
+    return { result, error };
+  } catch (err) {
+    console.error("SendEmailOTP error:", err);
+    return { result: null, error: err as Error };
+  }
+};
+
+export const verifyEmailOTP = async (data: { email: string; otp: string }) => {
+  try {
+    console.log("Vérification OTP email:", { email: data.email });
+
+    const { data: result, error } = await authClient.emailOtp.verifyEmail({
+      email: data.email,
+      otp: data.otp,
+    });
+
+    console.log("Résultat vérification OTP email:", { result, error });
+    return { result, error };
+  } catch (err) {
+    console.error("VerifyEmailOTP error:", err);
     return { result: null, error: err as Error };
   }
 };

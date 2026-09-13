@@ -25,7 +25,6 @@ import { useRouter } from "next/navigation";
 import QRCode from "qrcode";
 import {
   getSession,
-  sendVerificationEmail,
   sendPhoneOTP,
   verifyPhoneOTP,
   updateUser,
@@ -67,8 +66,11 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
   const [user, setUser] = useState<UserData | null>(null);
   const [loadingUser, setLoadingUser] = useState(true);
 
+  // Vérification email par OTP (code à 6 chiffres), même logique que le téléphone
+  const [emailOtpStep, setEmailOtpStep] = useState<"idle" | "sent">("idle");
+  const [emailOtpCode, setEmailOtpCode] = useState("");
   const [emailSending, setEmailSending] = useState(false);
-  const [emailSent, setEmailSent] = useState(false);
+  const [emailVerifying, setEmailVerifying] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
 
   const [phoneInput, setPhoneInput] = useState("");
@@ -111,10 +113,12 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
       setLoadingUser(false);
     }
   };
+
   useEffect(() => {
     if (open) {
       loadUser();
-      setEmailSent(false);
+      setEmailOtpStep("idle");
+      setEmailOtpCode("");
       setEmailError(null);
       setOtpStep("idle");
       setOtpCode("");
@@ -124,6 +128,7 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
       setShowDeleteConfirm(false);
     }
   }, [open]);
+
   useEffect(() => {
     if (!open) {
       setShowDeleteConfirm(false);
@@ -147,21 +152,47 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
     }
   }, [open, qrDataUrl]);
 
-  const handleVerifyEmail = async () => {
+  const handleSendEmailOtp = async () => {
     if (!user?.email) return;
     setEmailSending(true);
     setEmailError(null);
     try {
-      const { error } = await sendVerificationEmail(user.email);
+      const { error } = await authClient.emailOtp.sendVerificationOtp({
+        email: user.email,
+        type: "email-verification",
+      });
       if (error) {
         setEmailError(error.message || t("errors.emailSendFailed"));
       } else {
-        setEmailSent(true);
+        setEmailOtpStep("sent");
       }
     } catch (err) {
       setEmailError(t("errors.emailSendFailed"));
     } finally {
       setEmailSending(false);
+    }
+  };
+
+  const handleVerifyEmailOtp = async () => {
+    if (!user?.email || !emailOtpCode.trim()) return;
+    setEmailVerifying(true);
+    setEmailError(null);
+    try {
+      const { error } = await authClient.emailOtp.verifyEmail({
+        email: user.email,
+        otp: emailOtpCode.trim(),
+      });
+      if (error) {
+        setEmailError(error.message || t("errors.emailVerifyFailed"));
+      } else {
+        await loadUser();
+        setEmailOtpStep("idle");
+        setEmailOtpCode("");
+      }
+    } catch (err) {
+      setEmailError(t("errors.emailVerifyFailed"));
+    } finally {
+      setEmailVerifying(false);
     }
   };
 
@@ -346,20 +377,47 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                                 <CheckCircleIcon size={14} weight="fill" />
                                 {t("verified")}
                               </span>
-                            ) : emailSent ? (
-                              <span className={`text-xs text-black/40 dark:text-white/40 shrink-0 ${orbitron.className}`}>{t("emailSentHint")}</span>
-                            ) : (
+                            ) : emailOtpStep === "idle" ? (
                               <button
-                                onClick={handleVerifyEmail}
+                                onClick={handleSendEmailOtp}
                                 disabled={emailSending}
                                 className={`text-xs px-2.5 py-1 rounded-lg border border-[#432dd7]/40 text-[#432dd7] hover:bg-[#432dd7]/10 cursor-pointer disabled:opacity-40 shrink-0 transition-colors ${orbitron.className}`}
                               >
                                 {emailSending ? t("sending") : t("verify")}
                               </button>
-                            )
+                            ) : null
                           )}
                         </div>
                       </div>
+
+                      {/* Saisie du code OTP reçu par email */}
+                      {user?.email && !user.emailVerified && emailOtpStep === "sent" && (
+                        <div className="mt-2 flex flex-col gap-2">
+                          <div className="flex flex-col sm:flex-row gap-2">
+                            <input
+                              value={emailOtpCode}
+                              onChange={(e) => setEmailOtpCode(e.target.value)}
+                              placeholder={t("otpPlaceholder")}
+                              maxLength={6}
+                              className={`flex-1 h-9 px-3 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm text-black dark:text-white/90 placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7] w-full ${orbitron.className}`}
+                            />
+                            <button
+                              onClick={handleVerifyEmailOtp}
+                              disabled={emailVerifying || !emailOtpCode.trim()}
+                              className={`text-xs px-3 py-1.5 rounded-lg border border-[#432dd7]/40 text-[#432dd7] hover:bg-[#432dd7]/10 cursor-pointer disabled:opacity-40 transition-colors sm:shrink-0 ${orbitron.className}`}
+                            >
+                              {emailVerifying ? t("verifying") : t("confirm")}
+                            </button>
+                          </div>
+                          <button
+                            onClick={handleSendEmailOtp}
+                            disabled={emailSending}
+                            className={`self-start text-[11px] text-[#432dd7] hover:underline cursor-pointer disabled:opacity-40 ${orbitron.className}`}
+                          >
+                            {emailSending ? t("sending") : t("resendCode")}
+                          </button>
+                        </div>
+                      )}
                     </div>
                     {emailError && <p className={`text-xs text-red-500 dark:text-red-400 -mt-2 ${orbitron.className}`}>{emailError}</p>}
 

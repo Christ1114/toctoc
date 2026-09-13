@@ -2,7 +2,7 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "@/lib/prisma";
 import { username } from "better-auth/plugins/username";
-import { admin, phoneNumber, customSession } from "better-auth/plugins";
+import { admin, phoneNumber, customSession, emailOTP } from "better-auth/plugins";
 import { createAuthMiddleware, APIError } from "better-auth/api";
 import { Resend } from 'resend';
 import { sendMail } from "@/app/lib/mailer";
@@ -135,6 +135,8 @@ export const auth = betterAuth({
       "/forget-password": { window: 3600, max: 3 },
       "/phone-number/send-otp": { window: 3600, max: 5 },
       "/phone-number/verify": { window: 300, max: 5 },
+      "/email-otp/send-verification-otp": { window: 3600, max: 5 },
+      "/email-otp/verify-email": { window: 300, max: 5 },
     },
   },
 
@@ -166,6 +168,43 @@ export const auth = betterAuth({
     username(),
     admin(),
     nextCookies(),
+
+    emailOTP({
+      otpLength: 6,
+      expiresIn: 300, // 5 minutes
+      async sendVerificationOTP({ email, otp, type }) {
+        let subject = "Your TOCTOC verification code";
+        let intro = "Here is your verification code:";
+
+        if (type === "sign-in") {
+          subject = "Your TOCTOC sign-in code";
+          intro = "Use this code to sign in:";
+        } else if (type === "forget-password") {
+          subject = "Your TOCTOC password reset code";
+          intro = "Use this code to reset your password:";
+        } else if (type === "email-verification") {
+          subject = "Verify your TOCTOC email address";
+          intro = "Use this code to verify your email address:";
+        }
+
+        await sendMail({
+          to: email,
+          subject,
+          html: `
+            <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
+              <h2 style="color: #432dd7;">${subject}</h2>
+              <p>${intro}</p>
+              <p style="font-size: 32px; font-weight: bold; letter-spacing: 6px; color: #432dd7;">
+                ${otp}
+              </p>
+              <p style="color:#888; font-size:12px; margin-top:24px;">
+                This code expires in 5 minutes. If you did not request this, please ignore this email.
+              </p>
+            </div>
+          `,
+        });
+      },
+    }),
 
     phoneNumber({
       otpLength: 6,
