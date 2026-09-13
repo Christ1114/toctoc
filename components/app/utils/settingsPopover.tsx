@@ -111,8 +111,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
       setLoadingUser(false);
     }
   };
-
-  // Réinitialisation complète à chaque ouverture du popover
   useEffect(() => {
     if (open) {
       loadUser();
@@ -126,9 +124,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
       setShowDeleteConfirm(false);
     }
   }, [open]);
-
-  // Si l'utilisateur ferme le popover pendant qu'une confirmation de suppression
-  // est ouverte, on la réinitialise pour éviter un état "collé" à la prochaine ouverture.
   useEffect(() => {
     if (!open) {
       setShowDeleteConfirm(false);
@@ -222,7 +217,7 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
         return;
       }
       onClose();
-      router.push("/sign-in");
+      router.push("/login");
       router.refresh();
     } catch (err) {
       setLogoutError(t("errors.logoutFailed"));
@@ -282,16 +277,14 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
           </h2>
           <button
             onClick={onClose}
-            className="text-black/50 hover:text-black dark:text-white/50 dark:hover:text-white/90 cursor-pointer p-1"
+            className={`text-black/50 hover:text-black dark:text-white/50 dark:hover:text-white/90 cursor-pointer p-1 ${orbitron.className}`}
             aria-label={t("close")}
           >
             <XIcon size={18} />
           </button>
         </div>
 
-        {/* Navigation Tabs */}
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-6">
-          {/* Tab Navigation */}
           <nav className="w-full sm:w-36 shrink-0 flex sm:flex-col gap-1 overflow-x-auto pb-1 sm:pb-0 -mx-1 px-1">
             {TABS.map(({ key, icon: Icon, label }) => (
               <button
@@ -304,17 +297,14 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                 } ${orbitron.className}`}
               >
                 <Icon size={16} />
-                <span>{label}</span>
+                <span className={orbitron.className}>{label}</span>
               </button>
             ))}
           </nav>
-
-          {/* Content Area */}
           <div className="flex-1 min-w-0">
-            {/* General Tab */}
             {tab === "general" && (
               <div>
-                <p className="text-xs text-black/40 dark:text-white/40 mb-2">{t("theme")}</p>
+                <p className={`text-xs text-black/40 dark:text-white/40 mb-2 ${orbitron.className}`}>{t("theme")}</p>
                 <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-5">
                   {THEMES.map(({ key, icon: Icon }) => (
                     <button
@@ -327,14 +317,12 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                       } ${orbitron.className}`}
                     >
                       <Icon size={16} className="sm:w-4.5 sm:h-4.5" />
-                      <span className="text-center leading-tight">{t(`themes.${key}`)}</span>
+                      <span className={`text-center leading-tight ${orbitron.className}`}>{t(`themes.${key}`)}</span>
                     </button>
                   ))}
                 </div>
               </div>
             )}
-
-            {/* Profile Tab */}
             {tab === "profile" && (
               <div className="flex flex-col gap-3 sm:gap-4">
                 {loadingUser ? (
@@ -344,23 +332,23 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                 ) : (
                   <>
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-black/5 dark:border-white/5 pb-2.5 sm:pb-3 gap-1">
-                      <span className="text-xs sm:text-sm text-black/50 dark:text-white/50">{t("name")}</span>
-                      <span className="text-sm text-black dark:text-white/90">{user?.name || "-"}</span>
+                      <span className={`text-xs sm:text-sm text-black/50 dark:text-white/50 ${orbitron.className}`}>{t("name")}</span>
+                      <span className={`text-sm text-black dark:text-white/90 ${orbitron.className}`}>{user?.name || "-"}</span>
                     </div>
 
                     <div className="border-b border-black/5 dark:border-white/5 pb-2.5 sm:pb-3">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-3">
-                        <span className="text-xs sm:text-sm text-black/50 dark:text-white/50 shrink-0">{t("email")}</span>
+                        <span className={`text-xs sm:text-sm text-black/50 dark:text-white/50 shrink-0 ${orbitron.className}`}>{t("email")}</span>
                         <div className="flex items-center gap-2 min-w-0 justify-between sm:justify-end w-full sm:w-auto">
-                          <span className="text-sm text-black dark:text-white/90 truncate max-w-40 sm:max-w-none">{user?.email || "-"}</span>
+                          <span className={`text-sm text-black dark:text-white/90 truncate max-w-40 sm:max-w-none ${orbitron.className}`}>{user?.email || "-"}</span>
                           {user?.email && (
                             user.emailVerified ? (
-                              <span className="flex items-center gap-1 text-xs text-green-600 dark:text-green-400 shrink-0">
+                              <span className={`flex items-center gap-1 text-xs text-green-600 dark:text-green-400 shrink-0 ${orbitron.className}`}>
                                 <CheckCircleIcon size={14} weight="fill" />
                                 {t("verified")}
                               </span>
                             ) : emailSent ? (
-                              <span className="text-xs text-black/40 dark:text-white/40 shrink-0">{t("emailSentHint")}</span>
+                              <span className={`text-xs text-black/40 dark:text-white/40 shrink-0 ${orbitron.className}`}>{t("emailSentHint")}</span>
                             ) : (
                               <button
                                 onClick={handleVerifyEmail}
@@ -374,15 +362,15 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                         </div>
                       </div>
                     </div>
-                    {emailError && <p className="text-xs text-red-500 dark:text-red-400 -mt-2">{emailError}</p>}
+                    {emailError && <p className={`text-xs text-red-500 dark:text-red-400 -mt-2 ${orbitron.className}`}>{emailError}</p>}
 
                     <div className="border-b border-black/5 dark:border-white/5 pb-2.5 sm:pb-3">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-3">
-                        <span className="text-xs sm:text-sm text-black/50 dark:text-white/50 shrink-0">{t("phone")}</span>
+                        <span className={`text-xs sm:text-sm text-black/50 dark:text-white/50 shrink-0 ${orbitron.className}`}>{t("phone")}</span>
                         <div className="flex items-center gap-2 min-w-0 justify-between sm:justify-end w-full sm:w-auto">
-                          <span className="text-sm text-black dark:text-white/90 truncate max-w-40 sm:max-w-none">{user?.phone || "-"}</span>
+                          <span className={`text-sm text-black dark:text-white/90 truncate max-w-40 sm:max-w-none ${orbitron.className}`}>{user?.phone || "-"}</span>
                           {user?.phone && user.phoneVerified && (
-                            <span className="flex items-center gap-1 text-xs text-green-600 dark:text-green-400 shrink-0">
+                            <span className={`flex items-center gap-1 text-xs text-green-600 dark:text-green-400 shrink-0 ${orbitron.className}`}>
                               <CheckCircleIcon size={14} weight="fill" />
                               {t("verified")}
                             </span>
@@ -398,7 +386,7 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                                 value={phoneInput}
                                 onChange={(e) => setPhoneInput(e.target.value)}
                                 placeholder={t("phonePlaceholder")}
-                                className="flex-1 h-9 px-3 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm text-black dark:text-white/90 placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7] w-full"
+                                className={`flex-1 h-9 px-3 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm text-black dark:text-white/90 placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7] w-full ${orbitron.className}`}
                               />
                               <button
                                 onClick={handleSendPhoneOtp}
@@ -415,18 +403,18 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                                 onChange={(e) => setOtpCode(e.target.value)}
                                 placeholder={t("otpPlaceholder")}
                                 maxLength={6}
-                                className="flex-1 h-9 px-3 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm text-black dark:text-white/90 placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7] w-full"
+                                className={`flex-1 h-9 px-3 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm text-black dark:text-white/90 placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7] w-full ${orbitron.className}`}
                               />
                               <button
                                 onClick={handleVerifyPhoneOtp}
                                 disabled={phoneVerifying || !otpCode.trim()}
-                                className="text-xs px-3 py-1.5 rounded-lg border border-[#432dd7]/40 text-[#432dd7] hover:bg-[#432dd7]/10 cursor-pointer disabled:opacity-40 transition-colors sm:shrink-0"
+                                className={`text-xs px-3 py-1.5 rounded-lg border border-[#432dd7]/40 text-[#432dd7] hover:bg-[#432dd7]/10 cursor-pointer disabled:opacity-40 transition-colors sm:shrink-0 ${orbitron.className}`}
                               >
                                 {phoneVerifying ? t("verifying") : t("confirm")}
                               </button>
                             </div>
                           )}
-                          {phoneError && <p className="text-xs text-red-500 dark:text-red-400">{phoneError}</p>}
+                          {phoneError && <p className={`text-xs text-red-500 dark:text-red-400 ${orbitron.className}`}>{phoneError}</p>}
                         </div>
                       )}
                     </div>
@@ -434,7 +422,7 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                     {/* Déconnexion */}
                     <div className="pt-1">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs sm:text-sm text-black/50 dark:text-white/50">{t("logout")}</span>
+                        <span className={`text-xs sm:text-sm text-black/50 dark:text-white/50 ${orbitron.className}`}>{t("logout")}</span>
                         <button
                           onClick={handleLogout}
                           disabled={loggingOut}
@@ -444,7 +432,7 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                           {loggingOut ? t("loggingOut") : t("logoutButton")}
                         </button>
                       </div>
-                      {logoutError && <p className="text-xs text-red-500 dark:text-red-400 mt-1">{logoutError}</p>}
+                      {logoutError && <p className={`text-xs text-red-500 dark:text-red-400 mt-1 ${orbitron.className}`}>{logoutError}</p>}
                     </div>
 
                     {/* Suppression du compte */}
@@ -452,8 +440,8 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                       {!showDeleteConfirm ? (
                         <div className="flex items-center justify-between">
                           <div className="flex flex-col">
-                            <span className="text-xs sm:text-sm text-black/70 dark:text-white/70">{t("deleteAccount")}</span>
-                            <span className="text-[11px] text-black/40 dark:text-white/40">{t("deleteAccountHint")}</span>
+                            <span className={`text-xs sm:text-sm text-black/70 dark:text-white/70 ${orbitron.className}`}>{t("deleteAccount")}</span>
+                            <span className={`text-[11px] text-black/40 dark:text-white/40 ${orbitron.className}`}>{t("deleteAccountHint")}</span>
                           </div>
                           <button
                             onClick={() => setShowDeleteConfirm(true)}
@@ -468,7 +456,7 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                         <div className="flex flex-col gap-2.5">
                           <div className="flex items-start gap-2">
                             <WarningCircleIcon size={16} weight="fill" className="text-red-500 dark:text-red-400 shrink-0 mt-0.5" />
-                            <p className="text-xs text-black/70 dark:text-white/70 leading-relaxed">
+                            <p className={`text-xs text-black/70 dark:text-white/70 leading-relaxed ${orbitron.className}`}>
                               {t("confirmDelete")}
                             </p>
                           </div>
@@ -491,7 +479,7 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                           </div>
                         </div>
                       )}
-                      {deleteError && <p className="text-xs text-red-500 dark:text-red-400 mt-2">{deleteError}</p>}
+                      {deleteError && <p className={`text-xs text-red-500 dark:text-red-400 mt-2 ${orbitron.className}`}>{deleteError}</p>}
                     </div>
                   </>
                 )}
@@ -518,17 +506,17 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                       <button
                         onClick={handleDownloadQr}
                         disabled={downloading}
-                        className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#432dd7] text-white hover:bg-[#432dd7]/90 cursor-pointer disabled:opacity-40 transition-colors"
+                        className={`flex items-center gap-2 px-4 py-2 rounded-lg bg-[#432dd7] text-white hover:bg-[#432dd7]/90 cursor-pointer disabled:opacity-40 transition-colors ${orbitron.className}`}
                       >
                         <DownloadSimpleIcon size={16} />
                         {downloading ? t("downloading") : t("downloadQr")}
                       </button>
 
                       <div className="flex gap-2">
-                        <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-black text-white hover:bg-black/90 cursor-pointer transition-colors">
+                        <button className={`flex items-center gap-2 px-4 py-2 rounded-lg bg-black text-white hover:bg-black/90 cursor-pointer transition-colors ${orbitron.className}`}>
                           <GooglePlayLogo size={16} />
                         </button>
-                        <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-black text-white hover:bg-black/90 cursor-pointer transition-colors">
+                        <button className={`flex items-center gap-2 px-4 py-2 rounded-lg bg-black text-white hover:bg-black/90 cursor-pointer transition-colors ${orbitron.className}`}>
                           <AppleLogo size={16} />
                         </button>
                       </div>
