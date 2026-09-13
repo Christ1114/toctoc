@@ -19,8 +19,8 @@ const REQUIRED_ENV = [
   "BETTER_AUTH_SECRET",
   "RESEND_API_KEY",
   "RESEND_FROM_EMAIL",
-  "GMAIL_USER",
-  "GMAIL_APP_PASSWORD",
+  "EMAIL_USER",
+  "EMAIL_PASSWORD",
   "GOOGLE_CLIENT_ID",
   "GOOGLE_CLIENT_SECRET",
   "TIKTOK_CLIENT_KEY",
@@ -28,8 +28,6 @@ const REQUIRED_ENV = [
   "KICKBOX_API_KEY",
 ] as const;
 
-// On saute la validation pendant la phase de build Next.js (collecte de pages),
-// où les vraies variables d'environnement runtime ne sont pas nécessaires.
 if (process.env.NEXT_PHASE !== "phase-production-build") {
   for (const key of REQUIRED_ENV) {
     if (!process.env[key]) {
