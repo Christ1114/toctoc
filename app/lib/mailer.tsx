@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 
-const REQUIRED_MAILER_ENV = ["EMAIL_USER", "EMAIL_APP_PASSWORD"] as const;
+const REQUIRED_MAILER_ENV = ["EMAIL_USER", "EMAIL_PASSWORD"] as const;
 if (process.env.NEXT_PHASE !== "phase-production-build") {
   for (const key of REQUIRED_MAILER_ENV) {
     if (!process.env[key]) {
