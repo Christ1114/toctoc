@@ -16,6 +16,7 @@ import {
   SignOutIcon,
   TrashIcon,
   WarningCircleIcon,
+  ClockIcon,
 } from "@phosphor-icons/react";
 import Popover from "../utils/Popover";
 import { orbitron } from "@/fonts/font";
@@ -25,8 +26,6 @@ import { useRouter } from "next/navigation";
 import QRCode from "qrcode";
 import {
   getSession,
-  sendPhoneOTP,
-  verifyPhoneOTP,
   updateUser,
   signOut,
   authClient,
@@ -47,6 +46,7 @@ type UserData = {
   phone?: string | null;
   phoneVerified?: boolean;
 };
+const PHONE_VERIFICATION_ENABLED = false;
 
 const THEMES = [
   { key: "light", icon: SunIcon },
@@ -66,19 +66,11 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
   const [user, setUser] = useState<UserData | null>(null);
   const [loadingUser, setLoadingUser] = useState(true);
 
-  
   const [emailOtpStep, setEmailOtpStep] = useState<"idle" | "sent">("idle");
   const [emailOtpCode, setEmailOtpCode] = useState("");
   const [emailSending, setEmailSending] = useState(false);
   const [emailVerifying, setEmailVerifying] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
-
-  const [phoneInput, setPhoneInput] = useState("");
-  const [otpStep, setOtpStep] = useState<"idle" | "sent">("idle");
-  const [otpCode, setOtpCode] = useState("");
-  const [phoneSending, setPhoneSending] = useState(false);
-  const [phoneVerifying, setPhoneVerifying] = useState(false);
-  const [phoneError, setPhoneError] = useState<string | null>(null);
 
   const [loggingOut, setLoggingOut] = useState(false);
   const [logoutError, setLogoutError] = useState<string | null>(null);
@@ -102,7 +94,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
       const { session } = await getSession();
       if (session?.user) {
         setUser(session.user as UserData);
-        setPhoneInput(session.user.phone || "");
       } else {
         setUser(null);
       }
@@ -120,9 +111,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
       setEmailOtpStep("idle");
       setEmailOtpCode("");
       setEmailError(null);
-      setOtpStep("idle");
-      setOtpCode("");
-      setPhoneError(null);
       setLogoutError(null);
       setDeleteError(null);
       setShowDeleteConfirm(false);
@@ -193,47 +181,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
       setEmailError(t("errors.emailVerifyFailed"));
     } finally {
       setEmailVerifying(false);
-    }
-  };
-
-  const handleSendPhoneOtp = async () => {
-    if (!phoneInput.trim()) return;
-    setPhoneSending(true);
-    setPhoneError(null);
-    try {
-      const { error } = await sendPhoneOTP(phoneInput.trim());
-      if (error) {
-        setPhoneError(error.message || t("errors.phoneSendFailed"));
-      } else {
-        setOtpStep("sent");
-      }
-    } catch (err) {
-      setPhoneError(t("errors.phoneSendFailed"));
-    } finally {
-      setPhoneSending(false);
-    }
-  };
-
-  const handleVerifyPhoneOtp = async () => {
-    if (!otpCode.trim()) return;
-    setPhoneVerifying(true);
-    setPhoneError(null);
-    try {
-      const { error } = await verifyPhoneOTP({
-        phoneNumber: phoneInput.trim(),
-        code: otpCode.trim(),
-      });
-      if (error) {
-        setPhoneError(error.message || t("errors.phoneVerifyFailed"));
-      } else {
-        await loadUser();
-        setOtpStep("idle");
-        setOtpCode("");
-      }
-    } catch (err) {
-      setPhoneError(t("errors.phoneVerifyFailed"));
-    } finally {
-      setPhoneVerifying(false);
     }
   };
 
@@ -390,7 +337,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                         </div>
                       </div>
 
-                      {/* Saisie du code OTP reçu par email */}
                       {user?.email && !user.emailVerified && emailOtpStep === "sent" && (
                         <div className="mt-2 flex flex-col gap-2">
                           <div className="flex flex-col sm:flex-row gap-2">
@@ -420,7 +366,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                       )}
                     </div>
                     {emailError && <p className={`text-xs text-red-500 dark:text-red-400 -mt-2 ${orbitron.className}`}>{emailError}</p>}
-
                     <div className="border-b border-black/5 dark:border-white/5 pb-2.5 sm:pb-3">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-3">
                         <span className={`text-xs sm:text-sm text-black/50 dark:text-white/50 shrink-0 ${orbitron.className}`}>{t("phone")}</span>
@@ -432,49 +377,19 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                               {t("verified")}
                             </span>
                           )}
+                          {!user?.phoneVerified && !PHONE_VERIFICATION_ENABLED && (
+                            <span
+                              className={`flex items-center gap-1 text-xs text-black/40 dark:text-white/40 shrink-0 ${orbitron.className}`}
+                              title={t("phoneComingSoonHint")}
+                            >
+                              <ClockIcon size={14} />
+                              {t("comingSoon")}
+                            </span>
+                          )}
                         </div>
                       </div>
-
-                      {!user?.phoneVerified && (
-                        <div className="mt-2 flex flex-col gap-2">
-                          {otpStep === "idle" ? (
-                            <div className="flex flex-col sm:flex-row gap-2">
-                              <input
-                                value={phoneInput}
-                                onChange={(e) => setPhoneInput(e.target.value)}
-                                placeholder={t("phonePlaceholder")}
-                                className={`flex-1 h-9 px-3 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm text-black dark:text-white/90 placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7] w-full ${orbitron.className}`}
-                              />
-                              <button
-                                onClick={handleSendPhoneOtp}
-                                disabled={phoneSending || !phoneInput.trim()}
-                                className={`text-xs px-3 py-1.5 rounded-lg border border-[#432dd7]/40 text-[#432dd7] hover:bg-[#432dd7]/10 cursor-pointer disabled:opacity-40 transition-colors sm:shrink-0 ${orbitron.className}`}
-                              >
-                                {phoneSending ? t("sending") : t("verify")}
-                              </button>
-                            </div>
-                          ) : (
-                            <div className="flex flex-col sm:flex-row gap-2">
-                              <input
-                                value={otpCode}
-                                onChange={(e) => setOtpCode(e.target.value)}
-                                placeholder={t("otpPlaceholder")}
-                                maxLength={6}
-                                className={`flex-1 h-9 px-3 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm text-black dark:text-white/90 placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7] w-full ${orbitron.className}`}
-                              />
-                              <button
-                                onClick={handleVerifyPhoneOtp}
-                                disabled={phoneVerifying || !otpCode.trim()}
-                                className={`text-xs px-3 py-1.5 rounded-lg border border-[#432dd7]/40 text-[#432dd7] hover:bg-[#432dd7]/10 cursor-pointer disabled:opacity-40 transition-colors sm:shrink-0 ${orbitron.className}`}
-                              >
-                                {phoneVerifying ? t("verifying") : t("confirm")}
-                              </button>
-                            </div>
-                          )}
-                          {phoneError && <p className={`text-xs text-red-500 dark:text-red-400 ${orbitron.className}`}>{phoneError}</p>}
-                        </div>
-                      )}
                     </div>
+
                     <div className="pt-1">
                       <div className="flex items-center justify-between">
                         <span className={`text-xs sm:text-sm text-black/50 dark:text-white/50 ${orbitron.className}`}>{t("logout")}</span>
