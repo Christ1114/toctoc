@@ -66,7 +66,7 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
   const [user, setUser] = useState<UserData | null>(null);
   const [loadingUser, setLoadingUser] = useState(true);
 
-  // Vérification email par OTP (code à 6 chiffres), même logique que le téléphone
+  
   const [emailOtpStep, setEmailOtpStep] = useState<"idle" | "sent">("idle");
   const [emailOtpCode, setEmailOtpCode] = useState("");
   const [emailSending, setEmailSending] = useState(false);
