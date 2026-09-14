@@ -14,7 +14,8 @@
   "NearbyMap": {
     "me": "我",
     "youAreHere": "您在这里",
-    "locateMe": "定位我"
+    "locateMe": "定位我",
+      "retry": "重试"
   },
   "VrConfirmPopover": {
     "title": "虚拟面试",

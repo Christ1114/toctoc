@@ -14,7 +14,8 @@
   "NearbyMap": {
     "me": "Me",
     "youAreHere": "You are here",
-    "locateMe": "Locate me"
+    "locateMe": "Locate me",
+  "retry": "Retry"
   },
   "VrConfirmPopover": {
     "title": "Virtual interview",

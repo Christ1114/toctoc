@@ -25,7 +25,8 @@
   "NearbyMap": {
     "me": "Moi",
     "youAreHere": "Vous êtes ici",
-    "locateMe": "Me localiser"
+    "locateMe": "Me localiser",
+     "retry": "Réessayer"
   },
 
   "VrConfirmPopover": {

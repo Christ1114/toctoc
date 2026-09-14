@@ -14,7 +14,8 @@
   "NearbyMap": {
     "me": "أنا",
     "youAreHere": "أنت هنا",
-    "locateMe": "تحديد موقعي"
+    "locateMe": "تحديد موقعي",
+    "retry": "Réessayer"
   },
   "VrConfirmPopover": {
     "title": "مقابلة افتراضية",

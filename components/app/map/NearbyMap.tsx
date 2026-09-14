@@ -80,12 +80,15 @@ export default function NearbyMap() {
         const storedLng = userData?.lastLongitude;
 
         if (storedLat && storedLng && isMounted) {
-          console.log("✅ Position stockée trouvée:", storedLat, storedLng);
+          console.log("✅ Position stockée trouvée (affichage immédiat):", storedLat, storedLng);
           const position: [number, number] = [storedLng, storedLat];
           initialCenterRef.current = position;
           setInitialCenter(position);
           setLoadingPosition(false);
-          return;
+          // Pas de "return" ici : la position stockée sert juste de fallback
+          // rapide pour l'affichage. On demande quand même le GPS réel
+          // ci-dessous ; l'effet de recentrage se chargera de déplacer la
+          // carte dès que la vraie position arrivera.
         }
       } catch (err) {
         console.error("❌ Erreur récupération session:", err);
@@ -373,7 +376,7 @@ export default function NearbyMap() {
             }}
             className={`mt-2 text-sm underline hover:no-underline ${orbitron.className}`}
           >
-            Réessayer
+            {t("retry")}
           </button>
         </div>
       )}
