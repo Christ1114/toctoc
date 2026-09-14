@@ -220,17 +220,17 @@ export default function SearchPopover({ open, onClose, onSearch, userType }: Sea
           
           console.log("Résultat sélectionné :", item);
         }}
-        className="w-full text-left px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg text-sm text-gray-700 dark:text-white/80 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white/95 cursor-pointer transition-colors"
+        className={`w-full text-left px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg text-sm text-gray-700 dark:text-white/80 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white/95 cursor-pointer transition-colors ${orbitron.className}`}
       >
         {item.resultType === "PROFILE" ? (
           <div>
-            <p className="font-medium truncate">{item.name}</p>
-            <p className="text-xs text-gray-500 dark:text-white/40 truncate">{item.providerType}</p>
+            <p className={`font-medium truncate ${orbitron.className}`}>{item.name}</p>
+            <p className={`text-xs text-gray-500 dark:text-white/40 truncate ${orbitron.className}`}>{item.providerType}</p>
           </div>
         ) : (
           <div>
-            <p className="font-medium truncate">{item.title}</p>
-            <p className="text-xs text-gray-500 dark:text-white/40 truncate">
+            <p className={`font-medium truncate ${orbitron.className}`}>{item.title}</p>
+            <p className={`text-xs text-gray-500 dark:text-white/40 truncate ${orbitron.className}`}>
               {item.jobType?.name} · {item.city}
             </p>
           </div>
@@ -241,21 +241,21 @@ export default function SearchPopover({ open, onClose, onSearch, userType }: Sea
 
   return (
     <Popover open={open} onClose={onClose} title={t('title')}>
-      <div dir={isRTL ? 'rtl' : 'ltr'} className="w-full max-h-[80vh] sm:max-h-[70vh] overflow-y-auto">
+      <div dir={isRTL ? 'rtl' : 'ltr'} className={`w-full max-h-[80vh] sm:max-h-[70vh] overflow-y-auto ${orbitron.className}`}>
         <div className="flex items-center justify-between mb-4 px-2 sm:px-0">
-          <h2 className={`text-sm sm:text-base font-medium text-gray-900 dark:text-white/90 ${isRTL ? '' : orbitron.className}`}>
+          <h2 className={`text-sm sm:text-base font-medium text-gray-900 dark:text-white/90 ${orbitron.className}`}>
             {t('title')}
           </h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-700 dark:text-white/50 dark:hover:text-white/90 cursor-pointer p-1 -mr-1 sm:p-0 sm:mr-0"
+            className={`text-gray-400 hover:text-gray-700 dark:text-white/50 dark:hover:text-white/90 cursor-pointer p-1 -mr-1 sm:p-0 sm:mr-0 ${orbitron.className}`}
             aria-label={t('close')}
           >
             <XIcon size={18} className="sm:w-5 sm:h-5" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className={`relative mb-4 px-2 sm:px-0 ${isRTL ? '' : orbitron.className}`}>
+        <form onSubmit={handleSubmit} className={`relative mb-4 px-2 sm:px-0 ${orbitron.className}`}>
           <MagnifyingGlassIcon 
             size={16} 
             className={`absolute top-1/2 -translate-y-1/2 text-gray-400 dark:text-white/40 pointer-events-none ${
@@ -269,7 +269,7 @@ export default function SearchPopover({ open, onClose, onSearch, userType }: Sea
             placeholder={t('placeholder')}
             className={`w-full h-10 sm:h-11 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-300 dark:border-white/10 text-sm sm:text-base text-gray-900 dark:text-white/90 placeholder:text-gray-400 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7]/60 transition-colors ${
               isRTL ? 'pr-9 pl-3 text-right' : 'pl-9 pr-3 text-left'
-            }`}
+            } ${orbitron.className}`}
           />
         </form>
 
@@ -283,13 +283,13 @@ export default function SearchPopover({ open, onClose, onSearch, userType }: Sea
             )}
 
             {searchError && (
-              <p className="text-sm text-red-500 dark:text-red-400/70 px-2 py-2">{searchError}</p>
+              <p className={`text-sm text-red-500 dark:text-red-400/70 px-2 py-2 ${orbitron.className}`}>{searchError}</p>
             )}
 
             {!isSearching && searchData && searchData.results.length === 0 && (
               <div className="text-center py-6 sm:py-8">
-                <p className="text-sm text-gray-500 dark:text-white/40">Aucun résultat</p>
-                <p className="text-xs text-gray-400 dark:text-white/30 mt-1">
+                <p className={`text-sm text-gray-500 dark:text-white/40 ${orbitron.className}`}>Aucun résultat</p>
+                <p className={`text-xs text-gray-400 dark:text-white/30 mt-1 ${orbitron.className}`}>
                   Essayez avec d&apos;autres mots-clés
                 </p>
               </div>
@@ -301,7 +301,7 @@ export default function SearchPopover({ open, onClose, onSearch, userType }: Sea
                 <div className="flex flex-col gap-4">
                   {jobResults.length > 0 && (
                     <div>
-                      <p className="text-xs font-medium text-gray-400 dark:text-white/30 px-2 sm:px-3 mb-1 uppercase tracking-wide">
+                      <p className={`text-xs font-medium text-gray-400 dark:text-white/30 px-2 sm:px-3 mb-1 uppercase tracking-wide ${orbitron.className}`}>
                         Offres
                       </p>
                       <ul className="flex flex-col gap-1 max-h-40 overflow-y-auto">
@@ -311,7 +311,7 @@ export default function SearchPopover({ open, onClose, onSearch, userType }: Sea
                   )}
                   {profileResults.length > 0 && (
                     <div>
-                      <p className="text-xs font-medium text-gray-400 dark:text-white/30 px-2 sm:px-3 mb-1 uppercase tracking-wide">
+                      <p className={`text-xs font-medium text-gray-400 dark:text-white/30 px-2 sm:px-3 mb-1 uppercase tracking-wide ${orbitron.className}`}>
                         Profils
                       </p>
                       <ul className="flex flex-col gap-1 max-h-40 overflow-y-auto">
@@ -334,13 +334,13 @@ export default function SearchPopover({ open, onClose, onSearch, userType }: Sea
         {query.trim().length < 2 && (
           <div className="px-2 sm:px-0">
             <div className="flex items-center justify-between mb-2">
-              <p className={`text-xs sm:text-sm text-gray-500 dark:text-white/40 ${isRTL ? '' : orbitron.className}`}>
+              <p className={`text-xs sm:text-sm text-gray-500 dark:text-white/40 ${orbitron.className}`}>
                 {t('recentSearches')}
               </p>
               {recentSearches.length > 0 && !isLoading && (
                 <button
                   onClick={clearAllSearches}
-                  className="text-xs text-gray-400 hover:text-gray-700 dark:text-white/30 dark:hover:text-white/60 cursor-pointer transition-colors"
+                  className={`text-xs text-gray-400 hover:text-gray-700 dark:text-white/30 dark:hover:text-white/60 cursor-pointer transition-colors ${orbitron.className}`}
                 >
                   {t('clearAll')}
                 </button>
@@ -352,7 +352,7 @@ export default function SearchPopover({ open, onClose, onSearch, userType }: Sea
                 <div className="animate-spin rounded-full h-5 w-5 sm:h-6 sm:w-6 border-b-2 border-gray-300 dark:border-white/30" />
               </div>
             ) : error ? (
-              <p className="text-sm text-red-500 dark:text-red-400/70 px-2 py-3">
+              <p className={`text-sm text-red-500 dark:text-red-400/70 px-2 py-3 ${orbitron.className}`}>
                 {error}
               </p>
             ) : recentSearches.length === 0 ? (
@@ -361,10 +361,10 @@ export default function SearchPopover({ open, onClose, onSearch, userType }: Sea
                   size={32} 
                   className="mx-auto mb-2 text-gray-300 dark:text-white/20" 
                 />
-                <p className="text-sm text-gray-500 dark:text-white/40">
+                <p className={`text-sm text-gray-500 dark:text-white/40 ${orbitron.className}`}>
                   {t('noSearches')}
                 </p>
-                <p className="text-xs text-gray-400 dark:text-white/30 mt-1 px-4">
+                <p className={`text-xs text-gray-400 dark:text-white/30 mt-1 px-4 ${orbitron.className}`}>
                   {t('noSearchesHint')}
                 </p>
               </div>
@@ -376,13 +376,13 @@ export default function SearchPopover({ open, onClose, onSearch, userType }: Sea
                       onClick={() => handlePick(item.query)}
                       className={`w-full flex items-center gap-2 px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg text-sm text-gray-600 dark:text-white/70 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white/90 cursor-pointer transition-colors ${
                         isRTL ? 'text-right flex-row-reverse' : 'text-left'
-                      } ${isRTL ? '' : orbitron.className}`}
+                      } ${orbitron.className}`}
                     >
                       <ClockCounterClockwiseIcon 
                         size={16} 
                         className="text-gray-400 dark:text-white/30 shrink-0" 
                       />
-                      <span className="flex-1 truncate">{item.query}</span>
+                      <span className={`flex-1 truncate ${orbitron.className}`}>{item.query}</span>
                     </button>
                     <button
                       onClick={(e) => {
@@ -391,7 +391,7 @@ export default function SearchPopover({ open, onClose, onSearch, userType }: Sea
                       }}
                       className={`absolute top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 focus:opacity-100 text-gray-400 hover:text-gray-700 dark:text-white/30 dark:hover:text-white/60 cursor-pointer transition-all p-1 ${
                         isRTL ? 'left-1 sm:left-2' : 'right-1 sm:right-2'
-                      }`}
+                      } ${orbitron.className}`}
                       aria-label={`${t('deleteSearch')} ${item.query}`}
                     >
                       <TrashIcon size={14} className="sm:w-4 sm:h-4" />

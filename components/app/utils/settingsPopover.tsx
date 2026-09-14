@@ -454,43 +454,60 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
               </div>
             )}
             {tab === "download" && (
-              <div>
-                <div className="flex items-center gap-2 mb-3">
-                  <DeviceMobileIcon size={18} className="text-[#432dd7]" />
-                  <span className={`text-sm font-medium text-black dark:text-white/90 ${orbitron.className}`}>
-                    {t("downloadApp")}
-                  </span>
-                </div>
+  <div className="w-full max-w-full overflow-hidden">
+    
+    <div className="flex items-center gap-2 mb-3">
+      <DeviceMobileIcon size={18} className="text-[#432dd7] shrink-0" />
+      <span className={`text-sm font-medium text-black dark:text-white/90 ${orbitron.className}`}>
+        {t("downloadApp")}
+      </span>
+    </div>
 
-                {qrDataUrl && (
-                  <div className="flex flex-col items-center gap-4">
-                    <div className="bg-white p-4 rounded-lg">
-                      <img src={qrDataUrl} alt="QR Code" className="w-48 h-48" />
-                    </div>
+    {qrDataUrl && (
+      <div className="flex flex-col items-center gap-4 w-full">
+       
+        <div className="bg-white p-3 sm:p-4 rounded-lg max-w-full">
+          <img
+            src={qrDataUrl}
+            alt="QR Code"
+            className="w-40 h-40 sm:w-48 sm:h-48 max-w-full"
+          />
+        </div>
 
-                    <div className="flex flex-col sm:flex-row gap-2">
-                      <button
-                        onClick={handleDownloadQr}
-                        disabled={downloading}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-lg bg-[#432dd7] text-white hover:bg-[#432dd7]/90 cursor-pointer disabled:opacity-40 transition-colors ${orbitron.className}`}
-                      >
-                        <DownloadSimpleIcon size={16} />
-                        {downloading ? t("downloading") : t("downloadQr")}
-                      </button>
+      
+        <div className="flex flex-col sm:flex-row gap-2 w-full max-w-full">
+          
+          <button
+            onClick={handleDownloadQr}
+            disabled={downloading}
+            className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-[#432dd7] text-white hover:bg-[#432dd7]/90 cursor-pointer disabled:opacity-40 transition-colors w-full sm:w-auto ${orbitron.className}`}
+          >
+            <DownloadSimpleIcon size={16} className="shrink-0" />
+            <span className="truncate">
+              {downloading ? t("downloading") : t("downloadQr")}
+            </span>
+          </button>
 
-                      <div className="flex gap-2">
-                        <button className={`flex items-center gap-2 px-4 py-2 rounded-lg bg-black text-white hover:bg-black/90 cursor-pointer transition-colors ${orbitron.className}`}>
-                          <GooglePlayLogo size={16} />
-                        </button>
-                        <button className={`flex items-center gap-2 px-4 py-2 rounded-lg bg-black text-white hover:bg-black/90 cursor-pointer transition-colors ${orbitron.className}`}>
-                          <AppleLogo size={16} />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
+        
+          <div className="flex gap-2 w-full sm:w-auto">
+            <button
+              className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-black text-white hover:bg-black/90 cursor-pointer transition-colors ${orbitron.className}`}
+              aria-label="Google Play"
+            >
+              <GooglePlayLogo size={16} className="shrink-0" />
+            </button>
+            <button
+              className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-black text-white hover:bg-black/90 cursor-pointer transition-colors ${orbitron.className}`}
+              aria-label="App Store"
+            >
+              <AppleLogo size={16} className="shrink-0" />
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+  </div>
+)}
           </div>
         </div>
       </div>

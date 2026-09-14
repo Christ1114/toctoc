@@ -27,11 +27,7 @@
     "youAreHere": "Vous êtes ici",
     "locateMe": "Me localiser"
   },
-  "downloadApp": "Télécharger l'application",
-  "scanToDownload": "Scanne ce code pour télécharger l'application TocToc sur ton téléphone.",
-  "mobileDownloadHint": "Téléchargez l'application directement depuis votre store",
-  "downloadQr": "Télécharger le QR code",
-  "downloading": "Téléchargement...",
+
   "VrConfirmPopover": {
     "title": "Confirmation entretien VR",
     "description": "Voulez-vous vraiment passer un entretien en réalité virtuelle ?",
@@ -57,46 +53,57 @@
     "expand": "Déplier"
   },
   "SettingsPopover": {
-    "title": "Paramètres",
-    "close": "Fermer",
-    "general": "Général",
-    "profile": "Profil",
-    "download": "Télécharger",
-    "theme": "Thème",
-    "themes": {
-      "light": "Clair",
-      "dark": "Sombre",
-      "system": "Système"
-    },
-    "name": "Nom",
-    "email": "Email",
-    "phone": "Téléphone",
-    "verified": "Vérifié",
-    "verify": "Vérifier",
-    "sending": "Envoi...",
-    "verifying": "Vérification...",
-    "confirm": "Confirmer",
-    "otpPlaceholder": "Code à 6 chiffres",
-    "resendCode": "Renvoyer le code",
-    "comingSoon": "Bientôt disponible",
-    "phoneComingSoonHint": "La vérification du téléphone arrive bientôt",
-    "logout": "Déconnexion",
-    "logoutButton": "Se déconnecter",
-    "loggingOut": "Déconnexion...",
-    "deleteAccount": "Supprimer le compte",
-    "deleteAccountHint": "Cette action est irréversible",
-    "deleteButton": "Supprimer",
-    "confirmDelete": "Es-tu sûr de vouloir supprimer ton compte ? Cette action est définitive et toutes tes données seront perdues.",
-    "cancel": "Annuler",
-    "deleting": "Suppression...",
-    "deleteConfirmButton": "Supprimer définitivement",
-    "errors": {
-      "emailSendFailed": "Échec de l'envoi du code. Réessaie.",
-      "emailVerifyFailed": "Échec de la vérification. Vérifie le code.",
-      "logoutFailed": "Échec de la déconnexion. Réessaie.",
-      "deleteFailed": "Échec de la suppression du compte. Réessaie."
-    }
+  "title": "Paramètres",
+  "close": "Fermer",
+  "general": "Général",
+  "profile": "Profil",
+  "download": "Télécharger",
+
+  "downloadApp": "Télécharger l'application",
+  "scanToDownload": "Scanne ce code pour télécharger l'application TocToc sur ton téléphone.",
+  "mobileDownloadHint": "Téléchargez l'application directement depuis votre store",
+  "downloadQr": "Télécharger le QR code",
+  "downloading": "Téléchargement...",
+
+  "theme": "Thème",
+  "themes": {
+    "light": "Clair",
+    "dark": "Sombre",
+    "system": "Système"
   },
+
+  "name": "Nom",
+  "email": "Email",
+  "phone": "Téléphone",
+  "verified": "Vérifié",
+  "verify": "Vérifier",
+  "sending": "Envoi...",
+  "verifying": "Vérification...",
+  "confirm": "Confirmer",
+  "otpPlaceholder": "Code à 6 chiffres",
+  "resendCode": "Renvoyer le code",
+  "comingSoon": "Bientôt disponible",
+  "phoneComingSoonHint": "La vérification du téléphone arrive bientôt",
+
+  "logout": "Déconnexion",
+  "logoutButton": "Se déconnecter",
+  "loggingOut": "Déconnexion...",
+
+  "deleteAccount": "Supprimer le compte",
+  "deleteAccountHint": "Cette action est irréversible",
+  "deleteButton": "Supprimer",
+  "confirmDelete": "Es-tu sûr de vouloir supprimer ton compte ? Cette action est définitive et toutes tes données seront perdues.",
+  "cancel": "Annuler",
+  "deleting": "Suppression...",
+  "deleteConfirmButton": "Supprimer définitivement",
+
+  "errors": {
+    "emailSendFailed": "Échec de l'envoi du code. Réessaie.",
+    "emailVerifyFailed": "Échec de la vérification. Vérifie le code.",
+    "logoutFailed": "Échec de la déconnexion. Réessaie.",
+    "deleteFailed": "Échec de la suppression du compte. Réessaie."
+  }
+},
   "SearchPopover": {
     "title": "Rechercher",
     "close": "Fermer",
