@@ -3,6 +3,19 @@
     "quickSearchPlaceholder": "Quick search...",
     "searchByAi": "Search by AI"
   },
+  "ProfilePopover": {
+  "title": "My account",
+  "profileTab": "Profile",
+  "notificationsTab": "Notifications",
+  "unnamed": "User",
+  "viewFullProfile": "View my full profile",
+  "noNotifications": "No notifications",
+  "mock": {
+    "offer": { "title": "New offer available", "description": "A mission matches your profile in Cocody." },
+    "verified": { "title": "Profile verified", "description": "Your account has been successfully verified." },
+    "reminder": { "title": "Interview reminder", "description": "Virtual interview scheduled tomorrow at 10:00 AM." }
+  }
+},
   "AiSearchPanel": {
     "title": "AI Search",
     "close": "Close",

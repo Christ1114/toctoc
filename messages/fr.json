@@ -3,6 +3,28 @@
     "quickSearchPlaceholder": "Recherche rapide...",
     "searchByAi": "Rechercher par IA"
   },
+  "ProfilePopover": {
+  "title": "Mon compte",
+  "profileTab": "Profil",
+  "notificationsTab": "Notifications",
+  "unnamed": "Utilisateur",
+  "viewFullProfile": "Voir mon profil complet",
+  "noNotifications": "Aucune notification",
+  "mock": {
+    "offer": {
+      "title": "Nouvelle offre disponible",
+      "description": "Une mission correspond à votre profil à Cocody."
+    },
+    "verified": {
+      "title": "Profil vérifié",
+      "description": "Votre compte a été vérifié avec succès."
+    },
+    "reminder": {
+      "title": "Rappel d'entretien",
+      "description": "Entretien virtuel prévu demain à 10h00."
+    }
+  }
+},
   "AiSearchPanel": {
     "title": "Recherche IA",
     "close": "Fermer",

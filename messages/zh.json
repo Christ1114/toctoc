@@ -17,6 +17,19 @@
     "locateMe": "定位我",
       "retry": "重试"
   },
+  "ProfilePopover": {
+  "title": "我的账户",
+  "profileTab": "个人资料",
+  "notificationsTab": "通知",
+  "unnamed": "用户",
+  "viewFullProfile": "查看完整资料",
+  "noNotifications": "暂无通知",
+  "mock": {
+    "offer": { "title": "有新的招聘信息", "description": "在科科迪有一个符合您资料的任务。" },
+    "verified": { "title": "资料已验证", "description": "您的账户已成功验证。" },
+    "reminder": { "title": "面试提醒", "description": "明天上午10点安排了视频面试。" }
+  }
+},
   "VrConfirmPopover": {
     "title": "虚拟面试",
     "description": "此次面试将在沉浸式虚拟空间中进行。参与需要一台兼容的VR头显设备。",
