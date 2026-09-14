@@ -17,18 +17,17 @@ type SearchHistory = {
   createdAt: string;
 };
 
-// Chaque résultat porte désormais son propre type, pour permettre
-// un mélange "offres + profils" dans une seule réponse (cas agence).
+
 type SearchResultType = "JOB" | "PROFILE";
 
 type SearchResult = {
   id: string;
   resultType: SearchResultType;
-  // Champs "JOB"
+
   title?: string;
   city?: string;
   jobType?: { name: string };
-  // Champs "PROFILE"
+  
   name?: string;
   providerType?: string;
   [key: string]: any;
@@ -52,13 +51,7 @@ type SearchPopoverProps = {
   open: boolean;
   onClose: () => void;
   onSearch: (query: string) => void;
-  /**
-   * Type de compte de l'utilisateur connecté ("AGENCY" | "INDIVIDUAL" | ...).
-   * Remonté depuis le parent (ex: Header), qui a déjà la session en cache,
-   * pour éviter de refaire un fetch de session à chaque ouverture du popover.
-   * Le backend reste seul responsable de restreindre les résultats renvoyés
-   * (ne jamais se fier à ce champ côté client pour filtrer des données sensibles).
-   */
+ 
   userType?: string | null;
 };
 
@@ -73,8 +66,6 @@ export default function SearchPopover({ open, onClose, onSearch, userType }: Sea
   const [recentSearches, setRecentSearches] = useState<SearchHistory[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  // --- États pour la recherche en direct ---
   const [searchData, setSearchData] = useState<SearchApiResponse | null>(null);
   const [isSearching, setIsSearching] = useState(false);
   const [searchError, setSearchError] = useState<string | null>(null);
@@ -152,10 +143,6 @@ export default function SearchPopover({ open, onClose, onSearch, userType }: Sea
     }
   };
 
-  // --- Appel à /api/search ---
-  // Le backend détermine seul, à partir de la session serveur, si les
-  // résultats doivent inclure des profils (agence) ou uniquement des
-  // offres (client individuel). On n'envoie donc aucun paramètre de rôle.
   const runSearch = useCallback(async (searchQuery: string) => {
     if (!searchQuery || searchQuery.trim().length < 2) {
       setSearchData(null);
@@ -178,7 +165,7 @@ export default function SearchPopover({ open, onClose, onSearch, userType }: Sea
     }
   }, []);
 
-  // --- Debounce sur la saisie ---
+
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
@@ -212,17 +199,17 @@ export default function SearchPopover({ open, onClose, onSearch, userType }: Sea
     const finalQuery = query.trim();
     onSearch(finalQuery);
     await saveSearch(finalQuery);
-    // onClose() retiré pour laisser voir les résultats
+    
   };
 
   const handlePick = async (item: string) => {
     setQuery(item);
     onSearch(item);
     await saveSearch(item);
-    // onClose() retiré pour laisser voir les résultats
+    
   };
 
-  // Regroupe les résultats par type (utile pour l'agence, qui voit les deux)
+ 
   const jobResults = searchData?.results.filter(r => r.resultType === "JOB") ?? [];
   const profileResults = searchData?.results.filter(r => r.resultType === "PROFILE") ?? [];
 
@@ -230,7 +217,7 @@ export default function SearchPopover({ open, onClose, onSearch, userType }: Sea
     <li key={item.id}>
       <button
         onClick={() => {
-          // TODO: brancher la navigation vers le profil/l'annonce
+          
           console.log("Résultat sélectionné :", item);
         }}
         className="w-full text-left px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg text-sm text-gray-700 dark:text-white/80 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white/95 cursor-pointer transition-colors"
@@ -286,7 +273,7 @@ export default function SearchPopover({ open, onClose, onSearch, userType }: Sea
           />
         </form>
 
-        {/* --- Résultats de recherche en direct (dès 2 caractères) --- */}
+       
         {query.trim().length >= 2 && (
           <div className="mb-4 px-2 sm:px-0">
             {isSearching && (
@@ -310,7 +297,7 @@ export default function SearchPopover({ open, onClose, onSearch, userType }: Sea
 
             {!isSearching && searchData && searchData.results.length > 0 && (
               isAgency ? (
-                // Agence : deux sections distinctes, offres puis profils
+                
                 <div className="flex flex-col gap-4">
                   {jobResults.length > 0 && (
                     <div>
@@ -334,7 +321,7 @@ export default function SearchPopover({ open, onClose, onSearch, userType }: Sea
                   )}
                 </div>
               ) : (
-                // Client individuel : uniquement les offres
+                
                 <ul className="flex flex-col gap-1 max-h-48 sm:max-h-64 overflow-y-auto">
                   {jobResults.map(renderResultItem)}
                 </ul>
@@ -343,7 +330,7 @@ export default function SearchPopover({ open, onClose, onSearch, userType }: Sea
           </div>
         )}
 
-        {/* --- Historique (affiché seulement si pas de recherche en cours) --- */}
+        
         {query.trim().length < 2 && (
           <div className="px-2 sm:px-0">
             <div className="flex items-center justify-between mb-2">
