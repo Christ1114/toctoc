@@ -19,7 +19,9 @@
   "VrConfirmPopover": {
     "title": "虚拟面试",
     "description": "此次面试将在沉浸式虚拟空间中进行。参与需要一台兼容的VR头显设备。",
+    "message": "您真的要参加虚拟现实面试吗？",
     "checkboxLabel": "我确认拥有一台兼容的VR头显设备",
+    "confirm": "确认",
     "cancel": "取消",
     "continue": "继续",
     "close": "关闭"
@@ -43,55 +45,57 @@
     "collapse": "收起",
     "expand": "展开"
   },
- "SettingsPopover": {
-  "title": "设置",
-  "close": "关闭",
-  "general": "通用",
-  "profile": "个人资料",
-  "download": "下载",
-  "theme": "主题",
-  "themes": {
-    "light": "浅色",
-    "dark": "深色",
-    "system": "系统"
+  "SettingsPopover": {
+    "title": "设置",
+    "close": "关闭",
+    "general": "通用",
+    "profile": "个人资料",
+    "download": "下载",
+    "theme": "主题",
+    "themes": {
+      "light": "浅色",
+      "dark": "深色",
+      "system": "系统"
+    },
+    "language": "语言",
+    "name": "姓名",
+    "email": "电子邮箱",
+    "phone": "电话号码",
+    "verified": "已验证",
+    "verify": "验证",
+    "sending": "发送中...",
+    "verifying": "验证中...",
+    "confirm": "确认",
+    "resendCode": "重新发送验证码",
+    "phonePlaceholder": "+225 XX XX XX XX",
+    "otpPlaceholder": "6位数字验证码",
+    "emailSentHint": "邮件已发送，请查收您的收件箱",
+    "comingSoon": "即将推出",
+    "phoneComingSoonHint": "电话验证即将推出",
+    "logout": "从所有设备退出登录",
+    "logoutButton": "退出登录",
+    "loggingOut": "退出中...",
+    "deleteAccount": "删除账户",
+    "deleteAccountHint": "永久删除您的账户和所有数据",
+    "deleteButton": "删除",
+    "deleteConfirmButton": "是的，删除",
+    "confirmDelete": "您确定要删除您的账户吗？此操作不可撤销。",
+    "deleting": "删除中...",
+    "cancel": "取消",
+    "downloadApp": "下载应用",
+    "downloadQr": "下载二维码",
+    "downloading": "下载中...",
+    "errors": {
+      "emailSendFailed": "发送验证邮件失败",
+      "emailVerifyFailed": "验证码无效或已过期。",
+      "phoneSendFailed": "发送验证码失败",
+      "phoneVerifyFailed": "验证码无效或已过期",
+      "logoutFailed": "退出登录失败",
+      "deleteFailed": "删除账户失败",
+      "submitFailed": "注册失败。请重试。",
+      "networkFailed": "网络错误。请检查您的连接并重试。"
+    }
   },
-  "language": "语言",
-  "name": "姓名",
-  "email": "电子邮箱",
-  "phone": "电话号码",
-  "verified": "已验证",
-  "verify": "验证",
-  "sending": "发送中...",
-  "verifying": "验证中...",
-  "confirm": "确认",
-  "resendCode": "重新发送验证码",
-  "phonePlaceholder": "+225 XX XX XX XX",
-  "otpPlaceholder": "6位数字验证码",
-  "emailSentHint": "邮件已发送，请查收您的收件箱",
-  "logout": "从所有设备退出登录",
-  "logoutButton": "退出登录",
-  "loggingOut": "退出中...",
-  "deleteAccount": "删除账户",
-  "deleteAccountHint": "永久删除您的账户和所有数据",
-  "deleteButton": "删除",
-  "deleteConfirmButton": "是的，删除",
-  "confirmDelete": "您确定要删除您的账户吗？此操作不可撤销。",
-  "deleting": "删除中...",
-  "cancel": "取消",
-  "downloadApp": "下载应用",
-  "downloadQr": "下载二维码",
-  "downloading": "下载中...",
-  "errors": {
-    "emailSendFailed": "发送验证邮件失败",
-    "emailVerifyFailed": "验证码无效或已过期。",
-    "phoneSendFailed": "发送验证码失败",
-    "phoneVerifyFailed": "验证码无效或已过期",
-    "logoutFailed": "退出登录失败",
-    "deleteFailed": "删除账户失败",
-    "submitFailed": "注册失败。请重试。",
-    "networkFailed": "网络错误。请检查您的连接并重试。"
-  }
-},
   "SearchPopover": {
     "title": "搜索",
     "close": "关闭",
@@ -533,9 +537,7 @@
       "phoneCountryCodeWarning": "国家代码无效。请使用+225、+1、+44、+86等格式。",
       "acceptLocation": "您必须勾选启用定位服务的选项。",
       "acceptNoVpn": "您必须勾选不使用VPN的选项。",
-      "acceptVr": "您必须勾选VR面试的选项。",
-      "submitFailed": "注册失败。请重试。",
-"networkFailed": "网络错误。请检查您的连接并重试。"
+      "acceptVr": "您必须勾选VR面试的选项。"
     },
     "consents": {
       "location": "定位",
@@ -675,7 +677,6 @@
       "point10": "第6条：联系方式：如对本条款有任何疑问，请通过contact@toctoc.com与我们联系。"
     }
   },
-  
   "AgencyDashboard": {
     "welcome": "欢迎，{name}",
     "subtitle": "从此仪表板管理您的机构和档案。",

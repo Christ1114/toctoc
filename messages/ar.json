@@ -19,7 +19,9 @@
   "VrConfirmPopover": {
     "title": "مقابلة افتراضية",
     "description": "تُجرى هذه المقابلة في بيئة غامرة. يلزم توفر سماعة واقع افتراضي متوافقة للمشاركة.",
+    "message": "هل تريد حقاً إجراء مقابلة بالواقع الافتراضي؟",
     "checkboxLabel": "أؤكد أنني أملك سماعة واقع افتراضي متوافقة",
+    "confirm": "تأكيد",
     "cancel": "إلغاء",
     "continue": "متابعة",
     "close": "إغلاق"
@@ -45,7 +47,6 @@
   },
   "SettingsPopover": {
     "title": "الإعدادات",
-    "resendCode": "إعادة إرسال الرمز",
     "close": "إغلاق",
     "general": "عام",
     "profile": "الملف الشخصي",
@@ -65,38 +66,40 @@
     "sending": "جاري الإرسال...",
     "verifying": "جاري التحقق...",
     "confirm": "تأكيد",
-    "cancel": "إلغاء",
-    "deleting": "جاري الحذف...",
-    "loggingOut": "جاري تسجيل الخروج...",
-    "emailSentHint": "تم إرسال البريد الإلكتروني، تحقق من صندوق الوارد",
+    "resendCode": "إعادة إرسال الرمز",
     "phonePlaceholder": "+225 XX XX XX XX",
     "otpPlaceholder": "رمز من 6 أرقام",
-    "confirmDelete": "هل أنت متأكد من رغبتك في حذف حسابك؟ هذا الإجراء لا يمكن التراجع عنه.",
+    "emailSentHint": "تم إرسال البريد الإلكتروني، تحقق من صندوق الوارد",
+    "comingSoon": "قريباً",
+    "phoneComingSoonHint": "التحقق من الهاتف سيكون متاحاً قريباً",
     "logout": "تسجيل الخروج من جميع الأجهزة",
     "logoutButton": "تسجيل الخروج",
+    "loggingOut": "جاري تسجيل الخروج...",
     "deleteAccount": "حذف الحساب",
     "deleteAccountHint": "حذف حسابك وجميع بياناتك نهائياً",
     "deleteButton": "حذف",
+    "confirmDelete": "هل أنت متأكد من رغبتك في حذف حسابك؟ هذا الإجراء لا يمكن التراجع عنه.",
+    "deleting": "جاري الحذف...",
+    "cancel": "إلغاء",
     "deleteConfirmButton": "نعم، احذف",
     "downloadApp": "تحميل التطبيق",
     "scanToDownload": "امسح رمز QR بهاتفك لتحميل التطبيق",
     "mobileDownloadHint": "حمّل التطبيق مباشرة من متجرك",
     "downloadQr": "تحميل رمز QR",
     "downloading": "جارٍ التحميل...",
-    "comingSoon": "قريباً",
     "appNotAvailable": "التطبيق المحمول سيكون متاحاً قريباً. ترقبوا!",
     "qrCodeAlt": "رمز QR للتحميل",
     "googlePlay": "جوجل بلاي",
     "appStore": "آب ستور",
     "errors": {
-      
       "emailSendFailed": "فشل إرسال البريد الإلكتروني للتحقق",
+      "emailVerifyFailed": "رمز غير صالح أو منتهي الصلاحية.",
       "phoneSendFailed": "فشل إرسال الرمز",
       "phoneVerifyFailed": "رمز غير صالح أو منتهي الصلاحية",
       "logoutFailed": "فشل تسجيل الخروج",
       "deleteFailed": "فشل حذف الحساب",
       "submitFailed": "فشل التسجيل. يرجى المحاولة مرة أخرى.",
-"networkFailed": "خطأ في الشبكة. تحقق من اتصالك وحاول مرة أخرى."
+      "networkFailed": "خطأ في الشبكة. تحقق من اتصالك وحاول مرة أخرى."
     }
   },
   "SearchPopover": {
@@ -680,7 +683,6 @@
       "point10": "المادة 6: الاتصال: لأي أسئلة بخصوص هذه الشروط، يرجى الاتصال بنا على contact@toctoc.com."
     }
   },
-  
   "AgencyDashboard": {
     "welcome": "مرحباً، {name}",
     "subtitle": "قم بإدارة وكالتك وملفاتك من لوحة التحكم هذه.",
@@ -692,5 +694,4 @@
     "welcome": "مرحباً، {name}",
     "subtitle": "ابحث عن عمالة منزلية بالقرب منك."
   }
-
 }
