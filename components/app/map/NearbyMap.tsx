@@ -26,6 +26,25 @@ const DEFAULT_ZOOM = 15;
 const DEFAULT_PITCH = 60;
 const DEFAULT_BEARING = -17.6;
 
+// 👇 Types des users proches
+type NearbyUser = {
+  id: string;
+  name: string | null;
+  image: string | null;
+  accountType: string;
+  providerType: string | null;
+  clientType: string | null;
+  bio: string | null;
+  hourlyRate: string | null;
+  currency: string;
+  verificationLevel: string | null;
+  verificationStatus: string;
+  lastLatitude: number | null;
+  lastLongitude: number | null;
+  lastKnownRegion: string | null;
+  lastLocationUpdatedAt: string | null;
+};
+
 export default function NearbyMap() {
   const t = useTranslations("NearbyMap");
   const { resolvedTheme } = useTheme();
@@ -35,11 +54,17 @@ export default function NearbyMap() {
   const userMarkerRef = useRef<maplibregl.Marker | null>(null);
   const initialCenterRef = useRef<[number, number] | null>(null);
 
+  // 👇 Refs des marqueurs des autres users
+  const nearbyMarkersRef = useRef<maplibregl.Marker[]>([]);
+
   const [initialCenter, setInitialCenter] = useState<[number, number] | null>(null);
   const [loadingPosition, setLoadingPosition] = useState(true);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [mapError, setMapError] = useState<string | null>(null);
   const [aiSearchOpen, setAiSearchOpen] = useState(false);
+
+  // 👇 State des users proches
+  const [nearbyUsers, setNearbyUsers] = useState<NearbyUser[]>([]);
 
   const { latitude, longitude, error: geoError, requestLocation } = useGeolocation();
 
@@ -233,6 +258,60 @@ export default function NearbyMap() {
 
   
   useEffect(() => {
+    if (!initialCenter) return;
+
+    const [lng, lat] = initialCenter;
+
+    const fetchNearby = async () => {
+      try {
+        console.log("🔍 Fetch nearby users...");
+        const res = await fetch(
+          `/api/user/nearby?lat=${lat}&lng=${lng}&radius=20`
+        );
+        if (!res.ok) throw new Error("Erreur fetch nearby users");
+        const data = await res.json();
+        console.log(`✅ ${data.users?.length ?? 0} users proches reçus`);
+        setNearbyUsers(data.users ?? []);
+      } catch (err) {
+        console.error("❌ Erreur fetch nearby:", err);
+        setNearbyUsers([]);
+      }
+    };
+
+    fetchNearby();
+  }, [initialCenter]);
+  useEffect(() => {
+    if (!mapRef.current || !mapLoaded) return;
+    nearbyMarkersRef.current.forEach((m) => m.remove());
+    nearbyMarkersRef.current = [];
+    nearbyUsers.forEach((user) => {
+      if (user.lastLatitude === null || user.lastLongitude === null) return;
+
+      const el = createAvatarMarkerElement({
+        imageUrl: user.image,
+        fallbackLabel: user.name ?? "?",
+        color: user.accountType === "PROVIDER" ? "#2F7A4F" : "#432dd7",
+      });
+
+      const marker = new maplibregl.Marker({
+        element: el,
+        anchor: "bottom",
+      })
+        .setLngLat([user.lastLongitude, user.lastLatitude])
+        .addTo(mapRef.current!);
+
+      nearbyMarkersRef.current.push(marker);
+    });
+
+    console.log(`✅ ${nearbyMarkersRef.current.length} marqueurs ajoutés`);
+    return () => {
+      nearbyMarkersRef.current.forEach((m) => m.remove());
+      nearbyMarkersRef.current = [];
+    };
+  }, [nearbyUsers, mapLoaded]);
+
+  
+  useEffect(() => {
     if (!mapRef.current || !mapLoaded) return;
 
     const styleUrl = resolvedTheme === "dark" ? STYLES.dark : STYLES.light;
@@ -263,7 +342,6 @@ export default function NearbyMap() {
   const handleLocate = useCallback(() => {
     requestLocation();
 
-    // Recentrer aussi sur la position actuelle (si dispo)
     if (mapRef.current && initialCenter) {
       mapRef.current.flyTo({
         center: initialCenter,

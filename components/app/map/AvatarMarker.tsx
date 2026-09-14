@@ -1,7 +1,7 @@
 type AvatarMarkerOptions = {
   imageUrl?: string | null;
   fallbackLabel: string;
-  color?: string; 
+  color?: string;
 };
 
 export function createAvatarMarkerElement({
