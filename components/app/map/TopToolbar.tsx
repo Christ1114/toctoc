@@ -5,26 +5,35 @@ import { MagnifyingGlassIcon, SparkleIcon, UserIcon } from "@phosphor-icons/reac
 import { useTranslations } from "next-intl";
 import { orbitron } from "@/fonts/font";
 import { getSession } from "@/app/lib/auth-client";
+import ProfilePopover from "../utils/profilsPopover";
 
 type TopToolbarProps = {
   onOpenAiSearch: () => void;
-  onOpenProfile?: () => void;
 };
 
 type UserAvatar = {
   name?: string | null;
+  email?: string | null;
   image?: string | null;
+  accountType?: string | null;
 };
 
-export default function TopToolbar({ onOpenAiSearch, onOpenProfile }: TopToolbarProps) {
+export default function TopToolbar({ onOpenAiSearch }: TopToolbarProps) {
   const t = useTranslations("TopToolbar");
   const [user, setUser] = useState<UserAvatar | null>(null);
+  const [profileOpen, setProfileOpen] = useState(false);
 
   useEffect(() => {
     const loadUser = async () => {
       const { session } = await getSession();
       if (session?.user) {
-        setUser({ name: session.user.name, image: session.user.image });
+        const userData = session.user as any;
+        setUser({
+          name: userData.name,
+          email: userData.email,
+          image: userData.image,
+          accountType: userData.accountType,
+        });
       }
     };
     loadUser();
@@ -49,10 +58,8 @@ export default function TopToolbar({ onOpenAiSearch, onOpenProfile }: TopToolbar
           <span className="hidden sm:inline">{t("searchByAi")}</span>
         </button>
       </div>
-
-     
       <button
-        onClick={onOpenProfile}
+        onClick={() => setProfileOpen(true)}
         className="absolute top-4 right-15 z-10 h-10 w-10 shrink-0 rounded-full overflow-hidden border border-white/10 bg-black/60 backdrop-blur-sm flex items-center justify-center cursor-pointer hover:border-[#432dd7]/60 transition-colors"
         aria-label={t("profile")}
       >
@@ -64,6 +71,8 @@ export default function TopToolbar({ onOpenAiSearch, onOpenProfile }: TopToolbar
           </span>
         )}
       </button>
+
+      <ProfilePopover open={profileOpen} onClose={() => setProfileOpen(false)} user={user} />
     </>
   );
 }
