@@ -210,6 +210,28 @@ export default function NearbyMap() {
   }, [initialCenter, t]);
 
   
+  // 🔄 Recentrer la carte sur la position du user quand elle change
+  useEffect(() => {
+    if (!mapRef.current || !mapLoaded || !initialCenter) return;
+
+    console.log("🎯 Recentrage carte sur:", initialCenter);
+
+    mapRef.current.flyTo({
+      center: initialCenter,
+      zoom: DEFAULT_ZOOM,
+      pitch: DEFAULT_PITCH,
+      bearing: DEFAULT_BEARING,
+      essential: true,
+      duration: 1200,
+    });
+
+    // Déplacer aussi le marqueur
+    if (userMarkerRef.current) {
+      userMarkerRef.current.setLngLat(initialCenter);
+    }
+  }, [initialCenter, mapLoaded]);
+
+  
   useEffect(() => {
     if (!mapRef.current || !mapLoaded) return;
 
@@ -240,7 +262,17 @@ export default function NearbyMap() {
   
   const handleLocate = useCallback(() => {
     requestLocation();
-  }, [requestLocation]);
+
+    // Recentrer aussi sur la position actuelle (si dispo)
+    if (mapRef.current && initialCenter) {
+      mapRef.current.flyTo({
+        center: initialCenter,
+        zoom: DEFAULT_ZOOM,
+        duration: 1000,
+        essential: true,
+      });
+    }
+  }, [requestLocation, initialCenter]);
 
   return (
     <div className="relative w-full h-full" style={{ minHeight: "500px" }}>
@@ -286,16 +318,10 @@ export default function NearbyMap() {
       <AiSearchPanel open={aiSearchOpen} onClose={() => setAiSearchOpen(false)} />
       <button
         onClick={resetView}
-        className="absolute bottom-4 right-4 z-10 bg-black/60 hover:bg-black/75 backdrop-blur-sm text-white text-sm px-3 py-2 rounded-lg shadow-md cursor-pointer"
+        className={`absolute bottom-4 right-4 z-10 bg-black/60 hover:bg-black/75 backdrop-blur-sm text-white text-sm px-3 py-2 rounded-lg shadow-md cursor-pointer ${orbitron.className}`} 
         title="Réinitialiser la vue"
       >
         🏔️ 3D
-      </button>
-      <button
-        onClick={handleLocate}
-        className={`absolute bottom-4 left-4 z-10 bg-black/60 hover:bg-black/75 backdrop-blur-sm text-white text-sm px-3 py-2 rounded-lg shadow-md cursor-pointer ${orbitron.className}`}
-      >
-        📍 {t("locateMe")}
       </button>
     </div>
   );
