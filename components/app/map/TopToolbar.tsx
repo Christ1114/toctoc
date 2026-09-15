@@ -12,6 +12,7 @@ type TopToolbarProps = {
 };
 
 type UserAvatar = {
+  id?: string;
   name?: string | null;
   email?: string | null;
   image?: string | null;
@@ -25,17 +26,18 @@ export default function TopToolbar({ onOpenAiSearch }: TopToolbarProps) {
 
   useEffect(() => {
     const loadUser = async () => {
-      const { session } = await getSession();
-      if (session?.user) {
-        const userData = session.user as any;
-        setUser({
-          name: userData.name,
-          email: userData.email,
-          image: userData.image,
-          accountType: userData.accountType,
-        });
-      }
-    };
+  const { session } = await getSession();
+  if (session?.user) {
+    const userData = session.user as any;
+    setUser({
+      id: userData.id,
+      name: userData.name,
+      email: userData.email,
+      image: userData.image,
+      accountType: userData.accountType,
+    });
+  }
+};
     loadUser();
   }, []);
 

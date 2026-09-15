@@ -105,7 +105,7 @@ export default function ProfilePopover({ open, onClose, user }: ProfilePopoverPr
   );
 }
 
-// --- Onglet (bouton) ---
+
 
 function TabButton({
   tab,
@@ -146,7 +146,7 @@ function TabButton({
   );
 }
 
-// --- Contenu : onglet Profil ---
+
 
 function ProfileTab({
   t,
@@ -196,7 +196,6 @@ function ProfileTab({
   );
 }
 
-// --- Contenu : onglet Notifications ---
 
 function NotificationsTab({
   t,
