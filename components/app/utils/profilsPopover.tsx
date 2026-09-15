@@ -105,8 +105,6 @@ export default function ProfilePopover({ open, onClose, user }: ProfilePopoverPr
   );
 }
 
-
-
 function TabButton({
   tab,
   icon: Icon,
@@ -136,17 +134,15 @@ function TabButton({
       }`}
     >
       <Icon size={16} />
-      <span>{label}</span>
+      <span className={orbitron.className}>{label}</span>
       {!!badge && badge > 0 && (
-        <span className="absolute -top-1 -right-1 min-w-4 h-4 px-1 rounded-full bg-red-500 text-white text-[10px] font-semibold flex items-center justify-center">
+        <span className={`absolute -top-1 -right-1 min-w-4 h-4 px-1 rounded-full bg-red-500 text-white text-[10px] font-semibold flex items-center justify-center ${orbitron.className}`}>
           {badge > 9 ? "9+" : badge}
         </span>
       )}
     </button>
   );
 }
-
-
 
 function ProfileTab({
   t,
@@ -166,7 +162,7 @@ function ProfileTab({
           {user?.image ? (
             <img src={user.image} alt={user.name || t("unnamed")} className="w-full h-full object-cover" />
           ) : (
-            <span className="text-sm font-semibold text-[#432dd7]">
+            <span className={`text-sm font-semibold text-[#432dd7] ${orbitron.className}`}>
               {user?.name ? user.name.charAt(0).toUpperCase() : <UserIcon size={20} />}
             </span>
           )}
@@ -175,12 +171,14 @@ function ProfileTab({
           <p className={`text-sm font-medium text-gray-900 dark:text-white/90 truncate ${orbitron.className}`}>
             {user?.name || t("unnamed")}
           </p>
-          <p className="text-xs text-gray-500 dark:text-white/40 truncate">{user?.email || "—"}</p>
+          <p className={`text-xs text-gray-500 dark:text-white/40 truncate ${orbitron.className}`}>
+            {user?.email || "—"}
+          </p>
         </div>
       </div>
 
       {user?.accountType && (
-        <span className="mt-3 inline-flex self-start items-center px-2 py-1 rounded-md bg-[#432dd7]/10 text-[#432dd7] text-xs font-medium">
+        <span className={`mt-3 inline-flex self-start items-center px-2 py-1 rounded-md bg-[#432dd7]/10 text-[#432dd7] text-xs font-medium ${orbitron.className}`}>
           {user.accountType}
         </span>
       )}
@@ -195,7 +193,6 @@ function ProfileTab({
     </div>
   );
 }
-
 
 function NotificationsTab({
   t,
@@ -224,7 +221,9 @@ function NotificationsTab({
     return (
       <div className="text-center py-8">
         <BellIcon size={32} className="mx-auto mb-2 text-gray-300 dark:text-white/20" />
-        <p className="text-sm text-gray-500 dark:text-white/40">{t("noNotifications")}</p>
+        <p className={`text-sm text-gray-500 dark:text-white/40 ${orbitron.className}`}>
+          {t("noNotifications")}
+        </p>
       </div>
     );
   }
@@ -259,15 +258,15 @@ function NotificationsTab({
                 </span>
                 <span className="flex-1 min-w-0">
                   <span className="flex items-center gap-1.5">
-                    <span className="text-sm font-medium text-gray-900 dark:text-white/90 truncate">
+                    <span className={`text-sm font-medium text-gray-900 dark:text-white/90 truncate ${orbitron.className}`}>
                       {t(`mock.${kind}.title`, notif.data as Record<string, string | number | Date> | undefined)}
                     </span>
                     {!notif.read && <span className="h-1.5 w-1.5 rounded-full bg-[#432dd7] shrink-0" />}
                   </span>
-                  <span className="block text-xs text-gray-500 dark:text-white/40 truncate">
+                  <span className={`block text-xs text-gray-500 dark:text-white/40 truncate ${orbitron.className}`}>
                     {t(`mock.${kind}.description`, notif.data as Record<string, string | number | Date> | undefined)}
                   </span>
-                  <span className="block text-[11px] text-gray-400 dark:text-white/30 mt-0.5">
+                  <span className={`block text-[11px] text-gray-400 dark:text-white/30 mt-0.5 ${orbitron.className}`}>
                     {format.relativeTime(new Date(notif.createdAt), new Date())}
                   </span>
                 </span>
