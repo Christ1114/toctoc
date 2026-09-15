@@ -5,6 +5,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  
+
 }
 
 enum ListingType {
@@ -109,6 +111,22 @@ enum VerificationLevel {
   BASIC
   ADVANCED
   PREMIUM
+}
+
+enum NotificationType {
+  NEW_OFFER // Nouvelle annonce correspondant au profil
+  PROFILE_VERIFIED // Profil vérifié par un admin
+  INTERVIEW_REMINDER // Rappel d'entretien virtuel
+  BOOKING_UPDATE // Changement de statut sur une réservation
+  REVIEW_RECEIVED // Nouvel avis reçu
+  SYSTEM // Notification générique / annonce plateforme
+}
+
+enum Operator {
+  ORANGE
+  MOOV
+  MTN
+  UNKNOWN
 }
 
 model Region {
@@ -321,12 +339,42 @@ model User {
 
   announcements Announcement[]
   searches      Search[]
+  notifications Notification[]
 
   @@index([accountType])
   @@index([email])
   @@index([phone])
   @@index([lastLatitude, lastLongitude])
   @@map("users")
+}
+
+model Notification {
+  id     String           @id @default(cuid())
+  userId String
+  user   User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type   NotificationType
+
+  // Variables à interpoler côté client dans le texte traduit
+  // (ex: { "city": "Cocody", "announcementId": "abc123" }).
+  // On ne stocke PAS de texte en dur ici : le titre/description affichés
+  // viennent des traductions (next-intl), comme pour ProfilePopover.
+  data Json?
+
+  // Chemin relatif optionnel vers lequel naviguer au clic
+  // (ex: "/app/announcements/abc123", "/app/bookings/xyz").
+  link String?
+
+  // Références optionnelles pour retrouver l'entité liée sans parser "data"
+  announcementId String?
+  bookingId      String?
+
+  read      Boolean   @default(false)
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId, read, createdAt])
+  @@index([userId, createdAt])
+  @@map("notifications")
 }
 
 model Search {
@@ -523,13 +571,6 @@ model VerifiedPhone {
   @@index([operator])
   @@index([phoneNumber])
   @@map("verified_phones")
-}
-
-enum Operator {
-  ORANGE
-  MOOV
-  MTN
-  UNKNOWN
 }
 
 model RateLimit {

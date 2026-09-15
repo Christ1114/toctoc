@@ -161,6 +161,18 @@ export const VerificationLevel = {
 export type VerificationLevel = (typeof VerificationLevel)[keyof typeof VerificationLevel]
 
 
+export const NotificationType = {
+  NEW_OFFER: 'NEW_OFFER',
+  PROFILE_VERIFIED: 'PROFILE_VERIFIED',
+  INTERVIEW_REMINDER: 'INTERVIEW_REMINDER',
+  BOOKING_UPDATE: 'BOOKING_UPDATE',
+  REVIEW_RECEIVED: 'REVIEW_RECEIVED',
+  SYSTEM: 'SYSTEM'
+} as const
+
+export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
+
+
 export const Operator = {
   ORANGE: 'ORANGE',
   MOOV: 'MOOV',

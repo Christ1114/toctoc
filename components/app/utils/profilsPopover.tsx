@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import {
@@ -10,12 +10,16 @@ import {
   CheckCircleIcon,
   CalendarBlankIcon,
   BriefcaseIcon,
+  StarIcon,
+  ChatCircleIcon,
   type Icon as PhosphorIcon,
 } from "@phosphor-icons/react";
 import Popover from "../utils/Popover";
 import { orbitron } from "@/fonts/font";
+import { useNotifications, type AppNotification, type NotificationType } from "@/app/hooks/useNotifications";
 
 type ProfileUser = {
+  id?: string;
   name?: string | null;
   email?: string | null;
   image?: string | null;
@@ -30,26 +34,14 @@ type ProfilePopoverProps = {
 
 type TabKey = "profile" | "notifications";
 
-type NotificationKind = "offer" | "verified" | "reminder";
-
-type MockNotification = {
-  id: string;
-  kind: NotificationKind;
-  icon: PhosphorIcon;
-  /** Ancienneté simulée, en minutes, pour générer une date relative réaliste. */
-  minutesAgo: number;
-  read: boolean;
+const NOTIFICATION_ICONS: Record<NotificationType, PhosphorIcon> = {
+  OFFER: BriefcaseIcon,
+  VERIFIED: CheckCircleIcon,
+  REMINDER: CalendarBlankIcon,
+  BOOKING_UPDATE: CalendarBlankIcon,
+  REVIEW_RECEIVED: StarIcon,
+  MESSAGE: ChatCircleIcon,
 };
-
-// --- Données mockées, en attendant le branchement backend ---
-// Seuls "kind" (pour retrouver le bon texte traduit) et le statut de lecture
-// sont réels ; le texte affiché vient entièrement des traductions, pour
-// rester cohérent en fr / en / zh sans dupliquer de contenu en dur.
-const MOCK_NOTIFICATIONS: MockNotification[] = [
-  { id: "1", kind: "offer", icon: BriefcaseIcon, minutesAgo: 120, read: false },
-  { id: "2", kind: "verified", icon: CheckCircleIcon, minutesAgo: 60 * 24, read: false },
-  { id: "3", kind: "reminder", icon: CalendarBlankIcon, minutesAgo: 60 * 24 * 2, read: true },
-];
 
 export default function ProfilePopover({ open, onClose, user }: ProfilePopoverProps) {
   const t = useTranslations("ProfilePopover");
@@ -60,17 +52,9 @@ export default function ProfilePopover({ open, onClose, user }: ProfilePopoverPr
 
   const [activeTab, setActiveTab] = useState<TabKey>("profile");
 
-  // Dates recalculées uniquement quand la liste change, pas à chaque render.
-  const notifications = useMemo(
-    () =>
-      MOCK_NOTIFICATIONS.map((n) => ({
-        ...n,
-        date: new Date(Date.now() - n.minutesAgo * 60_000),
-      })),
-    []
+  const { notifications, loading, unreadCount, markAsRead, markAllAsRead } = useNotifications(
+    user?.id
   );
-
-  const unreadCount = notifications.filter((n) => !n.read).length;
 
   const goToFullProfile = () => {
     router.push(`/${locale}/app/profile`);
@@ -106,7 +90,14 @@ export default function ProfilePopover({ open, onClose, user }: ProfilePopoverPr
 
         <div role="tabpanel" hidden={activeTab !== "notifications"}>
           {activeTab === "notifications" && (
-            <NotificationsTab t={t} format={format} notifications={notifications} />
+            <NotificationsTab
+              t={t}
+              format={format}
+              notifications={notifications}
+              loading={loading}
+              onMarkAsRead={markAsRead}
+              onMarkAllAsRead={markAllAsRead}
+            />
           )}
         </div>
       </div>
@@ -211,11 +202,25 @@ function NotificationsTab({
   t,
   format,
   notifications,
+  loading,
+  onMarkAsRead,
+  onMarkAllAsRead,
 }: {
   t: ReturnType<typeof useTranslations>;
   format: ReturnType<typeof useFormatter>;
-  notifications: (MockNotification & { date: Date })[];
+  notifications: AppNotification[];
+  loading: boolean;
+  onMarkAsRead: (ids: string[]) => void;
+  onMarkAllAsRead: () => void;
 }) {
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-8">
+        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-black/30 dark:border-white/30" />
+      </div>
+    );
+  }
+
   if (notifications.length === 0) {
     return (
       <div className="text-center py-8">
@@ -225,35 +230,53 @@ function NotificationsTab({
     );
   }
 
+  const unreadIds = notifications.filter((n) => !n.read).map((n) => n.id);
+
   return (
-    <ul className="flex flex-col gap-1 px-2 sm:px-0 max-h-72 overflow-y-auto">
-      {notifications.map((notif) => (
-        <li key={notif.id}>
-          <button
-            className={`w-full flex items-start gap-3 px-2 py-2.5 rounded-lg text-left hover:bg-gray-100 dark:hover:bg-white/5 cursor-pointer transition-colors ${
-              !notif.read ? "bg-[#432dd7]/5" : ""
-            }`}
-          >
-            <span className="shrink-0 h-8 w-8 rounded-full bg-[#432dd7]/10 text-[#432dd7] flex items-center justify-center mt-0.5">
-              <notif.icon size={15} />
-            </span>
-            <span className="flex-1 min-w-0">
-              <span className="flex items-center gap-1.5">
-                <span className="text-sm font-medium text-gray-900 dark:text-white/90 truncate">
-                  {t(`mock.${notif.kind}.title`)}
+    <div className="flex flex-col gap-2">
+      {unreadIds.length > 0 && (
+        <button
+          onClick={onMarkAllAsRead}
+          className={`self-end text-xs text-[#432dd7] hover:underline cursor-pointer px-2 ${orbitron.className}`}
+        >
+          {t("markAllAsRead")}
+        </button>
+      )}
+      <ul className="flex flex-col gap-1 px-2 sm:px-0 max-h-72 overflow-y-auto">
+        {notifications.map((notif) => {
+          const Icon = NOTIFICATION_ICONS[notif.type] ?? BellIcon;
+          const kind = notif.type.toLowerCase();
+
+          return (
+            <li key={notif.id}>
+              <button
+                onClick={() => !notif.read && onMarkAsRead([notif.id])}
+                className={`w-full flex items-start gap-3 px-2 py-2.5 rounded-lg text-left hover:bg-gray-100 dark:hover:bg-white/5 cursor-pointer transition-colors ${
+                  !notif.read ? "bg-[#432dd7]/5" : ""
+                }`}
+              >
+                <span className="shrink-0 h-8 w-8 rounded-full bg-[#432dd7]/10 text-[#432dd7] flex items-center justify-center mt-0.5">
+                  <Icon size={15} />
                 </span>
-                {!notif.read && <span className="h-1.5 w-1.5 rounded-full bg-[#432dd7] shrink-0" />}
-              </span>
-              <span className="block text-xs text-gray-500 dark:text-white/40 truncate">
-                {t(`mock.${notif.kind}.description`)}
-              </span>
-              <span className="block text-[11px] text-gray-400 dark:text-white/30 mt-0.5">
-                {format.relativeTime(notif.date, new Date())}
-              </span>
-            </span>
-          </button>
-        </li>
-      ))}
-    </ul>
+                <span className="flex-1 min-w-0">
+                  <span className="flex items-center gap-1.5">
+                    <span className="text-sm font-medium text-gray-900 dark:text-white/90 truncate">
+                      {t(`mock.${kind}.title`, notif.data as Record<string, string | number | Date> | undefined)}
+                    </span>
+                    {!notif.read && <span className="h-1.5 w-1.5 rounded-full bg-[#432dd7] shrink-0" />}
+                  </span>
+                  <span className="block text-xs text-gray-500 dark:text-white/40 truncate">
+                    {t(`mock.${kind}.description`, notif.data as Record<string, string | number | Date> | undefined)}
+                  </span>
+                  <span className="block text-[11px] text-gray-400 dark:text-white/30 mt-0.5">
+                    {format.relativeTime(new Date(notif.createdAt), new Date())}
+                  </span>
+                </span>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 }
