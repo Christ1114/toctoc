@@ -12,8 +12,8 @@ const intlMiddleware = createMiddleware({
 
 const SECURED_ROUTES = [
   "/preloading",
-  "/app",
-  "/profile",
+  
+  
   "/settings",
 ];
 

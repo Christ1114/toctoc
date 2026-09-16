@@ -1,8 +1,9 @@
 import AppClient from "@/components/app/appClient";
-import type { Metadata } from "next";
 
-const Page = () => {
-  return <AppClient />;
-};
-
-export default Page;
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      {children}
+    </>
+  );
+}

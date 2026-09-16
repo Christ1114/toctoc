@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getSession, type User } from "@/app/lib/auth-client";
-import AgencyDashboard from "./agency/dashbord";
-import IndividualDashboard from "./individual/dashbord";
+import Appclient from "@/components/app/appClient"; 
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -20,7 +19,7 @@ export default function DashboardPage() {
         return;
       }
 
-      setUser(session.user as unknown as User); // 👈 Double cast
+      setUser(session.user as unknown as User);
       setLoading(false);
     };
 
@@ -35,9 +34,5 @@ export default function DashboardPage() {
     );
   }
 
-  if (user.clientType === "AGENCY") {
-    return <AgencyDashboard user={user} />;
-  }
-
-  return <IndividualDashboard user={user} />;
+  return <Appclient user={user} />;
 }
