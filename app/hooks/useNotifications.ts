@@ -4,19 +4,23 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 
 export type NotificationType =
-  | "OFFER"
-  | "VERIFIED"
-  | "REMINDER"
+  | "NEW_OFFER"
+  | "PROFILE_VERIFIED"
+  | "INTERVIEW_REMINDER"
   | "BOOKING_UPDATE"
   | "REVIEW_RECEIVED"
-  | "MESSAGE";
+  | "SYSTEM";
 
 export interface AppNotification {
   id: string;
   userId: string;
   type: NotificationType;
   data: Record<string, unknown> | null;
+  link: string | null;
+  announcementId: string | null;
+  bookingId: string | null;
   read: boolean;
+  readAt: string | null;
   createdAt: string;
 }
 
