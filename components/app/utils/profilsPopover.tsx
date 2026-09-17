@@ -11,7 +11,7 @@ import {
   CalendarBlankIcon,
   BriefcaseIcon,
   StarIcon,
-  ChatCircleIcon,
+  MegaphoneIcon,
   type Icon as PhosphorIcon,
 } from "@phosphor-icons/react";
 import Popover from "../utils/Popover";
@@ -35,12 +35,12 @@ type ProfilePopoverProps = {
 type TabKey = "profile" | "notifications";
 
 const NOTIFICATION_ICONS: Record<NotificationType, PhosphorIcon> = {
-  OFFER: BriefcaseIcon,
-  VERIFIED: CheckCircleIcon,
-  REMINDER: CalendarBlankIcon,
+  NEW_OFFER: BriefcaseIcon,
+  PROFILE_VERIFIED: CheckCircleIcon,
+  INTERVIEW_REMINDER: CalendarBlankIcon,
   BOOKING_UPDATE: CalendarBlankIcon,
   REVIEW_RECEIVED: StarIcon,
-  MESSAGE: ChatCircleIcon,
+  SYSTEM: MegaphoneIcon,
 };
 
 export default function ProfilePopover({ open, onClose, user }: ProfilePopoverProps) {
@@ -59,6 +59,14 @@ export default function ProfilePopover({ open, onClose, user }: ProfilePopoverPr
   const goToFullProfile = () => {
     router.push(`/${locale}/app/profile`);
     onClose();
+  };
+
+  const handleNotificationClick = (notif: AppNotification) => {
+    if (!notif.read) markAsRead([notif.id]);
+    if (notif.link) {
+      router.push(notif.link);
+      onClose();
+    }
   };
 
   return (
@@ -95,7 +103,7 @@ export default function ProfilePopover({ open, onClose, user }: ProfilePopoverPr
               format={format}
               notifications={notifications}
               loading={loading}
-              onMarkAsRead={markAsRead}
+              onNotificationClick={handleNotificationClick}
               onMarkAllAsRead={markAllAsRead}
             />
           )}
@@ -199,14 +207,14 @@ function NotificationsTab({
   format,
   notifications,
   loading,
-  onMarkAsRead,
+  onNotificationClick,
   onMarkAllAsRead,
 }: {
   t: ReturnType<typeof useTranslations>;
   format: ReturnType<typeof useFormatter>;
   notifications: AppNotification[];
   loading: boolean;
-  onMarkAsRead: (ids: string[]) => void;
+  onNotificationClick: (notif: AppNotification) => void;
   onMarkAllAsRead: () => void;
 }) {
   if (loading) {
@@ -228,11 +236,11 @@ function NotificationsTab({
     );
   }
 
-  const unreadIds = notifications.filter((n) => !n.read).map((n) => n.id);
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
     <div className="flex flex-col gap-2">
-      {unreadIds.length > 0 && (
+      {unreadCount > 0 && (
         <button
           onClick={onMarkAllAsRead}
           className={`self-end text-xs text-[#432dd7] hover:underline cursor-pointer px-2 ${orbitron.className}`}
@@ -248,7 +256,7 @@ function NotificationsTab({
           return (
             <li key={notif.id}>
               <button
-                onClick={() => !notif.read && onMarkAsRead([notif.id])}
+                onClick={() => onNotificationClick(notif)}
                 className={`w-full flex items-start gap-3 px-2 py-2.5 rounded-lg text-left hover:bg-gray-100 dark:hover:bg-white/5 cursor-pointer transition-colors ${
                   !notif.read ? "bg-[#432dd7]/5" : ""
                 }`}

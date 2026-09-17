@@ -313,6 +313,8 @@ export const updateUser = async (data: {
   rccmNumber?: string;
   clientType?: string;
   providerType?: string;
+  hourlyRate?: number;
+  currency?: string;
   verificationMethod?: 'email' | 'phone';
 }) => {
   try {

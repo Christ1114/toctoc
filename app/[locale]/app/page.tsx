@@ -14,8 +14,8 @@ export default function DashboardPage() {
     const loadUser = async () => {
       const { session } = await getSession();
 
-      if (!session?.user) {
-        router.push("/login");
+      if (! session?.user) {
+        router.push("/app/profile");
         return;
       }
 
@@ -34,5 +34,5 @@ export default function DashboardPage() {
     );
   }
 
-  return <Appclient user={user} />;
+  return <Appclient user={user as User }/>;
 }

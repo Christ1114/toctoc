@@ -12,8 +12,6 @@ const intlMiddleware = createMiddleware({
 
 const SECURED_ROUTES = [
   "/preloading",
-  
-  
   "/settings",
 ];
 
