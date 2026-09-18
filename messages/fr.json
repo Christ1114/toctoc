@@ -1,67 +1,67 @@
 {
   
   "ProfilePage": {
-    "back": "",
-    "unnamed": "",
-    "notFound": "",
-    "changePhoto": "",
-    "namePlaceholder": "",
-    "editProfile": "",
-    "settings": "",
-    "share": "",
-    "cancel": "",
-    "save": "",
-    "saving": "",
-    "saved": "",
-    "bioPlaceholder": "",
-    "noBio": "",
-    "linkCopied": "",
-    "agencyInfo": "",
-    "companyName": "",
-    "companyNamePlaceholder": "",
-    "rccmNumber": "",
-    "rccmPlaceholder": "",
-    "providerInfo": "",
-    "providerType": "",
-    "hourlyRate": "",
-    "select": "",
-    "contact": "",
-    "verified": "",
+  "back": "Retour",
+  "unnamed": "Sans nom",
+  "notFound": "Profil introuvable",
+  "changePhoto": "Changer la photo",
+  "namePlaceholder": "Votre nom",
+  "editProfile": "Modifier le profil",
+  "settings": "Paramètres",
+  "share": "Partager",
+  "cancel": "Annuler",
+  "save": "Enregistrer",
+  "saving": "Enregistrement...",
+  "saved": "Profil mis à jour",
+  "bioPlaceholder": "Parlez-nous de vous...",
+  "noBio": "Aucune bio pour le moment",
+  "linkCopied": "Lien copié",
+  "agencyInfo": "Informations agence",
+  "companyName": "Nom de l'entreprise",
+  "companyNamePlaceholder": "Ex : Ma super agence",
+  "rccmNumber": "Numéro RCCM",
+  "rccmPlaceholder": "Ex : CI-ABJ-2024-B-12345",
+  "providerInfo": "Informations prestataire",
+  "providerType": "Type de prestation",
+  "hourlyRate": "Tarif horaire",
+  "select": "Sélectionner",
+  "contact": "Contact",
+  "verified": "Vérifié",
 
-    "accountType": {
-      "CLIENT": "",
-      "PROVIDER": "",
-      "ADMIN": ""
-    },
-
-    "providerTypes": {
-      "BABYSITTER": "",
-      "GARDE_PERISCOLAIRE": "",
-      "MENAGE": "",
-      "AIDE_PERSONNES_AGEES": "",
-      "RESIDENTIEL": "",
-      "COURT_TERME": ""
-    },
-
-    "tabs": {
-      "bookings": "",
-      "reviews": "",
-      "favorites": ""
-    },
-
-    "empty": {
-      "bookings": "",
-      "reviews": "",
-      "favorites": ""
-    },
-
-    "errors": {
-      "saveFailed": "",
-      "invalidImage": "",
-      "imageTooLarge": "",
-      "uploadFailed": ""
-    }
+  "accountType": {
+    "CLIENT": "Client",
+    "PROVIDER": "Prestataire",
+    "ADMIN": "Administrateur"
   },
+
+  "providerTypes": {
+    "BABYSITTER": "Baby-sitter",
+    "GARDE_PERISCOLAIRE": "Garde périscolaire",
+    "MENAGE": "Ménage",
+    "AIDE_PERSONNES_AGEES": "Aide aux personnes âgées",
+    "RESIDENTIEL": "Résidentiel (logé sur place)",
+    "COURT_TERME": "Court terme"
+  },
+
+  "tabs": {
+    "bookings": "Réservations",
+    "reviews": "Avis",
+    "favorites": "Favoris"
+  },
+
+  "empty": {
+    "bookings": "Aucune réservation pour le moment",
+    "reviews": "Aucun avis pour le moment",
+    "favorites": "Aucun favori pour le moment"
+  },
+
+  "errors": {
+    "saveFailed": "Échec de l'enregistrement. Réessaie.",
+    "invalidImage": "Fichier image invalide.",
+    "imageTooLarge": "Image trop lourde (max 5 Mo).",
+    "uploadFailed": "Échec de l'upload de la photo. Réessaie."
+  }
+},
 
   "TopToolbar": {
     "quickSearchPlaceholder": "Recherche rapide...",
