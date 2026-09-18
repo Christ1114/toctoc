@@ -8,7 +8,6 @@ import {
   CameraIcon,
   GearSixIcon,
   ShareNetworkIcon,
-  CheckCircleIcon,
   BriefcaseIcon,
   BuildingsIcon,
   ArrowLeftIcon,
@@ -90,7 +89,7 @@ export default function ProfilePage() {
   const isRTL = locale === "ar";
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // ✅ Session partagée via le contexte
+  // ✅ Session partagée via le contexte — plus de getSession() ici
   const { user: sessionUser, loading: sessionLoading } = useSession();
 
   const [user, setUser] = useState<ProfileUser | null>(null);
@@ -210,15 +209,21 @@ export default function ProfilePage() {
         return;
       }
 
-      const { data: publicUrlData } = authedSupabase.storage.from("avatars").getPublicUrl(path);
+      const { data: publicUrlData } = authedSupabase.storage
+        .from("avatars")
+        .getPublicUrl(path);
 
-      const { error: updateError } = await updateUser({ image: publicUrlData.publicUrl });
+      const { error: updateError } = await updateUser({
+        image: publicUrlData.publicUrl,
+      });
       if (updateError) {
         setError(t("errors.saveFailed"));
         return;
       }
 
-      setUser((prev) => (prev ? { ...prev, image: publicUrlData.publicUrl } : prev));
+      setUser((prev) =>
+        prev ? { ...prev, image: publicUrlData.publicUrl } : prev
+      );
     } catch (err) {
       console.error("Erreur upload photo:", err);
       setError(t("errors.uploadFailed"));
@@ -256,24 +261,50 @@ export default function ProfilePage() {
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white dark:bg-zinc-900 px-4">
-        <p className={`text-sm text-gray-500 dark:text-white/50 text-center ${orbitron.className}`}>
+        <p
+          className={`text-sm text-gray-500 dark:text-white/50 text-center ${orbitron.className}`}
+        >
           {t("notFound")}
         </p>
       </div>
     );
   }
 
-  const isAgencyClient = user.accountType === "CLIENT" && user.clientType === "AGENCY";
+  const isAgencyClient =
+    user.accountType === "CLIENT" && user.clientType === "AGENCY";
   const isProvider = user.accountType === "PROVIDER";
 
-  const TABS: { key: TabKey; icon: typeof CalendarCheckIcon; label: string; count: number }[] = [
-    { key: "bookings", icon: CalendarCheckIcon, label: t("tabs.bookings"), count: stats?.bookingsCount ?? 0 },
-    { key: "reviews", icon: StarIcon, label: t("tabs.reviews"), count: stats?.reviewsCount ?? 0 },
-    { key: "favorites", icon: HeartIcon, label: t("tabs.favorites"), count: stats?.favoritesCount ?? 0 },
+  const TABS: {
+    key: TabKey;
+    icon: typeof CalendarCheckIcon;
+    label: string;
+    count: number;
+  }[] = [
+    {
+      key: "bookings",
+      icon: CalendarCheckIcon,
+      label: t("tabs.bookings"),
+      count: stats?.bookingsCount ?? 0,
+    },
+    {
+      key: "reviews",
+      icon: StarIcon,
+      label: t("tabs.reviews"),
+      count: stats?.reviewsCount ?? 0,
+    },
+    {
+      key: "favorites",
+      icon: HeartIcon,
+      label: t("tabs.favorites"),
+      count: stats?.favoritesCount ?? 0,
+    },
   ];
 
   return (
-    <div dir={isRTL ? "rtl" : "ltr"} className="min-h-screen bg-white dark:bg-zinc-900">
+    <div
+      dir={isRTL ? "rtl" : "ltr"}
+      className="min-h-screen bg-white dark:bg-zinc-900"
+    >
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
         {/* Bouton retour */}
         <button
@@ -297,7 +328,11 @@ export default function ProfilePage() {
                 />
               ) : (
                 <span className="text-3xl font-semibold text-[#432dd7]">
-                  {user.name ? user.name.charAt(0).toUpperCase() : <UserIcon size={40} />}
+                  {user.name ? (
+                    user.name.charAt(0).toUpperCase()
+                  ) : (
+                    <UserIcon size={40} />
+                  )}
                 </span>
               )}
             </div>
@@ -328,7 +363,9 @@ export default function ProfilePage() {
               {editing ? (
                 <input
                   value={form.name || ""}
-                  onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                  onChange={(e) =>
+                    setForm((f) => ({ ...f, name: e.target.value }))
+                  }
                   placeholder={t("namePlaceholder")}
                   className={`text-lg font-semibold bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 h-10 text-gray-900 dark:text-white/90 focus:outline-none focus:border-[#432dd7] w-full sm:w-auto max-w-xs ${orbitron.className}`}
                 />
@@ -356,7 +393,9 @@ export default function ProfilePage() {
                   onClick={() => setActiveTab(key)}
                   className="flex items-baseline gap-1 cursor-pointer group"
                 >
-                  <span className={`text-sm font-semibold text-gray-900 dark:text-white/90 ${orbitron.className}`}>
+                  <span
+                    className={`text-sm font-semibold text-gray-900 dark:text-white/90 ${orbitron.className}`}
+                  >
                     {count}
                   </span>
                   <span className="text-xs text-gray-500 dark:text-white/50 group-hover:text-gray-900 dark:group-hover:text-white/80 transition-colors">
@@ -418,17 +457,17 @@ export default function ProfilePage() {
                 </>
               )}
             </div>
-
-            {/* Bio */}
             <div className="mt-4">
               {editing ? (
                 <textarea
                   value={form.bio || ""}
-                  onChange={(e) => setForm((f) => ({ ...f, bio: e.target.value }))}
+                  onChange={(e) =>
+                    setForm((f) => ({ ...f, bio: e.target.value }))
+                  }
                   placeholder={t("bioPlaceholder")}
                   rows={3}
                   maxLength={500}
-                  className="w-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg p-3 text-sm text-gray-900 dark:text-white/90 placeholder:text-gray-400 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7] resize-none"
+                  className={`w-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg p-3 text-sm text-gray-900 dark:text-white/90 placeholder:text-gray-400 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7] resize-none ${orbitron.className}`}
                 />
               ) : (
                 <p className="text-sm text-gray-600 dark:text-white/50 wrap-break-words">
@@ -441,12 +480,16 @@ export default function ProfilePage() {
 
         {/* Erreur / succès */}
         {error && (
-          <p className={`text-sm text-red-500 dark:text-red-400 mt-4 ${orbitron.className}`}>
+          <p
+            className={`text-sm text-red-500 dark:text-red-400 mt-4 ${orbitron.className}`}
+          >
             {error}
           </p>
         )}
         {success && (
-          <p className={`text-sm text-green-600 dark:text-green-400 mt-4 ${orbitron.className}`}>
+          <p
+            className={`text-sm text-green-600 dark:text-green-400 mt-4 ${orbitron.className}`}
+          >
             {success}
           </p>
         )}
@@ -454,7 +497,9 @@ export default function ProfilePage() {
         {/* Agence */}
         {editing && (isAgencyClient || form.clientType === "AGENCY") && (
           <section className="border-t border-gray-100 dark:border-white/5 mt-6 pt-5">
-            <h2 className={`flex items-center gap-1.5 text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}>
+            <h2
+              className={`flex items-center gap-1.5 text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}
+            >
               <BuildingsIcon size={16} />
               {t("agencyInfo")}
             </h2>
@@ -476,11 +521,11 @@ export default function ProfilePage() {
             </div>
           </section>
         )}
-
-        {/* Prestataire */}
         {editing && isProvider && (
           <section className="border-t border-gray-100 dark:border-white/5 mt-6 pt-5">
-            <h2 className={`flex items-center gap-1.5 text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}>
+            <h2
+              className={`flex items-center gap-1.5 text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}
+            >
               <BriefcaseIcon size={16} />
               {t("providerInfo")}
             </h2>
@@ -491,7 +536,12 @@ export default function ProfilePage() {
                 </span>
                 <select
                   value={form.providerType || ""}
-                  onChange={(e) => setForm((f) => ({ ...f, providerType: e.target.value as ProviderType }))}
+                  onChange={(e) =>
+                    setForm((f) => ({
+                      ...f,
+                      providerType: e.target.value as ProviderType,
+                    }))
+                  }
                   className="h-10 px-3 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white/90 focus:outline-none focus:border-[#432dd7] w-full sm:w-auto"
                 >
                   <option value="">{t("select")}</option>
@@ -514,7 +564,9 @@ export default function ProfilePage() {
                     onChange={(e) =>
                       setForm((f) => ({
                         ...f,
-                        hourlyRate: e.target.value ? Number(e.target.value) : undefined,
+                        hourlyRate: e.target.value
+                          ? Number(e.target.value)
+                          : undefined,
                       }))
                     }
                     placeholder="0"
@@ -522,7 +574,9 @@ export default function ProfilePage() {
                   />
                   <select
                     value={form.currency || "XOF"}
-                    onChange={(e) => setForm((f) => ({ ...f, currency: e.target.value }))}
+                    onChange={(e) =>
+                      setForm((f) => ({ ...f, currency: e.target.value }))
+                    }
                     className="h-10 px-2 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white/90 focus:outline-none focus:border-[#432dd7]"
                   >
                     {CURRENCIES.map((c) => (
@@ -536,8 +590,6 @@ export default function ProfilePage() {
             </div>
           </section>
         )}
-
-        {/* Onglets */}
         <div className="flex items-center border-t border-gray-100 dark:border-white/5 mt-6">
           {TABS.map(({ key, icon: Icon, label }) => (
             <button
@@ -549,73 +601,61 @@ export default function ProfilePage() {
                   : "border-transparent text-gray-400 dark:text-white/40 hover:text-gray-700 dark:hover:text-white/70"
               } ${orbitron.className}`}
             >
-              <Icon size={16} weight={activeTab === key ? "fill" : "regular"} />
+              <Icon
+                size={16}
+                weight={activeTab === key ? "fill" : "regular"}
+              />
               <span className="hidden xs:inline sm:inline">{label}</span>
             </button>
           ))}
         </div>
-
-        {/* Contenu onglet */}
         <div className="py-14 flex flex-col items-center justify-center text-center px-4">
           {activeTab === "bookings" && (
             <>
-              <CalendarCheckIcon size={32} className="text-gray-300 dark:text-white/20 mb-2" />
-              <p className={`text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}>
+              <CalendarCheckIcon
+                size={32}
+                className="text-gray-300 dark:text-white/20 mb-2"
+              />
+              <p
+                className={`text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}
+              >
                 {t("empty.bookings")}
               </p>
             </>
           )}
           {activeTab === "reviews" && (
             <>
-              <StarIcon size={32} className="text-gray-300 dark:text-white/20 mb-2" />
-              <p className={`text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}>
+              <StarIcon
+                size={32}
+                className="text-gray-300 dark:text-white/20 mb-2"
+              />
+              <p
+                className={`text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}
+              >
                 {t("empty.reviews")}
               </p>
             </>
           )}
           {activeTab === "favorites" && (
             <>
-              <HeartIcon size={32} className="text-gray-300 dark:text-white/20 mb-2" />
-              <p className={`text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}>
+              <HeartIcon
+                size={32}
+                className="text-gray-300 dark:text-white/20 mb-2"
+              />
+              <p
+                className={`text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}
+              >
                 {t("empty.favorites")}
               </p>
             </>
           )}
         </div>
-
-        {/* Contact */}
-        <section className="border-t border-gray-100 dark:border-white/5 pt-5">
-          <h2 className={`text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}>
-            {t("contact")}
-          </h2>
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-sm text-gray-900 dark:text-white/90 truncate">
-                {user.email || "—"}
-              </span>
-              {user.email && user.emailVerified && (
-                <span className="flex items-center gap-1 text-xs text-green-600 dark:text-green-400 shrink-0">
-                  <CheckCircleIcon size={14} weight="fill" />
-                  {t("verified")}
-                </span>
-              )}
-            </div>
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-sm text-gray-900 dark:text-white/90 truncate">
-                {user.phone || "—"}
-              </span>
-              {user.phone && user.phoneVerified && (
-                <span className="flex items-center gap-1 text-xs text-green-600 dark:text-green-400 shrink-0">
-                  <CheckCircleIcon size={14} weight="fill" />
-                  {t("verified")}
-                </span>
-              )}
-            </div>
-          </div>
-        </section>
       </div>
 
-      <SettingsPopover open={settingsOpen} onClose={() => setSettingsOpen(false)} />
+      <SettingsPopover
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+      />
     </div>
   );
 }
