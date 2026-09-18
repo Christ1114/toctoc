@@ -1,4 +1,66 @@
 {
+  "ProfilePage": {
+    "back": "Back",
+    "unnamed": "Unnamed",
+    "notFound": "User not found",
+    "changePhoto": "Change photo",
+    "namePlaceholder": "Your name",
+    "editProfile": "Edit profile",
+    "settings": "Settings",
+    "share": "Share",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving...",
+    "saved": "Saved successfully",
+    "bioPlaceholder": "Tell us about yourself...",
+    "noBio": "No bio yet",
+    "linkCopied": "Link copied to clipboard",
+    "agencyInfo": "Agency information",
+    "companyName": "Company name",
+    "companyNamePlaceholder": "e.g. Acme Care",
+    "rccmNumber": "RCCM number",
+    "rccmPlaceholder": "e.g. CI-ABJ-2024-B-12345",
+    "providerInfo": "Provider information",
+    "providerType": "Service type",
+    "hourlyRate": "Hourly rate",
+    "select": "Select",
+    "contact": "Contact",
+    "verified": "Verified",
+
+    "accountType": {
+      "CLIENT": "Client",
+      "PROVIDER": "Provider",
+      "ADMIN": "Admin"
+    },
+
+    "providerTypes": {
+      "BABYSITTER": "Babysitter",
+      "GARDE_PERISCOLAIRE": "After-school care",
+      "MENAGE": "Housekeeping",
+      "AIDE_PERSONNES_AGEES": "Elderly care",
+      "RESIDENTIEL": "Residential",
+      "COURT_TERME": "Short-term"
+    },
+
+    "tabs": {
+      "bookings": "Bookings",
+      "reviews": "Reviews",
+      "favorites": "Favorites"
+    },
+
+    "empty": {
+      "bookings": "No bookings yet",
+      "reviews": "No reviews yet",
+      "favorites": "No favorites yet"
+    },
+
+    "errors": {
+      "saveFailed": "Failed to save changes",
+      "invalidImage": "Please select a valid image file",
+      "imageTooLarge": "Image must be smaller than 5 MB",
+      "uploadFailed": "Failed to upload image"
+    }
+  },
   "TopToolbar": {
     "quickSearchPlaceholder": "Quick search...",
     "searchByAi": "Search by AI"

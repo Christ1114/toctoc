@@ -1,4 +1,66 @@
 {
+  "ProfilePage": {
+    "back": "رجوع",
+    "unnamed": "بدون اسم",
+    "notFound": "لم يتم العثور على المستخدم",
+    "changePhoto": "تغيير الصورة",
+    "namePlaceholder": "اسمك",
+    "editProfile": "تعديل الملف الشخصي",
+    "settings": "الإعدادات",
+    "share": "مشاركة",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "saving": "جارٍ الحفظ…",
+    "saved": "تم الحفظ بنجاح",
+    "bioPlaceholder": "عرّفنا بنفسك…",
+    "noBio": "لا توجد نبذة بعد",
+    "linkCopied": "تم نسخ الرابط",
+    "agencyInfo": "معلومات الوكالة",
+    "companyName": "اسم الشركة",
+    "companyNamePlaceholder": "مثال: Acme للرعاية",
+    "rccmNumber": "رقم RCCM",
+    "rccmPlaceholder": "مثال: CI-ABJ-2024-B-12345",
+    "providerInfo": "معلومات مقدّم الخدمة",
+    "providerType": "نوع الخدمة",
+    "hourlyRate": "الأجر بالساعة",
+    "select": "اختر",
+    "contact": "معلومات الاتصال",
+    "verified": "موثّق",
+
+    "accountType": {
+      "CLIENT": "عميل",
+      "PROVIDER": "مقدّم خدمة",
+      "ADMIN": "مسؤول"
+    },
+
+    "providerTypes": {
+      "BABYSITTER": "جليسة أطفال",
+      "GARDE_PERISCOLAIRE": "رعاية بعد المدرسة",
+      "MENAGE": "تدبير منزلي",
+      "AIDE_PERSONNES_AGEES": "رعاية المسنين",
+      "RESIDENTIEL": "خدمة سكنية",
+      "COURT_TERME": "خدمة قصيرة المدى"
+    },
+
+    "tabs": {
+      "bookings": "الحجوزات",
+      "reviews": "التقييمات",
+      "favorites": "المفضلة"
+    },
+
+    "empty": {
+      "bookings": "لا توجد حجوزات بعد",
+      "reviews": "لا توجد تقييمات بعد",
+      "favorites": "لا توجد مفضلات بعد"
+    },
+
+    "errors": {
+      "saveFailed": "فشل حفظ التغييرات",
+      "invalidImage": "يرجى اختيار ملف صورة صالح",
+      "imageTooLarge": "يجب أن تكون الصورة أصغر من 5 ميغابايت",
+      "uploadFailed": "فشل رفع الصورة"
+    }
+  },
   "TopToolbar": {
     "quickSearchPlaceholder": "بحث سريع...",
     "searchByAi": "البحث بالذكاء الاصطناعي"

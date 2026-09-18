@@ -1,4 +1,68 @@
 {
+  
+  "ProfilePage": {
+    "back": "",
+    "unnamed": "",
+    "notFound": "",
+    "changePhoto": "",
+    "namePlaceholder": "",
+    "editProfile": "",
+    "settings": "",
+    "share": "",
+    "cancel": "",
+    "save": "",
+    "saving": "",
+    "saved": "",
+    "bioPlaceholder": "",
+    "noBio": "",
+    "linkCopied": "",
+    "agencyInfo": "",
+    "companyName": "",
+    "companyNamePlaceholder": "",
+    "rccmNumber": "",
+    "rccmPlaceholder": "",
+    "providerInfo": "",
+    "providerType": "",
+    "hourlyRate": "",
+    "select": "",
+    "contact": "",
+    "verified": "",
+
+    "accountType": {
+      "CLIENT": "",
+      "PROVIDER": "",
+      "ADMIN": ""
+    },
+
+    "providerTypes": {
+      "BABYSITTER": "",
+      "GARDE_PERISCOLAIRE": "",
+      "MENAGE": "",
+      "AIDE_PERSONNES_AGEES": "",
+      "RESIDENTIEL": "",
+      "COURT_TERME": ""
+    },
+
+    "tabs": {
+      "bookings": "",
+      "reviews": "",
+      "favorites": ""
+    },
+
+    "empty": {
+      "bookings": "",
+      "reviews": "",
+      "favorites": ""
+    },
+
+    "errors": {
+      "saveFailed": "",
+      "invalidImage": "",
+      "imageTooLarge": "",
+      "uploadFailed": ""
+    }
+  },
+
   "TopToolbar": {
     "quickSearchPlaceholder": "Recherche rapide...",
     "searchByAi": "Rechercher par IA"
