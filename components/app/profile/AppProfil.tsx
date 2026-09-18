@@ -19,7 +19,8 @@ import {
   CheckIcon,
 } from "@phosphor-icons/react";
 import { orbitron } from "@/fonts/font";
-import { getSession, updateUser } from "@/app/lib/auth-client";
+import { updateUser } from "@/app/lib/auth-client";
+import { useSession } from "@/app/context/SessionContext";
 import { createClient } from "@supabase/supabase-js";
 import SettingsPopover from "@/components/app/utils/settingsPopover";
 
@@ -89,9 +90,11 @@ export default function ProfilePage() {
   const isRTL = locale === "ar";
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // ✅ Session partagée via le contexte
+  const { user: sessionUser, loading: sessionLoading } = useSession();
+
   const [user, setUser] = useState<ProfileUser | null>(null);
   const [stats, setStats] = useState<Stats | null>(null);
-  const [loadingUser, setLoadingUser] = useState(true);
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
@@ -101,19 +104,11 @@ export default function ProfilePage() {
   const [success, setSuccess] = useState<string | null>(null);
   const [form, setForm] = useState<Partial<ProfileUser>>({});
 
-  const loadUser = async () => {
-    setLoadingUser(true);
-    try {
-      const { session } = await getSession();
-      if (session?.user) {
-        setUser(session.user as unknown as ProfileUser);
-      }
-    } catch (err) {
-      console.error("Erreur chargement profil:", err);
-    } finally {
-      setLoadingUser(false);
-    }
-  };
+  // Synchronise le user local depuis le contexte
+  useEffect(() => {
+    if (sessionLoading) return;
+    setUser(sessionUser ? (sessionUser as unknown as ProfileUser) : null);
+  }, [sessionUser, sessionLoading]);
 
   const loadStats = async () => {
     try {
@@ -127,7 +122,6 @@ export default function ProfilePage() {
   };
 
   useEffect(() => {
-    loadUser();
     loadStats();
   }, []);
 
@@ -173,7 +167,8 @@ export default function ProfilePage() {
         return;
       }
 
-      await loadUser();
+      // Mise à jour locale (pas de rechargement session)
+      setUser((prev) => (prev ? ({ ...prev, ...form } as ProfileUser) : prev));
       setEditing(false);
       setSuccess(t("saved"));
       setTimeout(() => setSuccess(null), 3000);
@@ -223,7 +218,7 @@ export default function ProfilePage() {
         return;
       }
 
-      await loadUser();
+      setUser((prev) => (prev ? { ...prev, image: publicUrlData.publicUrl } : prev));
     } catch (err) {
       console.error("Erreur upload photo:", err);
       setError(t("errors.uploadFailed"));
@@ -248,7 +243,8 @@ export default function ProfilePage() {
     }
   };
 
-  if (loadingUser) {
+  // Loading
+  if (sessionLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white dark:bg-zinc-900">
         <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-black/30 dark:border-white/30" />
@@ -256,6 +252,7 @@ export default function ProfilePage() {
     );
   }
 
+  // Pas de user
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white dark:bg-zinc-900 px-4">
@@ -287,9 +284,9 @@ export default function ProfilePage() {
           {t("back")}
         </button>
 
-        {/* En-tête façon TikTok : avatar large à gauche, identité + stats + actions à droite */}
+        {/* En-tête */}
         <div className="flex flex-col sm:flex-row gap-5 sm:gap-8">
-          {/* Avatar + bouton caméra */}
+          {/* Avatar + caméra */}
           <div className="relative shrink-0 mx-auto sm:mx-0">
             <div className="h-24 w-24 sm:h-28 sm:w-28 md:h-32 md:w-32 rounded-full overflow-hidden bg-[#432dd7]/10 flex items-center justify-center border border-black/5 dark:border-white/10">
               {user.image ? (
@@ -327,7 +324,6 @@ export default function ProfilePage() {
 
           {/* Identité + stats + actions */}
           <div className="flex-1 min-w-0 text-center sm:text-left">
-            {/* Nom + badge type de compte */}
             <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
               {editing ? (
                 <input
@@ -360,9 +356,7 @@ export default function ProfilePage() {
                   onClick={() => setActiveTab(key)}
                   className="flex items-baseline gap-1 cursor-pointer group"
                 >
-                  <span
-                    className={`text-sm font-semibold text-gray-900 dark:text-white/90 ${orbitron.className}`}
-                  >
+                  <span className={`text-sm font-semibold text-gray-900 dark:text-white/90 ${orbitron.className}`}>
                     {count}
                   </span>
                   <span className="text-xs text-gray-500 dark:text-white/50 group-hover:text-gray-900 dark:group-hover:text-white/80 transition-colors">
@@ -445,26 +439,22 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Messages erreur / succès */}
+        {/* Erreur / succès */}
         {error && (
           <p className={`text-sm text-red-500 dark:text-red-400 mt-4 ${orbitron.className}`}>
             {error}
           </p>
         )}
         {success && (
-          <p
-            className={`text-sm text-green-600 dark:text-green-400 mt-4 ${orbitron.className}`}
-          >
+          <p className={`text-sm text-green-600 dark:text-green-400 mt-4 ${orbitron.className}`}>
             {success}
           </p>
         )}
 
-        {/* Champs spécifiques agence */}
+        {/* Agence */}
         {editing && (isAgencyClient || form.clientType === "AGENCY") && (
           <section className="border-t border-gray-100 dark:border-white/5 mt-6 pt-5">
-            <h2
-              className={`flex items-center gap-1.5 text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}
-            >
+            <h2 className={`flex items-center gap-1.5 text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}>
               <BuildingsIcon size={16} />
               {t("agencyInfo")}
             </h2>
@@ -487,12 +477,10 @@ export default function ProfilePage() {
           </section>
         )}
 
-        {/* Champs spécifiques prestataire */}
+        {/* Prestataire */}
         {editing && isProvider && (
           <section className="border-t border-gray-100 dark:border-white/5 mt-6 pt-5">
-            <h2
-              className={`flex items-center gap-1.5 text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}
-            >
+            <h2 className={`flex items-center gap-1.5 text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}>
               <BriefcaseIcon size={16} />
               {t("providerInfo")}
             </h2>
@@ -503,9 +491,7 @@ export default function ProfilePage() {
                 </span>
                 <select
                   value={form.providerType || ""}
-                  onChange={(e) =>
-                    setForm((f) => ({ ...f, providerType: e.target.value as ProviderType }))
-                  }
+                  onChange={(e) => setForm((f) => ({ ...f, providerType: e.target.value as ProviderType }))}
                   className="h-10 px-3 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white/90 focus:outline-none focus:border-[#432dd7] w-full sm:w-auto"
                 >
                   <option value="">{t("select")}</option>
@@ -569,7 +555,7 @@ export default function ProfilePage() {
           ))}
         </div>
 
-        {/* Contenu de l'onglet actif */}
+        {/* Contenu onglet */}
         <div className="py-14 flex flex-col items-center justify-center text-center px-4">
           {activeTab === "bookings" && (
             <>
@@ -599,9 +585,7 @@ export default function ProfilePage() {
 
         {/* Contact */}
         <section className="border-t border-gray-100 dark:border-white/5 pt-5">
-          <h2
-            className={`text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}
-          >
+          <h2 className={`text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}>
             {t("contact")}
           </h2>
           <div className="flex flex-col gap-3">

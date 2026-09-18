@@ -6,7 +6,7 @@ import { setWorkerUrl } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
-import { getSession } from "@/app/lib/auth-client";
+import { useSession } from "@/app/context/SessionContext";
 import { useGeolocation } from "@/app/hooks/useGeolocation";
 import { createAvatarMarkerElement } from "./AvatarMarker";
 import TopToolbar from "./TopToolbar";
@@ -26,7 +26,7 @@ const DEFAULT_ZOOM = 15;
 const DEFAULT_PITCH = 60;
 const DEFAULT_BEARING = -17.6;
 
-// 👇 Types des users proches
+
 type NearbyUser = {
   id: string;
   name: string | null;
@@ -49,12 +49,15 @@ export default function NearbyMap() {
   const t = useTranslations("NearbyMap");
   const { resolvedTheme } = useTheme();
 
+
+  const { user } = useSession();
+
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const userMarkerRef = useRef<maplibregl.Marker | null>(null);
   const initialCenterRef = useRef<[number, number] | null>(null);
 
-  // 👇 Refs des marqueurs des autres users
+
   const nearbyMarkersRef = useRef<maplibregl.Marker[]>([]);
 
   const [initialCenter, setInitialCenter] = useState<[number, number] | null>(null);
@@ -63,7 +66,7 @@ export default function NearbyMap() {
   const [mapError, setMapError] = useState<string | null>(null);
   const [aiSearchOpen, setAiSearchOpen] = useState(false);
 
-  // 👇 State des users proches
+
   const [nearbyUsers, setNearbyUsers] = useState<NearbyUser[]>([]);
 
   const { latitude, longitude, error: geoError, requestLocation } = useGeolocation();
@@ -74,8 +77,7 @@ export default function NearbyMap() {
 
     const loadStoredPosition = async () => {
       try {
-        const { session } = await getSession();
-        const userData = session?.user as any;
+        const userData = user as any;
         const storedLat = userData?.lastLatitude;
         const storedLng = userData?.lastLongitude;
 
@@ -85,13 +87,10 @@ export default function NearbyMap() {
           initialCenterRef.current = position;
           setInitialCenter(position);
           setLoadingPosition(false);
-          // Pas de "return" ici : la position stockée sert juste de fallback
-          // rapide pour l'affichage. On demande quand même le GPS réel
-          // ci-dessous ; l'effet de recentrage se chargera de déplacer la
-          // carte dès que la vraie position arrivera.
+         
         }
       } catch (err) {
-        console.error("❌ Erreur récupération session:", err);
+        console.error("❌ Erreur lecture position stockée:", err);
       }
       
   
@@ -124,7 +123,7 @@ export default function NearbyMap() {
         clearTimeout(timeoutId);
       }
     };
-  }, [requestLocation]);
+  }, [requestLocation, user]);
 
   useEffect(() => {
     if (latitude && longitude) {
@@ -238,7 +237,7 @@ export default function NearbyMap() {
   }, [initialCenter, t]);
 
   
-  // 🔄 Recentrer la carte sur la position du user quand elle change
+
   useEffect(() => {
     if (!mapRef.current || !mapLoaded || !initialCenter) return;
 
@@ -253,7 +252,6 @@ export default function NearbyMap() {
       duration: 1200,
     });
 
-    // Déplacer aussi le marqueur
     if (userMarkerRef.current) {
       userMarkerRef.current.setLngLat(initialCenter);
     }

@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MagnifyingGlassIcon, SparkleIcon, UserIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { orbitron } from "@/fonts/font";
-import { getSession } from "@/app/lib/auth-client";
+import { useSession } from "@/app/context/SessionContext";
 import ProfilePopover from "../utils/profilsPopover";
 
 type TopToolbarProps = {
@@ -21,25 +21,20 @@ type UserAvatar = {
 
 export default function TopToolbar({ onOpenAiSearch }: TopToolbarProps) {
   const t = useTranslations("TopToolbar");
-  const [user, setUser] = useState<UserAvatar | null>(null);
   const [profileOpen, setProfileOpen] = useState(false);
 
-  useEffect(() => {
-    const loadUser = async () => {
-  const { session } = await getSession();
-  if (session?.user) {
-    const userData = session.user as any;
-    setUser({
-      id: userData.id,
-      name: userData.name,
-      email: userData.email,
-      image: userData.image,
-      accountType: userData.accountType,
-    });
-  }
-};
-    loadUser();
-  }, []);
+  // Session partagée via le contexte, chargée une seule fois au niveau du
+  // layout /app — plus de fetch indépendant ici (évite le 429 de rate limit).
+  const { user: sessionUser } = useSession();
+  const user: UserAvatar | null = sessionUser
+    ? {
+        id: (sessionUser as any).id,
+        name: sessionUser.name,
+        email: sessionUser.email,
+        image: sessionUser.image,
+        accountType: (sessionUser as any).accountType,
+      }
+    : null;
 
   return (
     <>

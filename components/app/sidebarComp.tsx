@@ -21,7 +21,7 @@ import Image from "next/image";
 import SearchPopover from "@/components/app/utils/SearchPopover";
 import VrConfirmPopover from "@/components/app/utils/VrConfirmPopover";
 import SettingsPopover from "@/components/app/utils/settingsPopover";
-import { getSession, type User } from "@/app/lib/auth-client";
+import { useSession } from "@/app/context/SessionContext";
 
 type NavKey = "home" | "search" | "video" | "chat" | "phone" | "vr";
 
@@ -56,10 +56,7 @@ const Sidebar = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [vrOpen, setVrOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
-
-  // Session récupérée une seule fois au montage de la sidebar, puis
-  // réutilisée par tous les popovers qui en ont besoin (ex: SearchPopover).
-  const [user, setUser] = useState<User | null>(null);
+  const { user } = useSession();
 
   const isRTL = RTL_LOCALES.includes(locale);
 
@@ -79,20 +76,6 @@ const Sidebar = () => {
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  useEffect(() => {
-    const loadUser = async () => {
-      try {
-        const { session } = await getSession();
-        setUser((session?.user as unknown as User) ?? null);
-      } catch (err) {
-        console.error("Erreur lors de la récupération de la session:", err);
-        setUser(null);
-      }
-    };
-
-    loadUser();
   }, []);
 
   const handleNavClick = (key: NavKey | "settings") => {
@@ -198,7 +181,7 @@ const Sidebar = () => {
     if (imgError) {
       return (
         <span className="text-sm font-medium tracking-tight text-zinc-900 dark:text-white/90">
-          Nova
+          Toctoc
         </span>
       );
     }

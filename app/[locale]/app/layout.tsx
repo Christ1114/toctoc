@@ -1,9 +1,6 @@
-import AppClient from "@/components/app/appClient";
+
+import { SessionProvider } from "@/app/context/SessionContext";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return (
-    <>
-      {children}
-    </>
-  );
+  return <SessionProvider>{children}</SessionProvider>;
 }
