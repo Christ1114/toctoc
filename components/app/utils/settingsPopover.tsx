@@ -1,497 +1,703 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import {
-  GearSixIcon,
-  UserIcon,
-  XIcon,
-  SunIcon,
-  MoonIcon,
-  DesktopIcon,
-  CheckCircleIcon,
-  DeviceMobileIcon,
-  GooglePlayLogo,
-  AppleLogo,
-  DownloadSimpleIcon,
-  SignOutIcon,
-  TrashIcon,
-  WarningCircleIcon,
-  ClockIcon,
-} from "@phosphor-icons/react";
-import Popover from "../utils/Popover";
-import { orbitron } from "@/fonts/font";
-import { useTranslations, useLocale } from "next-intl";
-import { useTheme } from "next-themes";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import QRCode from "qrcode";
-import { signOut, authClient } from "@/app/lib/auth-client";
+import { useLocale, useTranslations } from "next-intl";
+import {
+  UserIcon,
+  CameraIcon,
+  GearSixIcon,
+  ShareNetworkIcon,
+  BriefcaseIcon,
+  BuildingsIcon,
+  ArrowLeftIcon,
+  CalendarCheckIcon,
+  StarIcon,
+  HeartIcon,
+  XIcon,
+  CheckIcon,
+} from "@phosphor-icons/react";
+import { orbitron } from "@/fonts/font";
+import { updateUser } from "@/app/lib/auth-client";
 import { useSession } from "@/app/context/SessionContext";
+import { createClient } from "@supabase/supabase-js";
+import SettingsPopover from "@/components/app/utils/settingsPopover";
 
-type SettingsTab = "general" | "profile" | "download";
+type AccountType = "CLIENT" | "PROVIDER" | "ADMIN";
+type ClientType = "INDIVIDUAL" | "AGENCY";
+type ProviderType =
+  | "BABYSITTER"
+  | "GARDE_PERISCOLAIRE"
+  | "MENAGE"
+  | "AIDE_PERSONNES_AGEES"
+  | "RESIDENTIEL"
+  | "COURT_TERME";
 
-type SettingsPopoverProps = {
-  open: boolean;
-  onClose: () => void;
-};
+const PROVIDER_TYPES: ProviderType[] = [
+  "BABYSITTER",
+  "GARDE_PERISCOLAIRE",
+  "MENAGE",
+  "AIDE_PERSONNES_AGEES",
+  "RESIDENTIEL",
+  "COURT_TERME",
+];
 
-type UserData = {
+const CURRENCIES = ["XOF", "USD", "EUR"];
+
+type ProfileUser = {
   id: string;
   name?: string | null;
   email?: string | null;
   emailVerified?: boolean;
   phone?: string | null;
   phoneVerified?: boolean;
+  image?: string | null;
+  bio?: string | null;
+  accountType?: AccountType;
+  clientType?: ClientType | null;
+  companyName?: string | null;
+  rccmNumber?: string | null;
+  providerType?: ProviderType | null;
+  hourlyRate?: number | null;
+  currency?: string | null;
+  createdAt?: Date | string;
 };
 
-const PHONE_VERIFICATION_ENABLED = false;
+type Stats = {
+  bookingsCount: number;
+  reviewsCount: number;
+  favoritesCount: number;
+  averageRating: number | null;
+};
 
-const THEMES = [
-  { key: "light", icon: SunIcon },
-  { key: "dark", icon: MoonIcon },
-  { key: "system", icon: DesktopIcon },
-] as const;
+type TabKey = "bookings" | "reviews" | "favorites";
 
-export default function SettingsPopover({ open, onClose }: SettingsPopoverProps) {
-  const t = useTranslations("SettingsPopover");
+async function getAuthedSupabaseClient() {
+  const res = await fetch("/api/notifications/realtime-token");
+  const { token } = await res.json();
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { global: { headers: { Authorization: `Bearer ${token}` } } }
+  );
+}
+
+export default function ProfilePage() {
+  const t = useTranslations("ProfilePage");
   const locale = useLocale();
-  const isRTL = locale === "ar";
   const router = useRouter();
-
-  const [tab, setTab] = useState<SettingsTab>("general");
-  const { theme, setTheme } = useTheme();
+  const isRTL = locale === "ar";
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // ✅ Session partagée via le contexte — plus de getSession() ici
   const { user: sessionUser, loading: sessionLoading } = useSession();
 
-  const user: UserData | null = sessionUser
-    ? (sessionUser as unknown as UserData)
-    : null;
+  const [user, setUser] = useState<ProfileUser | null>(null);
+  const [stats, setStats] = useState<Stats | null>(null);
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<TabKey>("bookings");
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [form, setForm] = useState<Partial<ProfileUser>>({});
 
-  const loadingUser = sessionLoading;
+  // Synchronise le user local depuis le contexte
+  useEffect(() => {
+    if (sessionLoading) return;
+    setUser(sessionUser ? (sessionUser as unknown as ProfileUser) : null);
+  }, [sessionUser, sessionLoading]);
 
-  const [emailOtpStep, setEmailOtpStep] = useState<"idle" | "sent">("idle");
-  const [emailOtpCode, setEmailOtpCode] = useState("");
-  const [emailSending, setEmailSending] = useState(false);
-  const [emailVerifying, setEmailVerifying] = useState(false);
-  const [emailError, setEmailError] = useState<string | null>(null);
+  const loadStats = async () => {
+    try {
+      const res = await fetch("/api/profile/stats");
+      if (res.ok) {
+        setStats(await res.json());
+      }
+    } catch (err) {
+      console.error("Erreur chargement stats:", err);
+    }
+  };
 
-  const [loggingOut, setLoggingOut] = useState(false);
-  const [logoutError, setLogoutError] = useState<string | null>(null);
+  useEffect(() => {
+    loadStats();
+  }, []);
 
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [deleting, setDeleting] = useState(false);
-  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const startEditing = () => {
+    if (!user) return;
+    setForm({
+      name: user.name,
+      bio: user.bio,
+      clientType: user.clientType,
+      companyName: user.companyName,
+      rccmNumber: user.rccmNumber,
+      providerType: user.providerType,
+      hourlyRate: user.hourlyRate,
+      currency: user.currency ?? "XOF",
+    });
+    setError(null);
+    setSuccess(null);
+    setEditing(true);
+  };
 
-  const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
-  const [downloading, setDownloading] = useState(false);
+  const cancelEditing = () => {
+    setEditing(false);
+    setError(null);
+  };
 
-  const TABS: { key: SettingsTab; icon: React.ComponentType<{ size?: number }>; label: string }[] = [
-    { key: "general", icon: GearSixIcon, label: t("general") },
-    { key: "profile", icon: UserIcon, label: t("profile") },
-    { key: "download", icon: DeviceMobileIcon, label: t("download") },
+  const handleSave = async () => {
+    setSaving(true);
+    setError(null);
+    try {
+      const { error: err } = await updateUser({
+        name: form.name || undefined,
+        bio: form.bio ?? undefined,
+        companyName: form.companyName ?? undefined,
+        rccmNumber: form.rccmNumber ?? undefined,
+        clientType: form.clientType ?? undefined,
+        providerType: form.providerType ?? undefined,
+        hourlyRate: form.hourlyRate ?? undefined,
+        currency: form.currency ?? undefined,
+      });
+
+      if (err) {
+        setError(err.message || t("errors.saveFailed"));
+        return;
+      }
+
+      // Mise à jour locale (pas de rechargement session)
+      setUser((prev) => (prev ? ({ ...prev, ...form } as ProfileUser) : prev));
+      setEditing(false);
+      setSuccess(t("saved"));
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (err) {
+      setError(t("errors.saveFailed"));
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handlePhotoClick = () => fileInputRef.current?.click();
+
+  const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+
+    if (!file.type.startsWith("image/")) {
+      setError(t("errors.invalidImage"));
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setError(t("errors.imageTooLarge"));
+      return;
+    }
+
+    setUploadingPhoto(true);
+    setError(null);
+    try {
+      const authedSupabase = await getAuthedSupabaseClient();
+      const ext = file.name.split(".").pop();
+      const path = `${user.id}/avatar-${Date.now()}.${ext}`;
+
+      const { error: uploadError } = await authedSupabase.storage
+        .from("avatars")
+        .upload(path, file, { upsert: true });
+
+      if (uploadError) {
+        setError(t("errors.uploadFailed"));
+        return;
+      }
+
+      const { data: publicUrlData } = authedSupabase.storage
+        .from("avatars")
+        .getPublicUrl(path);
+
+      const { error: updateError } = await updateUser({
+        image: publicUrlData.publicUrl,
+      });
+      if (updateError) {
+        setError(t("errors.saveFailed"));
+        return;
+      }
+
+      setUser((prev) =>
+        prev ? { ...prev, image: publicUrlData.publicUrl } : prev
+      );
+    } catch (err) {
+      console.error("Erreur upload photo:", err);
+      setError(t("errors.uploadFailed"));
+    } finally {
+      setUploadingPhoto(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    try {
+      if (navigator.share) {
+        await navigator.share({ url });
+      } else {
+        await navigator.clipboard.writeText(url);
+        setSuccess(t("linkCopied"));
+        setTimeout(() => setSuccess(null), 2000);
+      }
+    } catch {
+      // silencieux
+    }
+  };
+
+  // Loading
+  if (sessionLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-zinc-900">
+        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-black/30 dark:border-white/30" />
+      </div>
+    );
+  }
+
+  // Pas de user
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-zinc-900 px-4">
+        <p
+          className={`text-sm text-gray-500 dark:text-white/50 text-center ${orbitron.className}`}
+        >
+          {t("notFound")}
+        </p>
+      </div>
+    );
+  }
+
+  const isAgencyClient =
+    user.accountType === "CLIENT" && user.clientType === "AGENCY";
+  const isProvider = user.accountType === "PROVIDER";
+
+  const TABS: {
+    key: TabKey;
+    icon: typeof CalendarCheckIcon;
+    label: string;
+    count: number;
+  }[] = [
+    {
+      key: "bookings",
+      icon: CalendarCheckIcon,
+      label: t("tabs.bookings"),
+      count: stats?.bookingsCount ?? 0,
+    },
+    {
+      key: "reviews",
+      icon: StarIcon,
+      label: t("tabs.reviews"),
+      count: stats?.reviewsCount ?? 0,
+    },
+    {
+      key: "favorites",
+      icon: HeartIcon,
+      label: t("tabs.favorites"),
+      count: stats?.favoritesCount ?? 0,
+    },
   ];
 
-  // ✅ Reset des états à l'ouverture (plus de loadUser)
-  useEffect(() => {
-    if (open) {
-      setEmailOtpStep("idle");
-      setEmailOtpCode("");
-      setEmailError(null);
-      setLogoutError(null);
-      setDeleteError(null);
-      setShowDeleteConfirm(false);
-    }
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) {
-      setShowDeleteConfirm(false);
-    }
-  }, [open]);
-
-  useEffect(() => {
-    if (open && !qrDataUrl) {
-      const placeholderData = `https://toctoc.app/download?ref=${Math.random().toString(36).slice(2, 10)}`;
-
-      QRCode.toDataURL(placeholderData, {
-        width: 256,
-        margin: 1,
-        color: {
-          dark: "#432dd7",
-          light: "#ffffff",
-        },
-      })
-        .then(setQrDataUrl)
-        .catch((err) => console.error("Erreur génération QR:", err));
-    }
-  }, [open, qrDataUrl]);
-
-  const handleSendEmailOtp = async () => {
-    if (!user?.email) return;
-    setEmailSending(true);
-    setEmailError(null);
-    try {
-      const { error } = await authClient.emailOtp.sendVerificationOtp({
-        email: user.email,
-        type: "email-verification",
-      });
-      if (error) {
-        setEmailError(error.message || t("errors.emailSendFailed"));
-      } else {
-        setEmailOtpStep("sent");
-      }
-    } catch (err) {
-      setEmailError(t("errors.emailSendFailed"));
-    } finally {
-      setEmailSending(false);
-    }
-  };
-
-  const handleVerifyEmailOtp = async () => {
-    if (!user?.email || !emailOtpCode.trim()) return;
-    setEmailVerifying(true);
-    setEmailError(null);
-    try {
-      const { error } = await authClient.emailOtp.verifyEmail({
-        email: user.email,
-        otp: emailOtpCode.trim(),
-      });
-      if (error) {
-        setEmailError(error.message || t("errors.emailVerifyFailed"));
-      } else {
-        // ✅ Plus de loadUser() — le contexte se mettra à jour au prochain fetch global
-        setEmailOtpStep("idle");
-        setEmailOtpCode("");
-      }
-    } catch (err) {
-      setEmailError(t("errors.emailVerifyFailed"));
-    } finally {
-      setEmailVerifying(false);
-    }
-  };
-
-  const handleLogout = async () => {
-    setLoggingOut(true);
-    setLogoutError(null);
-    try {
-      const { error } = await signOut();
-      if (error) {
-        setLogoutError(error.message || t("errors.logoutFailed"));
-        setLoggingOut(false);
-        return;
-      }
-      onClose();
-      router.push("/login");
-      router.refresh();
-    } catch (err) {
-      setLogoutError(t("errors.logoutFailed"));
-      setLoggingOut(false);
-    }
-  };
-
-  const handleDeleteAccount = async () => {
-    setDeleting(true);
-    setDeleteError(null);
-    try {
-      const { error } = await authClient.deleteUser();
-      if (error) {
-        setDeleteError(error.message || t("errors.deleteFailed"));
-        setShowDeleteConfirm(false);
-        setDeleting(false);
-        return;
-      }
-      onClose();
-      router.push("/");
-      router.refresh();
-    } catch (err) {
-      setDeleteError(t("errors.deleteFailed"));
-      setShowDeleteConfirm(false);
-      setDeleting(false);
-    }
-  };
-
-  const handleDownloadQr = async () => {
-    if (!qrDataUrl) return;
-    setDownloading(true);
-
-    try {
-      const link = document.createElement("a");
-      link.href = qrDataUrl;
-      link.download = "toctoc-app-qrcode.png";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } finally {
-      setTimeout(() => setDownloading(false), 800);
-    }
-  };
-
   return (
-    <Popover
-      open={open}
-      onClose={onClose}
-      title={t("title")}
-      widthClassName="w-[95vw] max-w-[560px] sm:w-[560px]"
+    <div
+      dir={isRTL ? "rtl" : "ltr"}
+      className="min-h-screen bg-white dark:bg-zinc-900"
     >
-      <div dir={isRTL ? "rtl" : "ltr"} className="max-h-[80vh] overflow-y-auto">
-        <div className="flex items-center justify-between mb-4 sm:mb-5">
-          <h2 className={`text-sm sm:text-base font-medium text-black dark:text-white/90 ${orbitron.className}`}>
-            {t("title")}
-          </h2>
-          <button
-            onClick={onClose}
-            className={`text-black/50 hover:text-black dark:text-white/50 dark:hover:text-white/90 cursor-pointer p-1 ${orbitron.className}`}
-            aria-label={t("close")}
-          >
-            <XIcon size={18} />
-          </button>
-        </div>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
+        {/* Bouton retour */}
+        <button
+          onClick={() => router.back()}
+          className={`flex items-center gap-1.5 text-sm text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white/90 cursor-pointer mb-6 transition-colors ${orbitron.className}`}
+        >
+          <ArrowLeftIcon size={16} className={isRTL ? "rotate-180" : ""} />
+          {t("back")}
+        </button>
 
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-6">
-          <nav className="w-full sm:w-36 shrink-0 flex sm:flex-col gap-1 overflow-x-auto pb-1 sm:pb-0 -mx-1 px-1">
-            {TABS.map(({ key, icon: Icon, label }) => (
-              <button
-                key={key}
-                onClick={() => setTab(key)}
-                className={`flex items-center gap-2 px-3 sm:px-3 py-2 rounded-lg text-xs sm:text-sm cursor-pointer transition-colors whitespace-nowrap shrink-0 ${
-                  tab === key
-                    ? "bg-black/10 text-black dark:bg-white/10 dark:text-white/95"
-                    : "text-black/60 hover:bg-black/5 hover:text-black dark:text-white/60 dark:hover:bg-white/5 dark:hover:text-white/90"
-                } ${orbitron.className}`}
-              >
-                <Icon size={16} />
-                <span className={orbitron.className}>{label}</span>
-              </button>
-            ))}
-          </nav>
-          <div className="flex-1 min-w-0">
-            {tab === "general" && (
-              <div>
-                <p className={`text-xs text-black/40 dark:text-white/40 mb-2 ${orbitron.className}`}>{t("theme")}</p>
-                <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-5">
-                  {THEMES.map(({ key, icon: Icon }) => (
-                    <button
-                      key={key}
-                      onClick={() => setTheme(key)}
-                      className={`flex flex-col items-center gap-1 py-2.5 sm:py-3 px-1 rounded-lg border text-[11px] sm:text-xs cursor-pointer transition-colors ${
-                        theme === key
-                          ? "border-[#432dd7]/60 bg-[#432dd7]/10 text-black dark:text-white/95"
-                          : "border-black/10 text-black/60 hover:bg-black/5 dark:border-white/10 dark:text-white/60 dark:hover:bg-white/5"
-                      } ${orbitron.className}`}
-                    >
-                      <Icon size={16} className="sm:w-4.5 sm:h-4.5" />
-                      <span className={`text-center leading-tight ${orbitron.className}`}>{t(`themes.${key}`)}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-            {tab === "profile" && (
-              <div className="flex flex-col gap-3 sm:gap-4">
-                {loadingUser ? (
-                  <div className="flex items-center justify-center py-8">
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-black/30 dark:border-white/30" />
-                  </div>
-                ) : (
-                  <>
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-black/5 dark:border-white/5 pb-2.5 sm:pb-3 gap-1">
-                      <span className={`text-xs sm:text-sm text-black/50 dark:text-white/50 ${orbitron.className}`}>{t("name")}</span>
-                      <span className={`text-sm text-black dark:text-white/90 ${orbitron.className}`}>{user?.name || "-"}</span>
-                    </div>
+        {/* En-tête */}
+        <div className="flex flex-col sm:flex-row gap-5 sm:gap-8">
+          {/* Avatar + caméra */}
+          <div className="relative shrink-0 mx-auto sm:mx-0">
+            <div className="h-24 w-24 sm:h-28 sm:w-28 md:h-32 md:w-32 rounded-full overflow-hidden bg-[#432dd7]/10 flex items-center justify-center border border-black/5 dark:border-white/10">
+              {user.image ? (
+                <img
+                  src={user.image}
+                  alt={user.name || t("unnamed")}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <span className="text-3xl font-semibold text-[#432dd7]">
+                  {user.name ? (
+                    user.name.charAt(0).toUpperCase()
+                  ) : (
+                    <UserIcon size={40} />
+                  )}
+                </span>
+              )}
+            </div>
+            <button
+              onClick={handlePhotoClick}
+              disabled={uploadingPhoto}
+              className="absolute bottom-1 right-1 h-9 w-9 rounded-full bg-[#432dd7] hover:bg-[#432dd7]/90 flex items-center justify-center text-white cursor-pointer disabled:opacity-50 transition-colors border-2 border-white dark:border-black"
+              aria-label={t("changePhoto")}
+            >
+              {uploadingPhoto ? (
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
+              ) : (
+                <CameraIcon size={16} weight="bold" />
+              )}
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handlePhotoChange}
+              className="hidden"
+            />
+          </div>
 
-                    <div className="border-b border-black/5 dark:border-white/5 pb-2.5 sm:pb-3">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-3">
-                        <span className={`text-xs sm:text-sm text-black/50 dark:text-white/50 shrink-0 ${orbitron.className}`}>{t("email")}</span>
-                        <div className="flex items-center gap-2 min-w-0 justify-between sm:justify-end w-full sm:w-auto">
-                          <span className={`text-sm text-black dark:text-white/90 truncate max-w-40 sm:max-w-none ${orbitron.className}`}>{user?.email || "-"}</span>
-                          {user?.email && (
-                            user.emailVerified ? (
-                              <span className={`flex items-center gap-1 text-xs text-green-600 dark:text-green-400 shrink-0 ${orbitron.className}`}>
-                                <CheckCircleIcon size={14} weight="fill" />
-                                {t("verified")}
-                              </span>
-                            ) : emailOtpStep === "idle" ? (
-                              <button
-                                onClick={handleSendEmailOtp}
-                                disabled={emailSending}
-                                className={`text-xs px-2.5 py-1 rounded-lg border border-[#432dd7]/40 text-[#432dd7] hover:bg-[#432dd7]/10 cursor-pointer disabled:opacity-40 shrink-0 transition-colors ${orbitron.className}`}
-                              >
-                                {emailSending ? t("sending") : t("verify")}
-                              </button>
-                            ) : null
-                          )}
-                        </div>
-                      </div>
+          {/* Identité + stats + actions */}
+          <div className="flex-1 min-w-0 text-center sm:text-left">
+            <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
+              {editing ? (
+                <input
+                  value={form.name || ""}
+                  onChange={(e) =>
+                    setForm((f) => ({ ...f, name: e.target.value }))
+                  }
+                  placeholder={t("namePlaceholder")}
+                  className={`text-lg font-semibold bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 h-10 text-gray-900 dark:text-white/90 focus:outline-none focus:border-[#432dd7] w-full sm:w-auto max-w-xs ${orbitron.className}`}
+                />
+              ) : (
+                <h1
+                  className={`text-lg font-semibold text-gray-900 dark:text-white/90 truncate max-w-full ${orbitron.className}`}
+                >
+                  {user.name || t("unnamed")}
+                </h1>
+              )}
+              {user.accountType && (
+                <span
+                  className={`inline-flex items-center px-2 py-0.5 rounded-md bg-[#432dd7]/10 text-[#432dd7] text-xs font-medium ${orbitron.className}`}
+                >
+                  {t(`accountType.${user.accountType}`)}
+                </span>
+              )}
+            </div>
 
-                      {user?.email && !user.emailVerified && emailOtpStep === "sent" && (
-                        <div className="mt-2 flex flex-col gap-2">
-                          <div className="flex flex-col sm:flex-row gap-2">
-                            <input
-                              value={emailOtpCode}
-                              onChange={(e) => setEmailOtpCode(e.target.value)}
-                              placeholder={t("otpPlaceholder")}
-                              maxLength={6}
-                              className={`flex-1 h-9 px-3 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm text-black dark:text-white/90 placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7] w-full ${orbitron.className}`}
-                            />
-                            <button
-                              onClick={handleVerifyEmailOtp}
-                              disabled={emailVerifying || !emailOtpCode.trim()}
-                              className={`text-xs px-3 py-1.5 rounded-lg border border-[#432dd7]/40 text-[#432dd7] hover:bg-[#432dd7]/10 cursor-pointer disabled:opacity-40 transition-colors sm:shrink-0 ${orbitron.className}`}
-                            >
-                              {emailVerifying ? t("verifying") : t("confirm")}
-                            </button>
-                          </div>
-                          <button
-                            onClick={handleSendEmailOtp}
-                            disabled={emailSending}
-                            className={`self-start text-[11px] text-[#432dd7] hover:underline cursor-pointer disabled:opacity-40 ${orbitron.className}`}
-                          >
-                            {emailSending ? t("sending") : t("resendCode")}
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                    {emailError && <p className={`text-xs text-red-500 dark:text-red-400 -mt-2 ${orbitron.className}`}>{emailError}</p>}
-                    <div className="border-b border-black/5 dark:border-white/5 pb-2.5 sm:pb-3">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-3">
-                        <span className={`text-xs sm:text-sm text-black/50 dark:text-white/50 shrink-0 ${orbitron.className}`}>{t("phone")}</span>
-                        <div className="flex items-center gap-2 min-w-0 justify-between sm:justify-end w-full sm:w-auto">
-                          <span className={`text-sm text-black dark:text-white/90 truncate max-w-40 sm:max-w-none ${orbitron.className}`}>{user?.phone || "-"}</span>
-                          {user?.phone && user.phoneVerified && (
-                            <span className={`flex items-center gap-1 text-xs text-green-600 dark:text-green-400 shrink-0 ${orbitron.className}`}>
-                              <CheckCircleIcon size={14} weight="fill" />
-                              {t("verified")}
-                            </span>
-                          )}
-                          {!user?.phoneVerified && !PHONE_VERIFICATION_ENABLED && (
-                            <span
-                              className={`flex items-center gap-1 text-xs text-black/40 dark:text-white/40 shrink-0 ${orbitron.className}`}
-                              title={t("phoneComingSoonHint")}
-                            >
-                              <ClockIcon size={14} />
-                              {t("comingSoon")}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="pt-1">
-                      <div className="flex items-center justify-between">
-                        <span className={`text-xs sm:text-sm text-black/50 dark:text-white/50 ${orbitron.className}`}>{t("logout")}</span>
-                        <button
-                          onClick={handleLogout}
-                          disabled={loggingOut}
-                          className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border border-red-500/40 text-red-500 dark:text-red-400 hover:bg-red-500/10 cursor-pointer disabled:opacity-40 transition-colors ${orbitron.className}`}
-                        >
-                          <SignOutIcon size={14} weight="bold" />
-                          {loggingOut ? t("loggingOut") : t("logoutButton")}
-                        </button>
-                      </div>
-                      {logoutError && <p className={`text-xs text-red-500 dark:text-red-400 mt-1 ${orbitron.className}`}>{logoutError}</p>}
-                    </div>
-                    <div className="rounded-lg border border-red-500/20 bg-red-500/5 p-3">
-                      {!showDeleteConfirm ? (
-                        <div className="flex items-center justify-between">
-                          <div className="flex flex-col">
-                            <span className={`text-xs sm:text-sm text-black/70 dark:text-white/70 ${orbitron.className}`}>{t("deleteAccount")}</span>
-                            <span className={`text-[11px] text-black/40 dark:text-white/40 ${orbitron.className}`}>{t("deleteAccountHint")}</span>
-                          </div>
-                          <button
-                            onClick={() => setShowDeleteConfirm(true)}
-                            disabled={deleting}
-                            className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border border-red-500/40 text-red-500 dark:text-red-400 hover:bg-red-500/10 cursor-pointer disabled:opacity-40 transition-colors shrink-0 ${orbitron.className}`}
-                          >
-                            <TrashIcon size={14} weight="bold" />
-                            {t("deleteButton")}
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="flex flex-col gap-2.5">
-                          <div className="flex items-start gap-2">
-                            <WarningCircleIcon size={16} weight="fill" className="text-red-500 dark:text-red-400 shrink-0 mt-0.5" />
-                            <p className={`text-xs text-black/70 dark:text-white/70 leading-relaxed ${orbitron.className}`}>
-                              {t("confirmDelete")}
-                            </p>
-                          </div>
-                          <div className="flex gap-2 justify-end">
-                            <button
-                              onClick={() => setShowDeleteConfirm(false)}
-                              disabled={deleting}
-                              className={`text-xs px-3 py-1.5 rounded-lg border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer disabled:opacity-40 transition-colors ${orbitron.className}`}
-                            >
-                              {t("cancel")}
-                            </button>
-                            <button
-                              onClick={handleDeleteAccount}
-                              disabled={deleting}
-                              className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-red-500 text-white hover:bg-red-600 cursor-pointer disabled:opacity-40 transition-colors ${orbitron.className}`}
-                            >
-                              <TrashIcon size={14} weight="bold" />
-                              {deleting ? t("deleting") : t("deleteConfirmButton")}
-                            </button>
-                          </div>
-                        </div>
-                      )}
-                      {deleteError && <p className={`text-xs text-red-500 dark:text-red-400 mt-2 ${orbitron.className}`}>{deleteError}</p>}
-                    </div>
-                  </>
-                )}
-              </div>
-            )}
-            {tab === "download" && (
-              <div className="w-full max-w-full overflow-hidden">
-                <div className="flex items-center gap-2 mb-3">
-                  <DeviceMobileIcon size={18} className="text-[#432dd7] shrink-0" />
-                  <span className={`text-sm font-medium text-black dark:text-white/90 ${orbitron.className}`}>
-                    {t("downloadApp")}
+            {/* Stats */}
+            <div className="flex items-center justify-center sm:justify-start gap-4 sm:gap-5 mt-3 flex-wrap">
+              {TABS.map(({ key, count, label }) => (
+                <button
+                  key={key}
+                  onClick={() => setActiveTab(key)}
+                  className="flex items-baseline gap-1 cursor-pointer group"
+                >
+                  <span
+                    className={`text-sm font-semibold text-gray-900 dark:text-white/90 ${orbitron.className}`}
+                  >
+                    {count}
                   </span>
-                </div>
+                  <span className="text-xs text-gray-500 dark:text-white/50 group-hover:text-gray-900 dark:group-hover:text-white/80 transition-colors">
+                    {label}
+                  </span>
+                </button>
+              ))}
+              {isProvider && stats?.averageRating != null && (
+                <span className="flex items-center gap-1 text-xs text-gray-500 dark:text-white/50">
+                  <StarIcon size={12} weight="fill" className="text-yellow-500" />
+                  {stats.averageRating.toFixed(1)}
+                </span>
+              )}
+            </div>
 
-                {qrDataUrl && (
-                  <div className="flex flex-col items-center gap-4 w-full">
-                    <div className="bg-white p-3 sm:p-4 rounded-lg max-w-full">
-                      <img
-                        src={qrDataUrl}
-                        alt="QR Code"
-                        className="w-40 h-40 sm:w-48 sm:h-48 max-w-full"
-                      />
-                    </div>
+            {/* Actions */}
+            <div className="flex items-center justify-center sm:justify-start gap-2 mt-4 flex-wrap">
+              {!editing ? (
+                <>
+                  <button
+                    onClick={startEditing}
+                    className={`h-10 px-4 rounded-lg bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/15 text-sm text-gray-900 dark:text-white/90 cursor-pointer transition-colors ${orbitron.className}`}
+                  >
+                    {t("editProfile")}
+                  </button>
+                  <button
+                    onClick={() => setSettingsOpen(true)}
+                    className="h-10 w-10 rounded-full bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/15 flex items-center justify-center text-gray-900 dark:text-white/90 cursor-pointer transition-colors"
+                    aria-label={t("settings")}
+                  >
+                    <GearSixIcon size={18} />
+                  </button>
+                  <button
+                    onClick={handleShare}
+                    className="h-10 w-10 rounded-full bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/15 flex items-center justify-center text-gray-900 dark:text-white/90 cursor-pointer transition-colors"
+                    aria-label={t("share")}
+                  >
+                    <ShareNetworkIcon size={18} />
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={cancelEditing}
+                    disabled={saving}
+                    className={`flex items-center gap-1.5 h-10 px-4 rounded-lg border border-gray-200 dark:border-white/10 text-sm text-gray-600 dark:text-white/60 hover:bg-gray-100 dark:hover:bg-white/5 cursor-pointer disabled:opacity-40 transition-colors ${orbitron.className}`}
+                  >
+                    <XIcon size={16} />
+                    {t("cancel")}
+                  </button>
+                  <button
+                    onClick={handleSave}
+                    disabled={saving}
+                    className={`flex items-center gap-1.5 h-10 px-4 rounded-lg bg-[#432dd7] hover:bg-[#432dd7]/90 text-sm text-white cursor-pointer disabled:opacity-50 transition-colors ${orbitron.className}`}
+                  >
+                    <CheckIcon size={16} weight="bold" />
+                    {saving ? t("saving") : t("save")}
+                  </button>
+                </>
+              )}
+            </div>
 
-                    <div className="flex flex-col sm:flex-row gap-2 w-full max-w-full">
-                      <button
-                        onClick={handleDownloadQr}
-                        disabled={downloading}
-                        className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-[#432dd7] text-white hover:bg-[#432dd7]/90 cursor-pointer disabled:opacity-40 transition-colors w-full sm:w-auto ${orbitron.className}`}
-                      >
-                        <DownloadSimpleIcon size={16} className="shrink-0" />
-                        <span className="truncate">
-                          {downloading ? t("downloading") : t("downloadQr")}
-                        </span>
-                      </button>
-
-                      <div className="flex gap-2 w-full sm:w-auto">
-                        <button
-                          className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-black text-white hover:bg-black/90 cursor-pointer transition-colors ${orbitron.className}`}
-                          aria-label="Google Play"
-                        >
-                          <GooglePlayLogo size={16} className="shrink-0" />
-                        </button>
-                        <button
-                          className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-black text-white hover:bg-black/90 cursor-pointer transition-colors ${orbitron.className}`}
-                          aria-label="App Store"
-                        >
-                          <AppleLogo size={16} className="shrink-0" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
+            {/* Bio */}
+            <div className="mt-4">
+              {editing ? (
+                <textarea
+                  value={form.bio || ""}
+                  onChange={(e) =>
+                    setForm((f) => ({ ...f, bio: e.target.value }))
+                  }
+                  placeholder={t("bioPlaceholder")}
+                  rows={3}
+                  maxLength={500}
+                  className="w-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg p-3 text-sm text-gray-900 dark:text-white/90 placeholder:text-gray-400 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7] resize-none"
+                />
+              ) : (
+                <p className="text-sm text-gray-600 dark:text-white/50 wrap-break-words">
+                  {user.bio || t("noBio")}
+                </p>
+              )}
+            </div>
           </div>
         </div>
+
+        {/* Erreur / succès */}
+        {error && (
+          <p
+            className={`text-sm text-red-500 dark:text-red-400 mt-4 ${orbitron.className}`}
+          >
+            {error}
+          </p>
+        )}
+        {success && (
+          <p
+            className={`text-sm text-green-600 dark:text-green-400 mt-4 ${orbitron.className}`}
+          >
+            {success}
+          </p>
+        )}
+
+        {/* Agence */}
+        {editing && (isAgencyClient || form.clientType === "AGENCY") && (
+          <section className="border-t border-gray-100 dark:border-white/5 mt-6 pt-5">
+            <h2
+              className={`flex items-center gap-1.5 text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}
+            >
+              <BuildingsIcon size={16} />
+              {t("agencyInfo")}
+            </h2>
+            <div className="flex flex-col gap-3">
+              <Field
+                label={t("companyName")}
+                editing
+                value={form.companyName || ""}
+                onChange={(v) => setForm((f) => ({ ...f, companyName: v }))}
+                placeholder={t("companyNamePlaceholder")}
+              />
+              <Field
+                label={t("rccmNumber")}
+                editing
+                value={form.rccmNumber || ""}
+                onChange={(v) => setForm((f) => ({ ...f, rccmNumber: v }))}
+                placeholder={t("rccmPlaceholder")}
+              />
+            </div>
+          </section>
+        )}
+
+        {/* Prestataire */}
+        {editing && isProvider && (
+          <section className="border-t border-gray-100 dark:border-white/5 mt-6 pt-5">
+            <h2
+              className={`flex items-center gap-1.5 text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}
+            >
+              <BriefcaseIcon size={16} />
+              {t("providerInfo")}
+            </h2>
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+                <span className="text-xs sm:text-sm text-gray-500 dark:text-white/50 shrink-0">
+                  {t("providerType")}
+                </span>
+                <select
+                  value={form.providerType || ""}
+                  onChange={(e) =>
+                    setForm((f) => ({
+                      ...f,
+                      providerType: e.target.value as ProviderType,
+                    }))
+                  }
+                  className="h-10 px-3 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white/90 focus:outline-none focus:border-[#432dd7] w-full sm:w-auto"
+                >
+                  <option value="">{t("select")}</option>
+                  {PROVIDER_TYPES.map((pt) => (
+                    <option key={pt} value={pt}>
+                      {t(`providerTypes.${pt}`)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+                <span className="text-xs sm:text-sm text-gray-500 dark:text-white/50 shrink-0">
+                  {t("hourlyRate")}
+                </span>
+                <div className="flex gap-2 w-full sm:w-auto">
+                  <input
+                    type="number"
+                    min={0}
+                    value={form.hourlyRate ?? ""}
+                    onChange={(e) =>
+                      setForm((f) => ({
+                        ...f,
+                        hourlyRate: e.target.value
+                          ? Number(e.target.value)
+                          : undefined,
+                      }))
+                    }
+                    placeholder="0"
+                    className="flex-1 sm:flex-none sm:w-28 h-10 px-3 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white/90 focus:outline-none focus:border-[#432dd7]"
+                  />
+                  <select
+                    value={form.currency || "XOF"}
+                    onChange={(e) =>
+                      setForm((f) => ({ ...f, currency: e.target.value }))
+                    }
+                    className="h-10 px-2 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white/90 focus:outline-none focus:border-[#432dd7]"
+                  >
+                    {CURRENCIES.map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Onglets */}
+        <div className="flex items-center border-t border-gray-100 dark:border-white/5 mt-6">
+          {TABS.map(({ key, icon: Icon, label }) => (
+            <button
+              key={key}
+              onClick={() => setActiveTab(key)}
+              className={`flex-1 flex items-center justify-center gap-1.5 h-12 text-sm cursor-pointer border-b-2 transition-colors ${
+                activeTab === key
+                  ? "border-gray-900 dark:border-white text-gray-900 dark:text-white"
+                  : "border-transparent text-gray-400 dark:text-white/40 hover:text-gray-700 dark:hover:text-white/70"
+              } ${orbitron.className}`}
+            >
+              <Icon
+                size={16}
+                weight={activeTab === key ? "fill" : "regular"}
+              />
+              <span className="hidden xs:inline sm:inline">{label}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Contenu onglet */}
+        <div className="py-14 flex flex-col items-center justify-center text-center px-4">
+          {activeTab === "bookings" && (
+            <>
+              <CalendarCheckIcon
+                size={32}
+                className="text-gray-300 dark:text-white/20 mb-2"
+              />
+              <p
+                className={`text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}
+              >
+                {t("empty.bookings")}
+              </p>
+            </>
+          )}
+          {activeTab === "reviews" && (
+            <>
+              <StarIcon
+                size={32}
+                className="text-gray-300 dark:text-white/20 mb-2"
+              />
+              <p
+                className={`text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}
+              >
+                {t("empty.reviews")}
+              </p>
+            </>
+          )}
+          {activeTab === "favorites" && (
+            <>
+              <HeartIcon
+                size={32}
+                className="text-gray-300 dark:text-white/20 mb-2"
+              />
+              <p
+                className={`text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}
+              >
+                {t("empty.favorites")}
+              </p>
+            </>
+          )}
+        </div>
       </div>
-    </Popover>
+
+      <SettingsPopover
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+      />
+    </div>
+  );
+}
+
+function Field({
+  label,
+  editing,
+  value,
+  onChange,
+  placeholder,
+}: {
+  label: string;
+  editing: boolean;
+  value?: string | null;
+  onChange: (v: string) => void;
+  placeholder?: string;
+}) {
+  return (
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+      <span className="text-xs sm:text-sm text-gray-500 dark:text-white/50 shrink-0">
+        {label}
+      </span>
+      {editing ? (
+        <input
+          value={value || ""}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          className="h-10 px-3 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white/90 placeholder:text-gray-400 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7] w-full sm:w-64"
+        />
+      ) : (
+        <span className="text-sm text-gray-900 dark:text-white/90 truncate">
+          {value || "—"}
+        </span>
+      )}
+    </div>
   );
 }
