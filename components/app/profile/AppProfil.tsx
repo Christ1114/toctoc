@@ -470,7 +470,7 @@ export default function ProfilePage() {
                   className={`w-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg p-3 text-sm text-gray-900 dark:text-white/90 placeholder:text-gray-400 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7] resize-none ${orbitron.className}`}
                 />
               ) : (
-                <p className="text-sm text-gray-600 dark:text-white/50 wrap-break-words">
+                <p className={`text-sm text-gray-600 dark:text-white/50 wrap-break-words ${orbitron.className}`}>
                   {user.bio || t("noBio")}
                 </p>
               )}
