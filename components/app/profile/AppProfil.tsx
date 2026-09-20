@@ -20,7 +20,6 @@ import {
 import { orbitron } from "@/fonts/font";
 import { updateUser } from "@/app/lib/auth-client";
 import { useSession } from "@/app/context/SessionContext";
-import { createClient } from "@supabase/supabase-js";
 import SettingsPopover from "@/components/app/utils/settingsPopover";
 
 type AccountType = "CLIENT" | "PROVIDER" | "ADMIN";
@@ -72,15 +71,7 @@ type Stats = {
 
 type TabKey = "bookings" | "reviews" | "favorites";
 
-async function getAuthedSupabaseClient() {
-  const res = await fetch("/api/notifications/realtime-token");
-  const { token } = await res.json();
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    { global: { headers: { Authorization: `Bearer ${token}` } } }
-  );
-}
+
 
 export default function ProfilePage() {
   const t = useTranslations("ProfilePage");
@@ -184,96 +175,46 @@ const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
   const file = e.target.files?.[0];
   if (!file || !user) return;
 
-  // ✅ Liste blanche stricte
-  const ALLOWED_TYPES = [
-    "image/jpeg",
-    "image/png",
-    "image/webp",
-    "image/gif",
-  ];
-
-  if (!ALLOWED_TYPES.includes(file.type)) {
-    console.error("[Upload] Type refusé:", file.type);
+  if (!file.type.startsWith("image/")) {
     setError(t("errors.invalidImage"));
     return;
   }
-
   if (file.size > 5 * 1024 * 1024) {
-    console.error("[Upload] Fichier trop lourd:", file.size);
     setError(t("errors.imageTooLarge"));
     return;
   }
 
   setUploadingPhoto(true);
   setError(null);
-
   try {
-    // 1. Client authentifié
-    const authedSupabase = await getAuthedSupabaseClient();
+    const formData = new FormData();
+    formData.append("file", file);
 
-    // 2. Chemin propre (toujours en minuscules + extension fiable)
-    const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
-    const path = `${user.id}/avatar-${Date.now()}.${ext}`;
+    const uploadRes = await fetch("/api/profils/avatar", {
+      method: "POST",
+      body: formData,
+    });
 
-    console.log("========== UPLOAD START ==========");
-    console.log("[Upload] userId:", user.id);
-    console.log("[Upload] path:", path);
-    console.log("[Upload] file.type:", file.type);
-    console.log("[Upload] file.size:", file.size);
-
-    // 3. Upload
-    const { error: uploadError } = await authedSupabase.storage
-      .from("avatars")
-      .upload(path, file, {
-        upsert: true,
-        contentType: file.type,
-        cacheControl: "3600",
-      });
-
-    if (uploadError) {
-      console.error("========== UPLOAD ERROR ==========");
-      console.error("message:", uploadError.message);
-      console.error("statusCode:", (uploadError as any).statusCode);
-      console.error("full:", JSON.stringify(uploadError, null, 2));
+    if (!uploadRes.ok) {
       setError(t("errors.uploadFailed"));
       return;
     }
 
-    console.log("[Upload] ✅ upload OK");
+    const { url } = await uploadRes.json();
 
-    // 4. Récupération de l'URL publique
-    const { data: publicUrlData } = authedSupabase.storage
-      .from("avatars")
-      .getPublicUrl(path);
-
-    const publicUrl = publicUrlData.publicUrl;
-    console.log("[Upload] publicUrl:", publicUrl);
-
-    // 5. Mise à jour du profil utilisateur
-    const { error: updateError } = await updateUser({
-      image: publicUrl,
-    });
-
+    const { error: updateError } = await updateUser({ image: url });
     if (updateError) {
-      console.error("[Update user] error:", updateError);
       setError(t("errors.saveFailed"));
       return;
     }
 
-    console.log("[Upload] ✅ user updated");
-
-    // 6. Mise à jour locale de l'état
-    setUser((prev) =>
-      prev ? { ...prev, image: publicUrl } : prev
-    );
-  } catch (err: any) {
-    console.error("[Upload] ❌ exception:", err);
+    setUser((prev) => (prev ? { ...prev, image: url } : prev));
+  } catch (err) {
+    console.error("Erreur upload photo:", err);
     setError(t("errors.uploadFailed"));
   } finally {
     setUploadingPhoto(false);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
+    if (fileInputRef.current) fileInputRef.current.value = "";
   }
 };
   const handleShare = async () => {
