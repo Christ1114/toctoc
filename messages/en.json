@@ -756,5 +756,8 @@
   "IndividualDashboard": {
     "welcome": "Welcome, {name}",
     "subtitle": "Find domestic staff near you."
-  }
+  },
+  "cropTitle": "Adjust photo",
+"zoom": "Zoom",
+"cropConfirm": "Confirm"
 }

@@ -760,5 +760,8 @@
   "IndividualDashboard": {
     "welcome": "欢迎，{name}",
     "subtitle": "在您附近寻找家政人员。"
-  }
+  },
+  "cropTitle": "调整照片",
+"zoom": "缩放",
+"cropConfirm": "确认"
 }

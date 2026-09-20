@@ -774,5 +774,8 @@
   "IndividualDashboard": {
     "welcome": "مرحباً، {name}",
     "subtitle": "ابحث عن عمالة منزلية بالقرب منك."
-  }
+  },
+  "cropTitle": "تعديل الصورة",
+"zoom": "تكبير/تصغير",
+"cropConfirm": "تأكيد"
 }

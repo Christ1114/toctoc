@@ -21,6 +21,7 @@ import { orbitron } from "@/fonts/font";
 import { updateUser } from "@/app/lib/auth-client";
 import { useSession } from "@/app/context/SessionContext";
 import SettingsPopover from "@/components/app/utils/settingsPopover";
+import ImageCropModal from "./ImageCropModal";
 
 type AccountType = "CLIENT" | "PROVIDER" | "ADMIN";
 type ClientType = "INDIVIDUAL" | "AGENCY";
@@ -88,6 +89,7 @@ export default function ProfilePage() {
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [cropImageSrc, setCropImageSrc] = useState<string | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<TabKey>("bookings");
   const [error, setError] = useState<string | null>(null);
@@ -171,52 +173,68 @@ export default function ProfilePage() {
 
   const handlePhotoClick = () => fileInputRef.current?.click();
 
-const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-  const file = e.target.files?.[0];
-  if (!file || !user) return;
+  // Ne fait plus l'upload directement : ouvre la modale de recadrage avec
+  // le fichier choisi. L'upload réel se fait dans handleCropConfirm.
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-  if (!file.type.startsWith("image/")) {
-    setError(t("errors.invalidImage"));
-    return;
-  }
-  if (file.size > 5 * 1024 * 1024) {
-    setError(t("errors.imageTooLarge"));
-    return;
-  }
-
-  setUploadingPhoto(true);
-  setError(null);
-  try {
-    const formData = new FormData();
-    formData.append("file", file);
-
-    const uploadRes = await fetch("/api/profils/avatar", {
-      method: "POST",
-      body: formData,
-    });
-
-    if (!uploadRes.ok) {
-      setError(t("errors.uploadFailed"));
+    if (!file.type.startsWith("image/")) {
+      setError(t("errors.invalidImage"));
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setError(t("errors.imageTooLarge"));
       return;
     }
 
-    const { url } = await uploadRes.json();
+    setError(null);
+    const reader = new FileReader();
+    reader.onload = () => setCropImageSrc(reader.result as string);
+    reader.readAsDataURL(file);
 
-    const { error: updateError } = await updateUser({ image: url });
-    if (updateError) {
-      setError(t("errors.saveFailed"));
-      return;
-    }
-
-    setUser((prev) => (prev ? { ...prev, image: url } : prev));
-  } catch (err) {
-    console.error("Erreur upload photo:", err);
-    setError(t("errors.uploadFailed"));
-  } finally {
-    setUploadingPhoto(false);
+    // Réinitialise l'input pour pouvoir resélectionner le même fichier plus tard
     if (fileInputRef.current) fileInputRef.current.value = "";
-  }
-};
+  };
+
+  // Appelée une fois que l'utilisateur a validé son cadrage dans la modale
+  const handleCropConfirm = async (blob: Blob) => {
+    if (!user) return;
+
+    setUploadingPhoto(true);
+    setError(null);
+    try {
+      const formData = new FormData();
+      formData.append("file", blob, "avatar.jpg");
+
+      const uploadRes = await fetch("/api/profils/avatar", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!uploadRes.ok) {
+        setError(t("errors.uploadFailed"));
+        return;
+      }
+
+      const { url } = await uploadRes.json();
+
+      const { error: updateError } = await updateUser({ image: url });
+      if (updateError) {
+        setError(t("errors.saveFailed"));
+        return;
+      }
+
+      setUser((prev) => (prev ? { ...prev, image: url } : prev));
+      setCropImageSrc(null); // ferme la modale après succès
+    } catch (err) {
+      console.error("Erreur upload photo:", err);
+      setError(t("errors.uploadFailed"));
+    } finally {
+      setUploadingPhoto(false);
+    }
+  };
+
   const handleShare = async () => {
     const url = window.location.href;
     try {
@@ -637,6 +655,15 @@ const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         open={settingsOpen}
         onClose={() => setSettingsOpen(false)}
       />
+
+      {cropImageSrc && (
+        <ImageCropModal
+          imageSrc={cropImageSrc}
+          onCancel={() => setCropImageSrc(null)}
+          onConfirm={handleCropConfirm}
+          processing={uploadingPhoto}
+        />
+      )}
     </div>
   );
 }

@@ -1,4 +1,7 @@
 {
+  "cropTitle": "Ajuster la photo",
+"zoom": "Zoom",
+"cropConfirm": "Valider",
   "ProfilePage": {
     "back": "Retour",
     "unnamed": "Sans nom",
