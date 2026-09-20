@@ -26,13 +26,11 @@
     "select": "اختر",
     "contact": "معلومات الاتصال",
     "verified": "موثّق",
-
     "accountType": {
       "CLIENT": "عميل",
       "PROVIDER": "مقدّم خدمة",
       "ADMIN": "مسؤول"
     },
-
     "providerTypes": {
       "BABYSITTER": "جليسة أطفال",
       "GARDE_PERISCOLAIRE": "رعاية بعد المدرسة",
@@ -41,19 +39,16 @@
       "RESIDENTIEL": "خدمة سكنية",
       "COURT_TERME": "خدمة قصيرة المدى"
     },
-
     "tabs": {
       "bookings": "الحجوزات",
       "reviews": "التقييمات",
       "favorites": "المفضلة"
     },
-
     "empty": {
       "bookings": "لا توجد حجوزات بعد",
       "reviews": "لا توجد تقييمات بعد",
       "favorites": "لا توجد مفضلات بعد"
     },
-
     "errors": {
       "saveFailed": "فشل حفظ التغييرات",
       "invalidImage": "يرجى اختيار ملف صورة صالح",
@@ -63,7 +58,8 @@
   },
   "TopToolbar": {
     "quickSearchPlaceholder": "بحث سريع...",
-    "searchByAi": "البحث بالذكاء الاصطناعي"
+    "searchByAi": "البحث بالذكاء الاصطناعي",
+    "profile": "الملف الشخصي"
   },
   "AiSearchPanel": {
     "title": "البحث بالذكاء الاصطناعي",
@@ -77,30 +73,30 @@
     "me": "أنا",
     "youAreHere": "أنت هنا",
     "locateMe": "تحديد موقعي",
-    "retry": "Réessayer"
+    "retry": "إعادة المحاولة"
   },
   "ProfilePopover": {
-  "title": "حسابي",
-  "profileTab": "الملف الشخصي",
-  "notificationsTab": "الإشعارات",
-  "unnamed": "مستخدم",
-  "viewFullProfile": "عرض ملفي الشخصي الكامل",
-  "noNotifications": "لا توجد إشعارات",
-  "mock": {
-    "offer": {
-      "title": "عرض عمل جديد متاح",
-      "description": "توجد مهمة تتوافق مع ملفك الشخصي في كوكودي."
-    },
-    "verified": {
-      "title": "تم توثيق الملف الشخصي",
-      "description": "تم توثيق حسابك بنجاح."
-    },
-    "reminder": {
-      "title": "تذكير بالمقابلة",
-      "description": "تمت جدولة مقابلة افتراضية غدًا في الساعة 10:00 صباحًا."
+    "title": "حسابي",
+    "profileTab": "الملف الشخصي",
+    "notificationsTab": "الإشعارات",
+    "unnamed": "مستخدم",
+    "viewFullProfile": "عرض ملفي الشخصي الكامل",
+    "noNotifications": "لا توجد إشعارات",
+    "mock": {
+      "offer": {
+        "title": "عرض عمل جديد متاح",
+        "description": "توجد مهمة تتوافق مع ملفك الشخصي في كوكودي."
+      },
+      "verified": {
+        "title": "تم توثيق الملف الشخصي",
+        "description": "تم توثيق حسابك بنجاح."
+      },
+      "reminder": {
+        "title": "تذكير بالمقابلة",
+        "description": "تمت جدولة مقابلة افتراضية غدًا في الساعة 10:00 صباحًا."
+      }
     }
-  }
-},
+  },
   "VrConfirmPopover": {
     "title": "مقابلة افتراضية",
     "description": "تُجرى هذه المقابلة في بيئة غامرة. يلزم توفر سماعة واقع افتراضي متوافقة للمشاركة.",

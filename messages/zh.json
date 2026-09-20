@@ -26,13 +26,11 @@
     "select": "请选择",
     "contact": "联系方式",
     "verified": "已验证",
-
     "accountType": {
       "CLIENT": "客户",
       "PROVIDER": "服务者",
       "ADMIN": "管理员"
     },
-
     "providerTypes": {
       "BABYSITTER": "保姆",
       "GARDE_PERISCOLAIRE": "课后托管",
@@ -41,19 +39,16 @@
       "RESIDENTIEL": "住家服务",
       "COURT_TERME": "短期服务"
     },
-
     "tabs": {
       "bookings": "预约",
       "reviews": "评价",
       "favorites": "收藏"
     },
-
     "empty": {
       "bookings": "暂无预约",
       "reviews": "暂无评价",
       "favorites": "暂无收藏"
     },
-
     "errors": {
       "saveFailed": "保存失败",
       "invalidImage": "请选择有效的图片文件",
@@ -63,7 +58,8 @@
   },
   "TopToolbar": {
     "quickSearchPlaceholder": "快速搜索...",
-    "searchByAi": "使用AI搜索"
+    "searchByAi": "使用AI搜索",
+    "profile": "个人资料"
   },
   "AiSearchPanel": {
     "title": "AI搜索",
@@ -77,21 +73,21 @@
     "me": "我",
     "youAreHere": "您在这里",
     "locateMe": "定位我",
-      "retry": "重试"
+    "retry": "重试"
   },
   "ProfilePopover": {
-  "title": "我的账户",
-  "profileTab": "个人资料",
-  "notificationsTab": "通知",
-  "unnamed": "用户",
-  "viewFullProfile": "查看完整资料",
-  "noNotifications": "暂无通知",
-  "mock": {
-    "offer": { "title": "有新的招聘信息", "description": "在科科迪有一个符合您资料的任务。" },
-    "verified": { "title": "资料已验证", "description": "您的账户已成功验证。" },
-    "reminder": { "title": "面试提醒", "description": "明天上午10点安排了视频面试。" }
-  }
-},
+    "title": "我的账户",
+    "profileTab": "个人资料",
+    "notificationsTab": "通知",
+    "unnamed": "用户",
+    "viewFullProfile": "查看完整资料",
+    "noNotifications": "暂无通知",
+    "mock": {
+      "offer": { "title": "有新的招聘信息", "description": "在科科迪有一个符合您资料的任务。" },
+      "verified": { "title": "资料已验证", "description": "您的账户已成功验证。" },
+      "reminder": { "title": "面试提醒", "description": "明天上午10点安排了视频面试。" }
+    }
+  },
   "VrConfirmPopover": {
     "title": "虚拟面试",
     "description": "此次面试将在沉浸式虚拟空间中进行。参与需要一台兼容的VR头显设备。",
@@ -117,68 +113,62 @@
     "expand": "展开"
   },
   "SettingsPopover": {
-  "title": "设置",
-  "close": "关闭",
-  "general": "通用",
-  "profile": "个人资料",
-  "download": "下载",
-
-  "downloadApp": "下载应用",
-  "scanToDownload": "扫描此二维码下载 TocToc 应用到您的手机。",
-  "mobileDownloadHint": "直接从您的应用商店下载应用",
-  "downloadQr": "下载二维码",
-  "downloading": "下载中...",
-  "appNotAvailable": "移动应用即将推出。敬请期待！",
-  "qrCodeAlt": "下载二维码",
-  "googlePlay": "Google Play",
-  "appStore": "App Store",
-
-  "theme": "主题",
-  "themes": {
-    "light": "浅色",
-    "dark": "深色",
-    "system": "系统"
+    "title": "设置",
+    "close": "关闭",
+    "general": "通用",
+    "profile": "个人资料",
+    "download": "下载",
+    "downloadApp": "下载应用",
+    "scanToDownload": "扫描此二维码下载 TocToc 应用到您的手机。",
+    "mobileDownloadHint": "直接从您的应用商店下载应用",
+    "downloadQr": "下载二维码",
+    "downloading": "下载中...",
+    "appNotAvailable": "移动应用即将推出。敬请期待！",
+    "qrCodeAlt": "下载二维码",
+    "googlePlay": "Google Play",
+    "appStore": "App Store",
+    "theme": "主题",
+    "themes": {
+      "light": "浅色",
+      "dark": "深色",
+      "system": "系统"
+    },
+    "language": "语言",
+    "name": "姓名",
+    "email": "电子邮箱",
+    "phone": "电话号码",
+    "verified": "已验证",
+    "verify": "验证",
+    "sending": "发送中...",
+    "verifying": "验证中...",
+    "confirm": "确认",
+    "resendCode": "重新发送验证码",
+    "phonePlaceholder": "+225 XX XX XX XX",
+    "otpPlaceholder": "6位数字验证码",
+    "emailSentHint": "邮件已发送，请查收您的收件箱",
+    "comingSoon": "即将推出",
+    "phoneComingSoonHint": "电话验证即将推出",
+    "logout": "从所有设备退出登录",
+    "logoutButton": "退出登录",
+    "loggingOut": "退出中...",
+    "deleteAccount": "删除账户",
+    "deleteAccountHint": "永久删除您的账户和所有数据",
+    "deleteButton": "删除",
+    "deleteConfirmButton": "是的，删除",
+    "confirmDelete": "您确定要删除您的账户吗？此操作不可撤销。",
+    "deleting": "删除中...",
+    "cancel": "取消",
+    "errors": {
+      "emailSendFailed": "发送验证邮件失败",
+      "emailVerifyFailed": "验证码无效或已过期。",
+      "phoneSendFailed": "发送验证码失败",
+      "phoneVerifyFailed": "验证码无效或已过期",
+      "logoutFailed": "退出登录失败",
+      "deleteFailed": "删除账户失败",
+      "submitFailed": "注册失败。请重试。",
+      "networkFailed": "网络错误。请检查您的连接并重试。"
+    }
   },
-  "language": "语言",
-
-  "name": "姓名",
-  "email": "电子邮箱",
-  "phone": "电话号码",
-  "verified": "已验证",
-  "verify": "验证",
-  "sending": "发送中...",
-  "verifying": "验证中...",
-  "confirm": "确认",
-  "resendCode": "重新发送验证码",
-  "phonePlaceholder": "+225 XX XX XX XX",
-  "otpPlaceholder": "6位数字验证码",
-  "emailSentHint": "邮件已发送，请查收您的收件箱",
-  "comingSoon": "即将推出",
-  "phoneComingSoonHint": "电话验证即将推出",
-
-  "logout": "从所有设备退出登录",
-  "logoutButton": "退出登录",
-  "loggingOut": "退出中...",
-
-  "deleteAccount": "删除账户",
-  "deleteAccountHint": "永久删除您的账户和所有数据",
-  "deleteButton": "删除",
-  "deleteConfirmButton": "是的，删除",
-  "confirmDelete": "您确定要删除您的账户吗？此操作不可撤销。",
-  "deleting": "删除中...",
-  "cancel": "取消",
-
-  "errors": {
-    "emailSendFailed": "发送验证邮件失败",
-    "emailVerifyFailed": "验证码无效或已过期。",
-    "phoneSendFailed": "发送验证码失败",
-    "phoneVerifyFailed": "验证码无效或已过期",
-    "logoutFailed": "退出登录失败",
-    "deleteFailed": "删除账户失败",
-    "submitFailed": "注册失败。请重试。",
-    "networkFailed": "网络错误。请检查您的连接并重试。"
-  }
-},
   "SearchPopover": {
     "title": "搜索",
     "close": "关闭",

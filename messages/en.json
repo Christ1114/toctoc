@@ -26,13 +26,11 @@
     "select": "Select",
     "contact": "Contact",
     "verified": "Verified",
-
     "accountType": {
       "CLIENT": "Client",
       "PROVIDER": "Provider",
       "ADMIN": "Admin"
     },
-
     "providerTypes": {
       "BABYSITTER": "Babysitter",
       "GARDE_PERISCOLAIRE": "After-school care",
@@ -41,19 +39,16 @@
       "RESIDENTIEL": "Residential",
       "COURT_TERME": "Short-term"
     },
-
     "tabs": {
       "bookings": "Bookings",
       "reviews": "Reviews",
       "favorites": "Favorites"
     },
-
     "empty": {
       "bookings": "No bookings yet",
       "reviews": "No reviews yet",
       "favorites": "No favorites yet"
     },
-
     "errors": {
       "saveFailed": "Failed to save changes",
       "invalidImage": "Please select a valid image file",
@@ -63,21 +58,22 @@
   },
   "TopToolbar": {
     "quickSearchPlaceholder": "Quick search...",
-    "searchByAi": "Search by AI"
+    "searchByAi": "Search by AI",
+    "profile": "Profile"
   },
   "ProfilePopover": {
-  "title": "My account",
-  "profileTab": "Profile",
-  "notificationsTab": "Notifications",
-  "unnamed": "User",
-  "viewFullProfile": "View my full profile",
-  "noNotifications": "No notifications",
-  "mock": {
-    "offer": { "title": "New offer available", "description": "A mission matches your profile in Cocody." },
-    "verified": { "title": "Profile verified", "description": "Your account has been successfully verified." },
-    "reminder": { "title": "Interview reminder", "description": "Virtual interview scheduled tomorrow at 10:00 AM." }
-  }
-},
+    "title": "My account",
+    "profileTab": "Profile",
+    "notificationsTab": "Notifications",
+    "unnamed": "User",
+    "viewFullProfile": "View my full profile",
+    "noNotifications": "No notifications",
+    "mock": {
+      "offer": { "title": "New offer available", "description": "A mission matches your profile in Cocody." },
+      "verified": { "title": "Profile verified", "description": "Your account has been successfully verified." },
+      "reminder": { "title": "Interview reminder", "description": "Virtual interview scheduled tomorrow at 10:00 AM." }
+    }
+  },
   "AiSearchPanel": {
     "title": "AI Search",
     "close": "Close",
@@ -90,7 +86,7 @@
     "me": "Me",
     "youAreHere": "You are here",
     "locateMe": "Locate me",
-  "retry": "Retry"
+    "retry": "Retry"
   },
   "VrConfirmPopover": {
     "title": "Virtual interview",
@@ -102,7 +98,6 @@
     "continue": "Continue",
     "close": "Close"
   },
-  
   "Sidebar": {
     "search": "Search",
     "home": "Home",
@@ -117,65 +112,59 @@
     "collapse": "Collapse",
     "expand": "Expand"
   },
- "SettingsPopover": {
-  "title": "Settings",
-  "close": "Close",
-  "general": "General",
-  "profile": "Profile",
-  "download": "Download",
-
-  "downloadApp": "Download the app",
-  "scanToDownload": "Scan this code to download the TocToc app on your phone.",
-  "mobileDownloadHint": "Download the app directly from your store",
-  "downloadQr": "Download QR code",
-  "downloading": "Downloading...",
-
-  "theme": "Theme",
-  "themes": {
-    "light": "Light",
-    "dark": "Dark",
-    "system": "System"
+  "SettingsPopover": {
+    "title": "Settings",
+    "close": "Close",
+    "general": "General",
+    "profile": "Profile",
+    "download": "Download",
+    "downloadApp": "Download the app",
+    "scanToDownload": "Scan this code to download the TocToc app on your phone.",
+    "mobileDownloadHint": "Download the app directly from your store",
+    "downloadQr": "Download QR code",
+    "downloading": "Downloading...",
+    "theme": "Theme",
+    "themes": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    },
+    "language": "Language",
+    "name": "Name",
+    "email": "Email address",
+    "phone": "Phone number",
+    "verified": "Verified",
+    "verify": "Verify",
+    "sending": "Sending...",
+    "verifying": "Verifying...",
+    "confirm": "Confirm",
+    "resendCode": "Resend code",
+    "phonePlaceholder": "+225 XX XX XX XX",
+    "otpPlaceholder": "6-digit code",
+    "emailSentHint": "Email sent, check your inbox",
+    "comingSoon": "Coming soon",
+    "phoneComingSoonHint": "Phone verification is coming soon",
+    "logout": "Log out from all devices",
+    "logoutButton": "Log out",
+    "loggingOut": "Logging out...",
+    "deleteAccount": "Delete account",
+    "deleteAccountHint": "Permanently delete your account and all data",
+    "deleteButton": "Delete",
+    "deleteConfirmButton": "Yes, delete",
+    "confirmDelete": "Are you sure you want to delete your account? This action is irreversible.",
+    "deleting": "Deleting...",
+    "cancel": "Cancel",
+    "errors": {
+      "emailSendFailed": "Failed to send verification email",
+      "emailVerifyFailed": "Invalid or expired code.",
+      "phoneSendFailed": "Failed to send code",
+      "phoneVerifyFailed": "Invalid or expired code",
+      "logoutFailed": "Failed to log out",
+      "deleteFailed": "Failed to delete account",
+      "submitFailed": "Registration failed. Please try again.",
+      "networkFailed": "Network error. Check your connection and try again."
+    }
   },
-  "language": "Language",
-
-  "name": "Name",
-  "email": "Email address",
-  "phone": "Phone number",
-  "verified": "Verified",
-  "verify": "Verify",
-  "sending": "Sending...",
-  "verifying": "Verifying...",
-  "confirm": "Confirm",
-  "resendCode": "Resend code",
-  "phonePlaceholder": "+225 XX XX XX XX",
-  "otpPlaceholder": "6-digit code",
-  "emailSentHint": "Email sent, check your inbox",
-  "comingSoon": "Coming soon",
-  "phoneComingSoonHint": "Phone verification is coming soon",
-
-  "logout": "Log out from all devices",
-  "logoutButton": "Log out",
-  "loggingOut": "Logging out...",
-
-  "deleteAccount": "Delete account",
-  "deleteAccountHint": "Permanently delete your account and all data",
-  "deleteButton": "Delete",
-  "deleteConfirmButton": "Yes, delete",
-  "confirmDelete": "Are you sure you want to delete your account? This action is irreversible.",
-  "deleting": "Deleting...",
-  "cancel": "Cancel",
-
-  "errors": {
-    "emailSendFailed": "Failed to send verification email",
-    "emailVerifyFailed": "Invalid or expired code.",
-    "phoneSendFailed": "Failed to send code",
-    "phoneVerifyFailed": "Invalid or expired code",
-    "logoutFailed": "Failed to log out",
-    "deleteFailed": "Failed to delete account",
-    "submitFailed": "Registration failed. Please try again.",
-    "networkFailed": "Network error. Check your connection and try again."
-  }
-},
   "SearchPopover": {
     "title": "Search",
     "close": "Close",
