@@ -1,94 +1,88 @@
 {
-  
   "ProfilePage": {
-  "back": "Retour",
-  "unnamed": "Sans nom",
-  "notFound": "Profil introuvable",
-  "changePhoto": "Changer la photo",
-  "namePlaceholder": "Votre nom",
-  "editProfile": "Modifier le profil",
-  "settings": "Paramètres",
-  "share": "Partager",
-  "cancel": "Annuler",
-  "save": "Enregistrer",
-  "saving": "Enregistrement...",
-  "saved": "Profil mis à jour",
-  "bioPlaceholder": "Parlez-nous de vous...",
-  "noBio": "Aucune bio pour le moment",
-  "linkCopied": "Lien copié",
-  "agencyInfo": "Informations agence",
-  "companyName": "Nom de l'entreprise",
-  "companyNamePlaceholder": "Ex : Ma super agence",
-  "rccmNumber": "Numéro RCCM",
-  "rccmPlaceholder": "Ex : CI-ABJ-2024-B-12345",
-  "providerInfo": "Informations prestataire",
-  "providerType": "Type de prestation",
-  "hourlyRate": "Tarif horaire",
-  "select": "Sélectionner",
-  "contact": "Contact",
-  "verified": "Vérifié",
-
-  "accountType": {
-    "CLIENT": "Client",
-    "PROVIDER": "Prestataire",
-    "ADMIN": "Administrateur"
+    "back": "Retour",
+    "unnamed": "Sans nom",
+    "notFound": "Profil introuvable",
+    "changePhoto": "Changer la photo",
+    "namePlaceholder": "Votre nom",
+    "editProfile": "Modifier le profil",
+    "settings": "Paramètres",
+    "share": "Partager",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "saving": "Enregistrement...",
+    "saved": "Profil mis à jour",
+    "bioPlaceholder": "Parlez-nous de vous...",
+    "noBio": "Aucune bio pour le moment",
+    "linkCopied": "Lien copié",
+    "agencyInfo": "Informations agence",
+    "companyName": "Nom de l'entreprise",
+    "companyNamePlaceholder": "Ex : Ma super agence",
+    "rccmNumber": "Numéro RCCM",
+    "rccmPlaceholder": "Ex : CI-ABJ-2024-B-12345",
+    "providerInfo": "Informations prestataire",
+    "providerType": "Type de prestation",
+    "hourlyRate": "Tarif horaire",
+    "select": "Sélectionner",
+    "contact": "Contact",
+    "verified": "Vérifié",
+    "accountType": {
+      "CLIENT": "Client",
+      "PROVIDER": "Prestataire",
+      "ADMIN": "Administrateur"
+    },
+    "providerTypes": {
+      "BABYSITTER": "Baby-sitter",
+      "GARDE_PERISCOLAIRE": "Garde périscolaire",
+      "MENAGE": "Ménage",
+      "AIDE_PERSONNES_AGEES": "Aide aux personnes âgées",
+      "RESIDENTIEL": "Résidentiel (logé sur place)",
+      "COURT_TERME": "Court terme"
+    },
+    "tabs": {
+      "bookings": "Réservations",
+      "reviews": "Avis",
+      "favorites": "Favoris"
+    },
+    "empty": {
+      "bookings": "Aucune réservation pour le moment",
+      "reviews": "Aucun avis pour le moment",
+      "favorites": "Aucun favori pour le moment"
+    },
+    "errors": {
+      "saveFailed": "Échec de l'enregistrement. Réessaie.",
+      "invalidImage": "Fichier image invalide.",
+      "imageTooLarge": "Image trop lourde (max 5 Mo).",
+      "uploadFailed": "Échec de l'upload de la photo. Réessaie."
+    }
   },
-
-  "providerTypes": {
-    "BABYSITTER": "Baby-sitter",
-    "GARDE_PERISCOLAIRE": "Garde périscolaire",
-    "MENAGE": "Ménage",
-    "AIDE_PERSONNES_AGEES": "Aide aux personnes âgées",
-    "RESIDENTIEL": "Résidentiel (logé sur place)",
-    "COURT_TERME": "Court terme"
-  },
-
-  "tabs": {
-    "bookings": "Réservations",
-    "reviews": "Avis",
-    "favorites": "Favoris"
-  },
-
-  "empty": {
-    "bookings": "Aucune réservation pour le moment",
-    "reviews": "Aucun avis pour le moment",
-    "favorites": "Aucun favori pour le moment"
-  },
-
-  "errors": {
-    "saveFailed": "Échec de l'enregistrement. Réessaie.",
-    "invalidImage": "Fichier image invalide.",
-    "imageTooLarge": "Image trop lourde (max 5 Mo).",
-    "uploadFailed": "Échec de l'upload de la photo. Réessaie."
-  }
-},
-
   "TopToolbar": {
     "quickSearchPlaceholder": "Recherche rapide...",
-    "searchByAi": "Rechercher par IA"
+    "searchByAi": "Rechercher par IA",
+    "profile": "Profil"
   },
   "ProfilePopover": {
-  "title": "Mon compte",
-  "profileTab": "Profil",
-  "notificationsTab": "Notifications",
-  "unnamed": "Utilisateur",
-  "viewFullProfile": "Voir mon profil complet",
-  "noNotifications": "Aucune notification",
-  "mock": {
-    "offer": {
-      "title": "Nouvelle offre disponible",
-      "description": "Une mission correspond à votre profil à Cocody."
-    },
-    "verified": {
-      "title": "Profil vérifié",
-      "description": "Votre compte a été vérifié avec succès."
-    },
-    "reminder": {
-      "title": "Rappel d'entretien",
-      "description": "Entretien virtuel prévu demain à 10h00."
+    "title": "Mon compte",
+    "profileTab": "Profil",
+    "notificationsTab": "Notifications",
+    "unnamed": "Utilisateur",
+    "viewFullProfile": "Voir mon profil complet",
+    "noNotifications": "Aucune notification",
+    "mock": {
+      "offer": {
+        "title": "Nouvelle offre disponible",
+        "description": "Une mission correspond à votre profil à Cocody."
+      },
+      "verified": {
+        "title": "Profil vérifié",
+        "description": "Votre compte a été vérifié avec succès."
+      },
+      "reminder": {
+        "title": "Rappel d'entretien",
+        "description": "Entretien virtuel prévu demain à 10h00."
+      }
     }
-  }
-},
+  },
   "AiSearchPanel": {
     "title": "Recherche IA",
     "close": "Fermer",
@@ -112,9 +106,8 @@
     "me": "Moi",
     "youAreHere": "Vous êtes ici",
     "locateMe": "Me localiser",
-     "retry": "Réessayer"
+    "retry": "Réessayer"
   },
-
   "VrConfirmPopover": {
     "title": "Confirmation entretien VR",
     "description": "Voulez-vous vraiment passer un entretien en réalité virtuelle ?",
@@ -140,57 +133,51 @@
     "expand": "Déplier"
   },
   "SettingsPopover": {
-  "title": "Paramètres",
-  "close": "Fermer",
-  "general": "Général",
-  "profile": "Profil",
-  "download": "Télécharger",
-
-  "downloadApp": "Télécharger l'application",
-  "scanToDownload": "Scanne ce code pour télécharger l'application TocToc sur ton téléphone.",
-  "mobileDownloadHint": "Téléchargez l'application directement depuis votre store",
-  "downloadQr": "Télécharger le QR code",
-  "downloading": "Téléchargement...",
-
-  "theme": "Thème",
-  "themes": {
-    "light": "Clair",
-    "dark": "Sombre",
-    "system": "Système"
+    "title": "Paramètres",
+    "close": "Fermer",
+    "general": "Général",
+    "profile": "Profil",
+    "download": "Télécharger",
+    "downloadApp": "Télécharger l'application",
+    "scanToDownload": "Scanne ce code pour télécharger l'application TocToc sur ton téléphone.",
+    "mobileDownloadHint": "Téléchargez l'application directement depuis votre store",
+    "downloadQr": "Télécharger le QR code",
+    "downloading": "Téléchargement...",
+    "theme": "Thème",
+    "themes": {
+      "light": "Clair",
+      "dark": "Sombre",
+      "system": "Système"
+    },
+    "name": "Nom",
+    "email": "Email",
+    "phone": "Téléphone",
+    "verified": "Vérifié",
+    "verify": "Vérifier",
+    "sending": "Envoi...",
+    "verifying": "Vérification...",
+    "confirm": "Confirmer",
+    "otpPlaceholder": "Code à 6 chiffres",
+    "resendCode": "Renvoyer le code",
+    "comingSoon": "Bientôt disponible",
+    "phoneComingSoonHint": "La vérification du téléphone arrive bientôt",
+    "logout": "Déconnexion",
+    "logoutButton": "Se déconnecter",
+    "loggingOut": "Déconnexion...",
+    "deleteAccount": "Supprimer le compte",
+    "deleteAccountHint": "Cette action est irréversible",
+    "deleteButton": "Supprimer",
+    "confirmDelete": "Es-tu sûr de vouloir supprimer ton compte ? Cette action est définitive et toutes tes données seront perdues.",
+    "cancel": "Annuler",
+    "deleting": "Suppression...",
+    "deleteConfirmButton": "Supprimer définitivement",
+    "errors": {
+      "emailSendFailed": "Échec de l'envoi du code. Réessaie.",
+      "emailVerifyFailed": "Échec de la vérification. Vérifie le code.",
+      "logoutFailed": "Échec de la déconnexion. Réessaie.",
+      "deleteFailed": "Échec de la suppression du compte. Réessaie."
+    }
   },
-
-  "name": "Nom",
-  "email": "Email",
-  "phone": "Téléphone",
-  "verified": "Vérifié",
-  "verify": "Vérifier",
-  "sending": "Envoi...",
-  "verifying": "Vérification...",
-  "confirm": "Confirmer",
-  "otpPlaceholder": "Code à 6 chiffres",
-  "resendCode": "Renvoyer le code",
-  "comingSoon": "Bientôt disponible",
-  "phoneComingSoonHint": "La vérification du téléphone arrive bientôt",
-
-  "logout": "Déconnexion",
-  "logoutButton": "Se déconnecter",
-  "loggingOut": "Déconnexion...",
-
-  "deleteAccount": "Supprimer le compte",
-  "deleteAccountHint": "Cette action est irréversible",
-  "deleteButton": "Supprimer",
-  "confirmDelete": "Es-tu sûr de vouloir supprimer ton compte ? Cette action est définitive et toutes tes données seront perdues.",
-  "cancel": "Annuler",
-  "deleting": "Suppression...",
-  "deleteConfirmButton": "Supprimer définitivement",
-
-  "errors": {
-    "emailSendFailed": "Échec de l'envoi du code. Réessaie.",
-    "emailVerifyFailed": "Échec de la vérification. Vérifie le code.",
-    "logoutFailed": "Échec de la déconnexion. Réessaie.",
-    "deleteFailed": "Échec de la suppression du compte. Réessaie."
-  }
-},
   "SearchPopover": {
     "title": "Rechercher",
     "close": "Fermer",

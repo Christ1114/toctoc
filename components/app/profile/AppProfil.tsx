@@ -89,7 +89,7 @@ export default function ProfilePage() {
   const isRTL = locale === "ar";
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // ✅ Session partagée via le contexte — plus de getSession() ici
+
   const { user: sessionUser, loading: sessionLoading } = useSession();
 
   const [user, setUser] = useState<ProfileUser | null>(null);
@@ -103,7 +103,7 @@ export default function ProfilePage() {
   const [success, setSuccess] = useState<string | null>(null);
   const [form, setForm] = useState<Partial<ProfileUser>>({});
 
-  // Synchronise le user local depuis le contexte
+
   useEffect(() => {
     if (sessionLoading) return;
     setUser(sessionUser ? (sessionUser as unknown as ProfileUser) : null);
@@ -111,7 +111,7 @@ export default function ProfilePage() {
 
   const loadStats = async () => {
     try {
-      const res = await fetch("/api/profile/stats");
+      const res = await fetch("/api/profils/stats");
       if (res.ok) {
         setStats(await res.json());
       }
@@ -166,7 +166,7 @@ export default function ProfilePage() {
         return;
       }
 
-      // Mise à jour locale (pas de rechargement session)
+     
       setUser((prev) => (prev ? ({ ...prev, ...form } as ProfileUser) : prev));
       setEditing(false);
       setSuccess(t("saved"));
