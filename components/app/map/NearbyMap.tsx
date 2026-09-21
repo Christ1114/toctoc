@@ -13,7 +13,6 @@ import TopToolbar, { type CityResult } from "./TopToolbar";
 import AiSearchPanel from "./AiSearchPanel";
 import { orbitron } from "@/fonts/font";
 
-
 setWorkerUrl("/maplibre/maplibre-gl-worker.mjs");
 
 const STYLES = {
@@ -23,7 +22,7 @@ const STYLES = {
 
 const DEFAULT_CENTER: [number, number] = [2.3522, 48.8566];
 const DEFAULT_ZOOM = 15;
-const CITY_SEARCH_ZOOM = 12; // zoom un peu plus large pour une vue "ville", pas juste un quartier
+const CITY_SEARCH_ZOOM = 12;
 const DEFAULT_PITCH = 60;
 const DEFAULT_BEARING = -17.6;
 
@@ -51,8 +50,6 @@ export default function NearbyMap() {
   const tToolbar = useTranslations("TopToolbar");
   const { resolvedTheme } = useTheme();
 
-  // Session partagée via le contexte, chargée une seule fois au niveau du
-  // layout /app — plus de fetch indépendant ici (évite le 429 de rate limit).
   const { user } = useSession();
 
   const mapContainer = useRef<HTMLDivElement>(null);
@@ -60,7 +57,6 @@ export default function NearbyMap() {
   const userMarkerRef = useRef<maplibregl.Marker | null>(null);
   const initialCenterRef = useRef<[number, number] | null>(null);
 
-  // 👇 Refs des marqueurs des autres users
   const nearbyMarkersRef = useRef<maplibregl.Marker[]>([]);
 
   const [initialCenter, setInitialCenter] = useState<[number, number] | null>(null);
@@ -69,11 +65,7 @@ export default function NearbyMap() {
   const [mapError, setMapError] = useState<string | null>(null);
   const [aiSearchOpen, setAiSearchOpen] = useState(false);
 
-  // 👇 State des users proches
   const [nearbyUsers, setNearbyUsers] = useState<NearbyUser[]>([]);
-
-  // 👇 Message affiché dans la barre de recherche quand une ville
-  // sélectionnée n'a aucune offre — n'affecte jamais la carte elle-même.
   const [searchMessage, setSearchMessage] = useState<string | null>(null);
 
   const { latitude, longitude, error: geoError, requestLocation } = useGeolocation();
@@ -94,27 +86,20 @@ export default function NearbyMap() {
           initialCenterRef.current = position;
           setInitialCenter(position);
           setLoadingPosition(false);
-          // Pas de "return" ici : la position stockée sert juste de fallback
-          // rapide pour l'affichage. On demande quand même le GPS réel
-          // ci-dessous ; l'effet de recentrage se chargera de déplacer la
-          // carte dès que la vraie position arrivera.
         }
       } catch (err) {
         console.error("❌ Erreur lecture position stockée:", err);
       }
-      
-  
+
       if (isMounted && !initialCenterRef.current) {
         console.log("📍 Utilisation de la position par défaut (Paris)");
         initialCenterRef.current = DEFAULT_CENTER;
         setInitialCenter(DEFAULT_CENTER);
         setLoadingPosition(false);
       }
-      
-     
+
       requestLocation();
-      
-     
+
       timeoutId = setTimeout(() => {
         if (isMounted && !initialCenterRef.current) {
           console.log("⚠️ Timeout géolocalisation, utilisation de Paris");
@@ -145,7 +130,6 @@ export default function NearbyMap() {
     }
   }, [latitude, longitude]);
 
-
   useEffect(() => {
     if (geoError && !initialCenterRef.current) {
       console.error("❌ Erreur géolocalisation:", geoError);
@@ -155,7 +139,6 @@ export default function NearbyMap() {
     }
   }, [geoError]);
 
- 
   useEffect(() => {
     if (!mapContainer.current || mapRef.current || !initialCenter) return;
 
@@ -166,7 +149,7 @@ export default function NearbyMap() {
     try {
       const map = new maplibregl.Map({
         container: mapContainer.current,
-        style: STYLES.light, 
+        style: STYLES.light,
         center: initialCenter,
         zoom: DEFAULT_ZOOM,
         pitch: DEFAULT_PITCH,
@@ -179,37 +162,32 @@ export default function NearbyMap() {
 
       mapRef.current = map;
 
-    
+      // 👇 Contrôle zoom/dézoom/boussole placé en bas-gauche
       map.addControl(
-        new maplibregl.NavigationControl({ 
+        new maplibregl.NavigationControl({
           visualizePitch: true,
           showZoom: true,
           showCompass: true,
-        }), 
-        "top-right"
+        }),
+        "bottom-left"
       );
 
-      
       map.dragRotate.enable();
       map.touchZoomRotate.enableRotation();
 
-      
       map.on("error", (e) => {
         console.error("❌ Erreur carte:", e);
         setMapError("Erreur de chargement de la carte");
       });
 
-     
       map.on("style.load", () => {
         console.log("✅ Style chargé");
       });
 
-     
       map.on("load", () => {
         console.log("✅ Carte chargée avec succès");
         setMapLoaded(true);
-        
-        
+
         try {
           const userMarkerEl = createAvatarMarkerElement({
             fallbackLabel: t("me"),
@@ -222,18 +200,16 @@ export default function NearbyMap() {
           })
             .setLngLat(initialCenter)
             .addTo(map);
-            
+
           console.log("✅ Marqueur utilisateur ajouté");
         } catch (err) {
           console.error("❌ Erreur création marqueur:", err);
         }
       });
-
     } catch (err) {
       console.error("❌ Erreur initialisation carte:", err);
       setMapError("Erreur d'initialisation de la carte");
     }
-
 
     return () => {
       if (mapRef.current) {
@@ -246,7 +222,6 @@ export default function NearbyMap() {
     };
   }, [initialCenter, t]);
 
-  
   // 🔄 Recentrer la carte sur la position du user quand elle change
   useEffect(() => {
     if (!mapRef.current || !mapLoaded || !initialCenter) return;
@@ -262,16 +237,11 @@ export default function NearbyMap() {
       duration: 1200,
     });
 
-    // Déplacer aussi le marqueur
     if (userMarkerRef.current) {
       userMarkerRef.current.setLngLat(initialCenter);
     }
   }, [initialCenter, mapLoaded]);
 
-  
-  // Extrait en fonction réutilisable pour pouvoir la rappeler depuis la
-  // recherche par ville, avec un centre arbitraire (pas juste la position
-  // de l'utilisateur).
   const fetchNearby = useCallback(async (lng: number, lat: number) => {
     try {
       console.log("🔍 Fetch nearby users...");
@@ -322,13 +292,12 @@ export default function NearbyMap() {
     };
   }, [nearbyUsers, mapLoaded]);
 
-  
   useEffect(() => {
     if (!mapRef.current || !mapLoaded) return;
 
     const styleUrl = resolvedTheme === "dark" ? STYLES.dark : STYLES.light;
     console.log("🔄 Changement de style:", styleUrl);
-    
+
     try {
       mapRef.current.setStyle(styleUrl);
     } catch (err) {
@@ -336,11 +305,10 @@ export default function NearbyMap() {
     }
   }, [resolvedTheme, mapLoaded]);
 
- 
   const resetView = useCallback(() => {
     if (mapRef.current && initialCenter) {
-      mapRef.current.flyTo({ 
-        center: initialCenter, 
+      mapRef.current.flyTo({
+        center: initialCenter,
         zoom: DEFAULT_ZOOM,
         pitch: DEFAULT_PITCH,
         bearing: DEFAULT_BEARING,
@@ -350,7 +318,6 @@ export default function NearbyMap() {
     }
   }, [initialCenter]);
 
-  
   const handleLocate = useCallback(() => {
     requestLocation();
 
@@ -364,16 +331,10 @@ export default function NearbyMap() {
     }
   }, [requestLocation, initialCenter]);
 
-  // 🔍 Sélection d'une ville depuis la barre de recherche.
-  // Règle : si la ville a des offres -> on recentre la carte ET on charge
-  // les marqueurs. Si elle n'en a pas -> on ne touche PAS à la carte, on
-  // affiche juste un message dans la barre de recherche elle-même.
   const handleSelectCity = useCallback(
     (city: CityResult) => {
       if (!city.hasOffers || city.latitude == null || city.longitude == null) {
-        setSearchMessage(
-          tToolbar("noOffersInCity", { city: city.name })
-        );
+        setSearchMessage(tToolbar("noOffersInCity", { city: city.name }));
         return;
       }
 
@@ -399,33 +360,92 @@ export default function NearbyMap() {
 
   return (
     <div className="relative w-full h-full" style={{ minHeight: "500px" }}>
-     
+      {/* ============================================================
+          Styles globaux pour rendre les contrôles MapLibre responsives
+          (MapLibre applique ses styles en dur → CSS global obligatoire)
+      ============================================================ */}
+      <style jsx global>{`
+        /* ----- NavigationControl (zoom/dézoom/boussole) ----- */
+
+        /* Mobile : au-dessus de la bottom navbar (64px) + safe area */
+        .maplibregl-ctrl-bottom-left {
+          bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
+          left: 8px !important;
+        }
+
+        /* Tablette et plus : position normale */
+        @media (min-width: 768px) {
+          .maplibregl-ctrl-bottom-left {
+            bottom: 16px !important;
+            left: 16px !important;
+          }
+        }
+
+        /* Style des groupes de boutons (arrondi, ombre, verre dépoli) */
+        .maplibregl-ctrl-bottom-left .maplibregl-ctrl-group {
+          border-radius: 10px !important;
+          overflow: hidden;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+          background: rgba(0, 0, 0, 0.6) !important;
+          backdrop-filter: blur(8px);
+        }
+
+        /* Boutons plus compacts en mobile, plus grands en desktop */
+        .maplibregl-ctrl-bottom-left .maplibregl-ctrl-group button {
+          width: 32px !important;
+          height: 32px !important;
+          background: transparent !important;
+          color: white !important;
+        }
+
+        @media (min-width: 768px) {
+          .maplibregl-ctrl-bottom-left .maplibregl-ctrl-group button {
+            width: 36px !important;
+            height: 36px !important;
+          }
+        }
+
+        /* Icônes : forcer en blanc puisque le fond est sombre */
+        .maplibregl-ctrl-bottom-left .maplibregl-ctrl-icon {
+          filter: invert(1) !important;
+        }
+
+        /* Séparateurs entre les boutons */
+        .maplibregl-ctrl-bottom-left .maplibregl-ctrl-group button + button {
+          border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+      `}</style>
+
       {loadingPosition && (
         <div className="absolute inset-0 flex items-center justify-center bg-gray-100 z-20">
           <div className="flex flex-col items-center gap-3">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
-            <p className={`text-sm text-gray-600 ${orbitron.className}`}>Chargement de la carte...</p>
+            <p className={`text-sm text-gray-600 ${orbitron.className}`}>
+              Chargement de la carte...
+            </p>
           </div>
         </div>
       )}
+
       {mapError && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30 bg-red-100 text-red-700 p-4 rounded-lg shadow-lg">
-          <p>{mapError}</p>
-          <button 
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30 bg-red-100 text-red-700 p-4 rounded-lg shadow-lg max-w-[90vw]">
+          <p className="text-sm">{mapError}</p>
+          <button
             onClick={() => {
               setMapError(null);
               window.location.reload();
             }}
-            className={`mt-2 text-sm underline hover:no-underline ${orbitron.className}`}
+            className={`mt-2 text-sm underline hover:no-underline cursor-pointer ${orbitron.className}`}
           >
             {t("retry")}
           </button>
         </div>
       )}
-      <div 
-        ref={mapContainer} 
+
+      <div
+        ref={mapContainer}
         className="w-full h-full"
-        style={{ 
+        style={{
           position: "absolute",
           top: 0,
           left: 0,
@@ -433,7 +453,7 @@ export default function NearbyMap() {
           bottom: 0,
           width: "100%",
           height: "100%",
-          backgroundColor: "#e5e7eb", 
+          backgroundColor: "#e5e7eb",
         }}
       />
 
@@ -442,13 +462,21 @@ export default function NearbyMap() {
         onSelectCity={handleSelectCity}
         searchMessage={searchMessage}
       />
+
       <AiSearchPanel open={aiSearchOpen} onClose={() => setAiSearchOpen(false)} />
+
+      {/* Bouton 3D responsive */}
       <button
         onClick={resetView}
-        className={`absolute bottom-4 right-4 z-10 bg-black/60 hover:bg-black/75 backdrop-blur-sm text-white text-sm px-3 py-2 rounded-lg shadow-md cursor-pointer ${orbitron.className}`} 
         title="Réinitialiser la vue"
+        className={`absolute z-10 bg-black/60 hover:bg-black/75 backdrop-blur-sm text-white rounded-lg shadow-md cursor-pointer transition-colors
+                    right-2 bottom-[calc(72px+env(safe-area-inset-bottom,0px))]
+                    md:right-4 md:bottom-4
+                    text-xs px-2.5 h-9
+                    md:text-sm md:px-3 md:h-10
+                    ${orbitron.className}`}
       >
-        🏔️ 3D
+        3D
       </button>
     </div>
   );

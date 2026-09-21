@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import {
@@ -48,9 +48,15 @@ const Sidebar = () => {
   const t = useTranslations("Sidebar");
   const router = useRouter();
 
+  // 👇 Par défaut : ouvert sur desktop.
+  // On laisse `true` en init pour éviter un flash SSR (le serveur ne connaît
+  // pas la largeur), puis un useEffect ajuste selon le vrai breakpoint.
   const [collapsed, setCollapsed] = useState(true);
   const [active, setActive] = useState<NavKey | "settings">("home");
   const [breakpoint, setBreakpoint] = useState<Breakpoint>("desktop");
+
+  // Empêche de forcer l'ouverture/fermeture à chaque resize après la 1re détection
+  const initializedRef = useRef(false);
 
   const [searchOpen, setSearchOpen] = useState(false);
   const [vrOpen, setVrOpen] = useState(false);
@@ -59,17 +65,32 @@ const Sidebar = () => {
 
   const isRTL = RTL_LOCALES.includes(locale);
 
-  // Détecte le breakpoint (resize + init)
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
+
+      let bp: Breakpoint;
       if (width < 768) {
-        setBreakpoint("mobile");
+        bp = "mobile";
       } else if (width < 1024) {
-        setBreakpoint("tablet");
-        setCollapsed(true);
+        bp = "tablet";
       } else {
-        setBreakpoint("desktop");
+        bp = "desktop";
+      }
+
+      setBreakpoint(bp);
+
+      // Première détection → applique la valeur par défaut selon le breakpoint
+      if (!initializedRef.current) {
+        setCollapsed(bp !== "desktop"); // desktop → ouvert, sinon replié
+        initializedRef.current = true;
+        return;
+      }
+
+      // Ensuite, on force replié uniquement quand on repasse sur tablette
+      // (mobile n'utilise pas `collapsed`, desktop garde le choix de l'utilisateur)
+      if (bp === "tablet") {
+        setCollapsed(true);
       }
     };
 
@@ -123,7 +144,6 @@ const Sidebar = () => {
     </>
   );
 
- 
   const NavButton = ({
     navKey,
     icon: Icon,
@@ -225,7 +245,9 @@ const Sidebar = () => {
     );
   };
 
-
+  // =========================================================
+  //  MOBILE → Bottom Navigation Bar (icônes seules)
+  // =========================================================
   if (breakpoint === "mobile") {
     return (
       <>
@@ -263,7 +285,6 @@ const Sidebar = () => {
             );
           })}
 
-       
           <button
             onClick={() => handleNavClick("settings")}
             aria-label={t("settings")}
@@ -289,7 +310,9 @@ const Sidebar = () => {
     );
   }
 
-
+  // =========================================================
+  //  TABLETTE → Sidebar collapsée (icônes seules)
+  // =========================================================
   if (breakpoint === "tablet") {
     return (
       <>
@@ -312,7 +335,10 @@ const Sidebar = () => {
     );
   }
 
-
+  // =========================================================
+  //  DESKTOP → Sidebar complète avec toggle
+  //  Ouverte par défaut (collapsed=false à la première détection)
+  // =========================================================
   return (
     <>
       <div
