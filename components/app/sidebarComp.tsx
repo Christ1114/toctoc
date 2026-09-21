@@ -122,10 +122,6 @@ const Sidebar = () => {
       <SettingsPopover open={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </>
   );
-
-  // =========================================================
-  //  BOUTON DE NAV (réutilisable sidebar verticale)
-  // =========================================================
   const NavButton = ({
     navKey,
     icon: Icon,
@@ -288,9 +284,6 @@ const Sidebar = () => {
     );
   }
 
-  // =========================================================
-  //  TABLETTE → Sidebar collapsée (icônes seules)
-  // =========================================================
   if (breakpoint === "tablet") {
     return (
       <>
@@ -313,9 +306,7 @@ const Sidebar = () => {
     );
   }
 
-  // =========================================================
-  //  DESKTOP → Sidebar complète avec toggle
-  // =========================================================
+  
   return (
     <>
       <div

@@ -106,15 +106,11 @@ export default function TopToolbar({
 
   return (
     <>
-      {/* ============ CONTAINER PRINCIPAL ============
-          Mobile   : top-2, gap réduit, tout compact
-          Tablette : top-3, gap-2, tailles intermédiaires
-          Desktop  : top-4, layout confortable centré
-      */}
+    
+    
       <div className="absolute top-2 left-2 right-2 z-10 flex items-center gap-1.5
                       sm:top-3 sm:left-3 sm:right-3 sm:gap-2
-                      lg:top-4 lg:left-4 lg:right-4">
-        {/* Barre de recherche */}
+                      lg:top-4 lg:left-4 lg:right-4 lg:px-20">
         <div
           ref={wrapperRef}
           className="relative flex-1 min-w-0
@@ -139,7 +135,6 @@ export default function TopToolbar({
             />
           </div>
 
-          {/* Dropdown résultats */}
           {dropdownOpen && (
             <div className="absolute top-full mt-1 w-full bg-black/90 backdrop-blur-sm border border-white/10 rounded-lg overflow-hidden shadow-xl overflow-y-auto
                             max-h-56 sm:max-h-64 lg:max-h-80">
@@ -194,7 +189,7 @@ export default function TopToolbar({
           )}
         </div>
 
-        {/* Bouton IA — icône seule en mobile/tablette, texte dès lg */}
+       
         <button
           onClick={onOpenAiSearch}
           aria-label={t("searchByAi")}
@@ -212,7 +207,7 @@ export default function TopToolbar({
         <button
           onClick={() => setProfileOpen(true)}
           aria-label={t("profile")}
-          className="shrink-0 rounded-full overflow-hidden border border-white/10 bg-black/60 backdrop-blur-sm flex items-center justify-center cursor-pointer hover:border-[#432dd7]/60 transition-colors
+          className="shrink-0  rounded-full overflow-hidden border border-white/10 bg-black/60 backdrop-blur-sm flex items-center justify-center cursor-pointer hover:border-[#432dd7]/60 transition-colors
                      h-9 w-9
                      sm:h-10 sm:w-10"
         >
