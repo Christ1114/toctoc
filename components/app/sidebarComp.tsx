@@ -123,9 +123,7 @@ const Sidebar = () => {
     </>
   );
 
-  // =========================================================
-  //  BOUTON DE NAV (réutilisable sidebar verticale)
-  // =========================================================
+ 
   const NavButton = ({
     navKey,
     icon: Icon,
@@ -227,9 +225,7 @@ const Sidebar = () => {
     );
   };
 
-  // =========================================================
-  //  MOBILE → Bottom Navigation Bar (icônes seules)
-  // =========================================================
+
   if (breakpoint === "mobile") {
     return (
       <>
@@ -267,7 +263,7 @@ const Sidebar = () => {
             );
           })}
 
-          {/* Settings */}
+       
           <button
             onClick={() => handleNavClick("settings")}
             aria-label={t("settings")}
@@ -293,9 +289,7 @@ const Sidebar = () => {
     );
   }
 
-  // =========================================================
-  //  TABLETTE → Sidebar collapsée (icônes seules)
-  // =========================================================
+
   if (breakpoint === "tablet") {
     return (
       <>
@@ -318,9 +312,7 @@ const Sidebar = () => {
     );
   }
 
-  // =========================================================
-  //  DESKTOP → Sidebar complète avec toggle
-  // =========================================================
+
   return (
     <>
       <div

@@ -110,7 +110,7 @@ export default function TopToolbar({
     
       <div className="absolute top-2 left-2 right-2 z-10 flex items-center gap-1.5
                       sm:top-3 sm:left-3 sm:right-3 sm:gap-2
-                      lg:top-4 lg:left-4 lg:right-4 lg:px-20">
+                      lg:top-4 lg:left-4 lg:right-4  sm:px-5 lg:px-20">
         <div
           ref={wrapperRef}
           className="relative flex-1 min-w-0
