@@ -133,7 +133,7 @@ export default function TopToolbar({ onOpenAiSearch, onSelectCity, searchMessage
                       </span>
                     </span>
                     <span
-                      className={`text-[11px] shrink-0 ${
+                      className={`text-[11px] shrink-0 ${orbitron.className} ${
                         city.hasOffers ? "text-[#8b7ff5]" : "text-white/30"
                       }`}
                     >
@@ -144,9 +144,6 @@ export default function TopToolbar({ onOpenAiSearch, onSelectCity, searchMessage
               )}
             </div>
           )}
-
-          {/* Message affiché quand la ville sélectionnée n'a pas d'offre — reste
-              dans la barre de recherche, ne touche jamais à la carte */}
           {searchMessage && !dropdownOpen && (
             <div className="absolute top-full mt-1 w-full bg-black/80 backdrop-blur-sm border border-white/10 rounded-lg px-3 py-2">
               <p className={`text-xs text-white/60 ${orbitron.className}`}>{searchMessage}</p>
