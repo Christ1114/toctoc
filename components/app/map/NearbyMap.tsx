@@ -205,7 +205,7 @@ export default function NearbyMap() {
             bio: me?.bio ?? null,
             username: me?.name ?? null,
             lastSeenAt: new Date(),
-            onClick: () => router.push("/app/profile"),
+            onClick: () => router.push("/app/(public)/profils"),
             labels: markerLabels,
           });
 
