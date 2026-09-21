@@ -79,16 +79,13 @@ const Sidebar = () => {
       }
 
       setBreakpoint(bp);
-
-      // Première détection → applique la valeur par défaut selon le breakpoint
       if (!initializedRef.current) {
-        setCollapsed(bp !== "desktop"); // desktop → ouvert, sinon replié
+        setCollapsed(bp !== "desktop");
         initializedRef.current = true;
         return;
       }
 
-      // Ensuite, on force replié uniquement quand on repasse sur tablette
-      // (mobile n'utilise pas `collapsed`, desktop garde le choix de l'utilisateur)
+     
       if (bp === "tablet") {
         setCollapsed(true);
       }
@@ -244,10 +241,6 @@ const Sidebar = () => {
       </div>
     );
   };
-
-  // =========================================================
-  //  MOBILE → Bottom Navigation Bar (icônes seules)
-  // =========================================================
   if (breakpoint === "mobile") {
     return (
       <>
@@ -309,10 +302,6 @@ const Sidebar = () => {
       </>
     );
   }
-
-  // =========================================================
-  //  TABLETTE → Sidebar collapsée (icônes seules)
-  // =========================================================
   if (breakpoint === "tablet") {
     return (
       <>
@@ -334,11 +323,6 @@ const Sidebar = () => {
       </>
     );
   }
-
-  // =========================================================
-  //  DESKTOP → Sidebar complète avec toggle
-  //  Ouverte par défaut (collapsed=false à la première détection)
-  // =========================================================
   return (
     <>
       <div

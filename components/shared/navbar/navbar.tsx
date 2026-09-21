@@ -61,7 +61,6 @@ export default function Navbar() {
 
                     <div className="w-full flex items-center justify-between px-3 sm:px-4 lg:px-6 h-14 sm:h-16 lg:h-19">
 
-
                         <div className="flex items-center gap-x-2 sm:gap-x-3">
                             <Link href="/" className="flex items-center justify-center shrink-0">
                                 <Image
@@ -97,8 +96,8 @@ export default function Navbar() {
                         </div>
 
                         <div className="hidden md:flex items-center gap-1.5 lg:gap-3">
-                        <LightNightComponent />
-                        <TranslateFunction defaultValue={locale} label="Changer de langue" />
+                            <LightNightComponent />
+                            <TranslateFunction defaultValue={locale} label="Changer de langue" />
 
                             <button
                                 onClick={() => handleNavigation('/login')}
@@ -118,17 +117,15 @@ export default function Navbar() {
                             >
                                 {t("findProfileBtn2")}
                             </button>
-
-
-
                             <button
                                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                                className="lg:hidden flex items-center justify-center min-w-11 min-h-11 text-black dark:text-white"
+                                className={`lg:hidden flex items-center justify-center min-w-11 min-h-11 text-black dark:text-white cursor-pointer ${orbitron.className}`}
                                 aria-label="Menu"
                             >
                                 {isMobileMenuOpen ? <XIcon size={22} /> : <List size={22} />}
                             </button>
                         </div>
+
                         <div className="flex md:hidden items-center gap-1 sm:gap-2">
 
                             <div className="scale-75 sm:scale-90 origin-center">
@@ -137,9 +134,10 @@ export default function Navbar() {
 
                             <LightNightComponent />
 
+                            {/* 👇 Hamburger en vue mobile — orbitron ajouté */}
                             <button
                                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                                className="flex items-center justify-center min-w-11 min-h-11 text-black dark:text-white"
+                                className={`flex items-center justify-center min-w-11 min-h-11 text-black dark:text-white cursor-pointer ${orbitron.className}`}
                                 aria-label="Menu"
                             >
                                 {isMobileMenuOpen ? <XIcon size={22} /> : <List size={22} />}
@@ -157,9 +155,9 @@ export default function Navbar() {
                     <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
 
                     <div
-                        className="absolute top-14 sm:top-16 right-0 w-[85%] max-w-87.5 sm:max-w-sm
+                        className={`absolute top-14 sm:top-16 right-0 w-[85%] max-w-87.5 sm:max-w-sm
                                     h-[calc(100vh-56px)] sm:h-[calc(100vh-64px)]
-                                    bg-white dark:bg-neutral-900 shadow-2xl overflow-y-auto"
+                                    bg-white dark:bg-neutral-900 shadow-2xl overflow-y-auto ${orbitron.className}`}
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="flex flex-col p-4 sm:p-6 gap-4">
@@ -171,7 +169,7 @@ export default function Navbar() {
                                         className={`w-full text-left px-4 py-3 text-sm font-bold
                                         text-black dark:text-white hover:text-[#432dd7]
                                         hover:bg-zinc-100 dark:hover:bg-zinc-800
-                                        rounded-lg transition-colors ${orbitron.className}`}
+                                        rounded-lg transition-colors cursor-pointer ${orbitron.className}`}
                                     >
                                         {item.title}
                                     </button>
@@ -182,17 +180,18 @@ export default function Navbar() {
                                 onClick={() => handleNavigation('/login')}
                                 className={`w-full flex items-center justify-center gap-2 px-4 py-3
                                 text-sm font-bold text-white bg-[#432dd7]
-                                rounded-lg hover:bg-[#442dd7b6] transition-colors ${orbitron.className}`}
+                                rounded-lg hover:bg-[#442dd7b6] transition-colors cursor-pointer ${orbitron.className}`}
                             >
                                 <SignIn size={18} />
                                 {t("findProfileBtn")}
                             </button>
 
+                            {/* 👇 Bouton "S'inscrire" du menu mobile — orbitron ajouté */}
                             <button
                                 onClick={() => handleNavigation('/register')}
-                                className="w-full flex items-center justify-center gap-2 px-4 py-3
+                                className={`w-full flex items-center justify-center gap-2 px-4 py-3
                                            text-sm font-bold border-2 border-[#432dd7] rounded-lg
-                                           text-black dark:text-white transition-colors"
+                                           text-black dark:text-white transition-colors cursor-pointer ${orbitron.className}`}
                             >
                                 {t("findProfileBtn2")}
                             </button>
