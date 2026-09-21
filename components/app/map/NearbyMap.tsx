@@ -68,9 +68,6 @@ export default function NearbyMap() {
 
   const { latitude, longitude, error: geoError, requestLocation } = useGeolocation();
 
-  // ─────────────────────────────────────────────────────────────
-  // 1. Chargement position (stockée → GPS → défaut)
-  // ─────────────────────────────────────────────────────────────
   useEffect(() => {
     let isMounted = true;
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
@@ -132,12 +129,6 @@ export default function NearbyMap() {
       setLoadingPosition(false);
     }
   }, [geoError]);
-
-  // ─────────────────────────────────────────────────────────────
-  // 2. Init carte — ⚠️ CORRIGÉ : plus de cleanup destructeur ici
-  //    Le cleanup unmount est fait dans un effet séparé (plus bas).
-  //    => La carte n'est PLUS recréée à chaque update de position.
-  // ─────────────────────────────────────────────────────────────
   useEffect(() => {
     if (!mapContainer.current || mapRef.current || !initialCenter) return;
 
@@ -204,9 +195,7 @@ export default function NearbyMap() {
     
   }, [initialCenter, t]);
 
-  // ─────────────────────────────────────────────────────────────
-  // 3. Cleanup UNIQUEMENT à l'unmount réel du composant
-  // ─────────────────────────────────────────────────────────────
+
   useEffect(() => {
     return () => {
       if (mapRef.current) {
@@ -219,9 +208,7 @@ export default function NearbyMap() {
     };
   }, []);
 
-  // ─────────────────────────────────────────────────────────────
-  // 4. Recentrage doux (déjà OK, on garde)
-  // ─────────────────────────────────────────────────────────────
+
   useEffect(() => {
     if (!mapRef.current || !mapLoaded || !initialCenter) return;
 

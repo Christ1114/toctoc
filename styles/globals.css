@@ -344,3 +344,143 @@
 .dark .avatar-marker__bubble {
   background: #1a1a1a;
 }
+.avatar-marker {
+  /* Utilise la variable CSS au lieu du style inline */
+  --marker-color: #432dd7;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  /* ⚠️ PAS de will-change ici — seulement au hover via @media (hover: hover) */
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .avatar-marker {
+    transition: transform 0.15s ease;
+  }
+  .avatar-marker:hover,
+  .avatar-marker:focus-visible {
+    transform: translateY(-2px) scale(1.06);
+    z-index: 10;
+    /* will-change activé seulement quand utile */
+    will-change: transform;
+  }
+}
+
+/* Focus visible accessible */
+.avatar-marker:focus-visible {
+  outline: 2px solid var(--marker-color);
+  outline-offset: 4px;
+  border-radius: 50%;
+}
+
+.avatar-marker__bubble {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid var(--marker-color);
+  background: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  overflow: hidden; /* crucial */
+}
+
+.avatar-marker__img,
+.avatar-marker__fallback {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: block;
+  object-fit: cover;
+}
+
+.avatar-marker__fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--marker-color);
+  color: white;
+  font-weight: 700;
+  font-size: 18px;
+  user-select: none;
+}
+
+.avatar-marker__fallback[hidden] {
+  display: none;
+}
+
+.avatar-marker__status {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.avatar-marker__status.is-online  { background: #22c55e; }
+.avatar-marker__status.is-offline { background: #ef4444; }
+
+.avatar-marker__pointer {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid var(--marker-color);
+  margin-top: -2px;
+}
+
+.avatar-marker__shadow {
+  width: 20px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.2);
+  margin-top: 2px;
+  filter: blur(2px);
+}
+
+/* ─── Tooltip ─── */
+.avatar-marker__tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  min-width: 140px;
+  max-width: 220px;
+  padding: 8px 10px;
+  background: #1f2937;
+  color: white;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.35;
+  text-align: left;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.avatar-marker__tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: #1f2937;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .avatar-marker:hover .avatar-marker__tooltip,
+  .avatar-marker:focus-visible .avatar-marker__tooltip {
+    opacity: 1;
+  }
+}
+
+.avatar-marker__name  { display: block; font-size: 13px; margin-bottom: 2px; }
+.avatar-marker__bio   { margin: 0; color: #d1d5db; font-size: 11px; word-break: break-word; }
+.avatar-marker__lastseen { display: block; margin-top: 4px; color: #9ca3af; font-size: 10px; font-style: italic; }

@@ -6,15 +6,12 @@ import { headers } from "next/headers";
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-// ⚠️ LIMITIATION : Map en mémoire = par instance de processus.
-// En serverless, chaque cold start repart à zéro. Pour du rate limiting
-// réellement global en prod : Upstash Redis (API compatible, 2 lignes à changer).
+
 const rateLimitMap = new Map<string, { count: number; timestamp: number }>();
 const RATE_LIMIT_WINDOW = 60 * 1000;
 const RATE_LIMIT_MAX = 10;
-const MAP_CLEANUP_THRESHOLD = 5000; // évite de boucler sur une map vide à chaque requête
+const MAP_CLEANUP_THRESHOLD = 5000; 
 
-// Nettoyage paresseux : remplace le setInterval (incompatible serverless)
 function cleanupExpired(now: number) {
   if (rateLimitMap.size < MAP_CLEANUP_THRESHOLD) return;
   for (const [key, value] of rateLimitMap.entries()) {
@@ -49,7 +46,7 @@ function checkRateLimit(key: string): {
   return { allowed: true, remaining: RATE_LIMIT_MAX - entry.count, retryAfter: 0 };
 }
 
-// Parse d'URL sûr : une valeur malformée => null, jamais de throw
+
 function safeUrl(raw: string | null): URL | null {
   if (!raw) return null;
   try {
@@ -69,9 +66,7 @@ function rateLimitHeaders(limit: { remaining: number; retryAfter: number }) {
 
 export async function GET(req: NextRequest) {
   try {
-    // ─── 1. Rate limit par IP, AVANT tout le reste ───
-    // Sinon un anonyme fait des milliers d'appels et te fait payer
-    // des requêtes chez le provider VPN.
+  
     const ip =
       req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
       req.headers.get("x-real-ip") ||
@@ -86,7 +81,7 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // ─── 2. Auth : session utilisateur OU secret interne (OR, pas AND) ───
+  
     const session = await auth.api.getSession({ headers: await headers() });
 
     const internalSecret = process.env.INTERNAL_REQUEST_SECRET;
@@ -100,7 +95,6 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // ─── 3. Check d'origine (navigateur uniquement, tolère curl/serveurs) ───
     const host = req.headers.get("host");
     if (host) {
       const origin = safeUrl(req.headers.get("origin"));
@@ -117,7 +111,7 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // ─── 4. Rate limit par user (si session) ───
+    
     if (session?.user) {
       const userLimit = checkRateLimit(`user:${session.user.id}`);
       if (!userLimit.allowed) {
@@ -128,7 +122,7 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // ─── 5. Vérification VPN ───
+    
     const vpnResult = await checkVpnStatus(req.headers);
 
     console.log("VPN Check:", {
@@ -166,7 +160,7 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// Health check (monitoring)
+
 export async function HEAD() {
   return new NextResponse(null, { status: 200 });
 }

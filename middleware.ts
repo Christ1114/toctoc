@@ -20,7 +20,7 @@ const PUBLIC_ROUTES = [
   "/precheck",
 ];
 
-const SECURITY_CHECK_MAX_AGE = 30 * 60 * 1000; // 30 min
+const SECURITY_CHECK_MAX_AGE = 30 * 60 * 1000;
 
 export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -59,8 +59,6 @@ export default async function middleware(request: NextRequest) {
     (route) =>
       pathWithoutLocale === route || pathWithoutLocale.startsWith(route + "/")
   );
-
-  // Routes ni publiques ni sécurisées → on laisse passer (404 etc.)
   if (!isPublicRoute && !isSecuredRoute && pathWithoutLocale !== "/") {
     return intlMiddleware(request);
   }
@@ -69,8 +67,6 @@ export default async function middleware(request: NextRequest) {
     return intlMiddleware(request);
   }
 
-  // ─── À partir d'ici : route sécurisée ───
-
   const sessionCookie = getSessionCookie(request);
 
   if (!sessionCookie) {
@@ -78,8 +74,6 @@ export default async function middleware(request: NextRequest) {
     loginUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(loginUrl);
   }
-
-  // ✅ Check precheck signé HMAC — remplace l'ancien cookie "true" forgeable
   const secret = process.env.SECURITY_CHECK_SECRET;
   const raw = request.cookies.get("security_check_passed")?.value;
   const timestamp = secret && raw ? await verifyValue(raw, secret) : null;
