@@ -1,4 +1,5 @@
 {
+  
    "AppProfilProvider": {
     "notFound": "Utilisateur introuvable",
     "unnamed": "Sans nom",
@@ -214,6 +215,12 @@
     "subtitle": "Trouve du personnel de maison près de chez toi."
   },
   "NearbyMap": {
+     "online": "En ligne",
+    "offline": "Hors ligne",
+    "justNow": "À l'instant",
+    "minutesAgo": "Vu il y a {n} min",
+    "hoursAgo": "Vu il y a {n} h",
+    "daysAgo": "Vu il y a {n} j",
     "searching": "Recherche...",
 "noCityFound": "Aucune ville trouvée",
 "offersCount": "{count} offre(s)",

@@ -76,6 +76,16 @@ export default function NearbyMap() {
 
   const { latitude, longitude, error: geoError, requestLocation } = useGeolocation();
 
+  // ─── Labels i18n pour les markers (stables) ───
+  const markerLabels = {
+    online: t("online"),
+    offline: t("offline"),
+    justNow: t("justNow"),
+    minutesAgo: (n: number) => t("minutesAgo", { n }),
+    hoursAgo: (n: number) => t("hoursAgo", { n }),
+    daysAgo: (n: number) => t("daysAgo", { n }),
+  };
+
   // ─── Position initiale ───
   useEffect(() => {
     let isMounted = true;
@@ -195,13 +205,8 @@ export default function NearbyMap() {
             bio: me?.bio ?? null,
             username: me?.name ?? null,
             lastSeenAt: new Date(),
-          });
-
-          // Clic sur son propre marker → profil perso
-          userMarkerEl.style.cursor = "pointer";
-          userMarkerEl.addEventListener("click", (e) => {
-            e.stopPropagation();
-            router.push("/profile");
+            onClick: () => router.push("/profile"),
+            labels: markerLabels,
           });
 
           userMarkerRef.current = new maplibregl.Marker({
@@ -218,6 +223,7 @@ export default function NearbyMap() {
       console.error("Erreur init map:", err);
       setMapError("Erreur d'initialisation de la carte");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialCenter, user, router]);
 
   // ─── Cleanup au démontage ───
@@ -302,16 +308,13 @@ export default function NearbyMap() {
         bio: nearbyUser.bio,
         username: nearbyUser.name,
         lastSeenAt: lastUpdate,
+        // Clic UNIQUEMENT pour les providers
+        onClick:
+          nearbyUser.accountType === "PROVIDER"
+            ? () => router.push(`/provider/${nearbyUser.id}`)
+            : undefined,
+        labels: markerLabels,
       });
-
-      // ─── Clic sur le marker → profil public (providers uniquement) ───
-      if (nearbyUser.accountType === "PROVIDER") {
-        el.style.cursor = "pointer";
-        el.addEventListener("click", (e) => {
-          e.stopPropagation(); // empêche le clic de déclencher un event sur la carte
-          router.push(`/provider/${nearbyUser.id}`);
-        });
-      }
 
       const marker = new maplibregl.Marker({
         element: el,
@@ -327,6 +330,7 @@ export default function NearbyMap() {
       nearbyMarkersRef.current.forEach((m) => m.remove());
       nearbyMarkersRef.current = [];
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nearbyUsers, mapLoaded, router]);
 
   // ─── Changement de thème clair/sombre ───

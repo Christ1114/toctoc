@@ -194,6 +194,12 @@
     "mockResponse": "I found a profile that matches your search:"
   },
   "NearbyMap": {
+     "online": "Online",
+    "offline": "Offline",
+    "justNow": "Just now",
+    "minutesAgo": "Seen {n} min ago",
+    "hoursAgo": "Seen {n} h ago",
+    "daysAgo": "Seen {n} d ago",
     "searching": "Searching...",
 "noCityFound": "No city found",
 "offersCount": "{count} offer(s)",

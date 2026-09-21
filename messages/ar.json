@@ -180,6 +180,12 @@
     "mockResponse": "وجدت ملفاً يطابق بحثك:"
   },
   "NearbyMap": {
+    "online": "متصل",
+    "offline": "غير متصل",
+    "justNow": "الآن",
+    "minutesAgo": "شوهد قبل {n} دقيقة",
+    "hoursAgo": "شوهد قبل {n} ساعة",
+    "daysAgo": "شوهد قبل {n} يوم",
     
   "searching": "جارٍ البحث...",
   "noCityFound": "لم يتم العثور على مدينة",
