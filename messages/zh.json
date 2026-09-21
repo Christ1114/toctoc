@@ -1,9 +1,7 @@
 {
   "ProfilePage": {
     "cropTitle": "裁剪图片",
-    
     "zoom": "缩放",
-   
     "cropConfirm": "确认",
     "back": "返回",
     "unnamed": "未命名",
@@ -75,6 +73,11 @@
     "mockResponse": "我找到了一个与您搜索匹配的档案："
   },
   "NearbyMap": {
+  "searching": "搜索中...",
+  "noCityFound": "未找到城市",
+  "offersCount": "{count} 个优惠",
+  "noOffers": "暂无优惠",
+  "noOffersInCity": "目前 {city} 暂无可用优惠。",
     "me": "我",
     "youAreHere": "您在这里",
     "locateMe": "定位我",

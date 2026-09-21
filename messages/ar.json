@@ -73,6 +73,13 @@
     "mockResponse": "وجدت ملفاً يطابق بحثك:"
   },
   "NearbyMap": {
+    
+  "searching": "جارٍ البحث...",
+  "noCityFound": "لم يتم العثور على مدينة",
+  "offersCount": "{count} عرض/عروض",
+  "noOffers": "لا توجد عروض",
+  "noOffersInCity": "لا توجد عروض متاحة في {city} في الوقت الحالي.",
+
     "me": "أنا",
     "youAreHere": "أنت هنا",
     "locateMe": "تحديد موقعي",

@@ -9,7 +9,7 @@ import { useTheme } from "next-themes";
 import { useSession } from "@/app/context/SessionContext";
 import { useGeolocation } from "@/app/hooks/useGeolocation";
 import { createAvatarMarkerElement } from "./AvatarMarker";
-import TopToolbar from "./TopToolbar";
+import TopToolbar, { type CityResult } from "./TopToolbar";
 import AiSearchPanel from "./AiSearchPanel";
 import { orbitron } from "@/fonts/font";
 
@@ -23,10 +23,11 @@ const STYLES = {
 
 const DEFAULT_CENTER: [number, number] = [2.3522, 48.8566];
 const DEFAULT_ZOOM = 15;
+const CITY_SEARCH_ZOOM = 12; // zoom un peu plus large pour une vue "ville", pas juste un quartier
 const DEFAULT_PITCH = 60;
 const DEFAULT_BEARING = -17.6;
 
-
+// 👇 Types des users proches
 type NearbyUser = {
   id: string;
   name: string | null;
@@ -47,9 +48,11 @@ type NearbyUser = {
 
 export default function NearbyMap() {
   const t = useTranslations("NearbyMap");
+  const tToolbar = useTranslations("TopToolbar");
   const { resolvedTheme } = useTheme();
 
-
+  // Session partagée via le contexte, chargée une seule fois au niveau du
+  // layout /app — plus de fetch indépendant ici (évite le 429 de rate limit).
   const { user } = useSession();
 
   const mapContainer = useRef<HTMLDivElement>(null);
@@ -57,7 +60,7 @@ export default function NearbyMap() {
   const userMarkerRef = useRef<maplibregl.Marker | null>(null);
   const initialCenterRef = useRef<[number, number] | null>(null);
 
-
+  // 👇 Refs des marqueurs des autres users
   const nearbyMarkersRef = useRef<maplibregl.Marker[]>([]);
 
   const [initialCenter, setInitialCenter] = useState<[number, number] | null>(null);
@@ -66,8 +69,12 @@ export default function NearbyMap() {
   const [mapError, setMapError] = useState<string | null>(null);
   const [aiSearchOpen, setAiSearchOpen] = useState(false);
 
-
+  // 👇 State des users proches
   const [nearbyUsers, setNearbyUsers] = useState<NearbyUser[]>([]);
+
+  // 👇 Message affiché dans la barre de recherche quand une ville
+  // sélectionnée n'a aucune offre — n'affecte jamais la carte elle-même.
+  const [searchMessage, setSearchMessage] = useState<string | null>(null);
 
   const { latitude, longitude, error: geoError, requestLocation } = useGeolocation();
 
@@ -87,7 +94,10 @@ export default function NearbyMap() {
           initialCenterRef.current = position;
           setInitialCenter(position);
           setLoadingPosition(false);
-         
+          // Pas de "return" ici : la position stockée sert juste de fallback
+          // rapide pour l'affichage. On demande quand même le GPS réel
+          // ci-dessous ; l'effet de recentrage se chargera de déplacer la
+          // carte dès que la vraie position arrivera.
         }
       } catch (err) {
         console.error("❌ Erreur lecture position stockée:", err);
@@ -237,7 +247,7 @@ export default function NearbyMap() {
   }, [initialCenter, t]);
 
   
-
+  // 🔄 Recentrer la carte sur la position du user quand elle change
   useEffect(() => {
     if (!mapRef.current || !mapLoaded || !initialCenter) return;
 
@@ -252,35 +262,36 @@ export default function NearbyMap() {
       duration: 1200,
     });
 
+    // Déplacer aussi le marqueur
     if (userMarkerRef.current) {
       userMarkerRef.current.setLngLat(initialCenter);
     }
   }, [initialCenter, mapLoaded]);
 
   
+  // Extrait en fonction réutilisable pour pouvoir la rappeler depuis la
+  // recherche par ville, avec un centre arbitraire (pas juste la position
+  // de l'utilisateur).
+  const fetchNearby = useCallback(async (lng: number, lat: number) => {
+    try {
+      console.log("🔍 Fetch nearby users...");
+      const res = await fetch(`/api/user/nearby?lat=${lat}&lng=${lng}&radius=20`);
+      if (!res.ok) throw new Error("Erreur fetch nearby users");
+      const data = await res.json();
+      console.log(`✅ ${data.users?.length ?? 0} users proches reçus`);
+      setNearbyUsers(data.users ?? []);
+    } catch (err) {
+      console.error("❌ Erreur fetch nearby:", err);
+      setNearbyUsers([]);
+    }
+  }, []);
+
   useEffect(() => {
     if (!initialCenter) return;
-
     const [lng, lat] = initialCenter;
+    fetchNearby(lng, lat);
+  }, [initialCenter, fetchNearby]);
 
-    const fetchNearby = async () => {
-      try {
-        console.log("🔍 Fetch nearby users...");
-        const res = await fetch(
-          `/api/user/nearby?lat=${lat}&lng=${lng}&radius=20`
-        );
-        if (!res.ok) throw new Error("Erreur fetch nearby users");
-        const data = await res.json();
-        console.log(`✅ ${data.users?.length ?? 0} users proches reçus`);
-        setNearbyUsers(data.users ?? []);
-      } catch (err) {
-        console.error("❌ Erreur fetch nearby:", err);
-        setNearbyUsers([]);
-      }
-    };
-
-    fetchNearby();
-  }, [initialCenter]);
   useEffect(() => {
     if (!mapRef.current || !mapLoaded) return;
     nearbyMarkersRef.current.forEach((m) => m.remove());
@@ -353,6 +364,39 @@ export default function NearbyMap() {
     }
   }, [requestLocation, initialCenter]);
 
+  // 🔍 Sélection d'une ville depuis la barre de recherche.
+  // Règle : si la ville a des offres -> on recentre la carte ET on charge
+  // les marqueurs. Si elle n'en a pas -> on ne touche PAS à la carte, on
+  // affiche juste un message dans la barre de recherche elle-même.
+  const handleSelectCity = useCallback(
+    (city: CityResult) => {
+      if (!city.hasOffers || city.latitude == null || city.longitude == null) {
+        setSearchMessage(
+          tToolbar("noOffersInCity", { city: city.name })
+        );
+        return;
+      }
+
+      setSearchMessage(null);
+
+      const position: [number, number] = [city.longitude, city.latitude];
+
+      if (mapRef.current && mapLoaded) {
+        mapRef.current.flyTo({
+          center: position,
+          zoom: CITY_SEARCH_ZOOM,
+          pitch: DEFAULT_PITCH,
+          bearing: DEFAULT_BEARING,
+          essential: true,
+          duration: 1200,
+        });
+      }
+
+      fetchNearby(city.longitude, city.latitude);
+    },
+    [mapLoaded, fetchNearby, tToolbar]
+  );
+
   return (
     <div className="relative w-full h-full" style={{ minHeight: "500px" }}>
      
@@ -393,7 +437,11 @@ export default function NearbyMap() {
         }}
       />
 
-      <TopToolbar onOpenAiSearch={() => setAiSearchOpen(true)} />
+      <TopToolbar
+        onOpenAiSearch={() => setAiSearchOpen(true)}
+        onSelectCity={handleSelectCity}
+        searchMessage={searchMessage}
+      />
       <AiSearchPanel open={aiSearchOpen} onClose={() => setAiSearchOpen(false)} />
       <button
         onClick={resetView}

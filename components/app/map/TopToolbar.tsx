@@ -1,14 +1,26 @@
 "use client";
 
-import { useState } from "react";
-import { MagnifyingGlassIcon, SparkleIcon, UserIcon } from "@phosphor-icons/react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { MagnifyingGlassIcon, UserIcon, MapPinIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { orbitron } from "@/fonts/font";
 import { useSession } from "@/app/context/SessionContext";
 import ProfilePopover from "../utils/profilsPopover";
 
+export type CityResult = {
+  id: string;
+  name: string;
+  slug: string;
+  latitude: number | null;
+  longitude: number | null;
+  count: number;
+  hasOffers: boolean;
+};
+
 type TopToolbarProps = {
   onOpenAiSearch: () => void;
+  onSelectCity: (city: CityResult) => void;
+  searchMessage?: string | null;
 };
 
 type UserAvatar = {
@@ -19,12 +31,17 @@ type UserAvatar = {
   accountType?: string | null;
 };
 
-export default function TopToolbar({ onOpenAiSearch }: TopToolbarProps) {
+export default function TopToolbar({ onOpenAiSearch, onSelectCity, searchMessage }: TopToolbarProps) {
   const t = useTranslations("TopToolbar");
   const [profileOpen, setProfileOpen] = useState(false);
 
-  // Session partagée via le contexte, chargée une seule fois au niveau du
-  // layout /app — plus de fetch indépendant ici (évite le 429 de rate limit).
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<CityResult[]>([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [searching, setSearching] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
   const { user: sessionUser } = useSession();
   const user: UserAvatar | null = sessionUser
     ? {
@@ -36,16 +53,105 @@ export default function TopToolbar({ onOpenAiSearch }: TopToolbarProps) {
       }
     : null;
 
+  const runSearch = useCallback(async (q: string) => {
+    if (!q.trim()) {
+      setResults([]);
+      setDropdownOpen(false);
+      return;
+    }
+    setSearching(true);
+    try {
+      const res = await fetch(`/api/regions/search?q=${encodeURIComponent(q)}`);
+      const data = await res.json();
+      setResults(data.results ?? []);
+      setDropdownOpen(true);
+    } catch (err) {
+      console.error("Erreur recherche ville:", err);
+      setResults([]);
+    } finally {
+      setSearching(false);
+    }
+  }, []);
+
+  const handleInputChange = (value: string) => {
+    setQuery(value);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => runSearch(value), 300);
+  };
+
+  const handleSelect = (city: CityResult) => {
+    setQuery(city.name);
+    setDropdownOpen(false);
+    onSelectCity(city);
+  };
+
+  // Ferme le dropdown si on clique ailleurs
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <>
       {/* Barre principale : recherche centrée + bouton IA à droite */}
       <div className="absolute top-4 left-4 right-40 z-10 flex items-center gap-2">
-        <div className="flex-1 max-w-md mx-auto flex items-center gap-2 bg-black/60 backdrop-blur-sm border border-white/10 rounded-lg px-3 h-10">
-          <MagnifyingGlassIcon size={16} className="text-white/40" />
-          <input
-            placeholder={t("quickSearchPlaceholder")}
-            className={`flex-1 bg-transparent text-sm text-white/90 placeholder:text-white/30 focus:outline-none ${orbitron.className}`}
-          />
+        <div ref={wrapperRef} className="relative flex-1 max-w-md mx-auto">
+          <div className="flex items-center gap-2 bg-black/60 backdrop-blur-sm border border-white/10 rounded-lg px-3 h-10">
+            <MagnifyingGlassIcon size={16} className="text-white/40 shrink-0" />
+            <input
+              value={query}
+              onChange={(e) => handleInputChange(e.target.value)}
+              onFocus={() => results.length > 0 && setDropdownOpen(true)}
+              placeholder={t("quickSearchPlaceholder")}
+              className={`flex-1 bg-transparent text-sm text-white/90 placeholder:text-white/30 focus:outline-none min-w-0 ${orbitron.className}`}
+            />
+          </div>
+
+          {/* Dropdown des résultats */}
+          {dropdownOpen && (
+            <div className="absolute top-full mt-1 w-full bg-black/90 backdrop-blur-sm border border-white/10 rounded-lg overflow-hidden shadow-xl max-h-64 overflow-y-auto">
+              {searching ? (
+                <div className="px-3 py-3 text-xs text-white/40">{t("searching")}</div>
+              ) : results.length === 0 ? (
+                <div className="px-3 py-3 text-xs text-white/40">{t("noCityFound")}</div>
+              ) : (
+                results.map((city) => (
+                  <button
+                    key={city.id}
+                    onClick={() => handleSelect(city)}
+                    className="w-full flex items-center justify-between gap-2 px-3 py-2.5 text-left hover:bg-white/10 cursor-pointer transition-colors"
+                  >
+                    <span className="flex items-center gap-2 min-w-0">
+                      <MapPinIcon size={14} className="text-white/40 shrink-0" />
+                      <span className={`text-sm text-white/90 truncate ${orbitron.className}`}>
+                        {city.name}
+                      </span>
+                    </span>
+                    <span
+                      className={`text-[11px] shrink-0 ${
+                        city.hasOffers ? "text-[#8b7ff5]" : "text-white/30"
+                      }`}
+                    >
+                      {city.hasOffers ? t("offersCount", { count: city.count }) : t("noOffers")}
+                    </span>
+                  </button>
+                ))
+              )}
+            </div>
+          )}
+
+          {/* Message affiché quand la ville sélectionnée n'a pas d'offre — reste
+              dans la barre de recherche, ne touche jamais à la carte */}
+          {searchMessage && !dropdownOpen && (
+            <div className="absolute top-full mt-1 w-full bg-black/80 backdrop-blur-sm border border-white/10 rounded-lg px-3 py-2">
+              <p className={`text-xs text-white/60 ${orbitron.className}`}>{searchMessage}</p>
+            </div>
+          )}
         </div>
 
         <button

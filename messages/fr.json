@@ -108,6 +108,11 @@
     "subtitle": "Trouve du personnel de maison près de chez toi."
   },
   "NearbyMap": {
+    "searching": "Recherche...",
+"noCityFound": "Aucune ville trouvée",
+"offersCount": "{count} offre(s)",
+"noOffers": "Aucune offre",
+"noOffersInCity": "Aucune offre disponible à {city} pour le moment.",
     "me": "Moi",
     "youAreHere": "Vous êtes ici",
     "locateMe": "Me localiser",

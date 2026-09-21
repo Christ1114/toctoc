@@ -1,9 +1,7 @@
 {
   "ProfilePage": {
     "cropTitle": "Crop image",
-   
     "zoom": "Zoom",
-   
     "cropConfirm": "Confirm",
     "back": "Back",
     "unnamed": "Unnamed",
@@ -88,6 +86,11 @@
     "mockResponse": "I found a profile that matches your search:"
   },
   "NearbyMap": {
+    "searching": "Searching...",
+"noCityFound": "No city found",
+"offersCount": "{count} offer(s)",
+"noOffers": "No offers",
+"noOffersInCity": "No offers available in {city} at the moment.",
     "me": "Me",
     "youAreHere": "You are here",
     "locateMe": "Locate me",
