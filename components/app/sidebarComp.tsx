@@ -13,8 +13,6 @@ import {
   CaretDoubleRightIcon,
   CaretDoubleLeftIcon,
   GearSixIcon,
-  ListIcon,
-  XIcon,
 } from "@phosphor-icons/react";
 import { orbitron } from "@/fonts/font";
 import Image from "next/image";
@@ -43,6 +41,8 @@ const POPOVER_KEYS: (NavKey | "settings")[] = ["search", "vr", "settings"];
 
 const RTL_LOCALES = ["ar"];
 
+type Breakpoint = "mobile" | "tablet" | "desktop";
+
 const Sidebar = () => {
   const locale = useLocale();
   const t = useTranslations("Sidebar");
@@ -50,8 +50,7 @@ const Sidebar = () => {
 
   const [collapsed, setCollapsed] = useState(true);
   const [active, setActive] = useState<NavKey | "settings">("home");
-  const [isMobile, setIsMobile] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [breakpoint, setBreakpoint] = useState<Breakpoint>("desktop");
 
   const [searchOpen, setSearchOpen] = useState(false);
   const [vrOpen, setVrOpen] = useState(false);
@@ -60,16 +59,17 @@ const Sidebar = () => {
 
   const isRTL = RTL_LOCALES.includes(locale);
 
+  // Détecte le breakpoint (resize + init)
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
-      const mobile = width < 768;
-      setIsMobile(mobile);
-
-      if (mobile || width < 1024) {
+      if (width < 768) {
+        setBreakpoint("mobile");
+      } else if (width < 1024) {
+        setBreakpoint("tablet");
         setCollapsed(true);
       } else {
-        setCollapsed(false);
+        setBreakpoint("desktop");
       }
     };
 
@@ -82,7 +82,6 @@ const Sidebar = () => {
     if (key === "home") {
       setActive(key);
       router.push(`/${locale}/app`);
-      if (isMobile) setMobileOpen(false);
       return;
     }
     if (key === "search") {
@@ -101,7 +100,6 @@ const Sidebar = () => {
       return;
     }
     setActive(key);
-    if (isMobile) setMobileOpen(false);
   };
 
   const handleSearch = (query: string) => {
@@ -112,6 +110,22 @@ const Sidebar = () => {
     console.log("Casque VR confirmé, lancement de l'entretien virtuel");
   };
 
+  const popovers = (
+    <>
+      <SearchPopover
+        open={searchOpen}
+        onClose={() => setSearchOpen(false)}
+        onSearch={handleSearch}
+        userType={user?.clientType}
+      />
+      <VrConfirmPopover open={vrOpen} onClose={() => setVrOpen(false)} onConfirm={handleVrConfirm} />
+      <SettingsPopover open={settingsOpen} onClose={() => setSettingsOpen(false)} />
+    </>
+  );
+
+  // =========================================================
+  //  BOUTON DE NAV (réutilisable sidebar verticale)
+  // =========================================================
   const NavButton = ({
     navKey,
     icon: Icon,
@@ -161,7 +175,7 @@ const Sidebar = () => {
     );
   };
 
-  const renderNavItems = (showLabel: boolean, justifyCenter = false) => (
+  const renderSidebarItems = (showLabel: boolean, justifyCenter = false) => (
     <nav className="mt-2 flex flex-col gap-1 px-3" aria-label={t("navLabel")}>
       {NAV_ITEMS.map(({ key, icon }) => (
         <NavButton
@@ -213,86 +227,82 @@ const Sidebar = () => {
     );
   };
 
-  const popovers = (
-    <>
-      <SearchPopover
-        open={searchOpen}
-        onClose={() => setSearchOpen(false)}
-        onSearch={handleSearch}
-        userType={user?.clientType}
-      />
-      <VrConfirmPopover open={vrOpen} onClose={() => setVrOpen(false)} onConfirm={handleVrConfirm} />
-      <SettingsPopover open={settingsOpen} onClose={() => setSettingsOpen(false)} />
-    </>
-  );
-
-  if (isMobile && mobileOpen) {
+  // =========================================================
+  //  MOBILE → Bottom Navigation Bar
+  // =========================================================
+  if (breakpoint === "mobile") {
     return (
       <>
-        <div
-          className="fixed inset-0 bg-black/5 dark:bg-white/5 backdrop-blur-sm z-40"
-          onClick={() => setMobileOpen(false)}
-          aria-hidden="true"
-        />
-        <div
+        {/* Bottom navbar fixe */}
+        <nav
           dir={isRTL ? "rtl" : "ltr"}
-          className={`fixed top-0 h-screen z-50 flex flex-col font-bold justify-between bg-white dark:bg-neutral-950 w-64 ${
-            isRTL
-              ? "right-0 border-l border-black/5 dark:border-white/5"
-              : "left-0 border-r border-black/5 dark:border-white/5"
-          } ${orbitron.className}`}
+          aria-label={t("navLabel")}
+          className={`fixed bottom-0 left-0 right-0 z-50 h-16 flex items-center justify-around
+                      bg-white/95 dark:bg-neutral-950/95 backdrop-blur-md
+                      border-t border-black/5 dark:border-white/5
+                      pb-[env(safe-area-inset-bottom)] ${orbitron.className}`}
         >
-          <div>
-            <div className="flex items-center justify-between px-4 h-16">
-              <div className="flex items-center">
-                <Image
-                  src="/assets/logo/logo.svg"
-                  alt="Logo"
-                  width={80}
-                  height={40}
-                  priority
-                  className="dark:invert"
-                />
-              </div>
+          {NAV_ITEMS.map(({ key, icon: Icon }) => {
+            const isActive = active === key;
+            const label = t(key);
+            return (
               <button
-                onClick={() => setMobileOpen(false)}
-                className="p-1 text-zinc-500 hover:text-zinc-900 dark:text-white/60 dark:hover:text-white/90 cursor-pointer"
-                aria-label={t("closeMenu")}
+                key={key}
+                onClick={() => handleNavClick(key)}
+                aria-label={label}
+                aria-current={isActive ? "page" : undefined}
+                className={`flex-1 flex flex-col items-center justify-center gap-0.5 h-full
+                            transition-colors cursor-pointer
+                            ${
+                              isActive
+                                ? "text-[#432dd7]"
+                                : "text-zinc-500 dark:text-white/60"
+                            }`}
               >
-                <XIcon size={20} />
+                <Icon size={22} weight={isActive ? "fill" : "regular"} />
+                <span className="text-[10px] leading-none">{label}</span>
               </button>
-            </div>
-            {renderNavItems(true)}
-          </div>
-          <div className="flex flex-col gap-3 pb-4">
-            <div className="px-3">
-              <NavButton navKey="settings" icon={GearSixIcon} showLabel />
-            </div>
-          </div>
-        </div>
+            );
+          })}
+
+          {/* Settings */}
+          <button
+            onClick={() => handleNavClick("settings")}
+            aria-label={t("settings")}
+            aria-current={active === "settings" ? "page" : undefined}
+            className={`flex-1 flex flex-col items-center justify-center gap-0.5 h-full
+                        transition-colors cursor-pointer
+                        ${
+                          active === "settings"
+                            ? "text-[#432dd7]"
+                            : "text-zinc-500 dark:text-white/60"
+                        }`}
+          >
+            <GearSixIcon size={22} weight={active === "settings" ? "fill" : "regular"} />
+            <span className="text-[10px] leading-none">{t("settings")}</span>
+          </button>
+        </nav>
+
         {popovers}
       </>
     );
   }
 
-  if (isMobile) {
+  // =========================================================
+  //  TABLETTE → Sidebar collapsée (icônes seules)
+  // =========================================================
+  if (breakpoint === "tablet") {
     return (
       <>
         <div
           dir={isRTL ? "rtl" : "ltr"}
-          className={`h-screen flex flex-col font-bold justify-between bg-white dark:bg-neutral-950 border-r border-black/5 dark:border-white/5 w-16 ${orbitron.className}`}
+          className={`h-screen flex flex-col font-bold justify-between bg-zinc-50 dark:bg-black border-r border-black/5 dark:border-white/5 w-20 ${orbitron.className}`}
         >
           <div>
-            <div className="flex items-center justify-center h-16">
-              <button
-                onClick={() => setMobileOpen(true)}
-                className="p-2 text-zinc-500 hover:text-zinc-900 dark:text-white/60 dark:hover:text-white/90 cursor-pointer"
-                aria-label={t("openMenu")}
-              >
-                <ListIcon size={20} />
-              </button>
+            <div className="flex items-center justify-center px-4 h-16 overflow-hidden">
+              <LogoDisplay />
             </div>
-            {renderNavItems(false, true)}
+            {renderSidebarItems(false, true)}
           </div>
           <div className="pb-4 px-3">
             <NavButton navKey="settings" icon={GearSixIcon} showLabel={false} justifyCenter />
@@ -303,6 +313,9 @@ const Sidebar = () => {
     );
   }
 
+  // =========================================================
+  //  DESKTOP → Sidebar complète avec toggle
+  // =========================================================
   return (
     <>
       <div
@@ -315,7 +328,7 @@ const Sidebar = () => {
           <div className="flex items-center justify-center px-4 h-16 overflow-hidden">
             <LogoDisplay />
           </div>
-          <div className="overflow-hidden">{renderNavItems(!collapsed)}</div>
+          <div className="overflow-hidden">{renderSidebarItems(!collapsed)}</div>
         </div>
 
         <div className="flex flex-col gap-3 pb-4">
