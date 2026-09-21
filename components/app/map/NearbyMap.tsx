@@ -533,8 +533,6 @@ export default function NearbyMap() {
         open={aiSearchOpen}
         onClose={() => setAiSearchOpen(false)}
       />
-
-      {/* ───── Bouton 3D ───── */}
       <button
         onClick={resetView}
         aria-label="Réinitialiser la vue 3D"
