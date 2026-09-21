@@ -179,7 +179,7 @@ export default function NearbyMap() {
         setMapLoaded(true);
 
         try {
-          // ─── Marker de l'utilisateur connecté ───
+         
           const me = user as any;
           const userMarkerEl = createAvatarMarkerElement({
             imageUrl: me?.image ?? null,
@@ -207,7 +207,7 @@ export default function NearbyMap() {
     }
   }, [initialCenter, user]);
 
-  // ─── Cleanup au démontage ───
+  
   useEffect(() => {
     return () => {
       if (mapRef.current) {
@@ -220,7 +220,6 @@ export default function NearbyMap() {
     };
   }, []);
 
-  // ─── Recentrage ───
   useEffect(() => {
     if (!mapRef.current || !mapLoaded || !initialCenter) return;
 
@@ -236,10 +235,9 @@ export default function NearbyMap() {
     userMarkerRef.current?.setLngLat(initialCenter);
   }, [initialCenter, mapLoaded]);
 
-  // ─── Fetch users proches ───
   const fetchNearby = useCallback(async (lng: number, lat: number) => {
     try {
-      const res = await fetch(`/api/user/nearby?lat=${lat}&lng=${lng}&radius=20`);
+      const res = await fetch(`/api/user/nearby?lat=${lat}&lng=${lng}&radius=500`);
       if (!res.ok) throw new Error("Erreur fetch nearby users");
       const data = await res.json();
       setNearbyUsers(data.users ?? []);
@@ -255,18 +253,14 @@ export default function NearbyMap() {
     fetchNearby(lng, lat);
   }, [initialCenter, fetchNearby]);
 
-  // ─── Affichage des markers des autres users ───
+  
   useEffect(() => {
     if (!mapRef.current || !mapLoaded) return;
-
-    // Cleanup des anciens markers
     nearbyMarkersRef.current.forEach((m) => m.remove());
     nearbyMarkersRef.current = [];
 
     nearbyUsers.forEach((u) => {
       if (u.lastLatitude === null || u.lastLongitude === null) return;
-
-      // Détermine si le user est en ligne (actif dans les 5 dernières minutes)
       const lastUpdate = u.lastLocationUpdatedAt
         ? new Date(u.lastLocationUpdatedAt)
         : null;
@@ -299,8 +293,6 @@ export default function NearbyMap() {
       nearbyMarkersRef.current = [];
     };
   }, [nearbyUsers, mapLoaded]);
-
-  // ─── Changement de thème clair/sombre ───
   useEffect(() => {
     if (!mapRef.current || !mapLoaded) return;
     const styleUrl = resolvedTheme === "dark" ? STYLES.dark : STYLES.light;
