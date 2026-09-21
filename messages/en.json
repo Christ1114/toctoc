@@ -1,5 +1,10 @@
 {
   "ProfilePage": {
+    "cropTitle": "Crop image",
+   
+    "zoom": "Zoom",
+   
+    "cropConfirm": "Confirm",
     "back": "Back",
     "unnamed": "Unnamed",
     "notFound": "User not found",

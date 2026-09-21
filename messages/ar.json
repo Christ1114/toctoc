@@ -1,5 +1,8 @@
 {
   "ProfilePage": {
+    "cropTitle": "قص الصورة",
+    "zoom": "تكبير",
+    "cropConfirm": "تأكيد",
     "back": "رجوع",
     "unnamed": "بدون اسم",
     "notFound": "لم يتم العثور على المستخدم",

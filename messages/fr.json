@@ -1,8 +1,10 @@
 {
-  "cropTitle": "Ajuster la photo",
-"zoom": "Zoom",
-"cropConfirm": "Valider",
+
   "ProfilePage": {
+    "cropTitle": "Recadrer l'image",
+    "zoom": "Zoom",
+    "crop": "Recadrer",
+    "cropConfirm": "Valider",
     "back": "Retour",
     "unnamed": "Sans nom",
     "notFound": "Profil introuvable",
