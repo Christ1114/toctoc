@@ -367,9 +367,6 @@ export default function NearbyMap() {
         minHeight: "500px",
       }}
     >
-      {/* ============================================================
-          Styles globaux — responsive sm / md / lg + dark mode
-      ============================================================ */}
       <style jsx global>{`
         .maplibregl-ctrl-bottom-left {
           bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
@@ -455,8 +452,6 @@ export default function NearbyMap() {
           font-size: 10px !important;
         }
       `}</style>
-
-      {/* ───── Loading ───── */}
       {loadingPosition && (
         <div className="absolute inset-0 flex items-center justify-center z-20 bg-gray-100 dark:bg-gray-900 transition-colors">
           <div className="flex flex-col items-center gap-3 px-4">
@@ -469,8 +464,6 @@ export default function NearbyMap() {
           </div>
         </div>
       )}
-
-      {/* ───── Erreur ───── */}
       {mapError && (
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 bg-red-100 dark:bg-red-900/80 text-red-700 dark:text-red-100 p-4 sm:p-5 rounded-xl shadow-lg max-w-[92vw] sm:max-w-sm border border-red-200 dark:border-red-800">
           <p className="text-sm sm:text-base">{mapError}</p>
@@ -499,8 +492,6 @@ export default function NearbyMap() {
       />
 
       <AiSearchPanel open={aiSearchOpen} onClose={() => setAiSearchOpen(false)} />
-
-      {/* ───── Bouton 3D ───── */}
       <button
         onClick={resetView}
         aria-label="Réinitialiser la vue 3D"
