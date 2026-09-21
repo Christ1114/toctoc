@@ -116,9 +116,13 @@ export default function TopToolbar({ onOpenAiSearch, onSelectCity, searchMessage
           {dropdownOpen && (
             <div className="absolute top-full mt-1 w-full bg-black/90 backdrop-blur-sm border border-white/10 rounded-lg overflow-hidden shadow-xl max-h-64 overflow-y-auto">
               {searching ? (
-                <div className="px-3 py-3 text-xs text-white/40">{t("searching")}</div>
+                <div className={`px-3 py-3 text-xs text-white/40 ${orbitron.className}`}>
+                  {t("searching")}
+                </div>
               ) : results.length === 0 ? (
-                <div className="px-3 py-3 text-xs text-white/40">{t("noCityFound")}</div>
+                <div className={`px-3 py-3 text-xs text-white/40 ${orbitron.className}`}>
+                  {t("noCityFound")}
+                </div>
               ) : (
                 results.map((city) => (
                   <button
@@ -166,7 +170,7 @@ export default function TopToolbar({ onOpenAiSearch, onSelectCity, searchMessage
         {user?.image ? (
           <img src={user.image} alt={user.name || "Avatar"} className="w-full h-full object-cover" />
         ) : (
-          <span className="text-xs font-semibold text-white/80">
+          <span className={`text-xs font-semibold text-white/80 ${orbitron.className}`}>
             {user?.name ? user.name.charAt(0).toUpperCase() : <UserIcon size={16} className="text-white/50" />}
           </span>
         )}
