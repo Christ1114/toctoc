@@ -230,7 +230,7 @@
   background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(8px);
   color: white;
-  padding: 8px 28px 8px 14px; /* plus de padding à droite pour laisser la place au X */
+  padding: 8px 28px 8px 14px; 
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
@@ -260,9 +260,7 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* ============================
-   AVATAR MARKER
-   ============================ */
+
 
 .avatar-marker {
   position: relative;
@@ -279,8 +277,6 @@
   transform: scale(1.08);
   z-index: 10;
 }
-
-/* Bulle avec l'avatar */
 .avatar-marker__bubble {
   width: 48px;
   height: 48px;
@@ -295,8 +291,6 @@
   position: relative;
   z-index: 2;
 }
-
-/* Image de l'avatar */
 .avatar-marker__img {
   width: 100%;
   height: 100%;
@@ -304,7 +298,7 @@
   display: block;
 }
 
-/* Fallback : initiale du nom */
+
 .avatar-marker__fallback {
   width: 100%;
   height: 100%;
@@ -317,7 +311,7 @@
   font-family: system-ui, sans-serif;
 }
 
-/* Pointeur (petit triangle sous la bulle) */
+
 .avatar-marker__pointer {
   width: 0;
   height: 0;
@@ -329,7 +323,7 @@
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
 }
 
-/* Ombre au sol */
+
 .avatar-marker__shadow {
   width: 28px;
   height: 6px;
@@ -340,19 +334,19 @@
   z-index: 0;
 }
 
-/* Dark mode (si applicable) */
+
 .dark .avatar-marker__bubble {
   background: #1a1a1a;
 }
 .avatar-marker {
-  /* Utilise la variable CSS au lieu du style inline */
+  
   --marker-color: #432dd7;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  /* ⚠️ PAS de will-change ici — seulement au hover via @media (hover: hover) */
+ 
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -363,12 +357,12 @@
   .avatar-marker:focus-visible {
     transform: translateY(-2px) scale(1.06);
     z-index: 10;
-    /* will-change activé seulement quand utile */
+
     will-change: transform;
   }
 }
 
-/* Focus visible accessible */
+
 .avatar-marker:focus-visible {
   outline: 2px solid var(--marker-color);
   outline-offset: 4px;
