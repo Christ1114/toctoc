@@ -1,4 +1,107 @@
 {
+  "AppProfilProvider": {
+    "notFound": "User not found",
+    "unnamed": "Unnamed",
+    "verified": "Verified",
+    "perHour": "hour",
+    "back": "Back",
+    "editProfile": "Edit profile",
+    "saving": "Saving...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "saved": "Profile updated",
+    "linkCopied": "Link copied",
+    "shareProfile": "Share my public profile",
+    "namePlaceholder": "Your name",
+    "bioPlaceholder": "Tell us about yourself...",
+    "noBio": "No bio",
+    "changePhoto": "Change photo",
+    "settings": "Settings",
+    "share": "Share",
+    "accountType": { "PROVIDER": "Provider" },
+    "tabs": {
+      "bookings": "Bookings",
+      "videos": "Videos",
+      "reviews": "Reviews"
+    },
+    "providerInfo": "Provider information",
+    "providerType": "Service type",
+    "hourlyRate": "Hourly rate",
+    "select": "Select...",
+    "socialNetworks": "Social networks",
+    "social": {
+      "website": "Website",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "tiktok": "TikTok",
+      "linkedin": "LinkedIn",
+      "youtube": "YouTube",
+      "twitter": "X (Twitter)"
+    },
+    "providerTypes": {
+      "BABYSITTER": "Babysitter",
+      "GARDE_PERISCOLAIRE": "Afterschool care",
+      "MENAGE": "Cleaning",
+      "AIDE_PERSONNES_AGEES": "Elderly care",
+      "RESIDENTIEL": "Residential",
+      "COURT_TERME": "Short-term"
+    },
+    "empty": {
+      "bookings": "No bookings yet",
+      "reviews": "No reviews yet"
+    },
+    "errors": {
+      "saveFailed": "Save failed",
+      "uploadFailed": "Upload failed",
+      "invalidImage": "Invalid image format",
+      "imageTooLarge": "Image too large (max 5 MB)"
+    }
+  }
+,
+   "ProviderProfile": {
+    "videoModal": {
+      "invalidUrl": "Invalid video URL",
+      "invalidYoutubeId": "Invalid YouTube ID",
+      "invalidVimeoId": "Invalid Vimeo ID",
+      "unsupportedFormat": "Unsupported video format",
+      "videoFallbackTitle": "Video",
+      "dialogLabel": "Video playback",
+      "close": "Close"
+    }
+  },
+   "VideoManager": {
+    "addVideo": "Add a video",
+    "empty": "No videos yet",
+    "untitled": "Untitled",
+    "hidden": "Hidden",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "show": "Show",
+    "hide": "Hide",
+    "added": "Video added",
+    "updated": "Video updated",
+    "deleted": "Video deleted",
+    "form": {
+      "url": "Video URL",
+      "urlHint": "YouTube, Vimeo, or .mp4 file",
+      "title": "Title (optional)",
+      "description": "Description (optional)",
+      "submit": "Add"
+    },
+    "confirmDelete": {
+      "title": "Delete this video?",
+      "message": "This action is permanent."
+    },
+    "errors": {
+      "loadFailed": "Could not load videos",
+      "addFailed": "Could not add video",
+      "updateFailed": "Could not update video",
+      "deleteFailed": "Could not delete video",
+      "invalidUrl": "Invalid URL (YouTube, Vimeo or .mp4)"
+    }
+  },
   "ProfilePage": {
     "cropTitle": "Crop image",
     "zoom": "Zoom",

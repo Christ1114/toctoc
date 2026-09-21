@@ -303,7 +303,7 @@ model User {
   hourlyRate   Decimal?      @db.Decimal(10, 2)
   currency     String        @default("XOF")
 
-  // ─── Réseaux sociaux (optionnels pour tous les comptes) ───
+ 
   website   String?
   instagram String?
   facebook  String?
@@ -350,7 +350,7 @@ model User {
   searches      Search[]
   notifications Notification[]
 
-  // ─── Vidéos prestataire ───
+
   videos ProviderVideo[] @relation("ProviderVideos")
 
   @@index([accountType])
@@ -360,31 +360,18 @@ model User {
   @@map("users")
 }
 
-// ═══════════════════════════════════════════════════════════
-//  PROVIDER VIDEO — Vidéos de présentation prestataire
-// ═══════════════════════════════════════════════════════════
 model ProviderVideo {
   id         String @id @default(cuid())
   providerId String
   provider   User   @relation("ProviderVideos", fields: [providerId], references: [id], onDelete: Cascade)
-
-  // URL validée côté serveur (https uniquement)
   url String
-
-  // Plateforme détectée : "youtube" | "vimeo" | "direct"
   platform String
-
-  // ID externe (ID YouTube 11 chars, ID Vimeo numérique) — null si direct
   externalId String?
-
-  // Miniature auto (YouTube) ou personnalisée
   thumbnail String?
 
   title       String?
   description String? @db.Text
   duration    Int?
-
-  // Ordre d'affichage manuel
   position  Int     @default(0)
   isVisible Boolean @default(true)
 

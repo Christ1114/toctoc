@@ -1,4 +1,106 @@
 {
+    "ProviderProfile": {
+    "videoModal": {
+      "invalidUrl": "رابط الفيديو غير صالح",
+      "invalidYoutubeId": "معرّف يوتيوب غير صالح",
+      "invalidVimeoId": "معرّف فيميو غير صالح",
+      "unsupportedFormat": "صيغة الفيديو غير مدعومة",
+      "videoFallbackTitle": "فيديو",
+      "dialogLabel": "تشغيل الفيديو",
+      "close": "إغلاق"
+    }
+  },
+   "AppProfilProvider": {
+    "notFound": "المستخدم غير موجود",
+    "unnamed": "بدون اسم",
+    "verified": "موثّق",
+    "perHour": "ساعة",
+    "back": "رجوع",
+    "editProfile": "تعديل الملف",
+    "saving": "جارٍ الحفظ...",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "saved": "تم تحديث الملف",
+    "linkCopied": "تم نسخ الرابط",
+    "shareProfile": "شارك ملفي العام",
+    "namePlaceholder": "اسمك",
+    "bioPlaceholder": "عرّف بنفسك...",
+    "noBio": "لا توجد نبذة",
+    "changePhoto": "تغيير الصورة",
+    "settings": "الإعدادات",
+    "share": "مشاركة",
+    "accountType": { "PROVIDER": "مزوّد خدمة" },
+    "tabs": {
+      "bookings": "الحجوزات",
+      "videos": "الفيديوهات",
+      "reviews": "التقييمات"
+    },
+    "providerInfo": "معلومات المزوّد",
+    "providerType": "نوع الخدمة",
+    "hourlyRate": "الأجر بالساعة",
+    "select": "اختر...",
+    "socialNetworks": "شبكات التواصل",
+    "social": {
+      "website": "الموقع الإلكتروني",
+      "instagram": "إنستغرام",
+      "facebook": "فيسبوك",
+      "tiktok": "تيك توك",
+      "linkedin": "لينكدإن",
+      "youtube": "يوتيوب",
+      "twitter": "إكس"
+    },
+    "providerTypes": {
+      "BABYSITTER": "جليس أطفال",
+      "GARDE_PERISCOLAIRE": "رعاية بعد المدرسة",
+      "MENAGE": "تنظيف",
+      "AIDE_PERSONNES_AGEES": "رعاية المسنين",
+      "RESIDENTIEL": "سكني",
+      "COURT_TERME": "قصير المدى"
+    },
+    "empty": {
+      "bookings": "لا توجد حجوزات بعد",
+      "reviews": "لا توجد تقييمات بعد"
+    },
+    "errors": {
+      "saveFailed": "فشل الحفظ",
+      "uploadFailed": "فشل الرفع",
+      "invalidImage": "صيغة الصورة غير صالحة",
+      "imageTooLarge": "الصورة كبيرة جداً (5 MB كحد أقصى)"
+    }
+  },
+  "VideoManager": {
+    "addVideo": "إضافة فيديو",
+    "empty": "لا توجد فيديوهات بعد",
+    "untitled": "بدون عنوان",
+    "hidden": "مخفي",
+    "edit": "تعديل",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "show": "إظهار",
+    "hide": "إخفاء",
+    "added": "تمت إضافة الفيديو",
+    "updated": "تم تحديث الفيديو",
+    "deleted": "تم حذف الفيديو",
+    "form": {
+      "url": "رابط الفيديو",
+      "urlHint": "يوتيوب أو فيميو أو ملف .mp4",
+      "title": "العنوان (اختياري)",
+      "description": "الوصف (اختياري)",
+      "submit": "إضافة"
+    },
+    "confirmDelete": {
+      "title": "حذف هذا الفيديو؟",
+      "message": "هذا الإجراء نهائي."
+    },
+    "errors": {
+      "loadFailed": "تعذّر تحميل الفيديوهات",
+      "addFailed": "تعذّر إضافة الفيديو",
+      "updateFailed": "تعذّر تحديث الفيديو",
+      "deleteFailed": "تعذّر حذف الفيديو",
+      "invalidUrl": "رابط غير صالح (يوتيوب أو فيميو أو .mp4)"
+    }
+  },
   "ProfilePage": {
     "cropTitle": "قص الصورة",
     "zoom": "تكبير",

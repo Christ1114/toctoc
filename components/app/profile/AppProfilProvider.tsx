@@ -9,11 +9,9 @@ import {
   GearSixIcon,
   ShareNetworkIcon,
   BriefcaseIcon,
-  BuildingsIcon,
   ArrowLeftIcon,
   CalendarCheckIcon,
   StarIcon,
-  HeartIcon,
   XIcon,
   CheckIcon,
   LinkIcon,
@@ -24,16 +22,18 @@ import {
   LinkedinLogoIcon,
   YoutubeLogoIcon,
   XLogoIcon,
+  VideoCameraIcon,
+  ShieldCheckIcon,
 } from "@phosphor-icons/react";
 import { orbitron } from "@/fonts/font";
 import { updateUser } from "@/app/lib/auth-client";
 import { useSession } from "@/app/context/SessionContext";
 import SettingsPopover from "@/components/app/utils/settingsPopover";
 import ImageCropModal from "./ImageCropModal";
+import VideoManager from "@/components/provider/VideoManager";
 import { isSafeUrl } from "@/app/lib/security/url-validation";
 
 type AccountType = "CLIENT" | "PROVIDER" | "ADMIN";
-type ClientType = "INDIVIDUAL" | "AGENCY";
 type ProviderType =
   | "BABYSITTER"
   | "GARDE_PERISCOLAIRE"
@@ -72,14 +72,12 @@ type ProfileUser = {
   image?: string | null;
   bio?: string | null;
   accountType?: AccountType;
-  clientType?: ClientType | null;
-  companyName?: string | null;
-  rccmNumber?: string | null;
   providerType?: ProviderType | null;
   hourlyRate?: number | null;
   currency?: string | null;
+  verificationStatus?: "PENDING" | "VERIFIED" | "REJECTED";
+  verificationLevel?: "BASIC" | "ADVANCED" | "PREMIUM" | null;
   createdAt?: Date | string;
-  // ─── Réseaux sociaux ───
   website?: string | null;
   instagram?: string | null;
   facebook?: string | null;
@@ -92,14 +90,13 @@ type ProfileUser = {
 type Stats = {
   bookingsCount: number;
   reviewsCount: number;
-  favoritesCount: number;
   averageRating: number | null;
 };
 
-type TabKey = "bookings" | "reviews" | "favorites";
+type TabKey = "bookings" | "videos" | "reviews";
 
-export default function ProfilePage() {
-  const t = useTranslations("ProfilePage");
+export default function AppProfilProvider() {
+  const t = useTranslations("AppProfilProvider");
   const locale = useLocale();
   const router = useRouter();
   const isRTL = locale === "ar";
@@ -119,34 +116,31 @@ export default function ProfilePage() {
   const [success, setSuccess] = useState<string | null>(null);
   const [form, setForm] = useState<Partial<ProfileUser>>({});
 
+  // ─── Charge user ───
   useEffect(() => {
     if (sessionLoading) return;
     setUser(sessionUser ? (sessionUser as unknown as ProfileUser) : null);
   }, [sessionUser, sessionLoading]);
 
-  const loadStats = async () => {
-    try {
-      const res = await fetch("/api/profils/stats");
-      if (res.ok) {
-        setStats(await res.json());
-      }
-    } catch (err) {
-      console.error("Erreur chargement stats:", err);
-    }
-  };
-
+  // ─── Charge stats ───
   useEffect(() => {
-    loadStats();
+    const load = async () => {
+      try {
+        const res = await fetch("/api/profils/stats");
+        if (res.ok) setStats(await res.json());
+      } catch (err) {
+        console.error("Erreur chargement stats:", err);
+      }
+    };
+    load();
   }, []);
 
+  // ─── Édition ───
   const startEditing = () => {
     if (!user) return;
     setForm({
       name: user.name,
       bio: user.bio,
-      clientType: user.clientType,
-      companyName: user.companyName,
-      rccmNumber: user.rccmNumber,
       providerType: user.providerType,
       hourlyRate: user.hourlyRate,
       currency: user.currency ?? "XOF",
@@ -175,9 +169,6 @@ export default function ProfilePage() {
       const { error: err } = await updateUser({
         name: form.name || undefined,
         bio: form.bio ?? undefined,
-        companyName: form.companyName ?? undefined,
-        rccmNumber: form.rccmNumber ?? undefined,
-        clientType: form.clientType ?? undefined,
         providerType: form.providerType ?? undefined,
         hourlyRate: form.hourlyRate ?? undefined,
         currency: form.currency ?? undefined,
@@ -199,13 +190,14 @@ export default function ProfilePage() {
       setEditing(false);
       setSuccess(t("saved"));
       setTimeout(() => setSuccess(null), 3000);
-    } catch (err) {
+    } catch {
       setError(t("errors.saveFailed"));
     } finally {
       setSaving(false);
     }
   };
 
+  // ─── Photo ───
   const handlePhotoClick = () => fileInputRef.current?.click();
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -231,7 +223,6 @@ export default function ProfilePage() {
 
   const handleCropConfirm = async (blob: Blob) => {
     if (!user) return;
-
     setUploadingPhoto(true);
     setError(null);
     try {
@@ -242,12 +233,10 @@ export default function ProfilePage() {
         method: "POST",
         body: formData,
       });
-
       if (!uploadRes.ok) {
         setError(t("errors.uploadFailed"));
         return;
       }
-
       const { url } = await uploadRes.json();
 
       const { error: updateError } = await updateUser({ image: url });
@@ -258,21 +247,22 @@ export default function ProfilePage() {
 
       setUser((prev) => (prev ? { ...prev, image: url } : prev));
       setCropImageSrc(null);
-    } catch (err) {
-      console.error("Erreur upload photo:", err);
+    } catch {
       setError(t("errors.uploadFailed"));
     } finally {
       setUploadingPhoto(false);
     }
   };
 
+  // ─── Partage ───
   const handleShare = async () => {
-    const url = window.location.href;
+    if (!user) return;
+    const publicUrl = `${window.location.origin}/${locale}/provider/${user.id}`;
     try {
       if (navigator.share) {
-        await navigator.share({ url });
+        await navigator.share({ url: publicUrl });
       } else {
-        await navigator.clipboard.writeText(url);
+        await navigator.clipboard.writeText(publicUrl);
         setSuccess(t("linkCopied"));
         setTimeout(() => setSuccess(null), 2000);
       }
@@ -281,6 +271,7 @@ export default function ProfilePage() {
     }
   };
 
+  // ─── Loading / Not found ───
   if (sessionLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white dark:bg-zinc-900">
@@ -301,15 +292,19 @@ export default function ProfilePage() {
     );
   }
 
-  const isAgencyClient =
-    user.accountType === "CLIENT" && user.clientType === "AGENCY";
-  const isProvider = user.accountType === "PROVIDER";
+  // Garde-fou : si ce n'est pas un provider, on redirige
+  if (user.accountType !== "PROVIDER") {
+    router.replace("/profile");
+    return null;
+  }
+
+  const isVerified = user.verificationStatus === "VERIFIED";
 
   const TABS: {
     key: TabKey;
     icon: typeof CalendarCheckIcon;
     label: string;
-    count: number;
+    count?: number;
   }[] = [
     {
       key: "bookings",
@@ -318,20 +313,19 @@ export default function ProfilePage() {
       count: stats?.bookingsCount ?? 0,
     },
     {
+      key: "videos",
+      icon: VideoCameraIcon,
+      label: t("tabs.videos"),
+    },
+    {
       key: "reviews",
       icon: StarIcon,
       label: t("tabs.reviews"),
       count: stats?.reviewsCount ?? 0,
     },
-    {
-      key: "favorites",
-      icon: HeartIcon,
-      label: t("tabs.favorites"),
-      count: stats?.favoritesCount ?? 0,
-    },
   ];
 
-  // ─── Réseaux sociaux : définition unique, réutilisée pour édition + affichage ───
+  // ─── Réseaux sociaux ───
   const SOCIAL_FIELDS: {
     key: SocialKey;
     icon: React.ReactNode;
@@ -409,12 +403,12 @@ export default function ProfilePage() {
           {t("back")}
         </button>
 
-        {/* ═══════════════ EN-TÊTE ═══════════════ */}
+        
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8">
+        
           <div className="relative shrink-0 mx-auto sm:mx-0">
             <div className="h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 rounded-full overflow-hidden bg-[#432dd7]/10 flex items-center justify-center border border-black/5 dark:border-white/10">
               {user.image ? (
-                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={user.image}
                   alt={user.name || t("unnamed")}
@@ -461,7 +455,7 @@ export default function ProfilePage() {
             />
           </div>
 
-          {/* Identité + stats + actions */}
+          {/* Identité */}
           <div className="flex-1 min-w-0 text-center sm:text-start">
             <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
               {editing ? (
@@ -480,44 +474,70 @@ export default function ProfilePage() {
                   {user.name || t("unnamed")}
                 </h1>
               )}
-              {user.accountType && (
-                <span
-                  className={`inline-flex items-center px-2 py-0.5 rounded-md bg-[#432dd7]/10 text-[#432dd7] text-[10px] sm:text-xs font-medium ${orbitron.className}`}
-                >
-                  {t(`accountType.${user.accountType}`)}
-                </span>
+              {isVerified && (
+                <ShieldCheckIcon
+                  size={18}
+                  weight="fill"
+                  className="text-[#432dd7] shrink-0"
+                  aria-label={t("verified")}
+                />
               )}
+              <span
+                className={`inline-flex items-center px-2 py-0.5 rounded-md bg-[#432dd7]/10 text-[#432dd7] text-[10px] sm:text-xs font-medium ${orbitron.className}`}
+              >
+                {t("accountType.PROVIDER")}
+              </span>
             </div>
 
+            {/* Stats inline */}
             <div className="flex items-center justify-center sm:justify-start gap-3 sm:gap-5 mt-2.5 sm:mt-3 flex-wrap">
-              {TABS.map(({ key, count, label }) => (
-                <button
-                  key={key}
-                  onClick={() => setActiveTab(key)}
-                  className="flex items-baseline gap-1 cursor-pointer group"
-                >
-                  <span
-                    className={`text-sm font-semibold text-gray-900 dark:text-white/90 ${orbitron.className}`}
-                  >
-                    {count}
+              {stats && (
+                <>
+                  <span className="flex items-baseline gap-1">
+                    <span
+                      className={`text-sm font-semibold text-gray-900 dark:text-white/90 ${orbitron.className}`}
+                    >
+                      {stats.bookingsCount}
+                    </span>
+                    <span className="text-xs text-gray-500 dark:text-white/50">
+                      {t("tabs.bookings")}
+                    </span>
                   </span>
-                  <span className="text-xs text-gray-500 dark:text-white/50 group-hover:text-gray-900 dark:group-hover:text-white/80 transition-colors">
-                    {label}
+                  <span className="flex items-baseline gap-1">
+                    <span
+                      className={`text-sm font-semibold text-gray-900 dark:text-white/90 ${orbitron.className}`}
+                    >
+                      {stats.reviewsCount}
+                    </span>
+                    <span className="text-xs text-gray-500 dark:text-white/50">
+                      {t("tabs.reviews")}
+                    </span>
                   </span>
-                </button>
-              ))}
-              {isProvider && stats?.averageRating != null && (
-                <span className="flex items-center gap-1 text-xs text-gray-500 dark:text-white/50">
-                  <StarIcon
-                    size={12}
-                    weight="fill"
-                    className="text-yellow-500"
-                  />
-                  {stats.averageRating.toFixed(1)}
-                </span>
+                  {stats.averageRating != null && (
+                    <span className="flex items-center gap-1 text-xs text-gray-500 dark:text-white/50">
+                      <StarIcon
+                        size={12}
+                        weight="fill"
+                        className="text-yellow-500"
+                      />
+                      <span className="font-semibold text-gray-900 dark:text-white/90">
+                        {stats.averageRating.toFixed(1)}
+                      </span>
+                    </span>
+                  )}
+                </>
               )}
             </div>
-
+            {user.hourlyRate != null && (
+              <p
+                className={`mt-2 text-base sm:text-lg font-bold text-[#432dd7] ${orbitron.className}`}
+              >
+                {user.hourlyRate} {user.currency ?? "XOF"}
+                <span className="text-xs sm:text-sm font-normal text-gray-500 dark:text-white/50 ml-1">
+                  / {t("perHour")}
+                </span>
+              </p>
+            )}
             <div className="flex items-center justify-center sm:justify-start gap-2 mt-3 sm:mt-4 flex-wrap">
               {!editing ? (
                 <>
@@ -539,6 +559,7 @@ export default function ProfilePage() {
                     onClick={handleShare}
                     className="h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/15 flex items-center justify-center text-gray-900 dark:text-white/90 cursor-pointer transition-colors"
                     aria-label={t("share")}
+                    title={t("shareProfile")}
                   >
                     <ShareNetworkIcon size={16} className="sm:hidden" />
                     <ShareNetworkIcon size={18} className="hidden sm:block" />
@@ -571,8 +592,6 @@ export default function ProfilePage() {
                 </div>
               )}
             </div>
-
-            {/* Bio */}
             <div className="mt-3 sm:mt-4">
               {editing ? (
                 <textarea
@@ -593,8 +612,6 @@ export default function ProfilePage() {
                 </p>
               )}
             </div>
-
-            {/* Réseaux sociaux affichés (hors édition) */}
             {!editing && socialLinks.length > 0 && (
               <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-3">
                 {socialLinks.map(({ key, href, icon, displayLabel }) => (
@@ -615,7 +632,7 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Erreur / succès */}
+        {/* Feedback */}
         {error && (
           <p
             className={`text-xs sm:text-sm text-red-500 dark:text-red-400 mt-3 sm:mt-4 ${orbitron.className}`}
@@ -630,72 +647,7 @@ export default function ProfilePage() {
             {success}
           </p>
         )}
-
-        {/* ═══════════════ RÉSEAUX SOCIAUX (édition) ═══════════════ */}
         {editing && (
-          <section className="border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6 pt-4 sm:pt-5">
-            <h2
-              className={`flex items-center gap-1.5 text-[10px] sm:text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}
-            >
-              <LinkIcon size={16} />
-              {t("socialNetworks")}
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {SOCIAL_FIELDS.map(({ key, icon, labelKey, placeholder }) => (
-                <div key={key} className="flex items-center gap-2">
-                  <span className="text-gray-400 dark:text-white/40 shrink-0">
-                    {icon}
-                  </span>
-                  <div className="flex-1">
-                    <label className="block text-[10px] sm:text-xs text-gray-500 dark:text-white/50 mb-1">
-                      {t(labelKey)}
-                    </label>
-                    <input
-                      type="url"
-                      value={form[key] || ""}
-                      onChange={(e) =>
-                        setForm((f) => ({ ...f, [key]: e.target.value }))
-                      }
-                      placeholder={placeholder}
-                      className="w-full h-9 px-3 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-xs text-gray-900 dark:text-white/90 placeholder:text-gray-400 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7]"
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* ═══════════════ SECTION AGENCE ═══════════════ */}
-        {editing && (isAgencyClient || form.clientType === "AGENCY") && (
-          <section className="border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6 pt-4 sm:pt-5">
-            <h2
-              className={`flex items-center gap-1.5 text-[10px] sm:text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}
-            >
-              <BuildingsIcon size={16} />
-              {t("agencyInfo")}
-            </h2>
-            <div className="flex flex-col gap-3">
-              <Field
-                label={t("companyName")}
-                editing
-                value={form.companyName || ""}
-                onChange={(v) => setForm((f) => ({ ...f, companyName: v }))}
-                placeholder={t("companyNamePlaceholder")}
-              />
-              <Field
-                label={t("rccmNumber")}
-                editing
-                value={form.rccmNumber || ""}
-                onChange={(v) => setForm((f) => ({ ...f, rccmNumber: v }))}
-                placeholder={t("rccmPlaceholder")}
-              />
-            </div>
-          </section>
-        )}
-
-        {/* ═══════════════ SECTION PROVIDER ═══════════════ */}
-        {editing && isProvider && (
           <section className="border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6 pt-4 sm:pt-5">
             <h2
               className={`flex items-center gap-1.5 text-[10px] sm:text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}
@@ -765,8 +717,39 @@ export default function ProfilePage() {
             </div>
           </section>
         )}
-
-        {/* ═══════════════ TABS ═══════════════ */}
+        {editing && (
+          <section className="border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6 pt-4 sm:pt-5">
+            <h2
+              className={`flex items-center gap-1.5 text-[10px] sm:text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}
+            >
+              <LinkIcon size={16} />
+              {t("socialNetworks")}
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {SOCIAL_FIELDS.map(({ key, icon, labelKey, placeholder }) => (
+                <div key={key} className="flex items-center gap-2">
+                  <span className="text-gray-400 dark:text-white/40 shrink-0">
+                    {icon}
+                  </span>
+                  <div className="flex-1">
+                    <label className="block text-[10px] sm:text-xs text-gray-500 dark:text-white/50 mb-1">
+                      {t(labelKey)}
+                    </label>
+                    <input
+                      type="url"
+                      value={form[key] || ""}
+                      onChange={(e) =>
+                        setForm((f) => ({ ...f, [key]: e.target.value }))
+                      }
+                      placeholder={placeholder}
+                      className="w-full h-9 px-3 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-xs text-gray-900 dark:text-white/90 placeholder:text-gray-400 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7]"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
         <div className="flex items-center border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6">
           {TABS.map(({ key, icon: Icon, label }) => (
             <button
@@ -786,11 +769,9 @@ export default function ProfilePage() {
             </button>
           ))}
         </div>
-
-        {/* ═══════════════ ÉTAT VIDE ═══════════════ */}
-        <div className="py-10 sm:py-14 flex flex-col items-center justify-center text-center px-4">
+        <div className="mt-5 sm:mt-6">
           {activeTab === "bookings" && (
-            <>
+            <div className="py-10 sm:py-14 flex flex-col items-center text-center px-4">
               <CalendarCheckIcon
                 size={32}
                 className="text-gray-300 dark:text-white/20 mb-2"
@@ -800,10 +781,12 @@ export default function ProfilePage() {
               >
                 {t("empty.bookings")}
               </p>
-            </>
+            </div>
           )}
+          {activeTab === "videos" && <VideoManager />}
+
           {activeTab === "reviews" && (
-            <>
+            <div className="py-10 sm:py-14 flex flex-col items-center text-center px-4">
               <StarIcon
                 size={32}
                 className="text-gray-300 dark:text-white/20 mb-2"
@@ -813,20 +796,7 @@ export default function ProfilePage() {
               >
                 {t("empty.reviews")}
               </p>
-            </>
-          )}
-          {activeTab === "favorites" && (
-            <>
-              <HeartIcon
-                size={32}
-                className="text-gray-300 dark:text-white/20 mb-2"
-              />
-              <p
-                className={`text-xs sm:text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}
-              >
-                {t("empty.favorites")}
-              </p>
-            </>
+            </div>
           )}
         </div>
       </div>
@@ -843,41 +813,6 @@ export default function ProfilePage() {
           onConfirm={handleCropConfirm}
           processing={uploadingPhoto}
         />
-      )}
-    </div>
-  );
-}
-
-/* ═══════════════ Field ═══════════════ */
-function Field({
-  label,
-  editing,
-  value,
-  onChange,
-  placeholder,
-}: {
-  label: string;
-  editing: boolean;
-  value?: string | null;
-  onChange: (v: string) => void;
-  placeholder?: string;
-}) {
-  return (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
-      <span className="text-xs sm:text-sm text-gray-500 dark:text-white/50 shrink-0">
-        {label}
-      </span>
-      {editing ? (
-        <input
-          value={value || ""}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={placeholder}
-          className="h-10 px-3 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-xs sm:text-sm text-gray-900 dark:text-white/90 placeholder:text-gray-400 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7] w-full sm:w-64"
-        />
-      ) : (
-        <span className="text-sm text-gray-900 dark:text-white/90 truncate">
-          {value || "—"}
-        </span>
       )}
     </div>
   );

@@ -1,4 +1,106 @@
 {
+  "ProviderProfile": {
+    "videoModal": {
+      "invalidUrl": "视频链接无效",
+      "invalidYoutubeId": "YouTube ID 无效",
+      "invalidVimeoId": "Vimeo ID 无效",
+      "unsupportedFormat": "不支持的视频格式",
+      "videoFallbackTitle": "视频",
+      "dialogLabel": "视频播放",
+      "close": "关闭"
+    }
+  },
+   "AppProfilProvider": {
+    "notFound": "用户未找到",
+    "unnamed": "未命名",
+    "verified": "已认证",
+    "perHour": "小时",
+    "back": "返回",
+    "editProfile": "编辑资料",
+    "saving": "保存中...",
+    "save": "保存",
+    "cancel": "取消",
+    "saved": "资料已更新",
+    "linkCopied": "链接已复制",
+    "shareProfile": "分享我的公开资料",
+    "namePlaceholder": "您的姓名",
+    "bioPlaceholder": "介绍一下您自己...",
+    "noBio": "暂无简介",
+    "changePhoto": "更改照片",
+    "settings": "设置",
+    "share": "分享",
+    "accountType": { "PROVIDER": "服务商" },
+    "tabs": {
+      "bookings": "预约",
+      "videos": "视频",
+      "reviews": "评价"
+    },
+    "providerInfo": "服务商信息",
+    "providerType": "服务类型",
+    "hourlyRate": "时薪",
+    "select": "请选择...",
+    "socialNetworks": "社交网络",
+    "social": {
+      "website": "网站",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "tiktok": "抖音",
+      "linkedin": "领英",
+      "youtube": "YouTube",
+      "twitter": "X（推特）"
+    },
+    "providerTypes": {
+      "BABYSITTER": "保姆",
+      "GARDE_PERISCOLAIRE": "课后托管",
+      "MENAGE": "清洁",
+      "AIDE_PERSONNES_AGEES": "老年护理",
+      "RESIDENTIEL": "住家服务",
+      "COURT_TERME": "短期服务"
+    },
+    "empty": {
+      "bookings": "暂无预约",
+      "reviews": "暂无评价"
+    },
+    "errors": {
+      "saveFailed": "保存失败",
+      "uploadFailed": "上传失败",
+      "invalidImage": "图片格式无效",
+      "imageTooLarge": "图片过大（最大 5 MB）"
+    }
+  },
+  "VideoManager": {
+    "addVideo": "添加视频",
+    "empty": "暂无视频",
+    "untitled": "无标题",
+    "hidden": "已隐藏",
+    "edit": "编辑",
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "show": "显示",
+    "hide": "隐藏",
+    "added": "视频已添加",
+    "updated": "视频已更新",
+    "deleted": "视频已删除",
+    "form": {
+      "url": "视频链接",
+      "urlHint": "YouTube、Vimeo 或 .mp4 文件",
+      "title": "标题（可选）",
+      "description": "描述（可选）",
+      "submit": "添加"
+    },
+    "confirmDelete": {
+      "title": "删除此视频？",
+      "message": "此操作不可撤销。"
+    },
+    "errors": {
+      "loadFailed": "无法加载视频",
+      "addFailed": "无法添加视频",
+      "updateFailed": "无法更新视频",
+      "deleteFailed": "无法删除视频",
+      "invalidUrl": "无效链接（YouTube、Vimeo 或 .mp4）"
+    }
+  },
   "ProfilePage": {
     "cropTitle": "裁剪图片",
     "zoom": "缩放",

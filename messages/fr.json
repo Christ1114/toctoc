@@ -1,5 +1,106 @@
 {
-
+   "AppProfilProvider": {
+    "notFound": "Utilisateur introuvable",
+    "unnamed": "Sans nom",
+    "verified": "Vérifié",
+    "perHour": "heure",
+    "back": "Retour",
+    "editProfile": "Modifier le profil",
+    "saving": "Enregistrement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "saved": "Profil mis à jour",
+    "linkCopied": "Lien copié",
+    "shareProfile": "Partager mon profil public",
+    "namePlaceholder": "Votre nom",
+    "bioPlaceholder": "Parlez de vous...",
+    "noBio": "Aucune bio",
+    "changePhoto": "Changer la photo",
+    "settings": "Paramètres",
+    "share": "Partager",
+    "accountType": { "PROVIDER": "Prestataire" },
+    "tabs": {
+      "bookings": "Réservations",
+      "videos": "Vidéos",
+      "reviews": "Avis"
+    },
+    "providerInfo": "Informations prestataire",
+    "providerType": "Type de service",
+    "hourlyRate": "Tarif horaire",
+    "select": "Sélectionner...",
+    "socialNetworks": "Réseaux sociaux",
+    "social": {
+      "website": "Site web",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "tiktok": "TikTok",
+      "linkedin": "LinkedIn",
+      "youtube": "YouTube",
+      "twitter": "X (Twitter)"
+    },
+    "providerTypes": {
+      "BABYSITTER": "Babysitter",
+      "GARDE_PERISCOLAIRE": "Garde périscolaire",
+      "MENAGE": "Ménage",
+      "AIDE_PERSONNES_AGEES": "Aide aux personnes âgées",
+      "RESIDENTIEL": "Résidentiel",
+      "COURT_TERME": "Court terme"
+    },
+    "empty": {
+      "bookings": "Aucune réservation pour le moment",
+      "reviews": "Aucun avis pour le moment"
+    },
+    "errors": {
+      "saveFailed": "Échec de l'enregistrement",
+      "uploadFailed": "Échec de l'upload",
+      "invalidImage": "Format d'image invalide",
+      "imageTooLarge": "Image trop volumineuse (max 5 Mo)"
+    }
+  },
+"ProviderProfile": {
+    "videoModal": {
+      "invalidUrl": "URL vidéo invalide",
+      "invalidYoutubeId": "ID YouTube invalide",
+      "invalidVimeoId": "ID Vimeo invalide",
+      "unsupportedFormat": "Format vidéo non supporté",
+      "videoFallbackTitle": "Vidéo",
+      "dialogLabel": "Lecture vidéo",
+      "close": "Fermer"
+    }
+  },
+  "VideoManager": {
+    "addVideo": "Ajouter une vidéo",
+    "empty": "Aucune vidéo pour le moment",
+    "untitled": "Sans titre",
+    "hidden": "Masquée",
+    "edit": "Modifier",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "show": "Afficher",
+    "hide": "Masquer",
+    "added": "Vidéo ajoutée",
+    "updated": "Vidéo mise à jour",
+    "deleted": "Vidéo supprimée",
+    "form": {
+      "url": "Lien de la vidéo",
+      "urlHint": "YouTube, Vimeo, ou fichier .mp4",
+      "title": "Titre (optionnel)",
+      "description": "Description (optionnel)",
+      "submit": "Ajouter"
+    },
+    "confirmDelete": {
+      "title": "Supprimer cette vidéo ?",
+      "message": "Cette action est définitive."
+    },
+    "errors": {
+      "loadFailed": "Impossible de charger les vidéos",
+      "addFailed": "Impossible d'ajouter la vidéo",
+      "updateFailed": "Impossible de mettre à jour la vidéo",
+      "deleteFailed": "Impossible de supprimer la vidéo",
+      "invalidUrl": "Lien invalide (YouTube, Vimeo ou .mp4)"
+    }
+  },
   "ProfilePage": {
     "cropTitle": "Recadrer l'image",
     "zoom": "Zoom",

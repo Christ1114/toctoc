@@ -12,6 +12,7 @@ import { createAvatarMarkerElement } from "./AvatarMarker";
 import TopToolbar, { type CityResult } from "./TopToolbar";
 import AiSearchPanel from "./AiSearchPanel";
 import { orbitron } from "@/fonts/font";
+import { useRouter } from "@/i18n/navigation";
 
 setWorkerUrl("/maplibre/maplibre-gl-worker.mjs");
 
@@ -28,6 +29,9 @@ const DEFAULT_BEARING = -17.6;
 
 // Un user est considéré "en ligne" s'il a bougé/été actif dans les 5 dernières minutes
 const ONLINE_THRESHOLD_MS = 5 * 60 * 1000;
+
+// Rayon de recherche des users proches (km)
+const NEARBY_RADIUS_KM = 20;
 
 type NearbyUser = {
   id: string;
@@ -51,6 +55,7 @@ export default function NearbyMap() {
   const t = useTranslations("NearbyMap");
   const tToolbar = useTranslations("TopToolbar");
   const { resolvedTheme } = useTheme();
+  const router = useRouter();
 
   const { user } = useSession();
 
@@ -71,6 +76,7 @@ export default function NearbyMap() {
 
   const { latitude, longitude, error: geoError, requestLocation } = useGeolocation();
 
+  // ─── Position initiale ───
   useEffect(() => {
     let isMounted = true;
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
@@ -178,8 +184,9 @@ export default function NearbyMap() {
         setMapLoaded(true);
 
         try {
-         
+          // ─── Marker de l'utilisateur connecté ───
           const me = user as any;
+
           const userMarkerEl = createAvatarMarkerElement({
             imageUrl: me?.image ?? null,
             fallbackLabel: me?.name ?? "?",
@@ -188,6 +195,13 @@ export default function NearbyMap() {
             bio: me?.bio ?? null,
             username: me?.name ?? null,
             lastSeenAt: new Date(),
+          });
+
+          // Clic sur son propre marker → profil perso
+          userMarkerEl.style.cursor = "pointer";
+          userMarkerEl.addEventListener("click", (e) => {
+            e.stopPropagation();
+            router.push("/profile");
           });
 
           userMarkerRef.current = new maplibregl.Marker({
@@ -204,9 +218,9 @@ export default function NearbyMap() {
       console.error("Erreur init map:", err);
       setMapError("Erreur d'initialisation de la carte");
     }
-  }, [initialCenter, user]);
+  }, [initialCenter, user, router]);
 
-  
+  // ─── Cleanup au démontage ───
   useEffect(() => {
     return () => {
       if (mapRef.current) {
@@ -219,6 +233,7 @@ export default function NearbyMap() {
     };
   }, []);
 
+  // ─── Recentrage ───
   useEffect(() => {
     if (!mapRef.current || !mapLoaded || !initialCenter) return;
 
@@ -234,9 +249,12 @@ export default function NearbyMap() {
     userMarkerRef.current?.setLngLat(initialCenter);
   }, [initialCenter, mapLoaded]);
 
+  // ─── Fetch users proches ───
   const fetchNearby = useCallback(async (lng: number, lat: number) => {
     try {
-      const res = await fetch(`/api/user/nearby?lat=${lat}&lng=${lng}&radius=500`);
+      const res = await fetch(
+        `/api/user/nearby?lat=${lat}&lng=${lng}&radius=${NEARBY_RADIUS_KM}`
+      );
       if (!res.ok) throw new Error("Erreur fetch nearby users");
       const data = await res.json();
       setNearbyUsers(data.users ?? []);
@@ -252,36 +270,59 @@ export default function NearbyMap() {
     fetchNearby(lng, lat);
   }, [initialCenter, fetchNearby]);
 
-  
+  // ─── Affichage des markers des autres users ───
   useEffect(() => {
     if (!mapRef.current || !mapLoaded) return;
+
+    // Cleanup des anciens markers
     nearbyMarkersRef.current.forEach((m) => m.remove());
     nearbyMarkersRef.current = [];
 
-    nearbyUsers.forEach((u) => {
-      if (u.lastLatitude === null || u.lastLongitude === null) return;
-      const lastUpdate = u.lastLocationUpdatedAt
-        ? new Date(u.lastLocationUpdatedAt)
+    nearbyUsers.forEach((nearbyUser) => {
+      if (
+        nearbyUser.lastLatitude === null ||
+        nearbyUser.lastLongitude === null
+      ) {
+        return;
+      }
+
+      // Détermine si le user est en ligne
+      const lastUpdate = nearbyUser.lastLocationUpdatedAt
+        ? new Date(nearbyUser.lastLocationUpdatedAt)
         : null;
       const isOnline =
         lastUpdate !== null &&
         Date.now() - lastUpdate.getTime() < ONLINE_THRESHOLD_MS;
 
       const el = createAvatarMarkerElement({
-        imageUrl: u.image,
-        fallbackLabel: u.name ?? "?",
-        color: u.accountType === "PROVIDER" ? "#2F7A4F" : "#432dd7",
+        imageUrl: nearbyUser.image,
+        fallbackLabel: nearbyUser.name ?? "?",
+        color: nearbyUser.accountType === "PROVIDER" ? "#2F7A4F" : "#432dd7",
         isOnline,
-        bio: u.bio,
-        username: u.name,
+        bio: nearbyUser.bio,
+        username: nearbyUser.name,
         lastSeenAt: lastUpdate,
+      });
+
+      // ─── Clic sur le marker → profil public du user ───
+      el.style.cursor = "pointer";
+      el.addEventListener("click", (e) => {
+        e.stopPropagation(); // empêche le clic de déclencher un event sur la carte
+
+        // Route selon le type de compte
+        const profilePath =
+          nearbyUser.accountType === "PROVIDER"
+            ? `/provider/${nearbyUser.id}`
+            : `/profile/${nearbyUser.id}`;
+
+        router.push(profilePath);
       });
 
       const marker = new maplibregl.Marker({
         element: el,
         anchor: "bottom",
       })
-        .setLngLat([u.lastLongitude, u.lastLatitude])
+        .setLngLat([nearbyUser.lastLongitude, nearbyUser.lastLatitude])
         .addTo(mapRef.current!);
 
       nearbyMarkersRef.current.push(marker);
@@ -291,7 +332,9 @@ export default function NearbyMap() {
       nearbyMarkersRef.current.forEach((m) => m.remove());
       nearbyMarkersRef.current = [];
     };
-  }, [nearbyUsers, mapLoaded]);
+  }, [nearbyUsers, mapLoaded, router]);
+
+  // ─── Changement de thème clair/sombre ───
   useEffect(() => {
     if (!mapRef.current || !mapLoaded) return;
     const styleUrl = resolvedTheme === "dark" ? STYLES.dark : STYLES.light;
@@ -443,6 +486,8 @@ export default function NearbyMap() {
           font-size: 10px !important;
         }
       `}</style>
+
+      {/* ───── Loading ───── */}
       {loadingPosition && (
         <div className="absolute inset-0 flex items-center justify-center z-20 bg-gray-100 dark:bg-gray-900 transition-colors">
           <div className="flex flex-col items-center gap-3 px-4">
@@ -455,6 +500,8 @@ export default function NearbyMap() {
           </div>
         </div>
       )}
+
+      {/* ───── Erreur ───── */}
       {mapError && (
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 bg-red-100 dark:bg-red-900/80 text-red-700 dark:text-red-100 p-4 sm:p-5 rounded-xl shadow-lg max-w-[92vw] sm:max-w-sm border border-red-200 dark:border-red-800">
           <p className="text-sm sm:text-base">{mapError}</p>
@@ -482,7 +529,12 @@ export default function NearbyMap() {
         searchMessage={searchMessage}
       />
 
-      <AiSearchPanel open={aiSearchOpen} onClose={() => setAiSearchOpen(false)} />
+      <AiSearchPanel
+        open={aiSearchOpen}
+        onClose={() => setAiSearchOpen(false)}
+      />
+
+      {/* ───── Bouton 3D ───── */}
       <button
         onClick={resetView}
         aria-label="Réinitialiser la vue 3D"

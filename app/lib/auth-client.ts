@@ -315,6 +315,13 @@ export const updateUser = async (data: {
   providerType?: string;
   hourlyRate?: number;
   currency?: string;
+   website?: string | null;
+  instagram?: string | null;
+  facebook?: string | null;
+  tiktok?: string | null;
+  linkedin?: string | null;
+  youtube?: string | null;
+  twitter?: string | null;
   verificationMethod?: 'email' | 'phone';
 }) => {
   try {
