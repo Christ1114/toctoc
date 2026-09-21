@@ -303,6 +303,15 @@ model User {
   hourlyRate   Decimal?      @db.Decimal(10, 2)
   currency     String        @default("XOF")
 
+  // ─── Réseaux sociaux (optionnels pour tous les comptes) ───
+  website   String?
+  instagram String?
+  facebook  String?
+  tiktok    String?
+  linkedin  String?
+  youtube   String?
+  twitter   String?
+
   verificationStatus VerificationStatus @default(PENDING)
   verificationLevel  VerificationLevel?
   verifiedBy         String?
@@ -341,6 +350,9 @@ model User {
   searches      Search[]
   notifications Notification[]
 
+  // ─── Vidéos prestataire ───
+  videos ProviderVideo[] @relation("ProviderVideos")
+
   @@index([accountType])
   @@index([email])
   @@index([phone])
@@ -348,23 +360,50 @@ model User {
   @@map("users")
 }
 
+// ═══════════════════════════════════════════════════════════
+//  PROVIDER VIDEO — Vidéos de présentation prestataire
+// ═══════════════════════════════════════════════════════════
+model ProviderVideo {
+  id         String @id @default(cuid())
+  providerId String
+  provider   User   @relation("ProviderVideos", fields: [providerId], references: [id], onDelete: Cascade)
+
+  // URL validée côté serveur (https uniquement)
+  url String
+
+  // Plateforme détectée : "youtube" | "vimeo" | "direct"
+  platform String
+
+  // ID externe (ID YouTube 11 chars, ID Vimeo numérique) — null si direct
+  externalId String?
+
+  // Miniature auto (YouTube) ou personnalisée
+  thumbnail String?
+
+  title       String?
+  description String? @db.Text
+  duration    Int?
+
+  // Ordre d'affichage manuel
+  position  Int     @default(0)
+  isVisible Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([providerId, position])
+  @@index([providerId, isVisible])
+  @@map("provider_videos")
+}
+
 model Notification {
   id     String           @id @default(cuid())
   userId String
   user   User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   type   NotificationType
-
-  // Variables à interpoler côté client dans le texte traduit
-  // (ex: { "city": "Cocody", "announcementId": "abc123" }).
-  // On ne stocke PAS de texte en dur ici : le titre/description affichés
-  // viennent des traductions (next-intl), comme pour ProfilePopover.
   data Json?
-
-  // Chemin relatif optionnel vers lequel naviguer au clic
-  // (ex: "/app/announcements/abc123", "/app/bookings/xyz").
   link String?
 
-  // Références optionnelles pour retrouver l'entité liée sans parser "data"
   announcementId String?
   bookingId      String?
 

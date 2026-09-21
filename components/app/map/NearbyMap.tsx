@@ -71,7 +71,6 @@ export default function NearbyMap() {
 
   const { latitude, longitude, error: geoError, requestLocation } = useGeolocation();
 
-  // ─── Position initiale ───
   useEffect(() => {
     let isMounted = true;
     let timeoutId: ReturnType<typeof setTimeout> | null = null;

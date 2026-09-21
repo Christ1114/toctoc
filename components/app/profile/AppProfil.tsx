@@ -296,9 +296,9 @@ export default function ProfilePage() {
       dir={isRTL ? "rtl" : "ltr"}
       className="min-h-screen bg-white dark:bg-zinc-900"
     >
-      {/* Container — padding adaptatif + marge pour la bottom navbar mobile */}
+
       <div className="max-w-5xl mx-auto px-3 sm:px-6 pb-24 md:pb-6 py-4 sm:py-6">
-        {/* Bouton retour */}
+        
         <button
           onClick={() => router.back()}
           className={`flex items-center gap-1.5 text-xs sm:text-sm text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white/90 cursor-pointer mb-4 sm:mb-6 transition-colors ${orbitron.className}`}
@@ -307,14 +307,9 @@ export default function ProfilePage() {
           {t("back")}
         </button>
 
-        {/* =====================================================
-            EN-TÊTE
-            Mobile   : avatar centré au-dessus, contenu dessous
-            Tablette : avatar à gauche, contenu à droite (sm)
-            Desktop  : idem tablette, plus spacieux
-        ====================================================== */}
+      
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8">
-          {/* Avatar + caméra */}
+      
           <div className="relative shrink-0 mx-auto sm:mx-0">
             <div className="h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 rounded-full overflow-hidden bg-[#432dd7]/10 flex items-center justify-center border border-black/5 dark:border-white/10">
               {user.image ? (
@@ -393,7 +388,7 @@ export default function ProfilePage() {
               )}
             </div>
 
-            {/* Stats inline */}
+         
             <div className="flex items-center justify-center sm:justify-start gap-3 sm:gap-5 mt-2.5 sm:mt-3 flex-wrap">
               {TABS.map(({ key, count, label }) => (
                 <button
@@ -423,7 +418,7 @@ export default function ProfilePage() {
               )}
             </div>
 
-            {/* Actions — boutons pleine largeur sur mobile en édition */}
+       
             <div className="flex items-center justify-center sm:justify-start gap-2 mt-3 sm:mt-4 flex-wrap">
               {!editing ? (
                 <>
@@ -473,8 +468,6 @@ export default function ProfilePage() {
                 </div>
               )}
             </div>
-
-            {/* Bio */}
             <div className="mt-3 sm:mt-4">
               {editing ? (
                 <textarea
@@ -498,7 +491,7 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Erreur / succès */}
+       
         {error && (
           <p
             className={`text-xs sm:text-sm text-red-500 dark:text-red-400 mt-3 sm:mt-4 ${orbitron.className}`}
@@ -514,9 +507,7 @@ export default function ProfilePage() {
           </p>
         )}
 
-        {/* =====================================================
-            SECTION AGENCE (édition uniquement)
-        ====================================================== */}
+     
         {editing && (isAgencyClient || form.clientType === "AGENCY") && (
           <section className="border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6 pt-4 sm:pt-5">
             <h2
@@ -544,9 +535,7 @@ export default function ProfilePage() {
           </section>
         )}
 
-        {/* =====================================================
-            SECTION PROVIDER (édition uniquement)
-        ====================================================== */}
+      
         {editing && isProvider && (
           <section className="border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6 pt-4 sm:pt-5">
             <h2
@@ -556,7 +545,7 @@ export default function ProfilePage() {
               {t("providerInfo")}
             </h2>
             <div className="flex flex-col gap-3">
-              {/* Type de provider — empilé en mobile */}
+             
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
                 <span className="text-xs sm:text-sm text-gray-500 dark:text-white/50 shrink-0">
                   {t("providerType")}
@@ -580,7 +569,7 @@ export default function ProfilePage() {
                 </select>
               </div>
 
-              {/* Tarif horaire + devise — empilé en mobile */}
+          
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
                 <span className="text-xs sm:text-sm text-gray-500 dark:text-white/50 shrink-0">
                   {t("hourlyRate")}
@@ -620,9 +609,7 @@ export default function ProfilePage() {
           </section>
         )}
 
-        {/* =====================================================
-            TABS — labels masqués sur très petits écrans (< 640px)
-        ====================================================== */}
+    
         <div className="flex items-center border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6">
           {TABS.map(({ key, icon: Icon, label }) => (
             <button
@@ -643,9 +630,7 @@ export default function ProfilePage() {
           ))}
         </div>
 
-        {/* =====================================================
-            ÉTAT VIDE
-        ====================================================== */}
+     
         <div className="py-10 sm:py-14 flex flex-col items-center justify-center text-center px-4">
           {activeTab === "bookings" && (
             <>
@@ -706,9 +691,7 @@ export default function ProfilePage() {
   );
 }
 
-/* =====================================================
-   FIELD — responsive
-====================================================== */
+
 function Field({
   label,
   editing,
