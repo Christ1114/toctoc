@@ -60,9 +60,14 @@
     }
   },
   "TopToolbar": {
-    "quickSearchPlaceholder": "بحث سريع...",
-    "searchByAi": "البحث بالذكاء الاصطناعي",
-    "profile": "الملف الشخصي"
+     "quickSearchPlaceholder": "ابحث عن مدينة...",
+  "searching": "جارٍ البحث...",
+  "noCityFound": "لم يتم العثور على مدينة",
+  "offersCount": "{count} عرض/عروض",
+  "noOffers": "لا توجد عروض",
+  "noOffersInCity": "لا توجد عروض متاحة في {city} في الوقت الحالي.",
+  "searchByAi": "البحث بالذكاء الاصطناعي",
+  "profile": "الملف الشخصي"
   },
   "AiSearchPanel": {
     "title": "البحث بالذكاء الاصطناعي",

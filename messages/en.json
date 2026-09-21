@@ -60,9 +60,14 @@
     }
   },
   "TopToolbar": {
-    "quickSearchPlaceholder": "Quick search...",
-    "searchByAi": "Search by AI",
-    "profile": "Profile"
+  "searching": "Searching...",
+  "noCityFound": "No city found",
+  "offersCount": "{count} offer(s)",
+  "noOffers": "No offers",
+  "noOffersInCity": "No offers available in {city} at the moment.",
+  "searchByAi": "Search by AI",
+  "profile": "Profile",
+    "quickSearchPlaceholder": "Quick search..."
   },
   "ProfilePopover": {
     "title": "My account",

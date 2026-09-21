@@ -60,9 +60,14 @@
     }
   },
   "TopToolbar": {
-    "quickSearchPlaceholder": "快速搜索...",
-    "searchByAi": "使用AI搜索",
-    "profile": "个人资料"
+    "quickSearchPlaceholder": "搜索城市...",
+  "searching": "搜索中...",
+  "noCityFound": "未找到城市",
+  "offersCount": "{count} 个优惠",
+  "noOffers": "暂无优惠",
+  "noOffersInCity": "目前 {city} 暂无可用优惠。",
+  "searchByAi": "AI 搜索",
+  "profile": "个人资料"
   },
   "AiSearchPanel": {
     "title": "AI搜索",
