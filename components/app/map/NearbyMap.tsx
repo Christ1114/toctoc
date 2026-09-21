@@ -26,7 +26,6 @@ const CITY_SEARCH_ZOOM = 12;
 const DEFAULT_PITCH = 60;
 const DEFAULT_BEARING = -17.6;
 
-// 👇 Types des users proches
 type NearbyUser = {
   id: string;
   name: string | null;
@@ -56,7 +55,6 @@ export default function NearbyMap() {
   const mapRef = useRef<maplibregl.Map | null>(null);
   const userMarkerRef = useRef<maplibregl.Marker | null>(null);
   const initialCenterRef = useRef<[number, number] | null>(null);
-
   const nearbyMarkersRef = useRef<maplibregl.Marker[]>([]);
 
   const [initialCenter, setInitialCenter] = useState<[number, number] | null>(null);
@@ -70,6 +68,9 @@ export default function NearbyMap() {
 
   const { latitude, longitude, error: geoError, requestLocation } = useGeolocation();
 
+  // ─────────────────────────────────────────────────────────────
+  // 1. Chargement position (stockée → GPS → défaut)
+  // ─────────────────────────────────────────────────────────────
   useEffect(() => {
     let isMounted = true;
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
@@ -81,7 +82,6 @@ export default function NearbyMap() {
         const storedLng = userData?.lastLongitude;
 
         if (storedLat && storedLng && isMounted) {
-          console.log("✅ Position stockée trouvée (affichage immédiat):", storedLat, storedLng);
           const position: [number, number] = [storedLng, storedLat];
           initialCenterRef.current = position;
           setInitialCenter(position);
@@ -92,7 +92,6 @@ export default function NearbyMap() {
       }
 
       if (isMounted && !initialCenterRef.current) {
-        console.log("📍 Utilisation de la position par défaut (Paris)");
         initialCenterRef.current = DEFAULT_CENTER;
         setInitialCenter(DEFAULT_CENTER);
         setLoadingPosition(false);
@@ -102,7 +101,6 @@ export default function NearbyMap() {
 
       timeoutId = setTimeout(() => {
         if (isMounted && !initialCenterRef.current) {
-          console.log("⚠️ Timeout géolocalisation, utilisation de Paris");
           initialCenterRef.current = DEFAULT_CENTER;
           setInitialCenter(DEFAULT_CENTER);
           setLoadingPosition(false);
@@ -114,15 +112,12 @@ export default function NearbyMap() {
 
     return () => {
       isMounted = false;
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
+      if (timeoutId) clearTimeout(timeoutId);
     };
   }, [requestLocation, user]);
 
   useEffect(() => {
     if (latitude && longitude) {
-      console.log("✅ Position GPS obtenue:", latitude, longitude);
       const position: [number, number] = [longitude, latitude];
       initialCenterRef.current = position;
       setInitialCenter(position);
@@ -132,19 +127,19 @@ export default function NearbyMap() {
 
   useEffect(() => {
     if (geoError && !initialCenterRef.current) {
-      console.error("❌ Erreur géolocalisation:", geoError);
       initialCenterRef.current = DEFAULT_CENTER;
       setInitialCenter(DEFAULT_CENTER);
       setLoadingPosition(false);
     }
   }, [geoError]);
 
+  // ─────────────────────────────────────────────────────────────
+  // 2. Init carte — ⚠️ CORRIGÉ : plus de cleanup destructeur ici
+  //    Le cleanup unmount est fait dans un effet séparé (plus bas).
+  //    => La carte n'est PLUS recréée à chaque update de position.
+  // ─────────────────────────────────────────────────────────────
   useEffect(() => {
     if (!mapContainer.current || mapRef.current || !initialCenter) return;
-
-    console.log("🗺️ Tentative d'initialisation de la carte");
-    console.log("📍 Centre:", initialCenter);
-    console.log("📦 Container:", mapContainer.current);
 
     try {
       const map = new maplibregl.Map({
@@ -158,11 +153,15 @@ export default function NearbyMap() {
         maxPitch: 85,
         minZoom: 3,
         maxZoom: 20,
+         canvasContextAttributes: {
+    antialias: false,
+  },
+        fadeDuration: 100,
+        refreshExpiredTiles: false,
       });
 
       mapRef.current = map;
 
-      // 👇 Contrôle zoom/dézoom/boussole placé en bas-gauche
       map.addControl(
         new maplibregl.NavigationControl({
           visualizePitch: true,
@@ -176,16 +175,10 @@ export default function NearbyMap() {
       map.touchZoomRotate.enableRotation();
 
       map.on("error", (e) => {
-        console.error("❌ Erreur carte:", e);
         setMapError("Erreur de chargement de la carte");
       });
 
-      map.on("style.load", () => {
-        console.log("✅ Style chargé");
-      });
-
       map.on("load", () => {
-        console.log("✅ Carte chargée avec succès");
         setMapLoaded(true);
 
         try {
@@ -200,33 +193,37 @@ export default function NearbyMap() {
           })
             .setLngLat(initialCenter)
             .addTo(map);
-
-          console.log("✅ Marqueur utilisateur ajouté");
         } catch (err) {
-          console.error("❌ Erreur création marqueur:", err);
+          
         }
       });
     } catch (err) {
-      console.error("❌ Erreur initialisation carte:", err);
+     
       setMapError("Erreur d'initialisation de la carte");
     }
+    
+  }, [initialCenter, t]);
 
+  // ─────────────────────────────────────────────────────────────
+  // 3. Cleanup UNIQUEMENT à l'unmount réel du composant
+  // ─────────────────────────────────────────────────────────────
+  useEffect(() => {
     return () => {
       if (mapRef.current) {
-        console.log("🗑️ Nettoyage carte");
         mapRef.current.remove();
         mapRef.current = null;
         userMarkerRef.current = null;
+        nearbyMarkersRef.current = [];
         setMapLoaded(false);
       }
     };
-  }, [initialCenter, t]);
+  }, []);
 
-  // 🔄 Recentrer la carte sur la position du user quand elle change
+  // ─────────────────────────────────────────────────────────────
+  // 4. Recentrage doux (déjà OK, on garde)
+  // ─────────────────────────────────────────────────────────────
   useEffect(() => {
     if (!mapRef.current || !mapLoaded || !initialCenter) return;
-
-    console.log("🎯 Recentrage carte sur:", initialCenter);
 
     mapRef.current.flyTo({
       center: initialCenter,
@@ -237,21 +234,20 @@ export default function NearbyMap() {
       duration: 1200,
     });
 
-    if (userMarkerRef.current) {
-      userMarkerRef.current.setLngLat(initialCenter);
-    }
+    userMarkerRef.current?.setLngLat(initialCenter);
   }, [initialCenter, mapLoaded]);
 
+  // ─────────────────────────────────────────────────────────────
+  // 5. Fetch users proches
+  // ─────────────────────────────────────────────────────────────
   const fetchNearby = useCallback(async (lng: number, lat: number) => {
     try {
-      console.log("🔍 Fetch nearby users...");
       const res = await fetch(`/api/user/nearby?lat=${lat}&lng=${lng}&radius=20`);
       if (!res.ok) throw new Error("Erreur fetch nearby users");
       const data = await res.json();
-      console.log(`✅ ${data.users?.length ?? 0} users proches reçus`);
       setNearbyUsers(data.users ?? []);
     } catch (err) {
-      console.error("❌ Erreur fetch nearby:", err);
+    
       setNearbyUsers([]);
     }
   }, []);
@@ -266,45 +262,42 @@ export default function NearbyMap() {
     if (!mapRef.current || !mapLoaded) return;
     nearbyMarkersRef.current.forEach((m) => m.remove());
     nearbyMarkersRef.current = [];
-    nearbyUsers.forEach((user) => {
-      if (user.lastLatitude === null || user.lastLongitude === null) return;
+
+    nearbyUsers.forEach((u) => {
+      if (u.lastLatitude === null || u.lastLongitude === null) return;
 
       const el = createAvatarMarkerElement({
-        imageUrl: user.image,
-        fallbackLabel: user.name ?? "?",
-        color: user.accountType === "PROVIDER" ? "#2F7A4F" : "#432dd7",
+        imageUrl: u.image,
+        fallbackLabel: u.name ?? "?",
+        color: u.accountType === "PROVIDER" ? "#2F7A4F" : "#432dd7",
       });
 
       const marker = new maplibregl.Marker({
         element: el,
         anchor: "bottom",
       })
-        .setLngLat([user.lastLongitude, user.lastLatitude])
+        .setLngLat([u.lastLongitude, u.lastLatitude])
         .addTo(mapRef.current!);
 
       nearbyMarkersRef.current.push(marker);
     });
 
-    console.log(`✅ ${nearbyMarkersRef.current.length} marqueurs ajoutés`);
     return () => {
       nearbyMarkersRef.current.forEach((m) => m.remove());
       nearbyMarkersRef.current = [];
     };
   }, [nearbyUsers, mapLoaded]);
-
   useEffect(() => {
     if (!mapRef.current || !mapLoaded) return;
-
     const styleUrl = resolvedTheme === "dark" ? STYLES.dark : STYLES.light;
-    console.log("🔄 Changement de style:", styleUrl);
-
     try {
       mapRef.current.setStyle(styleUrl);
     } catch (err) {
-      console.error("❌ Erreur changement de style:", err);
+      
     }
   }, [resolvedTheme, mapLoaded]);
 
+ 
   const resetView = useCallback(() => {
     if (mapRef.current && initialCenter) {
       mapRef.current.flyTo({
@@ -320,7 +313,6 @@ export default function NearbyMap() {
 
   const handleLocate = useCallback(() => {
     requestLocation();
-
     if (mapRef.current && initialCenter) {
       mapRef.current.flyTo({
         center: initialCenter,
@@ -337,9 +329,7 @@ export default function NearbyMap() {
         setSearchMessage(tToolbar("noOffersInCity", { city: city.name }));
         return;
       }
-
       setSearchMessage(null);
-
       const position: [number, number] = [city.longitude, city.latitude];
 
       if (mapRef.current && mapLoaded) {
@@ -352,28 +342,41 @@ export default function NearbyMap() {
           duration: 1200,
         });
       }
-
       fetchNearby(city.longitude, city.latitude);
     },
     [mapLoaded, fetchNearby, tToolbar]
   );
 
   return (
-    <div className="relative w-full h-full" style={{ minHeight: "500px" }}>
+    <div
+      className="relative w-full h-dvh md:h-full md:min-h-125 overflow-hidden"
+      style={{
+        // Fallback pour navigateurs sans dvh
+        minHeight: "500px",
+      }}
+    >
       {/* ============================================================
-          Styles globaux pour rendre les contrôles MapLibre responsives
-          (MapLibre applique ses styles en dur → CSS global obligatoire)
+          Styles globaux — responsive sm / md / lg + dark mode
       ============================================================ */}
       <style jsx global>{`
-        /* ----- NavigationControl (zoom/dézoom/boussole) ----- */
+        /* ───── Position des contrôles MapLibre ───── */
 
-        /* Mobile : au-dessus de la bottom navbar (64px) + safe area */
+        /* MOBILE (< 640px) : au-dessus de la bottom navbar (72px) */
         .maplibregl-ctrl-bottom-left {
           bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
-          left: 8px !important;
+          left: max(8px, env(safe-area-inset-left, 0px)) !important;
+          transition: bottom 0.2s ease, left 0.2s ease;
         }
 
-        /* Tablette et plus : position normale */
+        /* SM (≥ 640px) : petits écrans / grandes phones en paysage */
+        @media (min-width: 640px) {
+          .maplibregl-ctrl-bottom-left {
+            bottom: calc(80px + env(safe-area-inset-bottom, 0px)) !important;
+            left: 12px !important;
+          }
+        }
+
+        /* MD (≥ 768px) : tablettes → on repasse en position normale */
         @media (min-width: 768px) {
           .maplibregl-ctrl-bottom-left {
             bottom: 16px !important;
@@ -381,21 +384,40 @@ export default function NearbyMap() {
           }
         }
 
-        /* Style des groupes de boutons (arrondi, ombre, verre dépoli) */
-        .maplibregl-ctrl-bottom-left .maplibregl-ctrl-group {
-          border-radius: 10px !important;
-          overflow: hidden;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-          background: rgba(0, 0, 0, 0.6) !important;
-          backdrop-filter: blur(8px);
+        /* LG (≥ 1024px) : desktop */
+        @media (min-width: 1024px) {
+          .maplibregl-ctrl-bottom-left {
+            bottom: 20px !important;
+            left: 20px !important;
+          }
         }
 
-        /* Boutons plus compacts en mobile, plus grands en desktop */
+        /* ───── Style du groupe de boutons ───── */
+        .maplibregl-ctrl-bottom-left .maplibregl-ctrl-group {
+          border-radius: 12px !important;
+          overflow: hidden;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18) !important;
+          background: rgba(0, 0, 0, 0.62) !important;
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* ───── Boutons : tap target ≥ 40px (mobile), plus grands en lg ───── */
         .maplibregl-ctrl-bottom-left .maplibregl-ctrl-group button {
-          width: 32px !important;
-          height: 32px !important;
+          width: 40px !important;
+          height: 40px !important;
           background: transparent !important;
           color: white !important;
+          touch-action: manipulation;
+          -webkit-tap-highlight-color: transparent;
+        }
+
+        @media (min-width: 640px) {
+          .maplibregl-ctrl-bottom-left .maplibregl-ctrl-group button {
+            width: 40px !important;
+            height: 40px !important;
+          }
         }
 
         @media (min-width: 768px) {
@@ -405,56 +427,68 @@ export default function NearbyMap() {
           }
         }
 
-        /* Icônes : forcer en blanc puisque le fond est sombre */
+        @media (min-width: 1024px) {
+          .maplibregl-ctrl-bottom-left .maplibregl-ctrl-group button {
+            width: 40px !important;
+            height: 40px !important;
+          }
+        }
+
+        /* Icônes blanches sur fond sombre */
         .maplibregl-ctrl-bottom-left .maplibregl-ctrl-icon {
           filter: invert(1) !important;
         }
 
-        /* Séparateurs entre les boutons */
+        /* Séparateurs */
         .maplibregl-ctrl-bottom-left .maplibregl-ctrl-group button + button {
           border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
         }
+
+        /* ───── MapLibre : éviter le scroll horizontal parasite ───── */
+        .maplibregl-canvas {
+          outline: none !important;
+          touch-action: none;
+        }
+
+        .maplibregl-ctrl-attrib {
+          font-size: 10px !important;
+        }
       `}</style>
 
+      {/* ───── Loading (dark mode supporté) ───── */}
       {loadingPosition && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 z-20">
-          <div className="flex flex-col items-center gap-3">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
-            <p className={`text-sm text-gray-600 ${orbitron.className}`}>
+        <div className="absolute inset-0 flex items-center justify-center z-20 bg-gray-100 dark:bg-gray-900 transition-colors">
+          <div className="flex flex-col items-center gap-3 px-4">
+            <div className="animate-spin rounded-full h-9 w-9 border-2 border-gray-300 dark:border-gray-700 border-b-gray-900 dark:border-b-white" />
+            <p
+              className={`text-sm sm:text-base text-gray-600 dark:text-gray-300 text-center ${orbitron.className}`}
+            >
               Chargement de la carte...
             </p>
           </div>
         </div>
       )}
 
+      {/* ───── Erreur (dark mode supporté) ───── */}
       {mapError && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30 bg-red-100 text-red-700 p-4 rounded-lg shadow-lg max-w-[90vw]">
-          <p className="text-sm">{mapError}</p>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 bg-red-100 dark:bg-red-900/80 text-red-700 dark:text-red-100 p-4 sm:p-5 rounded-xl shadow-lg max-w-[92vw] sm:max-w-sm border border-red-200 dark:border-red-800">
+          <p className="text-sm sm:text-base">{mapError}</p>
           <button
             onClick={() => {
               setMapError(null);
               window.location.reload();
             }}
-            className={`mt-2 text-sm underline hover:no-underline cursor-pointer ${orbitron.className}`}
+            className={`mt-3 text-sm underline hover:no-underline cursor-pointer ${orbitron.className}`}
           >
             {t("retry")}
           </button>
         </div>
       )}
 
+      {/* ───── Carte ───── */}
       <div
         ref={mapContainer}
-        className="w-full h-full"
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          width: "100%",
-          height: "100%",
-          backgroundColor: "#e5e7eb",
-        }}
+        className="absolute inset-0 w-full h-full bg-gray-200 dark:bg-gray-800"
       />
 
       <TopToolbar
@@ -465,16 +499,26 @@ export default function NearbyMap() {
 
       <AiSearchPanel open={aiSearchOpen} onClose={() => setAiSearchOpen(false)} />
 
-      {/* Bouton 3D responsive */}
+      {/* ───── Bouton 3D responsive (sm / md / lg) ───── */}
       <button
         onClick={resetView}
-        title="Réinitialiser la vue"
-        className={`absolute z-10 bg-black/60 hover:bg-black/75 backdrop-blur-sm text-white rounded-lg shadow-md cursor-pointer transition-colors
-                    right-2 bottom-[calc(72px+env(safe-area-inset-bottom,0px))]
-                    md:right-4 md:bottom-4
-                    text-xs px-2.5 h-9
-                    md:text-sm md:px-3 md:h-10
-                    ${orbitron.className}`}
+        aria-label="Réinitialiser la vue 3D"
+        className={`
+          absolute z-10 bg-black/60 hover:bg-black/75 active:bg-black/90
+          backdrop-blur-sm text-white rounded-lg shadow-md cursor-pointer
+          transition-all touch-manipulation select-none
+          /* Mobile */
+          right-2 bottom-[calc(72px+env(safe-area-inset-bottom,0px))]
+          text-xs px-2.5 h-9 min-w-9
+          /* SM */
+          sm:right-3 sm:bottom-[calc(80px+env(safe-area-inset-bottom,0px))]
+          sm:text-sm sm:px-3 sm:h-10 sm:min-w-10
+          /* MD (tablette) */
+          md:right-4 md:bottom-4 md:text-sm md:px-3 md:h-10
+          /* LG (desktop) */
+          lg:right-5 lg:bottom-5 lg:text-base lg:px-4 lg:h-11
+          ${orbitron.className}
+        `}
       >
         3D
       </button>
