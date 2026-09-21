@@ -1,21 +1,15 @@
-
 import createMiddleware from "next-intl/middleware";
 import { NextRequest, NextResponse } from "next/server";
 import { getSessionCookie } from "better-auth/cookies";
 import { locales } from "./config";
+import { verifyValue } from "./components/utils/security-cookie";
 
 const intlMiddleware = createMiddleware({
   locales,
-  defaultLocale: 'fr'
+  defaultLocale: "fr",
 });
 
-
-const SECURED_ROUTES = [
-  "/preloading",
-  "/settings",
-  "/app",
-];
-
+const SECURED_ROUTES = ["/preloading", "/settings", "/app"];
 
 const PUBLIC_ROUTES = [
   "/",
@@ -26,14 +20,15 @@ const PUBLIC_ROUTES = [
   "/precheck",
 ];
 
+const SECURITY_CHECK_MAX_AGE = 30 * 60 * 1000; // 30 min
+
 export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  
- 
+
   if (pathname.startsWith("/api/")) {
     return NextResponse.next();
   }
- 
+
   if (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/static") ||
@@ -41,80 +36,62 @@ export default async function middleware(request: NextRequest) {
   ) {
     return NextResponse.next();
   }
-  
- 
-  const localeMatch = pathname.match(/^\/(en|fr|zh|ar)(?:\/|$)/);
-  const locale = localeMatch ? localeMatch[1] : 'fr';
-  
- 
-  const pathWithoutLocale = pathname.replace(/^\/(en|fr|zh|ar)(?:\/|$)/, '/');
-  
-  
-  const isApiRoute = pathWithoutLocale === "/api" || pathWithoutLocale.startsWith("/api/");
-  
-  if (isApiRoute) {
-   
-    const homeUrl = new URL(`/${locale}`, request.url);
-    return NextResponse.redirect(homeUrl);
-  }
-  
- 
-  const isPublicRoute = PUBLIC_ROUTES.some(route => 
-    pathWithoutLocale === route || 
-    (route !== "/" && pathWithoutLocale.startsWith(route + "/"))
-  );
-  
 
-  const isSecuredRoute = SECURED_ROUTES.some(route => 
-    pathWithoutLocale === route || pathWithoutLocale.startsWith(route + "/")
+  const localeMatch = pathname.match(/^\/(en|fr|zh|ar)(?:\/|$)/);
+  const locale = localeMatch ? localeMatch[1] : "fr";
+
+  const pathWithoutLocale = pathname.replace(/^\/(en|fr|zh|ar)(?:\/|$)/, "/");
+
+  const isApiRoute =
+    pathWithoutLocale === "/api" || pathWithoutLocale.startsWith("/api/");
+
+  if (isApiRoute) {
+    return NextResponse.redirect(new URL(`/${locale}`, request.url));
+  }
+
+  const isPublicRoute = PUBLIC_ROUTES.some(
+    (route) =>
+      pathWithoutLocale === route ||
+      (route !== "/" && pathWithoutLocale.startsWith(route + "/"))
   );
-  
-  
+
+  const isSecuredRoute = SECURED_ROUTES.some(
+    (route) =>
+      pathWithoutLocale === route || pathWithoutLocale.startsWith(route + "/")
+  );
+
+  // Routes ni publiques ni sécurisées → on laisse passer (404 etc.)
   if (!isPublicRoute && !isSecuredRoute && pathWithoutLocale !== "/") {
-   
     return intlMiddleware(request);
   }
-  
- 
+
   if (isPublicRoute) {
     return intlMiddleware(request);
   }
-  
- 
+
+  // ─── À partir d'ici : route sécurisée ───
+
   const sessionCookie = getSessionCookie(request);
-  
+
   if (!sessionCookie) {
     const loginUrl = new URL(`/${locale}/login`, request.url);
     loginUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(loginUrl);
   }
-  
-  
-  if (isSecuredRoute) {
-    const securityCheckPassed = request.cookies.get("security_check_passed");
-    const securityCheckTimestamp = request.cookies.get("security_check_timestamp");
-    
-    if (!securityCheckPassed || securityCheckPassed.value !== "true") {
-      const precheckUrl = new URL(`/${locale}/precheck`, request.url);
-      precheckUrl.searchParams.set("callbackUrl", pathname);
-      return NextResponse.redirect(precheckUrl);
-    }
-    
-    if (securityCheckTimestamp) {
-      const checkTime = parseInt(securityCheckTimestamp.value);
-      const now = Date.now();
-      const maxAge = 30 * 60 * 1000;
-      
-      if (now - checkTime > maxAge) {
-        const precheckUrl = new URL(`/${locale}/precheck`, request.url);
-        precheckUrl.searchParams.set("callbackUrl", pathname);
-        precheckUrl.searchParams.set("expired", "true");
-        return NextResponse.redirect(precheckUrl);
-      }
-    }
+
+  // ✅ Check precheck signé HMAC — remplace l'ancien cookie "true" forgeable
+  const secret = process.env.SECURITY_CHECK_SECRET;
+  const raw = request.cookies.get("security_check_passed")?.value;
+  const timestamp = secret && raw ? await verifyValue(raw, secret) : null;
+  const age = timestamp ? Date.now() - parseInt(timestamp) : NaN;
+
+  if (!timestamp || isNaN(age) || age > SECURITY_CHECK_MAX_AGE) {
+    const precheckUrl = new URL(`/${locale}/precheck`, request.url);
+    precheckUrl.searchParams.set("callbackUrl", pathname);
+    precheckUrl.searchParams.set("reason", timestamp ? "expired" : "missing");
+    return NextResponse.redirect(precheckUrl);
   }
-  
-  
+
   return intlMiddleware(request);
 }
 

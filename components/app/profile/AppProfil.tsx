@@ -489,7 +489,7 @@ export default function ProfilePage() {
                 />
               ) : (
                 <p
-                  className={`text-xs sm:text-sm text-gray-600 dark:text-white/50 break-words ${orbitron.className}`}
+                  className={`text-xs sm:text-sm text-gray-600 dark:text-white/50 wrap-break-words ${orbitron.className}`}
                 >
                   {user.bio || t("noBio")}
                 </p>

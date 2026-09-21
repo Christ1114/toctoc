@@ -3,107 +3,136 @@ import { checkVpnStatus } from "@/app/lib/security/vpnCheck";
 import { auth } from "@/app/lib/auth";
 import { headers } from "next/headers";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
+// ⚠️ LIMITIATION : Map en mémoire = par instance de processus.
+// En serverless, chaque cold start repart à zéro. Pour du rate limiting
+// réellement global en prod : Upstash Redis (API compatible, 2 lignes à changer).
 const rateLimitMap = new Map<string, { count: number; timestamp: number }>();
-const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
-const RATE_LIMIT_MAX = 10; // 10 requêtes par minute
+const RATE_LIMIT_WINDOW = 60 * 1000;
+const RATE_LIMIT_MAX = 10;
+const MAP_CLEANUP_THRESHOLD = 5000; // évite de boucler sur une map vide à chaque requête
 
-
-setInterval(() => {
-  const now = Date.now();
+// Nettoyage paresseux : remplace le setInterval (incompatible serverless)
+function cleanupExpired(now: number) {
+  if (rateLimitMap.size < MAP_CLEANUP_THRESHOLD) return;
   for (const [key, value] of rateLimitMap.entries()) {
     if (now - value.timestamp > RATE_LIMIT_WINDOW) {
       rateLimitMap.delete(key);
     }
   }
-}, 5 * 60 * 1000);
+}
+
+function checkRateLimit(key: string): {
+  allowed: boolean;
+  remaining: number;
+  retryAfter: number;
+} {
+  const now = Date.now();
+  const entry = rateLimitMap.get(key);
+
+  if (!entry || now - entry.timestamp > RATE_LIMIT_WINDOW) {
+    rateLimitMap.set(key, { count: 1, timestamp: now });
+    return { allowed: true, remaining: RATE_LIMIT_MAX - 1, retryAfter: 0 };
+  }
+
+  if (entry.count >= RATE_LIMIT_MAX) {
+    return {
+      allowed: false,
+      remaining: 0,
+      retryAfter: Math.max(0, RATE_LIMIT_WINDOW - (now - entry.timestamp)),
+    };
+  }
+
+  entry.count++;
+  return { allowed: true, remaining: RATE_LIMIT_MAX - entry.count, retryAfter: 0 };
+}
+
+// Parse d'URL sûr : une valeur malformée => null, jamais de throw
+function safeUrl(raw: string | null): URL | null {
+  if (!raw) return null;
+  try {
+    return new URL(raw);
+  } catch {
+    return null;
+  }
+}
+
+function rateLimitHeaders(limit: { remaining: number; retryAfter: number }) {
+  return {
+    "X-RateLimit-Limit": String(RATE_LIMIT_MAX),
+    "X-RateLimit-Remaining": String(limit.remaining),
+    ...(limit.retryAfter > 0 ? { "Retry-After": String(Math.ceil(limit.retryAfter / 1000)) } : {}),
+  };
+}
 
 export async function GET(req: NextRequest) {
   try {
-    
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
+    // ─── 1. Rate limit par IP, AVANT tout le reste ───
+    // Sinon un anonyme fait des milliers d'appels et te fait payer
+    // des requêtes chez le provider VPN.
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      req.headers.get("x-real-ip") ||
+      "unknown";
 
-    if (!session?.user) {
+    cleanupExpired(Date.now());
+    const ipLimit = checkRateLimit(`ip:${ip}`);
+    if (!ipLimit.allowed) {
       return NextResponse.json(
-        { 
-          success: false,
-          error: "Non authentifié" 
-        }, 
+        { success: false, error: "Trop de requêtes. Veuillez réessayer plus tard." },
+        { status: 429, headers: rateLimitHeaders(ipLimit) }
+      );
+    }
+
+    // ─── 2. Auth : session utilisateur OU secret interne (OR, pas AND) ───
+    const session = await auth.api.getSession({ headers: await headers() });
+
+    const internalSecret = process.env.INTERNAL_REQUEST_SECRET;
+    const isInternal =
+      !!internalSecret && req.headers.get("x-internal-request") === internalSecret;
+
+    if (!session?.user && !isInternal) {
+      return NextResponse.json(
+        { success: false, error: "Non authentifié" },
         { status: 401 }
       );
     }
 
-    const origin = req.headers.get("origin");
+    // ─── 3. Check d'origine (navigateur uniquement, tolère curl/serveurs) ───
     const host = req.headers.get("host");
-    const referer = req.headers.get("referer");
+    if (host) {
+      const origin = safeUrl(req.headers.get("origin"));
+      const referer = safeUrl(req.headers.get("referer"));
 
+      const originMismatch = origin && origin.host !== host;
+      const refererMismatch = !origin && referer && referer.host !== host;
 
-    if (origin && host && new URL(origin).host !== host) {
-      return NextResponse.json(
-        { 
-          success: false,
-          error: "Origine non autorisée" 
-        }, 
-        { status: 403 }
-      );
-    }
-
-  
-    if (!origin && referer && host) {
-      const refererHost = new URL(referer).host;
-      if (refererHost !== host) {
+      if (originMismatch || refererMismatch) {
         return NextResponse.json(
-          { 
-            success: false,
-            error: "Origine non autorisée" 
-          }, 
+          { success: false, error: "Origine non autorisée" },
           { status: 403 }
         );
       }
     }
 
-  
-    const internalHeader = req.headers.get("x-internal-request");
-    if (process.env.INTERNAL_REQUEST_SECRET && 
-        internalHeader !== process.env.INTERNAL_REQUEST_SECRET) {
-      return NextResponse.json(
-        { 
-          success: false,
-          error: "Requête non autorisée" 
-        }, 
-        { status: 403 }
-      );
+    // ─── 4. Rate limit par user (si session) ───
+    if (session?.user) {
+      const userLimit = checkRateLimit(`user:${session.user.id}`);
+      if (!userLimit.allowed) {
+        return NextResponse.json(
+          { success: false, error: "Trop de requêtes. Veuillez réessayer plus tard." },
+          { status: 429, headers: rateLimitHeaders(userLimit) }
+        );
+      }
     }
 
-
-    const userId = session.user.id;
-    const rateLimitResult = checkRateLimit(userId);
-    
-    if (!rateLimitResult.allowed) {
-      return NextResponse.json(
-        { 
-          success: false,
-          error: "Trop de requêtes. Veuillez réessayer plus tard." 
-        }, 
-        { 
-          status: 429,
-          headers: {
-            "Retry-After": String(Math.ceil(rateLimitResult.retryAfter / 1000)),
-            "X-RateLimit-Limit": String(RATE_LIMIT_MAX),
-            "X-RateLimit-Remaining": String(rateLimitResult.remaining),
-          }
-        }
-      );
-    }
-
-    // 5. Exécuter la vérification VPN
+    // ─── 5. Vérification VPN ───
     const vpnResult = await checkVpnStatus(req.headers);
 
-    // 6. Journaliser le résultat
     console.log("VPN Check:", {
-      userId,
+      userId: session?.user?.id ?? "internal",
       isVpn: vpnResult.isVpn,
       provider: vpnResult.provider,
       country: vpnResult.country,
@@ -111,83 +140,33 @@ export async function GET(req: NextRequest) {
       timestamp: new Date().toISOString(),
     });
 
-    // 7. Retourner le résultat avec les headers de rate limiting
     return NextResponse.json(
-      {
-        success: true,
-        ...vpnResult,
-      },
+      { success: true, ...vpnResult },
       {
         headers: {
-          "X-RateLimit-Limit": String(RATE_LIMIT_MAX),
-          "X-RateLimit-Remaining": String(rateLimitResult.remaining),
           "Cache-Control": "no-store, no-cache, must-revalidate",
+          ...rateLimitHeaders({ remaining: ipLimit.remaining, retryAfter: 0 }),
         },
       }
     );
-
   } catch (error) {
     console.error("Erreur check-vpn:", error);
-    
-    // Ne pas exposer les détails de l'erreur en production
-    const errorMessage = process.env.NODE_ENV === "production" 
-      ? "Erreur interne" 
-      : error instanceof Error ? error.message : "Erreur interne";
+
+    const errorMessage =
+      process.env.NODE_ENV === "production"
+        ? "Erreur interne"
+        : error instanceof Error
+        ? error.message
+        : "Erreur interne";
 
     return NextResponse.json(
-      { 
-        success: false,
-        error: errorMessage 
-      }, 
+      { success: false, error: errorMessage },
       { status: 500 }
     );
   }
 }
 
-// Fonction de rate limiting améliorée
-function checkRateLimit(userId: string): {
-  allowed: boolean;
-  remaining: number;
-  retryAfter: number;
-} {
-  const now = Date.now();
-  const userRate = rateLimitMap.get(userId);
-
-  // Si l'utilisateur n'a pas encore fait de requête
-  if (!userRate) {
-    rateLimitMap.set(userId, { count: 1, timestamp: now });
-    return { allowed: true, remaining: RATE_LIMIT_MAX - 1, retryAfter: 0 };
-  }
-
-  // Si la fenêtre est expirée, réinitialiser
-  if (now - userRate.timestamp > RATE_LIMIT_WINDOW) {
-    rateLimitMap.set(userId, { count: 1, timestamp: now });
-    return { allowed: true, remaining: RATE_LIMIT_MAX - 1, retryAfter: 0 };
-  }
-
-  // Si le nombre maximum est atteint
-  if (userRate.count >= RATE_LIMIT_MAX) {
-    const retryAfter = RATE_LIMIT_WINDOW - (now - userRate.timestamp);
-    return { 
-      allowed: false, 
-      remaining: 0, 
-      retryAfter: Math.max(0, retryAfter)
-    };
-  }
-
-  // Incrémenter le compteur
-  userRate.count++;
-  return { 
-    allowed: true, 
-    remaining: RATE_LIMIT_MAX - userRate.count,
-    retryAfter: 0
-  };
-}
-
-// Optionnel : Méthode HEAD pour les health checks
-export async function HEAD(req: NextRequest) {
-  return NextResponse.json(
-    { status: "ok" },
-    { status: 200 }
-  );
+// Health check (monitoring)
+export async function HEAD() {
+  return new NextResponse(null, { status: 200 });
 }

@@ -61,7 +61,7 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
   const { theme, setTheme } = useTheme();
 
   // ✅ Session partagée via le contexte — plus de getSession() ici
-  const { user: sessionUser, loading: sessionLoading } = useSession();
+  const { user: sessionUser, loading: sessionLoading, refresh } = useSession();
 
   const user: UserData | null = sessionUser
     ? (sessionUser as unknown as UserData)
@@ -159,7 +159,8 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
       if (error) {
         setEmailError(error.message || t("errors.emailVerifyFailed"));
       } else {
-        // ✅ Plus de loadUser() — le contexte se mettra à jour au prochain fetch global
+        // ✅ Rafraîchit le contexte pour récupérer emailVerified: true
+        await refresh();
         setEmailOtpStep("idle");
         setEmailOtpCode("");
       }
@@ -180,9 +181,10 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
         setLoggingOut(false);
         return;
       }
+      // ✅ Vide le user dans le contexte → tout l'UI se met à jour
+      await refresh();
       onClose();
       router.push("/login");
-      router.refresh();
     } catch (err) {
       setLogoutError(t("errors.logoutFailed"));
       setLoggingOut(false);
@@ -200,9 +202,10 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
         setDeleting(false);
         return;
       }
+      // ✅ Le compte n'existe plus → session forcément null
+      await refresh();
       onClose();
       router.push("/");
-      router.refresh();
     } catch (err) {
       setDeleteError(t("errors.deleteFailed"));
       setShowDeleteConfirm(false);
