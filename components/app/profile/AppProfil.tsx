@@ -72,15 +72,12 @@ type Stats = {
 
 type TabKey = "bookings" | "reviews" | "favorites";
 
-
-
 export default function ProfilePage() {
   const t = useTranslations("ProfilePage");
   const locale = useLocale();
   const router = useRouter();
   const isRTL = locale === "ar";
   const fileInputRef = useRef<HTMLInputElement>(null);
-
 
   const { user: sessionUser, loading: sessionLoading } = useSession();
 
@@ -95,7 +92,6 @@ export default function ProfilePage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [form, setForm] = useState<Partial<ProfileUser>>({});
-
 
   useEffect(() => {
     if (sessionLoading) return;
@@ -159,7 +155,6 @@ export default function ProfilePage() {
         return;
       }
 
-     
       setUser((prev) => (prev ? ({ ...prev, ...form } as ProfileUser) : prev));
       setEditing(false);
       setSuccess(t("saved"));
@@ -173,8 +168,6 @@ export default function ProfilePage() {
 
   const handlePhotoClick = () => fileInputRef.current?.click();
 
-  // Ne fait plus l'upload directement : ouvre la modale de recadrage avec
-  // le fichier choisi. L'upload réel se fait dans handleCropConfirm.
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -193,11 +186,9 @@ export default function ProfilePage() {
     reader.onload = () => setCropImageSrc(reader.result as string);
     reader.readAsDataURL(file);
 
-    // Réinitialise l'input pour pouvoir resélectionner le même fichier plus tard
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  // Appelée une fois que l'utilisateur a validé son cadrage dans la modale
   const handleCropConfirm = async (blob: Blob) => {
     if (!user) return;
 
@@ -226,7 +217,7 @@ export default function ProfilePage() {
       }
 
       setUser((prev) => (prev ? { ...prev, image: url } : prev));
-      setCropImageSrc(null); // ferme la modale après succès
+      setCropImageSrc(null);
     } catch (err) {
       console.error("Erreur upload photo:", err);
       setError(t("errors.uploadFailed"));
@@ -246,9 +237,10 @@ export default function ProfilePage() {
         setTimeout(() => setSuccess(null), 2000);
       }
     } catch {
-   
+      /* silent */
     }
   };
+
   if (sessionLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white dark:bg-zinc-900">
@@ -304,21 +296,27 @@ export default function ProfilePage() {
       dir={isRTL ? "rtl" : "ltr"}
       className="min-h-screen bg-white dark:bg-zinc-900"
     >
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
+      {/* Container — padding adaptatif + marge pour la bottom navbar mobile */}
+      <div className="max-w-5xl mx-auto px-3 sm:px-6 pb-24 md:pb-6 py-4 sm:py-6">
         {/* Bouton retour */}
         <button
           onClick={() => router.back()}
-          className={`flex items-center gap-1.5 text-sm text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white/90 cursor-pointer mb-6 transition-colors ${orbitron.className}`}
+          className={`flex items-center gap-1.5 text-xs sm:text-sm text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white/90 cursor-pointer mb-4 sm:mb-6 transition-colors ${orbitron.className}`}
         >
           <ArrowLeftIcon size={16} className={isRTL ? "rotate-180" : ""} />
           {t("back")}
         </button>
 
-        {/* En-tête */}
-        <div className="flex flex-col sm:flex-row gap-5 sm:gap-8">
+        {/* =====================================================
+            EN-TÊTE
+            Mobile   : avatar centré au-dessus, contenu dessous
+            Tablette : avatar à gauche, contenu à droite (sm)
+            Desktop  : idem tablette, plus spacieux
+        ====================================================== */}
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8">
           {/* Avatar + caméra */}
           <div className="relative shrink-0 mx-auto sm:mx-0">
-            <div className="h-24 w-24 sm:h-28 sm:w-28 md:h-32 md:w-32 rounded-full overflow-hidden bg-[#432dd7]/10 flex items-center justify-center border border-black/5 dark:border-white/10">
+            <div className="h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 rounded-full overflow-hidden bg-[#432dd7]/10 flex items-center justify-center border border-black/5 dark:border-white/10">
               {user.image ? (
                 <img
                   src={user.image}
@@ -326,11 +324,14 @@ export default function ProfilePage() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <span className="text-3xl font-semibold text-[#432dd7]">
+                <span className="text-2xl sm:text-3xl font-semibold text-[#432dd7]">
                   {user.name ? (
                     user.name.charAt(0).toUpperCase()
                   ) : (
-                    <UserIcon size={40} />
+                    <UserIcon size={32} className="sm:hidden" />
+                  )}
+                  {user.name ? null : (
+                    <UserIcon size={40} className="hidden sm:block" />
                   )}
                 </span>
               )}
@@ -338,13 +339,20 @@ export default function ProfilePage() {
             <button
               onClick={handlePhotoClick}
               disabled={uploadingPhoto}
-              className="absolute bottom-1 right-1 h-9 w-9 rounded-full bg-[#432dd7] hover:bg-[#432dd7]/90 flex items-center justify-center text-white cursor-pointer disabled:opacity-50 transition-colors border-2 border-white dark:border-black"
+              className="absolute bottom-0.5 right-0.5 sm:bottom-1 sm:right-1 h-7 w-7 sm:h-9 sm:w-9 rounded-full bg-[#432dd7] hover:bg-[#432dd7]/90 flex items-center justify-center text-white cursor-pointer disabled:opacity-50 transition-colors border-2 border-white dark:border-black"
               aria-label={t("changePhoto")}
             >
               {uploadingPhoto ? (
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
+                <div className="animate-spin rounded-full h-3 w-3 sm:h-4 sm:w-4 border-b-2 border-white" />
               ) : (
-                <CameraIcon size={16} weight="bold" />
+                <CameraIcon size={14} className="sm:hidden" weight="bold" />
+              )}
+              {!uploadingPhoto && (
+                <CameraIcon
+                  size={16}
+                  weight="bold"
+                  className="hidden sm:block"
+                />
               )}
             </button>
             <input
@@ -357,7 +365,8 @@ export default function ProfilePage() {
           </div>
 
           {/* Identité + stats + actions */}
-          <div className="flex-1 min-w-0 text-center sm:text-left">
+          <div className="flex-1 min-w-0 text-center sm:text-start">
+            {/* Nom + badge */}
             <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
               {editing ? (
                 <input
@@ -366,26 +375,26 @@ export default function ProfilePage() {
                     setForm((f) => ({ ...f, name: e.target.value }))
                   }
                   placeholder={t("namePlaceholder")}
-                  className={`text-lg font-semibold bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 h-10 text-gray-900 dark:text-white/90 focus:outline-none focus:border-[#432dd7] w-full sm:w-auto max-w-xs ${orbitron.className}`}
+                  className={`text-base sm:text-lg font-semibold bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 h-10 text-gray-900 dark:text-white/90 focus:outline-none focus:border-[#432dd7] w-full sm:w-auto sm:max-w-xs ${orbitron.className}`}
                 />
               ) : (
                 <h1
-                  className={`text-lg font-semibold text-gray-900 dark:text-white/90 truncate max-w-full ${orbitron.className}`}
+                  className={`text-base sm:text-lg font-semibold text-gray-900 dark:text-white/90 truncate max-w-full ${orbitron.className}`}
                 >
                   {user.name || t("unnamed")}
                 </h1>
               )}
               {user.accountType && (
                 <span
-                  className={`inline-flex items-center px-2 py-0.5 rounded-md bg-[#432dd7]/10 text-[#432dd7] text-xs font-medium ${orbitron.className}`}
+                  className={`inline-flex items-center px-2 py-0.5 rounded-md bg-[#432dd7]/10 text-[#432dd7] text-[10px] sm:text-xs font-medium ${orbitron.className}`}
                 >
                   {t(`accountType.${user.accountType}`)}
                 </span>
               )}
             </div>
 
-            {/* Stats */}
-            <div className="flex items-center justify-center sm:justify-start gap-4 sm:gap-5 mt-3 flex-wrap">
+            {/* Stats inline */}
+            <div className="flex items-center justify-center sm:justify-start gap-3 sm:gap-5 mt-2.5 sm:mt-3 flex-wrap">
               {TABS.map(({ key, count, label }) => (
                 <button
                   key={key}
@@ -404,59 +413,69 @@ export default function ProfilePage() {
               ))}
               {isProvider && stats?.averageRating != null && (
                 <span className="flex items-center gap-1 text-xs text-gray-500 dark:text-white/50">
-                  <StarIcon size={12} weight="fill" className="text-yellow-500" />
+                  <StarIcon
+                    size={12}
+                    weight="fill"
+                    className="text-yellow-500"
+                  />
                   {stats.averageRating.toFixed(1)}
                 </span>
               )}
             </div>
 
-            {/* Actions */}
-            <div className="flex items-center justify-center sm:justify-start gap-2 mt-4 flex-wrap">
+            {/* Actions — boutons pleine largeur sur mobile en édition */}
+            <div className="flex items-center justify-center sm:justify-start gap-2 mt-3 sm:mt-4 flex-wrap">
               {!editing ? (
                 <>
                   <button
                     onClick={startEditing}
-                    className={`h-10 px-4 rounded-lg bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/15 text-sm text-gray-900 dark:text-white/90 cursor-pointer transition-colors ${orbitron.className}`}
+                    className={`h-9 sm:h-10 px-4 rounded-lg bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/15 text-xs sm:text-sm text-gray-900 dark:text-white/90 cursor-pointer transition-colors ${orbitron.className}`}
                   >
                     {t("editProfile")}
                   </button>
                   <button
                     onClick={() => setSettingsOpen(true)}
-                    className="h-10 w-10 rounded-full bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/15 flex items-center justify-center text-gray-900 dark:text-white/90 cursor-pointer transition-colors"
+                    className="h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/15 flex items-center justify-center text-gray-900 dark:text-white/90 cursor-pointer transition-colors"
                     aria-label={t("settings")}
                   >
-                    <GearSixIcon size={18} />
+                    <GearSixIcon size={16} className="sm:hidden" />
+                    <GearSixIcon size={18} className="hidden sm:block" />
                   </button>
                   <button
                     onClick={handleShare}
-                    className="h-10 w-10 rounded-full bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/15 flex items-center justify-center text-gray-900 dark:text-white/90 cursor-pointer transition-colors"
+                    className="h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/15 flex items-center justify-center text-gray-900 dark:text-white/90 cursor-pointer transition-colors"
                     aria-label={t("share")}
                   >
-                    <ShareNetworkIcon size={18} />
+                    <ShareNetworkIcon size={16} className="sm:hidden" />
+                    <ShareNetworkIcon size={18} className="hidden sm:block" />
                   </button>
                 </>
               ) : (
-                <>
+                <div className="flex items-center gap-2 w-full sm:w-auto">
                   <button
                     onClick={cancelEditing}
                     disabled={saving}
-                    className={`flex items-center gap-1.5 h-10 px-4 rounded-lg border border-gray-200 dark:border-white/10 text-sm text-gray-600 dark:text-white/60 hover:bg-gray-100 dark:hover:bg-white/5 cursor-pointer disabled:opacity-40 transition-colors ${orbitron.className}`}
+                    className={`flex-1 sm:flex-none flex items-center justify-center gap-1.5 h-9 sm:h-10 px-3 sm:px-4 rounded-lg border border-gray-200 dark:border-white/10 text-xs sm:text-sm text-gray-600 dark:text-white/60 hover:bg-gray-100 dark:hover:bg-white/5 cursor-pointer disabled:opacity-40 transition-colors ${orbitron.className}`}
                   >
-                    <XIcon size={16} />
+                    <XIcon size={14} className="sm:hidden" />
+                    <XIcon size={16} className="hidden sm:block" />
                     {t("cancel")}
                   </button>
                   <button
                     onClick={handleSave}
                     disabled={saving}
-                    className={`flex items-center gap-1.5 h-10 px-4 rounded-lg bg-[#432dd7] hover:bg-[#432dd7]/90 text-sm text-white cursor-pointer disabled:opacity-50 transition-colors ${orbitron.className}`}
+                    className={`flex-1 sm:flex-none flex items-center justify-center gap-1.5 h-9 sm:h-10 px-3 sm:px-4 rounded-lg bg-[#432dd7] hover:bg-[#432dd7]/90 text-xs sm:text-sm text-white cursor-pointer disabled:opacity-50 transition-colors ${orbitron.className}`}
                   >
-                    <CheckIcon size={16} weight="bold" />
+                    <CheckIcon size={14} className="sm:hidden" weight="bold" />
+                    <CheckIcon size={16} className="hidden sm:block" weight="bold" />
                     {saving ? t("saving") : t("save")}
                   </button>
-                </>
+                </div>
               )}
             </div>
-            <div className="mt-4">
+
+            {/* Bio */}
+            <div className="mt-3 sm:mt-4">
               {editing ? (
                 <textarea
                   value={form.bio || ""}
@@ -466,10 +485,12 @@ export default function ProfilePage() {
                   placeholder={t("bioPlaceholder")}
                   rows={3}
                   maxLength={500}
-                  className={`w-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg p-3 text-sm text-gray-900 dark:text-white/90 placeholder:text-gray-400 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7] resize-none ${orbitron.className}`}
+                  className={`w-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg p-3 text-xs sm:text-sm text-gray-900 dark:text-white/90 placeholder:text-gray-400 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7] resize-none ${orbitron.className}`}
                 />
               ) : (
-                <p className={`text-sm text-gray-600 dark:text-white/50 wrap-break-words ${orbitron.className}`}>
+                <p
+                  className={`text-xs sm:text-sm text-gray-600 dark:text-white/50 break-words ${orbitron.className}`}
+                >
                   {user.bio || t("noBio")}
                 </p>
               )}
@@ -480,24 +501,26 @@ export default function ProfilePage() {
         {/* Erreur / succès */}
         {error && (
           <p
-            className={`text-sm text-red-500 dark:text-red-400 mt-4 ${orbitron.className}`}
+            className={`text-xs sm:text-sm text-red-500 dark:text-red-400 mt-3 sm:mt-4 ${orbitron.className}`}
           >
             {error}
           </p>
         )}
         {success && (
           <p
-            className={`text-sm text-green-600 dark:text-green-400 mt-4 ${orbitron.className}`}
+            className={`text-xs sm:text-sm text-green-600 dark:text-green-400 mt-3 sm:mt-4 ${orbitron.className}`}
           >
             {success}
           </p>
         )}
 
-        {/* Agence */}
+        {/* =====================================================
+            SECTION AGENCE (édition uniquement)
+        ====================================================== */}
         {editing && (isAgencyClient || form.clientType === "AGENCY") && (
-          <section className="border-t border-gray-100 dark:border-white/5 mt-6 pt-5">
+          <section className="border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6 pt-4 sm:pt-5">
             <h2
-              className={`flex items-center gap-1.5 text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}
+              className={`flex items-center gap-1.5 text-[10px] sm:text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}
             >
               <BuildingsIcon size={16} />
               {t("agencyInfo")}
@@ -520,15 +543,20 @@ export default function ProfilePage() {
             </div>
           </section>
         )}
+
+        {/* =====================================================
+            SECTION PROVIDER (édition uniquement)
+        ====================================================== */}
         {editing && isProvider && (
-          <section className="border-t border-gray-100 dark:border-white/5 mt-6 pt-5">
+          <section className="border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6 pt-4 sm:pt-5">
             <h2
-              className={`flex items-center gap-1.5 text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}
+              className={`flex items-center gap-1.5 text-[10px] sm:text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}
             >
               <BriefcaseIcon size={16} />
               {t("providerInfo")}
             </h2>
             <div className="flex flex-col gap-3">
+              {/* Type de provider — empilé en mobile */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
                 <span className="text-xs sm:text-sm text-gray-500 dark:text-white/50 shrink-0">
                   {t("providerType")}
@@ -541,7 +569,7 @@ export default function ProfilePage() {
                       providerType: e.target.value as ProviderType,
                     }))
                   }
-                  className="h-10 px-3 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white/90 focus:outline-none focus:border-[#432dd7] w-full sm:w-auto"
+                  className="h-10 px-3 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-xs sm:text-sm text-gray-900 dark:text-white/90 focus:outline-none focus:border-[#432dd7] w-full sm:w-auto sm:min-w-48"
                 >
                   <option value="">{t("select")}</option>
                   {PROVIDER_TYPES.map((pt) => (
@@ -551,6 +579,8 @@ export default function ProfilePage() {
                   ))}
                 </select>
               </div>
+
+              {/* Tarif horaire + devise — empilé en mobile */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
                 <span className="text-xs sm:text-sm text-gray-500 dark:text-white/50 shrink-0">
                   {t("hourlyRate")}
@@ -569,14 +599,14 @@ export default function ProfilePage() {
                       }))
                     }
                     placeholder="0"
-                    className="flex-1 sm:flex-none sm:w-28 h-10 px-3 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white/90 focus:outline-none focus:border-[#432dd7]"
+                    className="flex-1 sm:flex-none sm:w-28 h-10 px-3 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-xs sm:text-sm text-gray-900 dark:text-white/90 focus:outline-none focus:border-[#432dd7]"
                   />
                   <select
                     value={form.currency || "XOF"}
                     onChange={(e) =>
                       setForm((f) => ({ ...f, currency: e.target.value }))
                     }
-                    className="h-10 px-2 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white/90 focus:outline-none focus:border-[#432dd7]"
+                    className="h-10 px-2 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-xs sm:text-sm text-gray-900 dark:text-white/90 focus:outline-none focus:border-[#432dd7]"
                   >
                     {CURRENCIES.map((c) => (
                       <option key={c} value={c}>
@@ -589,12 +619,16 @@ export default function ProfilePage() {
             </div>
           </section>
         )}
-        <div className="flex items-center border-t border-gray-100 dark:border-white/5 mt-6">
+
+        {/* =====================================================
+            TABS — labels masqués sur très petits écrans (< 640px)
+        ====================================================== */}
+        <div className="flex items-center border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6">
           {TABS.map(({ key, icon: Icon, label }) => (
             <button
               key={key}
               onClick={() => setActiveTab(key)}
-              className={`flex-1 flex items-center justify-center gap-1.5 h-12 text-sm cursor-pointer border-b-2 transition-colors ${
+              className={`flex-1 flex items-center justify-center gap-1.5 h-11 sm:h-12 text-xs sm:text-sm cursor-pointer border-b-2 transition-colors ${
                 activeTab === key
                   ? "border-gray-900 dark:border-white text-gray-900 dark:text-white"
                   : "border-transparent text-gray-400 dark:text-white/40 hover:text-gray-700 dark:hover:text-white/70"
@@ -604,11 +638,15 @@ export default function ProfilePage() {
                 size={16}
                 weight={activeTab === key ? "fill" : "regular"}
               />
-              <span className="hidden xs:inline sm:inline">{label}</span>
+              <span className="hidden sm:inline">{label}</span>
             </button>
           ))}
         </div>
-        <div className="py-14 flex flex-col items-center justify-center text-center px-4">
+
+        {/* =====================================================
+            ÉTAT VIDE
+        ====================================================== */}
+        <div className="py-10 sm:py-14 flex flex-col items-center justify-center text-center px-4">
           {activeTab === "bookings" && (
             <>
               <CalendarCheckIcon
@@ -616,7 +654,7 @@ export default function ProfilePage() {
                 className="text-gray-300 dark:text-white/20 mb-2"
               />
               <p
-                className={`text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}
+                className={`text-xs sm:text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}
               >
                 {t("empty.bookings")}
               </p>
@@ -629,7 +667,7 @@ export default function ProfilePage() {
                 className="text-gray-300 dark:text-white/20 mb-2"
               />
               <p
-                className={`text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}
+                className={`text-xs sm:text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}
               >
                 {t("empty.reviews")}
               </p>
@@ -642,7 +680,7 @@ export default function ProfilePage() {
                 className="text-gray-300 dark:text-white/20 mb-2"
               />
               <p
-                className={`text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}
+                className={`text-xs sm:text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}
               >
                 {t("empty.favorites")}
               </p>
@@ -668,6 +706,9 @@ export default function ProfilePage() {
   );
 }
 
+/* =====================================================
+   FIELD — responsive
+====================================================== */
 function Field({
   label,
   editing,
@@ -691,7 +732,7 @@ function Field({
           value={value || ""}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className="h-10 px-3 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white/90 placeholder:text-gray-400 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7] w-full sm:w-64"
+          className="h-10 px-3 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-xs sm:text-sm text-gray-900 dark:text-white/90 placeholder:text-gray-400 dark:placeholder:text-white/30 focus:outline-none focus:border-[#432dd7] w-full sm:w-64"
         />
       ) : (
         <span className="text-sm text-gray-900 dark:text-white/90 truncate">
