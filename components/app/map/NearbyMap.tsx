@@ -304,19 +304,14 @@ export default function NearbyMap() {
         lastSeenAt: lastUpdate,
       });
 
-      // ─── Clic sur le marker → profil public du user ───
-      el.style.cursor = "pointer";
-      el.addEventListener("click", (e) => {
-        e.stopPropagation(); // empêche le clic de déclencher un event sur la carte
-
-        // Route selon le type de compte
-        const profilePath =
-          nearbyUser.accountType === "PROVIDER"
-            ? `/provider/${nearbyUser.id}`
-            : `/profile/${nearbyUser.id}`;
-
-        router.push(profilePath);
-      });
+      // ─── Clic sur le marker → profil public (providers uniquement) ───
+      if (nearbyUser.accountType === "PROVIDER") {
+        el.style.cursor = "pointer";
+        el.addEventListener("click", (e) => {
+          e.stopPropagation(); // empêche le clic de déclencher un event sur la carte
+          router.push(`/provider/${nearbyUser.id}`);
+        });
+      }
 
       const marker = new maplibregl.Marker({
         element: el,
@@ -533,6 +528,8 @@ export default function NearbyMap() {
         open={aiSearchOpen}
         onClose={() => setAiSearchOpen(false)}
       />
+
+      {/* ───── Bouton 3D ───── */}
       <button
         onClick={resetView}
         aria-label="Réinitialiser la vue 3D"
