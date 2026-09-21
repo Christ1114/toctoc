@@ -122,6 +122,10 @@ const Sidebar = () => {
       <SettingsPopover open={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </>
   );
+
+  // =========================================================
+  //  BOUTON DE NAV (réutilisable sidebar verticale)
+  // =========================================================
   const NavButton = ({
     navKey,
     icon: Icon,
@@ -224,12 +228,11 @@ const Sidebar = () => {
   };
 
   // =========================================================
-  //  MOBILE → Bottom Navigation Bar
+  //  MOBILE → Bottom Navigation Bar (icônes seules)
   // =========================================================
   if (breakpoint === "mobile") {
     return (
       <>
-        {/* Bottom navbar fixe */}
         <nav
           dir={isRTL ? "rtl" : "ltr"}
           aria-label={t("navLabel")}
@@ -246,8 +249,9 @@ const Sidebar = () => {
                 key={key}
                 onClick={() => handleNavClick(key)}
                 aria-label={label}
+                title={label}
                 aria-current={isActive ? "page" : undefined}
-                className={`flex-1 flex flex-col items-center justify-center gap-0.5 h-full
+                className={`relative flex-1 flex items-center justify-center h-full
                             transition-colors cursor-pointer
                             ${
                               isActive
@@ -255,8 +259,10 @@ const Sidebar = () => {
                                 : "text-zinc-500 dark:text-white/60"
                             }`}
               >
-                <Icon size={22} weight={isActive ? "fill" : "regular"} />
-                <span className="text-[10px] leading-none">{label}</span>
+                <Icon size={24} weight={isActive ? "fill" : "regular"} />
+                {isActive && (
+                  <span className="absolute bottom-2 w-1 h-1 rounded-full bg-[#432dd7]" />
+                )}
               </button>
             );
           })}
@@ -265,8 +271,9 @@ const Sidebar = () => {
           <button
             onClick={() => handleNavClick("settings")}
             aria-label={t("settings")}
+            title={t("settings")}
             aria-current={active === "settings" ? "page" : undefined}
-            className={`flex-1 flex flex-col items-center justify-center gap-0.5 h-full
+            className={`relative flex-1 flex items-center justify-center h-full
                         transition-colors cursor-pointer
                         ${
                           active === "settings"
@@ -274,8 +281,10 @@ const Sidebar = () => {
                             : "text-zinc-500 dark:text-white/60"
                         }`}
           >
-            <GearSixIcon size={22} weight={active === "settings" ? "fill" : "regular"} />
-            <span className="text-[10px] leading-none">{t("settings")}</span>
+            <GearSixIcon size={24} weight={active === "settings" ? "fill" : "regular"} />
+            {active === "settings" && (
+              <span className="absolute bottom-2 w-1 h-1 rounded-full bg-[#432dd7]" />
+            )}
           </button>
         </nav>
 
@@ -284,6 +293,9 @@ const Sidebar = () => {
     );
   }
 
+  // =========================================================
+  //  TABLETTE → Sidebar collapsée (icônes seules)
+  // =========================================================
   if (breakpoint === "tablet") {
     return (
       <>
@@ -306,7 +318,9 @@ const Sidebar = () => {
     );
   }
 
-  
+  // =========================================================
+  //  DESKTOP → Sidebar complète avec toggle
+  // =========================================================
   return (
     <>
       <div
