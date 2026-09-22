@@ -70,7 +70,8 @@ export default function PublicProviderProfilePage() {
   const locale = useLocale();
   const router = useRouter();
   const params = useParams();
-  const providerId = params.userId as string;
+  // ✅ Le dossier de route est [id], pas [userId]
+  const providerId = params.id as string;
   const isRTL = locale === "ar";
 
   const [provider, setProvider] = useState<PublicProvider | null>(null);
@@ -114,8 +115,18 @@ export default function PublicProviderProfilePage() {
     }
   }, [providerId]);
 
+  // ✅ Garde-fou : si providerId est absent, on sort du loading
+  // au lieu de laisser le spinner tourner indéfiniment
   useEffect(() => {
-    if (providerId) loadProfile();
+    if (!providerId) {
+      console.warn(
+        "[PublicProviderProfilePage] providerId manquant — vérifier le nom du segment de route"
+      );
+      setLoading(false);
+      setNotFound(true);
+      return;
+    }
+    loadProfile();
   }, [providerId, loadProfile]);
 
   // État initial du favori, chargé séparément (n'empêche pas le reste
