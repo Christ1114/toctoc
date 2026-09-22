@@ -103,6 +103,7 @@
     }
   },
   "ProfilePage": {
+     "socialNetworks": "Social networks",
     "social": {
       "website": "Website",
       "instagram": "Instagram",

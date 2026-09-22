@@ -102,6 +102,7 @@
     }
   },
   "ProfilePage": {
+     "socialNetworks": "شبكات التواصل الاجتماعي",
     "social": {
       "website": " موقع الإلكتروني",
       "instagram": "Instagram",

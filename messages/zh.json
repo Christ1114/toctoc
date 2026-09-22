@@ -102,6 +102,7 @@
     }
   },
   "ProfilePage": {
+       "socialNetworks": "社交网络",
     "social": {
       "website": "网站",
       "instagram": "Instagram",
