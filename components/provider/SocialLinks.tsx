@@ -9,6 +9,8 @@ import {
   YoutubeLogoIcon,
   XLogoIcon,
 } from "@phosphor-icons/react";
+import { useTranslations } from "next-intl";
+import { orbitron } from "@/fonts/font";
 import { isSafeUrl } from "@/app/lib/security/url-validation";
 
 type SocialProvider = {
@@ -29,19 +31,21 @@ type LinkDef = {
 };
 
 export default function SocialLinks({ provider }: { provider: SocialProvider }) {
+  const t = useTranslations("ProfilePage");
+
   const candidates: {
     key: string;
     href: string | null | undefined;
     icon: typeof GlobeIcon;
     label: string;
   }[] = [
-    { key: "website",   href: provider.website,   icon: GlobeIcon,         label: "Site web" },
-    { key: "instagram", href: provider.instagram, icon: InstagramLogoIcon, label: "Instagram" },
-    { key: "facebook",  href: provider.facebook,  icon: FacebookLogoIcon,  label: "Facebook" },
-    { key: "tiktok",    href: provider.tiktok,    icon: TiktokLogoIcon,    label: "TikTok" },
-    { key: "linkedin",  href: provider.linkedin,  icon: LinkedinLogoIcon,  label: "LinkedIn" },
-    { key: "youtube",   href: provider.youtube,   icon: YoutubeLogoIcon,   label: "YouTube" },
-    { key: "twitter",   href: provider.twitter,   icon: XLogoIcon,         label: "X" },
+    { key: "website",   href: provider.website,   icon: GlobeIcon,         label: t("social.website") },
+    { key: "instagram", href: provider.instagram, icon: InstagramLogoIcon, label: t("social.instagram") },
+    { key: "facebook",  href: provider.facebook,  icon: FacebookLogoIcon,  label: t("social.facebook") },
+    { key: "tiktok",    href: provider.tiktok,    icon: TiktokLogoIcon,    label: t("social.tiktok") },
+    { key: "linkedin",  href: provider.linkedin,  icon: LinkedinLogoIcon,  label: t("social.linkedin") },
+    { key: "youtube",   href: provider.youtube,   icon: YoutubeLogoIcon,   label: t("social.youtube") },
+    { key: "twitter",   href: provider.twitter,   icon: XLogoIcon,         label: t("social.twitter") },
   ];
 
   const links: LinkDef[] = candidates
@@ -51,7 +55,9 @@ export default function SocialLinks({ provider }: { provider: SocialProvider }) 
   if (links.length === 0) return null;
 
   return (
-    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-3">
+    <div
+      className={`flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-3 ${orbitron.className}`}
+    >
       {links.map(({ key, href, icon: Icon, label }) => (
         <a
           key={key}
@@ -60,7 +66,7 @@ export default function SocialLinks({ provider }: { provider: SocialProvider }) 
           rel="noopener noreferrer nofollow"
           aria-label={label}
           title={label}
-          className="h-8 w-8 rounded-full bg-gray-100 dark:bg-white/10 hover:bg-[#432dd7]/10 hover:text-[#432dd7] dark:hover:bg-[#432dd7]/20 flex items-center justify-center text-gray-700 dark:text-white/70 transition-colors"
+          className={`h-8 w-8 rounded-full bg-gray-100 dark:bg-white/10 hover:bg-[#432dd7]/10 hover:text-[#432dd7] dark:hover:bg-[#432dd7]/20 flex items-center justify-center text-gray-700 dark:text-white/70 transition-colors ${orbitron.className}`}
         >
           <Icon size={15} />
         </a>
