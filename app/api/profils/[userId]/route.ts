@@ -1,4 +1,4 @@
-// Emplacement: app/api/profils/[userId]/route.ts
+
 
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
