@@ -101,76 +101,83 @@
       "invalidUrl": "无效链接（YouTube、Vimeo 或 .mp4）"
     }
   },
-  "ProfilePage": {
-       "socialNetworks": "社交网络",
-    "social": {
-      "website": "网站",
-      "instagram": "Instagram",
-      "facebook": "Facebook",
-      "tiktok": "TikTok",
-      "linkedin": "LinkedIn",
-      "youtube": "YouTube",
-      "twitter": "X (Twitter)"
-    },
-    "cropTitle": "裁剪图片",
-    "zoom": "缩放",
-    "cropConfirm": "确认",
-    "back": "返回",
-    "unnamed": "未命名",
-    "notFound": "未找到用户",
-    "changePhoto": "更换头像",
-    "namePlaceholder": "您的姓名",
-    "editProfile": "编辑资料",
-    "settings": "设置",
-    "share": "分享",
-    "cancel": "取消",
-    "save": "保存",
-    "saving": "保存中…",
-    "saved": "保存成功",
-    "bioPlaceholder": "介绍一下您自己…",
-    "noBio": "暂无个人简介",
-    "linkCopied": "链接已复制到剪贴板",
-    "agencyInfo": "机构信息",
-    "companyName": "公司名称",
-    "companyNamePlaceholder": "例如：Acme 家政",
-    "rccmNumber": "RCCM 编号",
-    "rccmPlaceholder": "例如：CI-ABJ-2024-B-12345",
-    "providerInfo": "服务者信息",
-    "providerType": "服务类型",
-    "hourlyRate": "时薪",
-    "select": "请选择",
-    "contact": "联系方式",
-    "verified": "已验证",
-    "accountType": {
-      "CLIENT": "客户",
-      "PROVIDER": "服务者",
-      "ADMIN": "管理员"
-    },
-    "providerTypes": {
-      "BABYSITTER": "保姆",
-      "GARDE_PERISCOLAIRE": "课后托管",
-      "MENAGE": "家政保洁",
-      "AIDE_PERSONNES_AGEES": "老人陪护",
-      "RESIDENTIEL": "住家服务",
-      "COURT_TERME": "短期服务"
-    },
-    "tabs": {
-      "bookings": "预约",
-      "reviews": "评价",
-      "favorites": "收藏"
-    },
-    "empty": {
-      "bookings": "暂无预约",
-      "reviews": "暂无评价",
-      "favorites": "暂无收藏"
-    },
-    "errors": {
-      "saveFailed": "保存失败",
-      "invalidImage": "请选择有效的图片文件",
-      "imageTooLarge": "图片大小不能超过 5 MB",
-      "uploadFailed": "图片上传失败"
-    }
+"ProfilePage": {
+  "socialNetworks": "社交媒体",
+  "social": {
+    "website": "网站",
+    "instagram": "Instagram",
+    "facebook": "Facebook",
+    "tiktok": "抖音",
+    "linkedin": "领英",
+    "youtube": "YouTube",
+    "twitter": "X（推特）"
   },
+  "cropTitle": "裁剪图片",
+  "zoom": "缩放",
+  "crop": "裁剪",
+  "cropConfirm": "确认",
+  "back": "返回",
+  "unnamed": "未命名",
+  "notFound": "用户不存在",
+  "changePhoto": "更换头像",
+  "namePlaceholder": "您的姓名",
+  "editProfile": "编辑资料",
+  "settings": "设置",
+  "share": "分享",
+  "cancel": "取消",
+  "save": "保存",
+  "saving": "保存中...",
+  "saved": "资料已更新",
+  "bioPlaceholder": "介绍一下您自己...",
+  "noBio": "暂无简介",
+  "linkCopied": "链接已复制",
+  "agencyInfo": "机构信息",
+  "companyName": "公司名称",
+  "companyNamePlaceholder": "例如：我的优秀机构",
+  "rccmNumber": "RCCM 编号",
+  "rccmPlaceholder": "例如：CI-ABJ-2024-B-12345",
+  "providerInfo": "服务者信息",
+  "providerType": "服务类型",
+  "hourlyRate": "时薪",
+  "select": "选择",
+  "contact": "联系",
+  "verified": "已认证",
+  "addFavorite": "加入收藏",
+  "removeFavorite": "取消收藏",
+  "accountType": {
+    "CLIENT": "客户",
+    "PROVIDER": "服务者",
+    "ADMIN": "管理员"
+  },
+  "providerTypes": {
+    "BABYSITTER": "保姆",
+    "GARDE_PERISCOLAIRE": "课后托管",
+    "MENAGE": "家政清洁",
+    "AIDE_PERSONNES_AGEES": "老人陪护",
+    "RESIDENTIEL": "住家服务",
+    "COURT_TERME": "短期服务"
+  },
+  "tabs": {
+    "bookings": "预约",
+    "reviews": "评价",
+    "favorites": "收藏",
+    "videos": "视频"
+  },
+  "empty": {
+    "bookings": "暂无预约",
+    "reviews": "暂无评价",
+    "favorites": "暂无收藏"
+  },
+  "videos": {
+    "retry": "重试"
+  },
+  "errors": {
+    "saveFailed": "保存失败，请重试。",
+    "invalidImage": "图片文件无效。",
+    "imageTooLarge": "图片过大（最大 5 MB）。",
+    "uploadFailed": "图片上传失败，请重试。"
+  }
+},
   "TopToolbar": {
     "quickSearchPlaceholder": "搜索城市...",
   "searching": "搜索中...",

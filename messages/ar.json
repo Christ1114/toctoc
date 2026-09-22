@@ -101,76 +101,83 @@
       "invalidUrl": "رابط غير صالح (يوتيوب أو فيميو أو .mp4)"
     }
   },
-  "ProfilePage": {
-     "socialNetworks": "شبكات التواصل الاجتماعي",
-    "social": {
-      "website": " موقع الإلكتروني",
-      "instagram": "Instagram",
-      "facebook": "Facebook",
-      "tiktok": "TikTok",
-      "linkedin": "LinkedIn",
-      "youtube": "YouTube",
-      "twitter": "X (Twitter)"
-    },
-    "cropTitle": "قص الصورة",
-    "zoom": "تكبير",
-    "cropConfirm": "تأكيد",
-    "back": "رجوع",
-    "unnamed": "بدون اسم",
-    "notFound": "لم يتم العثور على المستخدم",
-    "changePhoto": "تغيير الصورة",
-    "namePlaceholder": "اسمك",
-    "editProfile": "تعديل الملف الشخصي",
-    "settings": "الإعدادات",
-    "share": "مشاركة",
-    "cancel": "إلغاء",
-    "save": "حفظ",
-    "saving": "جارٍ الحفظ…",
-    "saved": "تم الحفظ بنجاح",
-    "bioPlaceholder": "عرّفنا بنفسك…",
-    "noBio": "لا توجد نبذة بعد",
-    "linkCopied": "تم نسخ الرابط",
-    "agencyInfo": "معلومات الوكالة",
-    "companyName": "اسم الشركة",
-    "companyNamePlaceholder": "مثال: Acme للرعاية",
-    "rccmNumber": "رقم RCCM",
-    "rccmPlaceholder": "مثال: CI-ABJ-2024-B-12345",
-    "providerInfo": "معلومات مقدّم الخدمة",
-    "providerType": "نوع الخدمة",
-    "hourlyRate": "الأجر بالساعة",
-    "select": "اختر",
-    "contact": "معلومات الاتصال",
-    "verified": "موثّق",
-    "accountType": {
-      "CLIENT": "عميل",
-      "PROVIDER": "مقدّم خدمة",
-      "ADMIN": "مسؤول"
-    },
-    "providerTypes": {
-      "BABYSITTER": "جليسة أطفال",
-      "GARDE_PERISCOLAIRE": "رعاية بعد المدرسة",
-      "MENAGE": "تدبير منزلي",
-      "AIDE_PERSONNES_AGEES": "رعاية المسنين",
-      "RESIDENTIEL": "خدمة سكنية",
-      "COURT_TERME": "خدمة قصيرة المدى"
-    },
-    "tabs": {
-      "bookings": "الحجوزات",
-      "reviews": "التقييمات",
-      "favorites": "المفضلة"
-    },
-    "empty": {
-      "bookings": "لا توجد حجوزات بعد",
-      "reviews": "لا توجد تقييمات بعد",
-      "favorites": "لا توجد مفضلات بعد"
-    },
-    "errors": {
-      "saveFailed": "فشل حفظ التغييرات",
-      "invalidImage": "يرجى اختيار ملف صورة صالح",
-      "imageTooLarge": "يجب أن تكون الصورة أصغر من 5 ميغابايت",
-      "uploadFailed": "فشل رفع الصورة"
-    }
+"ProfilePage": {
+  "socialNetworks": "شبكات التواصل الاجتماعي",
+  "social": {
+    "website": "الموقع الإلكتروني",
+    "instagram": "إنستغرام",
+    "facebook": "فيسبوك",
+    "tiktok": "تيك توك",
+    "linkedin": "لينكدإن",
+    "youtube": "يوتيوب",
+    "twitter": "إكس (تويتر)"
   },
+  "cropTitle": "قص الصورة",
+  "zoom": "تكبير",
+  "crop": "قص",
+  "cropConfirm": "تأكيد",
+  "back": "رجوع",
+  "unnamed": "بدون اسم",
+  "notFound": "الملف الشخصي غير موجود",
+  "changePhoto": "تغيير الصورة",
+  "namePlaceholder": "اسمك",
+  "editProfile": "تعديل الملف الشخصي",
+  "settings": "الإعدادات",
+  "share": "مشاركة",
+  "cancel": "إلغاء",
+  "save": "حفظ",
+  "saving": "جارٍ الحفظ...",
+  "saved": "تم تحديث الملف الشخصي",
+  "bioPlaceholder": "حدثنا عن نفسك...",
+  "noBio": "لا توجد سيرة ذاتية بعد",
+  "linkCopied": "تم نسخ الرابط",
+  "agencyInfo": "معلومات الوكالة",
+  "companyName": "اسم الشركة",
+  "companyNamePlaceholder": "مثال: وكالتي الرائعة",
+  "rccmNumber": "رقم RCCM",
+  "rccmPlaceholder": "مثال: CI-ABJ-2024-B-12345",
+  "providerInfo": "معلومات مقدم الخدمة",
+  "providerType": "نوع الخدمة",
+  "hourlyRate": "الأجر بالساعة",
+  "select": "اختر",
+  "contact": "اتصال",
+  "verified": "موثّق",
+  "addFavorite": "إضافة إلى المفضلة",
+  "removeFavorite": "إزالة من المفضلة",
+  "accountType": {
+    "CLIENT": "عميل",
+    "PROVIDER": "مقدم خدمة",
+    "ADMIN": "مسؤول"
+  },
+  "providerTypes": {
+    "BABYSITTER": "جليس أطفال",
+    "GARDE_PERISCOLAIRE": "رعاية بعد المدرسة",
+    "MENAGE": "تنظيف",
+    "AIDE_PERSONNES_AGEES": "رعاية المسنين",
+    "RESIDENTIEL": "سكني (إقامة داخل المنزل)",
+    "COURT_TERME": "قصير المدى"
+  },
+  "tabs": {
+    "bookings": "الحجوزات",
+    "reviews": "التقييمات",
+    "favorites": "المفضلة",
+    "videos": "الفيديوهات"
+  },
+  "empty": {
+    "bookings": "لا توجد حجوزات حتى الآن",
+    "reviews": "لا توجد تقييمات حتى الآن",
+    "favorites": "لا توجد مفضلات حتى الآن"
+  },
+  "videos": {
+    "retry": "إعادة المحاولة"
+  },
+  "errors": {
+    "saveFailed": "فشل الحفظ. حاول مرة أخرى.",
+    "invalidImage": "ملف صورة غير صالح.",
+    "imageTooLarge": "الصورة كبيرة جدًا (الحد الأقصى 5 ميغابايت).",
+    "uploadFailed": "فشل رفع الصورة. حاول مرة أخرى."
+  }
+},
   "TopToolbar": {
      "quickSearchPlaceholder": "ابحث عن مدينة...",
   "searching": "جارٍ البحث...",
