@@ -33,8 +33,8 @@ const ONLINE_THRESHOLD_MS = 5 * 60 * 1000;
 // Rayon de recherche des users proches (km)
 const NEARBY_RADIUS_KM = 20;
 
-const PROVIDER_PATH = "/provider";
-const CLIENT_PATH = "/client";
+const PROVIDER_PATH = "app/provider";
+const CLIENT_PATH = "app/client";
 
 function getPublicProfilePath(user: NearbyUser): string | null {
   switch (user.accountType) {
