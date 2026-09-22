@@ -102,6 +102,15 @@
     }
   },
   "ProfilePage": {
+    "social": {
+      "website": "网站",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "tiktok": "TikTok",
+      "linkedin": "LinkedIn",
+      "youtube": "YouTube",
+      "twitter": "X (Twitter)"
+    },
     "cropTitle": "裁剪图片",
     "zoom": "缩放",
     "cropConfirm": "确认",

@@ -102,6 +102,15 @@
     }
   },
   "ProfilePage": {
+    "social": {
+      "website": " موقع الإلكتروني",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "tiktok": "TikTok",
+      "linkedin": "LinkedIn",
+      "youtube": "YouTube",
+      "twitter": "X (Twitter)"
+    },
     "cropTitle": "قص الصورة",
     "zoom": "تكبير",
     "cropConfirm": "تأكيد",

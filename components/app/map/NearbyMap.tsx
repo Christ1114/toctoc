@@ -208,7 +208,6 @@ export default function NearbyMap() {
         setMapLoaded(true);
 
         try {
-          // ─── Marker de l'utilisateur connecté ───
           const me = user as any;
 
           const userMarkerEl = createAvatarMarkerElement({

@@ -331,7 +331,7 @@ export default function ProfilePage() {
     },
   ];
 
-  // ─── Réseaux sociaux : définition unique, réutilisée pour édition + affichage ───
+ 
   const SOCIAL_FIELDS: {
     key: SocialKey;
     icon: React.ReactNode;
