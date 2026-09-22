@@ -27,14 +27,11 @@ const CITY_SEARCH_ZOOM = 12;
 const DEFAULT_PITCH = 60;
 const DEFAULT_BEARING = -17.6;
 
-// Un user est considéré "en ligne" s'il a bougé/été actif dans les 5 dernières minutes
 const ONLINE_THRESHOLD_MS = 5 * 60 * 1000;
-
-// Rayon de recherche des users proches (km)
 const NEARBY_RADIUS_KM = 20;
 
-const PROVIDER_PATH = "app/provider";
-const CLIENT_PATH = "app/client";
+const PROVIDER_PATH = "/app/provider";
+const CLIENT_PATH = "/app/client";
 
 function getPublicProfilePath(user: NearbyUser): string | null {
   switch (user.accountType) {
@@ -78,6 +75,7 @@ export default function NearbyMap() {
   const userMarkerRef = useRef<maplibregl.Marker | null>(null);
   const initialCenterRef = useRef<[number, number] | null>(null);
   const nearbyMarkersRef = useRef<maplibregl.Marker[]>([]);
+  const hasInitRef = useRef(false); // ✅ guard anti-boucle
 
   const [initialCenter, setInitialCenter] = useState<[number, number] | null>(null);
   const [loadingPosition, setLoadingPosition] = useState(true);
@@ -90,7 +88,6 @@ export default function NearbyMap() {
 
   const { latitude, longitude, error: geoError, requestLocation } = useGeolocation();
 
-  // ─── Labels i18n pour les markers (stables) ───
   const markerLabels = {
     online: t("online"),
     offline: t("offline"),
@@ -101,7 +98,11 @@ export default function NearbyMap() {
   };
 
   // ─── Position initiale ───
+  // ✅ Guard : s'exécute UNE SEULE fois, peu importe les re-renders
   useEffect(() => {
+    if (hasInitRef.current) return;
+    hasInitRef.current = true;
+
     let isMounted = true;
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
@@ -144,7 +145,8 @@ export default function NearbyMap() {
       isMounted = false;
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [requestLocation, user]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // ✅ deps vide : plus de boucle
 
   useEffect(() => {
     if (latitude && longitude) {
@@ -179,9 +181,7 @@ export default function NearbyMap() {
         maxPitch: 85,
         minZoom: 3,
         maxZoom: 20,
-        canvasContextAttributes: {
-          antialias: false,
-        },
+        canvasContextAttributes: { antialias: false },
         fadeDuration: 100,
         refreshExpiredTiles: false,
       });
@@ -218,7 +218,14 @@ export default function NearbyMap() {
             bio: me?.bio ?? null,
             username: me?.name ?? null,
             lastSeenAt: new Date(),
-            onClick: () => router.push("/app/profile"),
+            // ✅ Redirige selon le type
+            onClick: () => {
+              if (me?.accountType === "PROVIDER") {
+                router.push("/app/provider/me");
+              } else {
+                router.push("/app/profile");
+              }
+            },
             labels: markerLabels,
           });
 
@@ -239,7 +246,7 @@ export default function NearbyMap() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialCenter, user, router]);
 
-  // ─── Cleanup au démontage ───
+  // ─── Cleanup ───
   useEffect(() => {
     return () => {
       if (mapRef.current) {
@@ -289,11 +296,10 @@ export default function NearbyMap() {
     fetchNearby(lng, lat);
   }, [initialCenter, fetchNearby]);
 
-  // ─── Affichage des markers des autres users ───
+  // ─── Markers des autres users ───
   useEffect(() => {
     if (!mapRef.current || !mapLoaded) return;
 
-    // Cleanup des anciens markers
     nearbyMarkersRef.current.forEach((m) => m.remove());
     nearbyMarkersRef.current = [];
 
@@ -305,7 +311,6 @@ export default function NearbyMap() {
         return;
       }
 
-      // Détermine si le user est en ligne
       const lastUpdate = nearbyUser.lastLocationUpdatedAt
         ? new Date(nearbyUser.lastLocationUpdatedAt)
         : null;
@@ -344,7 +349,7 @@ export default function NearbyMap() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nearbyUsers, mapLoaded, router]);
 
-  // ─── Changement de thème clair/sombre ───
+  // ─── Thème clair/sombre ───
   useEffect(() => {
     if (!mapRef.current || !mapLoaded) return;
     const styleUrl = resolvedTheme === "dark" ? STYLES.dark : STYLES.light;
@@ -407,38 +412,32 @@ export default function NearbyMap() {
   return (
     <div
       className="relative w-full h-dvh md:h-full md:min-h-125 overflow-hidden"
-      style={{
-        minHeight: "500px",
-      }}
+      style={{ minHeight: "500px" }}
     >
-      <style jsx global>{`\`
+      <style jsx global>{`
         .maplibregl-ctrl-bottom-left {
           bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
           left: max(8px, env(safe-area-inset-left, 0px)) !important;
           transition: bottom 0.2s ease, left 0.2s ease;
         }
-
         @media (min-width: 640px) {
           .maplibregl-ctrl-bottom-left {
             bottom: calc(80px + env(safe-area-inset-bottom, 0px)) !important;
             left: 12px !important;
           }
         }
-
         @media (min-width: 768px) {
           .maplibregl-ctrl-bottom-left {
             bottom: 16px !important;
             left: 16px !important;
           }
         }
-
         @media (min-width: 1024px) {
           .maplibregl-ctrl-bottom-left {
             bottom: 20px !important;
             left: 20px !important;
           }
         }
-
         .maplibregl-ctrl-bottom-left .maplibregl-ctrl-group {
           border-radius: 12px !important;
           overflow: hidden;
@@ -448,7 +447,6 @@ export default function NearbyMap() {
           -webkit-backdrop-filter: blur(10px);
           border: 1px solid rgba(255, 255, 255, 0.08);
         }
-
         .maplibregl-ctrl-bottom-left .maplibregl-ctrl-group button {
           width: 40px !important;
           height: 40px !important;
@@ -457,59 +455,44 @@ export default function NearbyMap() {
           touch-action: manipulation;
           -webkit-tap-highlight-color: transparent;
         }
-
-        @media (min-width: 640px) {
-          .maplibregl-ctrl-bottom-left .maplibregl-ctrl-group button {
-            width: 40px !important;
-            height: 40px !important;
-          }
-        }
-
         @media (min-width: 768px) {
           .maplibregl-ctrl-bottom-left .maplibregl-ctrl-group button {
             width: 36px !important;
             height: 36px !important;
           }
         }
-
         @media (min-width: 1024px) {
           .maplibregl-ctrl-bottom-left .maplibregl-ctrl-group button {
             width: 40px !important;
             height: 40px !important;
           }
         }
-
         .maplibregl-ctrl-bottom-left .maplibregl-ctrl-icon {
           filter: invert(1) !important;
         }
-
         .maplibregl-ctrl-bottom-left .maplibregl-ctrl-group button + button {
           border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
         }
-
         .maplibregl-canvas {
           outline: none !important;
           touch-action: none;
         }
-
         .maplibregl-ctrl-attrib {
           font-size: 10px !important;
         }
       `}</style>
+
       {loadingPosition && (
         <div className="absolute inset-0 flex items-center justify-center z-20 bg-gray-100 dark:bg-gray-900 transition-colors">
           <div className="flex flex-col items-center gap-3 px-4">
             <div className="animate-spin rounded-full h-9 w-9 border-2 border-gray-300 dark:border-gray-700 border-b-gray-900 dark:border-b-white" />
-            <p
-              className={`text-sm sm:text-base text-gray-600 dark:text-gray-300 text-center ${orbitron.className}`}
-            >
+            <p className={`text-sm sm:text-base text-gray-600 dark:text-gray-300 text-center ${orbitron.className}`}>
               Chargement de la carte...
             </p>
           </div>
         </div>
       )}
 
-      {/* ───── Erreur ───── */}
       {mapError && (
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 bg-red-100 dark:bg-red-900/80 text-red-700 dark:text-red-100 p-4 sm:p-5 rounded-xl shadow-lg max-w-[92vw] sm:max-w-sm border border-red-200 dark:border-red-800">
           <p className="text-sm sm:text-base">{mapError}</p>
@@ -525,7 +508,6 @@ export default function NearbyMap() {
         </div>
       )}
 
-      {/* ───── Carte ───── */}
       <div
         ref={mapContainer}
         className="absolute inset-0 w-full h-full bg-gray-200 dark:bg-gray-800"
@@ -542,7 +524,6 @@ export default function NearbyMap() {
         onClose={() => setAiSearchOpen(false)}
       />
 
-      {/* ───── Bouton 3D ───── */}
       <button
         onClick={resetView}
         aria-label="Réinitialiser la vue 3D"
