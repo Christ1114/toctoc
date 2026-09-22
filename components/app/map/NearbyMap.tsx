@@ -34,14 +34,14 @@ const ONLINE_THRESHOLD_MS = 5 * 60 * 1000;
 const NEARBY_RADIUS_KM = 20;
 
 const PROVIDER_PATH = "/provider";
-const PROFILE_PATH = "/profils";
+const CLIENT_PATH = "/client";
 
 function getPublicProfilePath(user: NearbyUser): string | null {
   switch (user.accountType) {
     case "PROVIDER":
       return `${PROVIDER_PATH}/${user.id}`;
     case "CLIENT":
-      return `${PROFILE_PATH}/${user.id}`;
+      return `${CLIENT_PATH}/${user.id}`;
     default:
       return null;
   }
