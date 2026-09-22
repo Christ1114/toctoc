@@ -409,12 +409,12 @@ export default function ProfilePage() {
           {t("back")}
         </button>
 
-        {/* ═══════════════ EN-TÊTE ═══════════════ */}
+       
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8">
           <div className="relative shrink-0 mx-auto sm:mx-0">
             <div className="h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 rounded-full overflow-hidden bg-[#432dd7]/10 flex items-center justify-center border border-black/5 dark:border-white/10">
               {user.image ? (
-                // eslint-disable-next-line @next/next/no-img-element
+               
                 <img
                   src={user.image}
                   alt={user.name || t("unnamed")}
@@ -461,7 +461,7 @@ export default function ProfilePage() {
             />
           </div>
 
-          {/* Identité + stats + actions */}
+         
           <div className="flex-1 min-w-0 text-center sm:text-start">
             <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
               {editing ? (
@@ -593,10 +593,8 @@ export default function ProfilePage() {
                 </p>
               )}
             </div>
-
-            {/* Réseaux sociaux affichés (hors édition) */}
             {!editing && socialLinks.length > 0 && (
-              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-3">
+              <div className={`flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-3 ${orbitron.className}`}>
                 {socialLinks.map(({ key, href, icon, displayLabel }) => (
                   <a
                     key={key}

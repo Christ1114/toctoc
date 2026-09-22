@@ -15,7 +15,39 @@ export const runtime = "nodejs";
 
 const RATE_MAX = 30; 
 
+// À AJOUTER dans app/api/providers/[id]/favorite/route.ts, en plus de POST et DELETE existants
+// (garde "guard" et les imports existants tels quels)
 
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const guardResult = await guard(req);
+    if ("error" in guardResult) return guardResult.error;
+    const { session, limit } = guardResult;
+
+    const { id: providerId } = await params;
+
+    const existing = await prisma.favorite.findUnique({
+      where: {
+        clientId_providerId: {
+          clientId: session.user.id,
+          providerId,
+        },
+      },
+      select: { id: true },
+    });
+
+    return NextResponse.json(
+      { favorite: !!existing },
+      { headers: rateLimitHeaders(RATE_MAX, limit) }
+    );
+  } catch (error) {
+    console.error("[api/providers/favorite] GET error:", error);
+    return NextResponse.json({ error: "Erreur interne" }, { status: 500 });
+  }
+}
 async function guard(req: NextRequest) {
 
   const ip = getClientIp(req.headers);

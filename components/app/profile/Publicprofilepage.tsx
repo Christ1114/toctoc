@@ -1,18 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import {
   UserIcon,
   ShareNetworkIcon,
   BriefcaseIcon,
-  BuildingsIcon,
   ArrowLeftIcon,
-  CalendarCheckIcon,
   StarIcon,
   HeartIcon,
-  LinkIcon,
+  VideoCameraIcon,
   GlobeIcon,
   InstagramLogoIcon,
   FacebookLogoIcon,
@@ -23,9 +21,8 @@ import {
 } from "@phosphor-icons/react";
 import { orbitron } from "@/fonts/font";
 import { isSafeUrl } from "@/app/lib/security/url-validation";
+import VideoGrid from "../VideoGrid";
 
-type AccountType = "CLIENT" | "PROVIDER" | "ADMIN";
-type ClientType = "INDIVIDUAL" | "AGENCY";
 type ProviderType =
   | "BABYSITTER"
   | "GARDE_PERISCOLAIRE"
@@ -43,15 +40,11 @@ type SocialKey =
   | "youtube"
   | "twitter";
 
-type PublicUser = {
+type PublicProvider = {
   id: string;
   name: string | null;
   image: string | null;
   bio: string | null;
-  accountType: AccountType | null;
-  clientType: ClientType | null;
-  companyName: string | null;
-  rccmNumber: string | null;
   providerType: ProviderType | null;
   hourlyRate: number | null;
   currency: string | null;
@@ -70,44 +63,94 @@ type PublicStats = {
   bookingsCount: number;
 };
 
-export default function PublicProfilePage() {
+type TabKey = "videos" | "reviews" | "favorites";
+
+export default function PublicProviderProfilePage() {
   const t = useTranslations("ProfilePage");
   const locale = useLocale();
   const router = useRouter();
   const params = useParams();
-  const userId = params.userId as string;
+  const providerId = params.userId as string;
   const isRTL = locale === "ar";
 
-  const [user, setUser] = useState<PublicUser | null>(null);
+  const [provider, setProvider] = useState<PublicProvider | null>(null);
   const [stats, setStats] = useState<PublicStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [notFound, setNotFound] = useState(false);
-  const [activeTab, setActiveTab] = useState<"reviews" | "favorites">("reviews");
+  const [activeTab, setActiveTab] = useState<TabKey>("videos");
+
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [favoriteLoading, setFavoriteLoading] = useState(false);
+  const [favoritePending, setFavoritePending] = useState(false);
+
+  const loadProfile = useCallback(async () => {
+    setLoading(true);
+    setNotFound(false);
+    setLoadError(false);
+    try {
+      const res = await fetch(`/api/profils/${providerId}`);
+      if (res.status === 404) {
+        setNotFound(true);
+        return;
+      }
+      if (!res.ok) throw new Error("Erreur chargement profil");
+
+      const data = await res.json();
+
+      // ✅ Sécurité : on n'affiche QUE les prestataires
+      if (data?.user?.accountType !== "PROVIDER") {
+        setNotFound(true);
+        return;
+      }
+
+      setProvider(data.user);
+      setStats(data.stats);
+    } catch (err) {
+      console.error("Erreur chargement profil prestataire:", err);
+      setLoadError(true);
+    } finally {
+      setLoading(false);
+    }
+  }, [providerId]);
 
   useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-      setNotFound(false);
-      try {
-        const res = await fetch(`/api/profils/${userId}`);
-        if (res.status === 404) {
-          setNotFound(true);
-          return;
-        }
-        if (!res.ok) throw new Error("Erreur chargement profil");
-        const data = await res.json();
-        setUser(data.user);
-        setStats(data.stats);
-      } catch (err) {
-        console.error("Erreur chargement profil public:", err);
-        setNotFound(true);
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (providerId) loadProfile();
+  }, [providerId, loadProfile]);
 
-    if (userId) load();
-  }, [userId]);
+  // État initial du favori, chargé séparément (n'empêche pas le reste
+  // du profil de s'afficher si ça échoue)
+  useEffect(() => {
+    if (!providerId) return;
+    setFavoriteLoading(true);
+    fetch(`/api/providers/${providerId}/favorite`)
+      .then((res) => (res.ok ? res.json() : { favorite: false }))
+      .then((data) => setIsFavorite(!!data.favorite))
+      .catch(() => setIsFavorite(false))
+      .finally(() => setFavoriteLoading(false));
+  }, [providerId]);
+
+  const handleToggleFavorite = async () => {
+    if (favoritePending) return; // évite le double-clic pendant une requête en cours
+
+    const next = !isFavorite;
+    setIsFavorite(next); // mise à jour optimiste
+    setFavoritePending(true);
+
+    try {
+      const res = await fetch(`/api/providers/${providerId}/favorite`, {
+        method: next ? "POST" : "DELETE",
+      });
+      if (!res.ok) {
+        setIsFavorite(!next); // annule si échec
+      }
+    } catch (err) {
+      console.error("Erreur toggle favori:", err);
+      setIsFavorite(!next);
+    } finally {
+      setFavoritePending(false);
+    }
+  };
 
   const handleShare = async () => {
     const url = window.location.href;
@@ -118,7 +161,7 @@ export default function PublicProfilePage() {
         await navigator.clipboard.writeText(url);
       }
     } catch {
-      /* silent */
+      /* annulation du partage par l'utilisateur, rien à faire */
     }
   };
 
@@ -130,7 +173,23 @@ export default function PublicProfilePage() {
     );
   }
 
-  if (notFound || !user) {
+  if (loadError) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-white dark:bg-zinc-900 px-4 gap-3">
+        <p className={`text-sm text-gray-500 dark:text-white/50 text-center ${orbitron.className}`}>
+          {t("errors.saveFailed")}
+        </p>
+        <button
+          onClick={loadProfile}
+          className={`text-sm text-[#432dd7] hover:underline cursor-pointer ${orbitron.className}`}
+        >
+          {t("videos.retry")}
+        </button>
+      </div>
+    );
+  }
+
+  if (notFound || !provider) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white dark:bg-zinc-900 px-4">
         <p className={`text-sm text-gray-500 dark:text-white/50 text-center ${orbitron.className}`}>
@@ -139,9 +198,6 @@ export default function PublicProfilePage() {
       </div>
     );
   }
-
-  const isAgencyClient = user.accountType === "CLIENT" && user.clientType === "AGENCY";
-  const isProvider = user.accountType === "PROVIDER";
 
   const SOCIAL_FIELDS: {
     key: SocialKey;
@@ -159,8 +215,14 @@ export default function PublicProfilePage() {
 
   const socialLinks = SOCIAL_FIELDS.map((f) => ({
     ...f,
-    href: user[f.key] ?? null,
+    href: provider[f.key] ?? null,
   })).filter((l) => isSafeUrl(l.href));
+
+  const TABS: { key: TabKey; icon: typeof VideoCameraIcon; label: string }[] = [
+    { key: "videos", icon: VideoCameraIcon, label: t("tabs.videos") },
+    { key: "reviews", icon: StarIcon, label: t("tabs.reviews") },
+    { key: "favorites", icon: HeartIcon, label: t("tabs.favorites") },
+  ];
 
   return (
     <div dir={isRTL ? "rtl" : "ltr"} className="min-h-screen bg-white dark:bg-zinc-900">
@@ -173,28 +235,30 @@ export default function PublicProfilePage() {
           {t("back")}
         </button>
 
-        {/* ═══════════════ EN-TÊTE (identique, sans édition) ═══════════════ */}
+        {/* ═══════════════ EN-TÊTE ═══════════════ */}
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8">
           <div className="relative shrink-0 mx-auto sm:mx-0">
             <div className="h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 rounded-full overflow-hidden bg-[#432dd7]/10 flex items-center justify-center border border-black/5 dark:border-white/10">
-              {user.image ? (
+              {provider.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src={user.image}
-                  alt={user.name || t("unnamed")}
+                  src={provider.image}
+                  alt={provider.name || t("unnamed")}
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = "none";
+                  }}
                 />
               ) : (
-                <span className="text-2xl sm:text-3xl font-semibold text-[#432dd7]">
-                  {user.name ? (
-                    user.name.charAt(0).toUpperCase()
+                <span className={`text-2xl sm:text-3xl font-semibold text-[#432dd7] ${orbitron.className}`}>
+                  {provider.name ? (
+                    provider.name.charAt(0).toUpperCase()
                   ) : (
                     <UserIcon size={32} />
                   )}
                 </span>
               )}
             </div>
-            {/* Pas de bouton caméra ici : on ne peut pas éditer le profil d'un autre */}
           </div>
 
           <div className="flex-1 min-w-0 text-center sm:text-start">
@@ -202,28 +266,24 @@ export default function PublicProfilePage() {
               <h1
                 className={`text-base sm:text-lg font-semibold text-gray-900 dark:text-white/90 truncate max-w-full ${orbitron.className}`}
               >
-                {user.name || t("unnamed")}
+                {provider.name || t("unnamed")}
               </h1>
-              {user.accountType && (
-                <span
-                  className={`inline-flex items-center px-2 py-0.5 rounded-md bg-[#432dd7]/10 text-[#432dd7] text-[10px] sm:text-xs font-medium ${orbitron.className}`}
-                >
-                  {t(`accountType.${user.accountType}`)}
-                </span>
-              )}
+              <span
+                className={`inline-flex items-center px-2 py-0.5 rounded-md bg-[#432dd7]/10 text-[#432dd7] text-[10px] sm:text-xs font-medium ${orbitron.className}`}
+              >
+                {t("accountType.PROVIDER")}
+              </span>
             </div>
 
             <div className="flex items-center justify-center sm:justify-start gap-3 sm:gap-5 mt-2.5 sm:mt-3 flex-wrap">
-              {isProvider && (
-                <div className="flex items-baseline gap-1">
-                  <span className={`text-sm font-semibold text-gray-900 dark:text-white/90 ${orbitron.className}`}>
-                    {stats?.bookingsCount ?? 0}
-                  </span>
-                  <span className="text-xs text-gray-500 dark:text-white/50">
-                    {t("tabs.bookings")}
-                  </span>
-                </div>
-              )}
+              <div className="flex items-baseline gap-1">
+                <span className={`text-sm font-semibold text-gray-900 dark:text-white/90 ${orbitron.className}`}>
+                  {stats?.bookingsCount ?? 0}
+                </span>
+                <span className={`text-xs text-gray-500 dark:text-white/50 ${orbitron.className}`}>
+                  {t("tabs.bookings")}
+                </span>
+              </div>
               <button
                 onClick={() => setActiveTab("reviews")}
                 className="flex items-baseline gap-1 cursor-pointer group"
@@ -231,20 +291,38 @@ export default function PublicProfilePage() {
                 <span className={`text-sm font-semibold text-gray-900 dark:text-white/90 ${orbitron.className}`}>
                   {stats?.reviewsCount ?? 0}
                 </span>
-                <span className="text-xs text-gray-500 dark:text-white/50 group-hover:text-gray-900 dark:group-hover:text-white/80 transition-colors">
+                <span
+                  className={`text-xs text-gray-500 dark:text-white/50 group-hover:text-gray-900 dark:group-hover:text-white/80 transition-colors ${orbitron.className}`}
+                >
                   {t("tabs.reviews")}
                 </span>
               </button>
-              {isProvider && stats?.averageRating != null && (
-                <span className="flex items-center gap-1 text-xs text-gray-500 dark:text-white/50">
+              {stats?.averageRating != null && (
+                <span className={`flex items-center gap-1 text-xs text-gray-500 dark:text-white/50 ${orbitron.className}`}>
                   <StarIcon size={12} weight="fill" className="text-yellow-500" />
                   {stats.averageRating.toFixed(1)}
                 </span>
               )}
             </div>
 
-            {/* Actions : uniquement partager, pas d'édition, pas de paramètres */}
+            {/* Actions : favori + partager */}
             <div className="flex items-center justify-center sm:justify-start gap-2 mt-3 sm:mt-4 flex-wrap">
+              <button
+                onClick={handleToggleFavorite}
+                disabled={favoriteLoading || favoritePending}
+                aria-pressed={isFavorite}
+                className={`flex items-center gap-1.5 h-9 sm:h-10 px-4 rounded-lg text-xs sm:text-sm cursor-pointer transition-colors disabled:opacity-50 ${orbitron.className} ${
+                  isFavorite
+                    ? "bg-red-50 text-red-500 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20"
+                    : "bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/15 text-gray-900 dark:text-white/90"
+                }`}
+                aria-label={isFavorite ? t("removeFavorite") : t("addFavorite")}
+              >
+                <HeartIcon size={16} weight={isFavorite ? "fill" : "regular"} />
+                <span className="hidden sm:inline">
+                  {isFavorite ? t("removeFavorite") : t("addFavorite")}
+                </span>
+              </button>
               <button
                 onClick={handleShare}
                 className="h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/15 flex items-center justify-center text-gray-900 dark:text-white/90 cursor-pointer transition-colors"
@@ -257,7 +335,7 @@ export default function PublicProfilePage() {
             {/* Bio */}
             <div className="mt-3 sm:mt-4">
               <p className={`text-xs sm:text-sm text-gray-600 dark:text-white/50 wrap-break-words ${orbitron.className}`}>
-                {user.bio || t("noBio")}
+                {provider.bio || t("noBio")}
               </p>
             </div>
 
@@ -282,87 +360,66 @@ export default function PublicProfilePage() {
           </div>
         </div>
 
-        {/* ═══════════════ SECTION AGENCE (lecture seule) ═══════════════ */}
-        {isAgencyClient && (user.companyName || user.rccmNumber) && (
-          <section className="border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6 pt-4 sm:pt-5">
-            <h2
-              className={`flex items-center gap-1.5 text-[10px] sm:text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}
-            >
-              <BuildingsIcon size={16} />
-              {t("agencyInfo")}
-            </h2>
-            <div className="flex flex-col gap-3">
-              <ReadField label={t("companyName")} value={user.companyName} />
-              <ReadField label={t("rccmNumber")} value={user.rccmNumber} />
-            </div>
-          </section>
-        )}
+        {/* ═══════════════ SECTION PRESTATAIRE ═══════════════ */}
+        <section className="border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6 pt-4 sm:pt-5">
+          <h2
+            className={`flex items-center gap-1.5 text-[10px] sm:text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}
+          >
+            <BriefcaseIcon size={16} />
+            {t("providerInfo")}
+          </h2>
+          <div className="flex flex-col gap-3">
+            <ReadField
+              label={t("providerType")}
+              value={provider.providerType ? t(`providerTypes.${provider.providerType}`) : null}
+            />
+            <ReadField
+              label={t("hourlyRate")}
+              value={
+                provider.hourlyRate ? `${provider.hourlyRate} ${provider.currency || "XOF"} / h` : null
+              }
+            />
+          </div>
+        </section>
 
-        {/* ═══════════════ SECTION PROVIDER (lecture seule) ═══════════════ */}
-        {isProvider && (
-          <section className="border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6 pt-4 sm:pt-5">
-            <h2
-              className={`flex items-center gap-1.5 text-[10px] sm:text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-3 ${orbitron.className}`}
-            >
-              <BriefcaseIcon size={16} />
-              {t("providerInfo")}
-            </h2>
-            <div className="flex flex-col gap-3">
-              <ReadField
-                label={t("providerType")}
-                value={user.providerType ? t(`providerTypes.${user.providerType}`) : null}
-              />
-              <ReadField
-                label={t("hourlyRate")}
-                value={user.hourlyRate ? `${user.hourlyRate} ${user.currency || "XOF"} / h` : null}
-              />
-            </div>
-          </section>
-        )}
-
-        {/* ═══════════════ TABS (avis / favoris, pas de réservations privées) ═══════════════ */}
+        {/* ═══════════════ TABS : vidéos / avis / favoris ═══════════════ */}
         <div className="flex items-center border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6">
-          <button
-            onClick={() => setActiveTab("reviews")}
-            className={`flex-1 flex items-center justify-center gap-1.5 h-11 sm:h-12 text-xs sm:text-sm cursor-pointer border-b-2 transition-colors ${
-              activeTab === "reviews"
-                ? "border-gray-900 dark:border-white text-gray-900 dark:text-white"
-                : "border-transparent text-gray-400 dark:text-white/40 hover:text-gray-700 dark:hover:text-white/70"
-            } ${orbitron.className}`}
-          >
-            <StarIcon size={16} weight={activeTab === "reviews" ? "fill" : "regular"} />
-            <span className="hidden sm:inline">{t("tabs.reviews")}</span>
-          </button>
-          <button
-            onClick={() => setActiveTab("favorites")}
-            className={`flex-1 flex items-center justify-center gap-1.5 h-11 sm:h-12 text-xs sm:text-sm cursor-pointer border-b-2 transition-colors ${
-              activeTab === "favorites"
-                ? "border-gray-900 dark:border-white text-gray-900 dark:text-white"
-                : "border-transparent text-gray-400 dark:text-white/40 hover:text-gray-700 dark:hover:text-white/70"
-            } ${orbitron.className}`}
-          >
-            <HeartIcon size={16} weight={activeTab === "favorites" ? "fill" : "regular"} />
-            <span className="hidden sm:inline">{t("tabs.favorites")}</span>
-          </button>
+          {TABS.map(({ key, icon: Icon, label }) => (
+            <button
+              key={key}
+              onClick={() => setActiveTab(key)}
+              className={`flex-1 flex items-center justify-center gap-1.5 h-11 sm:h-12 text-xs sm:text-sm cursor-pointer border-b-2 transition-colors ${
+                activeTab === key
+                  ? "border-gray-900 dark:border-white text-gray-900 dark:text-white"
+                  : "border-transparent text-gray-400 dark:text-white/40 hover:text-gray-700 dark:hover:text-white/70"
+              } ${orbitron.className}`}
+            >
+              <Icon size={16} weight={activeTab === key ? "fill" : "regular"} />
+              <span className="hidden sm:inline">{label}</span>
+            </button>
+          ))}
         </div>
 
-        {/* ═══════════════ ÉTAT VIDE ═══════════════ */}
-        <div className="py-10 sm:py-14 flex flex-col items-center justify-center text-center px-4">
+        {/* ═══════════════ CONTENU DES ONGLETS ═══════════════ */}
+        <div className="pt-4 sm:pt-5">
+          {activeTab === "videos" && <VideoGrid providerId={providerId} />}
+
           {activeTab === "reviews" && (
-            <>
+            <div className="py-10 sm:py-14 flex flex-col items-center justify-center text-center px-4">
               <StarIcon size={32} className="text-gray-300 dark:text-white/20 mb-2" />
               <p className={`text-xs sm:text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}>
                 {t("empty.reviews")}
               </p>
-            </>
+            </div>
           )}
+
           {activeTab === "favorites" && (
-            <>
+            <div className="py-10 sm:py-14 flex flex-col items-center justify-center text-center px-4">
               <HeartIcon size={32} className="text-gray-300 dark:text-white/20 mb-2" />
               <p className={`text-xs sm:text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}>
                 {t("empty.favorites")}
               </p>
-            </>
+            </div>
           )}
         </div>
       </div>
@@ -370,6 +427,7 @@ export default function PublicProfilePage() {
   );
 }
 
+/* ═══════════════ ReadField ═══════════════ */
 function ReadField({ label, value }: { label: string; value?: string | null }) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
