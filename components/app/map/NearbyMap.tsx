@@ -33,11 +33,25 @@ const ONLINE_THRESHOLD_MS = 5 * 60 * 1000;
 // Rayon de recherche des users proches (km)
 const NEARBY_RADIUS_KM = 20;
 
+const PROVIDER_PATH = "/provider";
+const PROFILE_PATH = "/profils";
+
+function getPublicProfilePath(user: NearbyUser): string | null {
+  switch (user.accountType) {
+    case "PROVIDER":
+      return `${PROVIDER_PATH}/${user.id}`;
+    case "CLIENT":
+      return `${PROFILE_PATH}/${user.id}`;
+    default:
+      return null;
+  }
+}
+
 type NearbyUser = {
   id: string;
   name: string | null;
   image: string | null;
-  accountType: string;
+  accountType: "CLIENT" | "PROVIDER" | "ADMIN";
   providerType: string | null;
   clientType: string | null;
   bio: string | null;
@@ -205,7 +219,7 @@ export default function NearbyMap() {
             bio: me?.bio ?? null,
             username: me?.name ?? null,
             lastSeenAt: new Date(),
-            onClick: () => router.push("/app/profils"),
+            onClick: () => router.push("/app/profile"),
             labels: markerLabels,
           });
 
@@ -300,6 +314,8 @@ export default function NearbyMap() {
         lastUpdate !== null &&
         Date.now() - lastUpdate.getTime() < ONLINE_THRESHOLD_MS;
 
+      const profilePath = getPublicProfilePath(nearbyUser);
+
       const el = createAvatarMarkerElement({
         imageUrl: nearbyUser.image,
         fallbackLabel: nearbyUser.name ?? "?",
@@ -308,11 +324,7 @@ export default function NearbyMap() {
         bio: nearbyUser.bio,
         username: nearbyUser.name,
         lastSeenAt: lastUpdate,
-        // Clic UNIQUEMENT pour les providers
-        onClick:
-          nearbyUser.accountType === "PROVIDER"
-            ? () => router.push(`/provider/${nearbyUser.id}`)
-            : undefined,
+        onClick: profilePath ? () => router.push(profilePath) : undefined,
         labels: markerLabels,
       });
 
@@ -400,7 +412,7 @@ export default function NearbyMap() {
         minHeight: "500px",
       }}
     >
-      <style jsx global>{`
+      <style jsx global>{`\`
         .maplibregl-ctrl-bottom-left {
           bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
           left: max(8px, env(safe-area-inset-left, 0px)) !important;
