@@ -1,3 +1,5 @@
+import ProviderPublicProfilePage from "@/components/provider/id/comp";
+
 export default function PrestatairePage() {
-  return <div></div>;
+  return <div><ProviderPublicProfilePage/></div>;
 }
