@@ -205,7 +205,7 @@ export default function NearbyMap() {
             bio: me?.bio ?? null,
             username: me?.name ?? null,
             lastSeenAt: new Date(),
-            onClick: () => router.push("/app/(public)/profils"),
+            onClick: () => router.push("/app/profils"),
             labels: markerLabels,
           });
 
@@ -485,8 +485,6 @@ export default function NearbyMap() {
           font-size: 10px !important;
         }
       `}</style>
-
-      {/* ───── Loading ───── */}
       {loadingPosition && (
         <div className="absolute inset-0 flex items-center justify-center z-20 bg-gray-100 dark:bg-gray-900 transition-colors">
           <div className="flex flex-col items-center gap-3 px-4">
