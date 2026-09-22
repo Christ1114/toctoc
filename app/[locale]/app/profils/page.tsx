@@ -7,3 +7,5 @@ const ProfilesPage = () => {
     </div>
   );
 };
+
+export default ProfilesPage;
