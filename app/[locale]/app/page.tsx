@@ -1,17 +1,19 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { useSession } from "@/app/context/SessionContext";
 import Appclient from "@/components/app/appClient";
 
 export default function DashboardPage() {
   const router = useRouter();
   const { user, loading } = useSession();
+  const redirectedRef = useRef(false);
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.push("/login");
+    if (!loading && !user && !redirectedRef.current) {
+      redirectedRef.current = true;
+      router.replace("/login");
     }
   }, [loading, user, router]);
 

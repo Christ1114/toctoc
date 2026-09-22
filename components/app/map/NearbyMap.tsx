@@ -346,10 +346,7 @@ export default function NearbyMap() {
       nearbyMarkersRef.current.forEach((m) => m.remove());
       nearbyMarkersRef.current = [];
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nearbyUsers, mapLoaded, router]);
-
-  // ─── Thème clair/sombre ───
   useEffect(() => {
     if (!mapRef.current || !mapLoaded) return;
     const styleUrl = resolvedTheme === "dark" ? STYLES.dark : STYLES.light;
