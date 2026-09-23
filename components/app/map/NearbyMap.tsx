@@ -304,7 +304,6 @@ export default function NearbyMap() {
         lastUpdate !== null &&
         Date.now() - lastUpdate.getTime() < ONLINE_THRESHOLD_MS;
       const profilePath = getPublicProfilePath(nu);
-      const cfg = getCategoryConfig(nu.category);
       const existing = current.get(nu.id);
       if (existing) {
         existing.setLngLat([nu.lastLongitude, nu.lastLatitude]);
@@ -313,7 +312,6 @@ export default function NearbyMap() {
       const el = createAvatarMarkerElement({
         imageUrl: nu.image,
         fallbackLabel: nu.name ?? "?",
-        color: cfg.color,
         isOnline,
         bio: nu.bio,
         username: nu.name,
@@ -500,7 +498,7 @@ export default function NearbyMap() {
   onClick={resetView}
   aria-label={t("reset3D")}
   className={`
-    absolute z-40 bg-black/60 hover:bg-black/75 active:bg-black/90
+    absolute z-30 bg-black/60 hover:bg-black/75 active:bg-black/90
     backdrop-blur-sm text-white rounded-lg shadow-md cursor-pointer
     transition-all touch-manipulation select-none
     left-2 sm:left-5 md:left-4 lg:left-5
