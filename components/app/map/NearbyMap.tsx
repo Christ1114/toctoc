@@ -29,20 +29,11 @@ const DEFAULT_BEARING = -17.6;
 
 const ONLINE_THRESHOLD_MS = 5 * 60 * 1000;
 const NEARBY_RADIUS_KM = 20;
+const FLY_DURATION_MS = 1200;
+const INIT_TIMEOUT_MS = 10_000;
 
 const PROVIDER_PATH = "/app/provider";
 const CLIENT_PATH = "/app/client";
-
-function getPublicProfilePath(user: NearbyUser): string | null {
-  switch (user.accountType) {
-    case "PROVIDER":
-      return `${PROVIDER_PATH}/${user.id}`;
-    case "CLIENT":
-      return `${CLIENT_PATH}/${user.id}`;
-    default:
-      return null;
-  }
-}
 
 type NearbyUser = {
   id: string;
@@ -62,43 +53,64 @@ type NearbyUser = {
   lastLocationUpdatedAt: string | null;
 };
 
+function getPublicProfilePath(user: NearbyUser): string | null {
+  if (user.accountType === "PROVIDER") return `${PROVIDER_PATH}/${user.id}`;
+  if (user.accountType === "CLIENT") return `${CLIENT_PATH}/${user.id}`;
+  return null;
+}
+
 export default function NearbyMap() {
   const t = useTranslations("NearbyMap");
   const tToolbar = useTranslations("TopToolbar");
   const { resolvedTheme } = useTheme();
   const router = useRouter();
-
   const { user } = useSession();
+  const { latitude, longitude, error: geoError, requestLocation } = useGeolocation();
 
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const userMarkerRef = useRef<maplibregl.Marker | null>(null);
+  const nearbyMarkersRef = useRef<Map<string, maplibregl.Marker>>(new Map());
   const initialCenterRef = useRef<[number, number] | null>(null);
-  const nearbyMarkersRef = useRef<maplibregl.Marker[]>([]);
-  const hasInitRef = useRef(false); // ✅ guard anti-boucle
+  const hasInitRef = useRef(false);
+  const fetchAbortRef = useRef<AbortController | null>(null);
 
-  const [initialCenter, setInitialCenter] = useState<[number, number] | null>(null);
-  const [loadingPosition, setLoadingPosition] = useState(true);
-  const [mapLoaded, setMapLoaded] = useState(false);
-  const [mapError, setMapError] = useState<string | null>(null);
-  const [aiSearchOpen, setAiSearchOpen] = useState(false);
-
-  const [nearbyUsers, setNearbyUsers] = useState<NearbyUser[]>([]);
-  const [searchMessage, setSearchMessage] = useState<string | null>(null);
-
-  const { latitude, longitude, error: geoError, requestLocation } = useGeolocation();
-
-  const markerLabels = {
+  // ✅ Refs pour éviter les closures stale dans les handlers MapLibre
+  const userRef = useRef(user);
+  const routerRef = useRef(router);
+  const labelsRef = useRef({
     online: t("online"),
     offline: t("offline"),
     justNow: t("justNow"),
     minutesAgo: (n: number) => t("minutesAgo", { n }),
     hoursAgo: (n: number) => t("hoursAgo", { n }),
     daysAgo: (n: number) => t("daysAgo", { n }),
-  };
+  });
 
-  // ─── Position initiale ───
-  // ✅ Guard : s'exécute UNE SEULE fois, peu importe les re-renders
+  useEffect(() => { userRef.current = user; }, [user]);
+  useEffect(() => { routerRef.current = router; }, [router]);
+  useEffect(() => {
+    labelsRef.current = {
+      online: t("online"),
+      offline: t("offline"),
+      justNow: t("justNow"),
+      minutesAgo: (n: number) => t("minutesAgo", { n }),
+      hoursAgo: (n: number) => t("hoursAgo", { n }),
+      daysAgo: (n: number) => t("daysAgo", { n }),
+    };
+  }, [t]);
+
+  const [initialCenter, setInitialCenter] = useState<[number, number] | null>(null);
+  const [loadingPosition, setLoadingPosition] = useState(true);
+  const [mapLoaded, setMapLoaded] = useState(false);
+  const [mapError, setMapError] = useState<string | null>(null);
+  const [aiSearchOpen, setAiSearchOpen] = useState(false);
+  const [nearbyUsers, setNearbyUsers] = useState<NearbyUser[]>([]);
+  const [searchMessage, setSearchMessage] = useState<string | null>(null);
+
+  /* ═══════════════════════════════════════════════════════
+     POSITION INITIALE (une seule fois)
+     ═══════════════════════════════════════════════════════ */
   useEffect(() => {
     if (hasInitRef.current) return;
     hasInitRef.current = true;
@@ -106,55 +118,44 @@ export default function NearbyMap() {
     let isMounted = true;
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
-    const loadStoredPosition = async () => {
-      try {
-        const userData = user as any;
-        const storedLat = userData?.lastLatitude;
-        const storedLng = userData?.lastLongitude;
+    const u = userRef.current as any;
+    const storedLat = u?.lastLatitude;
+    const storedLng = u?.lastLongitude;
 
-        if (storedLat && storedLng && isMounted) {
-          const position: [number, number] = [storedLng, storedLat];
-          initialCenterRef.current = position;
-          setInitialCenter(position);
-          setLoadingPosition(false);
-        }
-      } catch (err) {
-        console.error("❌ Erreur lecture position stockée:", err);
-      }
+    if (storedLat && storedLng) {
+      const pos: [number, number] = [storedLng, storedLat];
+      initialCenterRef.current = pos;
+      setInitialCenter(pos);
+      setLoadingPosition(false);
+    } else {
+      initialCenterRef.current = DEFAULT_CENTER;
+      setInitialCenter(DEFAULT_CENTER);
+      setLoadingPosition(false);
+    }
 
+    requestLocation();
+
+    timeoutId = setTimeout(() => {
       if (isMounted && !initialCenterRef.current) {
         initialCenterRef.current = DEFAULT_CENTER;
         setInitialCenter(DEFAULT_CENTER);
         setLoadingPosition(false);
       }
-
-      requestLocation();
-
-      timeoutId = setTimeout(() => {
-        if (isMounted && !initialCenterRef.current) {
-          initialCenterRef.current = DEFAULT_CENTER;
-          setInitialCenter(DEFAULT_CENTER);
-          setLoadingPosition(false);
-        }
-      }, 10000);
-    };
-
-    loadStoredPosition();
+    }, INIT_TIMEOUT_MS);
 
     return () => {
       isMounted = false;
       if (timeoutId) clearTimeout(timeoutId);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // ✅ deps vide : plus de boucle
+  }, []);
 
   useEffect(() => {
-    if (latitude && longitude) {
-      const position: [number, number] = [longitude, latitude];
-      initialCenterRef.current = position;
-      setInitialCenter(position);
-      setLoadingPosition(false);
-    }
+    if (!latitude || !longitude) return;
+    const pos: [number, number] = [longitude, latitude];
+    initialCenterRef.current = pos;
+    setInitialCenter(pos);
+    setLoadingPosition(false);
   }, [latitude, longitude]);
 
   useEffect(() => {
@@ -165,14 +166,16 @@ export default function NearbyMap() {
     }
   }, [geoError]);
 
-  // ─── Initialisation de la carte ───
+  /* ═══════════════════════════════════════════════════════
+     INIT MAP (une seule fois)
+     ═══════════════════════════════════════════════════════ */
   useEffect(() => {
     if (!mapContainer.current || mapRef.current || !initialCenter) return;
 
     try {
       const map = new maplibregl.Map({
         container: mapContainer.current,
-        style: STYLES.light,
+        style: resolvedTheme === "dark" ? STYLES.dark : STYLES.light,
         center: initialCenter,
         zoom: DEFAULT_ZOOM,
         pitch: DEFAULT_PITCH,
@@ -200,17 +203,19 @@ export default function NearbyMap() {
       map.dragRotate.enable();
       map.touchZoomRotate.enableRotation();
 
-      map.on("error", () => {
-        setMapError("Erreur de chargement de la carte");
+      map.on("error", (e: any) => {
+        const msg = String(e?.error?.message ?? "");
+        if (msg.includes("Failed to fetch") || msg.includes("AbortError")) return;
+        console.error("Map error:", e);
       });
 
-      map.on("load", () => {
+      map.once("load", () => {
         setMapLoaded(true);
 
         try {
-          const me = user as any;
+          const me = userRef.current as any;
 
-          const userMarkerEl = createAvatarMarkerElement({
+          const el = createAvatarMarkerElement({
             imageUrl: me?.image ?? null,
             fallbackLabel: me?.name ?? "?",
             color: "#432dd7",
@@ -218,22 +223,28 @@ export default function NearbyMap() {
             bio: me?.bio ?? null,
             username: me?.name ?? null,
             lastSeenAt: new Date(),
-            // ✅ Redirige selon le type
+            // ✅ Utilise userRef → pas de closure stale
             onClick: () => {
-              if (me?.accountType === "PROVIDER") {
-                router.push("/app/provider/me");
-              } else {
-                router.push("/app/profile");
+              const current = userRef.current as any;
+              if (!current?.id) return;
+              if (current.accountType === "PROVIDER") {
+                routerRef.current.push(`/app/provider/me`);
+              } else if (current.accountType === "CLIENT") {
+                routerRef.current.push(`/app/profile`);
               }
             },
-            labels: markerLabels,
+            labels: labelsRef.current,
           });
 
+          // ✅ pointer-events explicite
+          el.style.pointerEvents = "auto";
+          el.style.cursor = "pointer";
+
           userMarkerRef.current = new maplibregl.Marker({
-            element: userMarkerEl,
+            element: el,
             anchor: "bottom",
           })
-            .setLngLat(initialCenter)
+            .setLngLat(initialCenterRef.current ?? DEFAULT_CENTER)
             .addTo(map);
         } catch (err) {
           console.error("Erreur création marker user:", err);
@@ -244,22 +255,26 @@ export default function NearbyMap() {
       setMapError("Erreur d'initialisation de la carte");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialCenter, user, router]);
+  }, [initialCenter]);
 
-  // ─── Cleanup ───
+  /* ═══════════════════════════════════════════════════════
+     CLEANUP GLOBAL (unmount)
+     ═══════════════════════════════════════════════════════ */
   useEffect(() => {
     return () => {
-      if (mapRef.current) {
-        mapRef.current.remove();
-        mapRef.current = null;
-        userMarkerRef.current = null;
-        nearbyMarkersRef.current = [];
-        setMapLoaded(false);
-      }
+      fetchAbortRef.current?.abort();
+      nearbyMarkersRef.current.forEach((m) => m.remove());
+      nearbyMarkersRef.current.clear();
+      userMarkerRef.current?.remove();
+      userMarkerRef.current = null;
+      mapRef.current?.remove();
+      mapRef.current = null;
     };
   }, []);
 
-  // ─── Recentrage ───
+  /* ═══════════════════════════════════════════════════════
+     RECENTRAGE
+     ═══════════════════════════════════════════════════════ */
   useEffect(() => {
     if (!mapRef.current || !mapLoaded || !initialCenter) return;
 
@@ -269,22 +284,41 @@ export default function NearbyMap() {
       pitch: DEFAULT_PITCH,
       bearing: DEFAULT_BEARING,
       essential: true,
-      duration: 1200,
+      duration: FLY_DURATION_MS,
     });
 
     userMarkerRef.current?.setLngLat(initialCenter);
   }, [initialCenter, mapLoaded]);
 
-  // ─── Fetch users proches ───
+  /* ═══════════════════════════════════════════════════════
+     FETCH NEARBY (avec AbortController)
+     ═══════════════════════════════════════════════════════ */
   const fetchNearby = useCallback(async (lng: number, lat: number) => {
+    fetchAbortRef.current?.abort();
+    const controller = new AbortController();
+    fetchAbortRef.current = controller;
+
     try {
       const res = await fetch(
-        `/api/user/nearby?lat=${lat}&lng=${lng}&radius=${NEARBY_RADIUS_KM}`
+        `/api/user/nearby?lat=${lat}&lng=${lng}&radius=${NEARBY_RADIUS_KM}`,
+        { signal: controller.signal }
       );
-      if (!res.ok) throw new Error("Erreur fetch nearby users");
+      if (!res.ok) throw new Error("fetch failed");
       const data = await res.json();
-      setNearbyUsers(data.users ?? []);
+      const list: NearbyUser[] = data.users ?? [];
+
+      // ✅ Skip re-render si la liste est identique
+      setNearbyUsers((prev) => {
+        if (prev.length !== list.length) return list;
+        for (let i = 0; i < list.length; i++) {
+          if (prev[i]?.id !== list[i].id) return list;
+          if (prev[i]?.lastLocationUpdatedAt !== list[i].lastLocationUpdatedAt)
+            return list;
+        }
+        return prev;
+      });
     } catch (err) {
+      if ((err as any)?.name === "AbortError") return;
       console.error("Erreur fetch nearby:", err);
       setNearbyUsers([]);
     }
@@ -296,91 +330,109 @@ export default function NearbyMap() {
     fetchNearby(lng, lat);
   }, [initialCenter, fetchNearby]);
 
-  // ─── Markers des autres users ───
+  /* ═══════════════════════════════════════════════════════
+     MARKERS DES USERS PROCHES (diffing par id)
+     ═══════════════════════════════════════════════════════ */
   useEffect(() => {
-    if (!mapRef.current || !mapLoaded) return;
+    const map = mapRef.current;
+    if (!map || !mapLoaded) return;
 
-    nearbyMarkersRef.current.forEach((m) => m.remove());
-    nearbyMarkersRef.current = [];
+    const current = nearbyMarkersRef.current;
+    const seen = new Set<string>();
 
-    nearbyUsers.forEach((nearbyUser) => {
-      if (
-        nearbyUser.lastLatitude === null ||
-        nearbyUser.lastLongitude === null
-      ) {
-        return;
-      }
+    nearbyUsers.forEach((nu) => {
+      if (nu.lastLatitude == null || nu.lastLongitude == null) return;
+      seen.add(nu.id);
 
-      const lastUpdate = nearbyUser.lastLocationUpdatedAt
-        ? new Date(nearbyUser.lastLocationUpdatedAt)
+      const lastUpdate = nu.lastLocationUpdatedAt
+        ? new Date(nu.lastLocationUpdatedAt)
         : null;
       const isOnline =
         lastUpdate !== null &&
         Date.now() - lastUpdate.getTime() < ONLINE_THRESHOLD_MS;
+      const profilePath = getPublicProfilePath(nu);
 
-      const profilePath = getPublicProfilePath(nearbyUser);
+      // ✅ Marker déjà présent → update position uniquement
+      const existing = current.get(nu.id);
+      if (existing) {
+        existing.setLngLat([nu.lastLongitude, nu.lastLatitude]);
+        return;
+      }
 
       const el = createAvatarMarkerElement({
-        imageUrl: nearbyUser.image,
-        fallbackLabel: nearbyUser.name ?? "?",
-        color: nearbyUser.accountType === "PROVIDER" ? "#2F7A4F" : "#432dd7",
+        imageUrl: nu.image,
+        fallbackLabel: nu.name ?? "?",
+        color: nu.accountType === "PROVIDER" ? "#2F7A4F" : "#432dd7",
         isOnline,
-        bio: nearbyUser.bio,
-        username: nearbyUser.name,
+        bio: nu.bio,
+        username: nu.name,
         lastSeenAt: lastUpdate,
-        onClick: profilePath ? () => router.push(profilePath) : undefined,
-        labels: markerLabels,
+        onClick: profilePath
+          ? () => routerRef.current.push(profilePath)
+          : undefined,
+        labels: labelsRef.current,
       });
+
+      el.style.pointerEvents = "auto";
+      if (profilePath) el.style.cursor = "pointer";
 
       const marker = new maplibregl.Marker({
         element: el,
         anchor: "bottom",
       })
-        .setLngLat([nearbyUser.lastLongitude, nearbyUser.lastLatitude])
-        .addTo(mapRef.current!);
+        .setLngLat([nu.lastLongitude, nu.lastLatitude])
+        .addTo(map);
 
-      nearbyMarkersRef.current.push(marker);
+      current.set(nu.id, marker);
     });
 
-    return () => {
-      nearbyMarkersRef.current.forEach((m) => m.remove());
-      nearbyMarkersRef.current = [];
-    };
-  }, [nearbyUsers, mapLoaded, router]);
+    // ✅ Suppression des markers qui ne sont plus dans la liste
+    current.forEach((marker, id) => {
+      if (!seen.has(id)) {
+        marker.remove();
+        current.delete(id);
+      }
+    });
+  }, [nearbyUsers, mapLoaded]);
+
+  /* ═══════════════════════════════════════════════════════
+     STYLE (light/dark)
+     ═══════════════════════════════════════════════════════ */
   useEffect(() => {
     if (!mapRef.current || !mapLoaded) return;
-    const styleUrl = resolvedTheme === "dark" ? STYLES.dark : STYLES.light;
+    const url = resolvedTheme === "dark" ? STYLES.dark : STYLES.light;
     try {
-      mapRef.current.setStyle(styleUrl);
+      mapRef.current.setStyle(url);
     } catch (err) {
       console.error("Erreur changement style:", err);
     }
   }, [resolvedTheme, mapLoaded]);
 
+  /* ═══════════════════════════════════════════════════════
+     HANDLERS UI
+     ═══════════════════════════════════════════════════════ */
   const resetView = useCallback(() => {
-    if (mapRef.current && initialCenter) {
-      mapRef.current.flyTo({
-        center: initialCenter,
-        zoom: DEFAULT_ZOOM,
-        pitch: DEFAULT_PITCH,
-        bearing: DEFAULT_BEARING,
-        essential: true,
-        duration: 1000,
-      });
-    }
-  }, [initialCenter]);
+    const map = mapRef.current;
+    const center = initialCenterRef.current;
+    if (!map || !center) return;
+    map.flyTo({
+      center,
+      zoom: DEFAULT_ZOOM,
+      pitch: DEFAULT_PITCH,
+      bearing: DEFAULT_BEARING,
+      essential: true,
+      duration: 1000,
+    });
+  }, []);
 
   const handleLocate = useCallback(() => {
     requestLocation();
-    if (mapRef.current && initialCenter) {
-      mapRef.current.flyTo({
-        center: initialCenter,
-        zoom: DEFAULT_ZOOM,
-        duration: 1000,
-        essential: true,
-      });
+    const map = mapRef.current;
+    const center = initialCenterRef.current;
+    if (map && center) {
+      map.flyTo({ center, zoom: DEFAULT_ZOOM, duration: 1000, essential: true });
     }
-  }, [requestLocation, initialCenter]);
+  }, [requestLocation]);
 
   const handleSelectCity = useCallback(
     (city: CityResult) => {
@@ -390,15 +442,15 @@ export default function NearbyMap() {
       }
       setSearchMessage(null);
       const position: [number, number] = [city.longitude, city.latitude];
-
-      if (mapRef.current && mapLoaded) {
-        mapRef.current.flyTo({
+      const map = mapRef.current;
+      if (map && mapLoaded) {
+        map.flyTo({
           center: position,
           zoom: CITY_SEARCH_ZOOM,
           pitch: DEFAULT_PITCH,
           bearing: DEFAULT_BEARING,
           essential: true,
-          duration: 1200,
+          duration: FLY_DURATION_MS,
         });
       }
       fetchNearby(city.longitude, city.latitude);
@@ -406,12 +458,23 @@ export default function NearbyMap() {
     [mapLoaded, fetchNearby, tToolbar]
   );
 
+  /* ═══════════════════════════════════════════════════════
+     RENDER
+     ═══════════════════════════════════════════════════════ */
   return (
     <div
       className="relative w-full h-dvh md:h-full md:min-h-125 overflow-hidden"
       style={{ minHeight: "500px" }}
     >
       <style jsx global>{`
+        /* ✅ Les markers reçoivent les clics */
+        .maplibregl-marker {
+          pointer-events: auto !important;
+        }
+        .maplibregl-marker > * {
+          pointer-events: auto;
+        }
+
         .maplibregl-ctrl-bottom-left {
           bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
           left: max(8px, env(safe-area-inset-left, 0px)) !important;
@@ -424,16 +487,10 @@ export default function NearbyMap() {
           }
         }
         @media (min-width: 768px) {
-          .maplibregl-ctrl-bottom-left {
-            bottom: 16px !important;
-            left: 16px !important;
-          }
+          .maplibregl-ctrl-bottom-left { bottom: 16px !important; left: 16px !important; }
         }
         @media (min-width: 1024px) {
-          .maplibregl-ctrl-bottom-left {
-            bottom: 20px !important;
-            left: 20px !important;
-          }
+          .maplibregl-ctrl-bottom-left { bottom: 20px !important; left: 20px !important; }
         }
         .maplibregl-ctrl-bottom-left .maplibregl-ctrl-group {
           border-radius: 12px !important;
@@ -454,29 +511,20 @@ export default function NearbyMap() {
         }
         @media (min-width: 768px) {
           .maplibregl-ctrl-bottom-left .maplibregl-ctrl-group button {
-            width: 36px !important;
-            height: 36px !important;
+            width: 36px !important; height: 36px !important;
           }
         }
         @media (min-width: 1024px) {
           .maplibregl-ctrl-bottom-left .maplibregl-ctrl-group button {
-            width: 40px !important;
-            height: 40px !important;
+            width: 40px !important; height: 40px !important;
           }
         }
-        .maplibregl-ctrl-bottom-left .maplibregl-ctrl-icon {
-          filter: invert(1) !important;
-        }
+        .maplibregl-ctrl-bottom-left .maplibregl-ctrl-icon { filter: invert(1) !important; }
         .maplibregl-ctrl-bottom-left .maplibregl-ctrl-group button + button {
           border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
         }
-        .maplibregl-canvas {
-          outline: none !important;
-          touch-action: none;
-        }
-        .maplibregl-ctrl-attrib {
-          font-size: 10px !important;
-        }
+        .maplibregl-canvas { outline: none !important; touch-action: none; }
+        .maplibregl-ctrl-attrib { font-size: 10px !important; }
       `}</style>
 
       {loadingPosition && (
@@ -484,7 +532,7 @@ export default function NearbyMap() {
           <div className="flex flex-col items-center gap-3 px-4">
             <div className="animate-spin rounded-full h-9 w-9 border-2 border-gray-300 dark:border-gray-700 border-b-gray-900 dark:border-b-white" />
             <p className={`text-sm sm:text-base text-gray-600 dark:text-gray-300 text-center ${orbitron.className}`}>
-              Chargement de la carte...
+              {t("loading")}
             </p>
           </div>
         </div>
@@ -510,16 +558,24 @@ export default function NearbyMap() {
         className="absolute inset-0 w-full h-full bg-gray-200 dark:bg-gray-800"
       />
 
-      <TopToolbar
-        onOpenAiSearch={() => setAiSearchOpen(true)}
-        onSelectCity={handleSelectCity}
-        searchMessage={searchMessage}
-      />
+      {/* ✅ TopToolbar : wrapper transparent, contenu cliquable */}
+      <div className="absolute inset-x-0 top-0 z-20 pointer-events-none">
+        <div className="pointer-events-auto">
+          <TopToolbar
+            onOpenAiSearch={() => setAiSearchOpen(true)}
+            onSelectCity={handleSelectCity}
+            searchMessage={searchMessage}
+          />
+        </div>
+      </div>
 
-      <AiSearchPanel
-        open={aiSearchOpen}
-        onClose={() => setAiSearchOpen(false)}
-      />
+      {/* ✅ AiSearchPanel monté uniquement quand ouvert → ne bloque pas la carte */}
+      {aiSearchOpen && (
+        <AiSearchPanel
+          open={aiSearchOpen}
+          onClose={() => setAiSearchOpen(false)}
+        />
+      )}
 
       <button
         onClick={resetView}
@@ -541,4 +597,4 @@ export default function NearbyMap() {
       </button>
     </div>
   );
-}
+} 

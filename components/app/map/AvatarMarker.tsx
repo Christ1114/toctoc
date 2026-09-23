@@ -10,6 +10,7 @@ export type AvatarMarkerOptions = {
   lastSeenAt?: Date | null;
   onClick?: () => void;
 
+  size?: number;
   labels?: {
     online?: string;
     offline?: string;
@@ -22,9 +23,13 @@ export type AvatarMarkerOptions = {
 
 
 const SAFE_IMAGE_PROTOCOLS = new Set(["https:", "http:"]);
+const DEFAULT_COLOR = "#432dd7";
+const TAP_MAX_MOVEMENT_PX = 10;
+const TAP_MAX_DURATION_MS = 500;
+
+
 
 function isSafeImageUrl(url: string): boolean {
-  
   if (url.startsWith("/") && !url.startsWith("//")) return true;
   try {
     const parsed = new URL(url);
@@ -35,24 +40,19 @@ function isSafeImageUrl(url: string): boolean {
 }
 
 function sanitizeColor(raw: string | undefined): string {
-  const DEFAULT = "#432dd7";
-  if (!raw) return DEFAULT;
-
+  if (!raw) return DEFAULT_COLOR;
   const trimmed = raw.trim();
-  if (!trimmed) return DEFAULT;
+  if (!trimmed) return DEFAULT_COLOR;
 
-
+  // Hex
   if (/^#[0-9a-fA-F]{3,8}$/.test(trimmed)) return trimmed;
-
-  
+  // rgb / rgba / hsl / hsla
   if (/^(rgb|rgba|hsl|hsla)\(\s*[\d.,%\s/]+\)$/i.test(trimmed)) return trimmed;
-
-  
+  // Couleurs nommées CSS
   if (/^[a-z-]{1,30}$/i.test(trimmed)) return trimmed;
 
-  return DEFAULT;
+  return DEFAULT_COLOR;
 }
-
 
 function generateId(): string {
   if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
@@ -61,14 +61,13 @@ function generateId(): string {
   return `tooltip-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 }
 
-
 function formatLastSeen(
   date: Date | null | undefined,
-  labels?: AvatarMarkerOptions["labels"]
+  labels?: AvatarMarkerOptions["labels"],
 ): string | null {
   if (!date) return null;
   const diff = Date.now() - date.getTime();
-  if (diff < 0) return null; 
+  if (diff < 0) return null;
 
   const minutes = Math.floor(diff / 60000);
   if (minutes < 1) return labels?.justNow ?? "À l'instant";
@@ -85,11 +84,10 @@ function formatLastSeen(
   return labels?.daysAgo ? labels.daysAgo(days) : `Vu il y a ${days} j`;
 }
 
-
 function el<K extends keyof HTMLElementTagNameMap>(
   tag: K,
   className?: string,
-  text?: string
+  text?: string,
 ): HTMLElementTagNameMap[K] {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -97,40 +95,58 @@ function el<K extends keyof HTMLElementTagNameMap>(
   return node;
 }
 
+/* ─── Factory ─── */
 
 export function createAvatarMarkerElement({
   imageUrl,
   fallbackLabel,
-  color = "#432dd7",
+  color = DEFAULT_COLOR,
   isOnline = false,
   bio,
   username,
   lastSeenAt,
   onClick,
+  size,
   labels,
 }: AvatarMarkerOptions): HTMLDivElement {
+  /* ═══════════════════════════════════════════════════════
+     WRAPPER
+     ═══════════════════════════════════════════════════════ */
   const wrapper = el("div", "avatar-marker");
+  wrapper.dataset.online = isOnline ? "1" : "0";
+
   const safeColor = sanitizeColor(color);
   wrapper.style.setProperty("--marker-color", safeColor);
 
-  // ─── Accessibilité : seulement si le marker est interactif ───
+  const bubbleSize = size ?? 52;
+  wrapper.style.setProperty("--bubble-size", `${bubbleSize}px`);
+  wrapper.style.setProperty("--ring-size", `${bubbleSize + 16}px`);
+
+  // Toujours interactif côté DOM (peu importe onClick)
+  wrapper.style.pointerEvents = "auto";
+  wrapper.style.touchAction = "manipulation";
+
   if (onClick) {
     wrapper.setAttribute("role", "button");
     wrapper.setAttribute("tabindex", "0");
     wrapper.style.cursor = "pointer";
-    wrapper.style.pointerEvents = "auto";
-    if (username) {
-      wrapper.setAttribute("aria-label", username);
-    }
+    if (username) wrapper.setAttribute("aria-label", username);
   }
 
+  /* ═══════════════════════════════════════════════════════
+     PULSE RING (online uniquement)
+     ═══════════════════════════════════════════════════════ */
+  const pulseRing = el("div", "avatar-marker__pulse");
+  pulseRing.setAttribute("aria-hidden", "true");
+  if (!isOnline) pulseRing.style.display = "none";
 
+  /* ═══════════════════════════════════════════════════════
+     BUBBLE (avatar)
+     ═══════════════════════════════════════════════════════ */
   const bubble = el("div", "avatar-marker__bubble");
 
- 
   const initial = fallbackLabel.charAt(0).toUpperCase();
   const fallback = el("span", "avatar-marker__fallback", initial);
-
 
   let img: HTMLImageElement | null = null;
   if (imageUrl && isSafeImageUrl(imageUrl)) {
@@ -153,10 +169,12 @@ export function createAvatarMarkerElement({
 
   bubble.append(...([img, fallback].filter(Boolean) as HTMLElement[]));
 
-  
+  /* ═══════════════════════════════════════════════════════
+     STATUS DOT
+     ═══════════════════════════════════════════════════════ */
   const status = el(
     "span",
-    `avatar-marker__status ${isOnline ? "is-online" : "is-offline"}`
+    `avatar-marker__status ${isOnline ? "is-online" : "is-offline"}`,
   );
   const statusLabel = isOnline
     ? labels?.online ?? "En ligne"
@@ -165,13 +183,17 @@ export function createAvatarMarkerElement({
   status.setAttribute("title", statusLabel);
   bubble.appendChild(status);
 
-
+  /* ═══════════════════════════════════════════════════════
+     POINTER + SHADOW
+     ═══════════════════════════════════════════════════════ */
   const pointer = el("div", "avatar-marker__pointer");
   const shadow = el("div", "avatar-marker__shadow");
 
-  wrapper.append(bubble, pointer, shadow);
+  wrapper.append(pulseRing, bubble, pointer, shadow);
 
-
+  /* ═══════════════════════════════════════════════════════
+     TOOLTIP
+     ═══════════════════════════════════════════════════════ */
   const lastSeenText = !isOnline ? formatLastSeen(lastSeenAt, labels) : null;
   const hasTooltip = !!(username || bio || lastSeenText);
 
@@ -186,9 +208,7 @@ export function createAvatarMarkerElement({
       tooltip.appendChild(el("p", "avatar-marker__bio", bio));
     }
     if (lastSeenText) {
-      tooltip.appendChild(
-        el("span", "avatar-marker__lastseen", lastSeenText)
-      );
+      tooltip.appendChild(el("span", "avatar-marker__lastseen", lastSeenText));
     }
 
     const tooltipId = generateId();
@@ -198,15 +218,46 @@ export function createAvatarMarkerElement({
     wrapper.appendChild(tooltip);
   }
 
+  /* ═══════════════════════════════════════════════════════
+     HANDLERS (avec anti "tap fantôme" mobile)
+     ═══════════════════════════════════════════════════════ */
   if (onClick) {
-    const stop = (e: Event) => e.stopPropagation();
-    wrapper.addEventListener("mousedown", stop);
-    wrapper.addEventListener("touchstart", stop, { passive: true });
-    wrapper.addEventListener("pointerdown", stop);
-    wrapper.addEventListener("click", (e) => {
+    let pointerStart: { x: number; y: number; t: number } | null = null;
+
+    // Bloque le drag de la carte dès le pointerdown
+    wrapper.addEventListener("pointerdown", (e) => {
       e.stopPropagation();
-      onClick();
+      pointerStart = { x: e.clientX, y: e.clientY, t: Date.now() };
     });
+
+    // ✅ Anti "tap fantôme" : on ne déclenche le clic que si
+    //    l'utilisateur a bougé < 10px ET en < 500ms
+    //    (empêche le clic lors d'un swipe/pan rapide)
+    wrapper.addEventListener("pointerup", (e) => {
+      if (!pointerStart) return;
+
+      const dx = Math.abs(e.clientX - pointerStart.x);
+      const dy = Math.abs(e.clientY - pointerStart.y);
+      const dt = Date.now() - pointerStart.t;
+
+      pointerStart = null;
+
+      if (dx < TAP_MAX_MOVEMENT_PX && dy < TAP_MAX_MOVEMENT_PX && dt < TAP_MAX_DURATION_MS) {
+        e.preventDefault();
+        e.stopPropagation();
+        onClick();
+      }
+    });
+
+    // Reset si le pointeur sort (cancel)
+    wrapper.addEventListener("pointercancel", () => {
+      pointerStart = null;
+    });
+    wrapper.addEventListener("pointerleave", () => {
+      pointerStart = null;
+    });
+
+    // ✅ Fallback clavier
     wrapper.addEventListener("keydown", (e) => {
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
