@@ -60,8 +60,8 @@ async function loadReferentials() {
   if (optionsPromise) return optionsPromise;
 
   optionsPromise = Promise.all([
-    fetch("/api/job-types").then((r) => r.json()),
-    fetch("/api/regions").then((r) => r.json()),
+    fetch("/api/regions/job-types").then((r) => r.json()),
+    fetch("/api/regions/fields").then((r) => r.json()),
   ])
     .then(([jt, rg]) => {
       cachedJobTypes = jt.jobTypes || [];
@@ -76,7 +76,7 @@ async function loadReferentials() {
   return optionsPromise;
 }
 
-/* ═══════════════ Composant ═══════════════ */
+
 
 export default function ClientPublishOfferForm({
   open,
