@@ -1,3 +1,5 @@
+import { orbitron } from "@/fonts/font";
+
 /* ═══════════════ ReadField ═══════════════ */
 function ReadField({ label, value }: { label: string; value?: string | null }) {
   return (
