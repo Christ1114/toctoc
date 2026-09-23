@@ -6,9 +6,6 @@ import { orbitron } from "@/fonts/font";
 import type { ToolbarCategory } from "@/app/lib/jobs/category-colors";
 import { getCategoryIcon } from "@/app/lib/jobs/category-icons";
 
-/* ═══════════════════════════════════════════════════════════
-   CACHE MODULE-LEVEL
-   ═══════════════════════════════════════════════════════════ */
 
 let categoriesCache: ToolbarCategory[] | null = null;
 let inflightPromise: Promise<ToolbarCategory[]> | null = null;

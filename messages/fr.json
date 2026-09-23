@@ -335,6 +335,12 @@
       "initFailed": "Erreur d'initialisation de la carte"
     }
   },
+
+  "BottomToolbar": {
+    "all": "Toutes",
+    "filterByCategory": "Filtrer par catégorie"
+  },
+
   "VrConfirmPopover": {
     "title": "Confirmation entretien VR",
     "description": "Voulez-vous vraiment passer un entretien en réalité virtuelle ?",

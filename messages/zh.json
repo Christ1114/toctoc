@@ -282,7 +282,7 @@
     "mockResponse": "我找到了一个与您搜索匹配的档案："
   },
 
- "NearbyMap": {
+  "NearbyMap": {
     "loading": "地图加载中…",
     "retry": "重试",
     "locateMe": "定位我",
@@ -304,6 +304,12 @@
       "initFailed": "地图初始化失败"
     }
   },
+
+  "BottomToolbar": {
+    "all": "全部",
+    "filterByCategory": "按类别筛选"
+  },
+
   "ProfilePopover": {
     "title": "我的账户",
     "profileTab": "个人资料",

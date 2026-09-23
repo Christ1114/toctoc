@@ -318,6 +318,11 @@
     }
   },
 
+  "BottomToolbar": {
+    "all": "All",
+    "filterByCategory": "Filter by category"
+  },
+
   "VrConfirmPopover": {
     "title": "Virtual interview",
     "description": "This interview takes place in an immersive space. A compatible VR headset is required to participate.",

@@ -282,7 +282,7 @@
     "mockResponse": "وجدت ملفاً يطابق بحثك:"
   },
 
- "NearbyMap": {
+  "NearbyMap": {
     "loading": "جارٍ تحميل الخريطة…",
     "retry": "إعادة المحاولة",
     "locateMe": "حدد موقعي",
@@ -303,6 +303,11 @@
     "errors": {
       "initFailed": "فشل تهيئة الخريطة"
     }
+  },
+
+  "BottomToolbar": {
+    "all": "الكل",
+    "filterByCategory": "تصفية حسب الفئة"
   },
 
   "ProfilePopover": {
