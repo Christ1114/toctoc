@@ -224,15 +224,16 @@ export default function NearbyMap() {
             username: me?.name ?? null,
             lastSeenAt: new Date(),
             // ✅ Utilise userRef → pas de closure stale
-            onClick: () => {
-              const current = userRef.current as any;
-              if (!current?.id) return;
-              if (current.accountType === "PROVIDER") {
-                routerRef.current.push(`/app/provider/me`);
-              } else if (current.accountType === "CLIENT") {
-                routerRef.current.push(`/app/profile`);
-              }
-            },
+           onClick: () => {
+  const current = userRef.current as any;
+  if (!current?.id) return;
+
+  if (current.accountType === "PROVIDER") {
+    routerRef.current.push(`/app/provider/${current.id}`);
+  } else if (current.accountType === "CLIENT") {
+    routerRef.current.push(`/app/client/${current.id}`);
+  }
+},
             labels: labelsRef.current,
           });
 
