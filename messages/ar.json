@@ -144,11 +144,18 @@
   "verified": "موثّق",
   "addFavorite": "إضافة إلى المفضلة",
   "removeFavorite": "إزالة من المفضلة",
+
+  "publishOffer": "نشر عرض",
+  "publishOfferShort": "نشر",
+  "publishService": "نشر خدمة",
+  "publishServiceShort": "نشر",
+
   "accountType": {
     "CLIENT": "عميل",
     "PROVIDER": "مقدم خدمة",
     "ADMIN": "مسؤول"
   },
+
   "providerTypes": {
     "BABYSITTER": "جليس أطفال",
     "GARDE_PERISCOLAIRE": "رعاية بعد المدرسة",
@@ -157,26 +164,74 @@
     "RESIDENTIEL": "سكني (إقامة داخل المنزل)",
     "COURT_TERME": "قصير المدى"
   },
+
   "tabs": {
     "bookings": "الحجوزات",
     "reviews": "التقييمات",
     "favorites": "المفضلة",
-    "videos": "الفيديوهات"
+    "videos": "الفيديوهات",
+    "announcements": "الإعلانات"
   },
+
+  "announcements": {
+    "quota": "تم استخدام {used}/{max} إعلانًا",
+    "quotaFull": "تم الوصول إلى الحد الأقصى",
+    "views": "{count} مشاهدة",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "deleteConfirm": "هل تريد حذف هذا الإعلان؟"
+  },
+
   "empty": {
     "bookings": "لا توجد حجوزات حتى الآن",
     "reviews": "لا توجد تقييمات حتى الآن",
-    "favorites": "لا توجد مفضلات حتى الآن"
+    "favorites": "لا توجد مفضلات حتى الآن",
+    "announcements": "لا توجد إعلانات حتى الآن",
+    "announcementsCta": "نشر إعلان"
   },
+
   "videos": {
-    "empty": "لا توجد فيديوهات حتى الآن",
-    "retry": "إعادة المحاولة"
+    "retry": "إعادة المحاولة",
+    "empty": "لا توجد فيديوهات حتى الآن"
   },
+
   "errors": {
     "saveFailed": "فشل الحفظ. حاول مرة أخرى.",
     "invalidImage": "ملف صورة غير صالح.",
     "imageTooLarge": "الصورة كبيرة جدًا (الحد الأقصى 5 ميغابايت).",
-    "uploadFailed": "فشل رفع الصورة. حاول مرة أخرى."
+    "uploadFailed": "فشل رفع الصورة. حاول مرة أخرى.",
+    "announcementsLoadFailed": "تعذّر تحميل الإعلانات",
+    "announcementDeleteFailed": "تعذّر حذف الإعلان"
+  },
+
+  "publishOfferForm": {
+    "title": "نشر عرض",
+    "editTitle": "تعديل العرض",
+    "close": "إغلاق",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "saving": "جارٍ الحفظ...",
+    "submit": "نشر",
+    "submitting": "جارٍ النشر...",
+
+    "fields": {
+      "jobType": "الوظيفة",
+      "jobTypePlaceholder": "اختر وظيفة",
+      "description": "الوصف",
+      "descriptionPlaceholder": "صف احتياجك...",
+      "salary": "الراتب",
+      "salaryHint": "الحد الأدنى 10,000 فرنك أفريقي",
+      "region": "المنطقة",
+      "regionPlaceholder": "اختر منطقة"
+    },
+
+    "errors": {
+      "optionsLoadFailed": "تعذّر تحميل الخيارات",
+      "jobTypeRequired": "يرجى اختيار وظيفة",
+      "regionRequired": "يرجى اختيار منطقة",
+      "salaryMin": "الحد الأدنى للراتب هو 10,000 فرنك أفريقي",
+      "submitFailed": "فشل النشر"
+    }
   }
 },
   "TopToolbar": {

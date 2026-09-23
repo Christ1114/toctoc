@@ -84,7 +84,7 @@ export default function ClientPublishOfferForm({
   onSuccess,
   announcement,
 }: Props) {
-  const t = useTranslations("PublishOffer");
+  const t = useTranslations("ProfilePage");
   const isEdit = !!announcement;
 
   const dialogRef = useRef<HTMLDivElement>(null);

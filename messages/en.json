@@ -144,11 +144,18 @@
   "verified": "Verified",
   "addFavorite": "Add to favorites",
   "removeFavorite": "Remove from favorites",
+
+  "publishOffer": "Publish an offer",
+  "publishOfferShort": "Publish",
+  "publishService": "Publish a service",
+  "publishServiceShort": "Publish",
+
   "accountType": {
     "CLIENT": "Client",
     "PROVIDER": "Provider",
     "ADMIN": "Admin"
   },
+
   "providerTypes": {
     "BABYSITTER": "Babysitter",
     "GARDE_PERISCOLAIRE": "After-school care",
@@ -157,26 +164,74 @@
     "RESIDENTIEL": "Residential",
     "COURT_TERME": "Short-term"
   },
+
   "tabs": {
     "bookings": "Bookings",
     "reviews": "Reviews",
     "favorites": "Favorites",
-    "videos": "Videos"
+    "videos": "Videos",
+    "announcements": "Announcements"
   },
+
+  "announcements": {
+    "quota": "{used}/{max} announcements used",
+    "quotaFull": "Quota reached",
+    "views": "{count} view(s)",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleteConfirm": "Delete this announcement?"
+  },
+
   "empty": {
     "bookings": "No bookings yet",
     "reviews": "No reviews yet",
-    "favorites": "No favorites yet"
+    "favorites": "No favorites yet",
+    "announcements": "No announcements yet",
+    "announcementsCta": "Publish an announcement"
   },
+
   "videos": {
     "retry": "Retry",
-     "empty": "No videos yet"
+    "empty": "No videos yet"
   },
+
   "errors": {
     "saveFailed": "Failed to save changes",
     "invalidImage": "Please select a valid image file",
     "imageTooLarge": "Image must be smaller than 5 MB",
-    "uploadFailed": "Failed to upload image"
+    "uploadFailed": "Failed to upload image",
+    "announcementsLoadFailed": "Could not load announcements",
+    "announcementDeleteFailed": "Could not delete announcement"
+  },
+
+  "publishOfferForm": {
+    "title": "Publish an offer",
+    "editTitle": "Edit offer",
+    "close": "Close",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving...",
+    "submit": "Publish",
+    "submitting": "Publishing...",
+
+    "fields": {
+      "jobType": "Position",
+      "jobTypePlaceholder": "Select a position",
+      "description": "Description",
+      "descriptionPlaceholder": "Describe your need...",
+      "salary": "Salary",
+      "salaryHint": "Minimum 10,000 FCFA",
+      "region": "Region",
+      "regionPlaceholder": "Select a region"
+    },
+
+    "errors": {
+      "optionsLoadFailed": "Could not load options",
+      "jobTypeRequired": "Please select a position",
+      "regionRequired": "Please select a region",
+      "salaryMin": "Minimum salary is 10,000 FCFA",
+      "submitFailed": "Failed to publish"
+    }
   }
 },
   "TopToolbar": {

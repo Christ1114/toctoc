@@ -144,11 +144,18 @@
   "verified": "已认证",
   "addFavorite": "加入收藏",
   "removeFavorite": "取消收藏",
+
+  "publishOffer": "发布招聘",
+  "publishOfferShort": "发布",
+  "publishService": "发布服务",
+  "publishServiceShort": "发布",
+
   "accountType": {
     "CLIENT": "客户",
     "PROVIDER": "服务者",
     "ADMIN": "管理员"
   },
+
   "providerTypes": {
     "BABYSITTER": "保姆",
     "GARDE_PERISCOLAIRE": "课后托管",
@@ -157,26 +164,74 @@
     "RESIDENTIEL": "住家服务",
     "COURT_TERME": "短期服务"
   },
+
   "tabs": {
     "bookings": "预约",
     "reviews": "评价",
     "favorites": "收藏",
-    "videos": "视频"
+    "videos": "视频",
+    "announcements": "公告"
   },
+
+  "announcements": {
+    "quota": "已使用 {used}/{max} 条公告",
+    "quotaFull": "配额已达上限",
+    "views": "{count} 次浏览",
+    "edit": "编辑",
+    "delete": "删除",
+    "deleteConfirm": "确定删除此公告？"
+  },
+
   "empty": {
     "bookings": "暂无预约",
     "reviews": "暂无评价",
-    "favorites": "暂无收藏"
+    "favorites": "暂无收藏",
+    "announcements": "暂无公告",
+    "announcementsCta": "发布公告"
   },
+
   "videos": {
     "retry": "重试",
-     "empty": "暂无视频"
+    "empty": "暂无视频"
   },
+
   "errors": {
     "saveFailed": "保存失败，请重试。",
     "invalidImage": "图片文件无效。",
     "imageTooLarge": "图片过大（最大 5 MB）。",
-    "uploadFailed": "图片上传失败，请重试。"
+    "uploadFailed": "图片上传失败，请重试。",
+    "announcementsLoadFailed": "无法加载公告",
+    "announcementDeleteFailed": "无法删除公告"
+  },
+
+  "publishOfferForm": {
+    "title": "发布招聘",
+    "editTitle": "编辑招聘",
+    "close": "关闭",
+    "cancel": "取消",
+    "save": "保存",
+    "saving": "保存中...",
+    "submit": "发布",
+    "submitting": "发布中...",
+
+    "fields": {
+      "jobType": "职位",
+      "jobTypePlaceholder": "选择职位",
+      "description": "描述",
+      "descriptionPlaceholder": "描述您的需求...",
+      "salary": "薪资",
+      "salaryHint": "最低 10,000 西非法郎",
+      "region": "地区",
+      "regionPlaceholder": "选择地区"
+    },
+
+    "errors": {
+      "optionsLoadFailed": "无法加载选项",
+      "jobTypeRequired": "请选择职位",
+      "regionRequired": "请选择地区",
+      "salaryMin": "最低薪资为 10,000 西非法郎",
+      "submitFailed": "发布失败"
+    }
   }
 },
   "TopToolbar": {

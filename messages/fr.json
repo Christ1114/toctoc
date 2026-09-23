@@ -102,87 +102,125 @@
       "invalidUrl": "Lien invalide (YouTube, Vimeo ou .mp4)"
     }
   },
- "ProfilePage": {
-  "socialNetworks": "Réseaux sociaux",
-  "social": {
-    "website": "Site web",
-    "instagram": "Instagram",
-    "facebook": "Facebook",
-    "tiktok": "TikTok",
-    "linkedin": "LinkedIn",
-    "youtube": "YouTube",
-    "twitter": "X (Twitter)"
-  },
-  "cropTitle": "Recadrer l'image",
-  "zoom": "Zoom",
-  "crop": "Recadrer",
-  "cropConfirm": "Valider",
-  "back": "Retour",
-  "unnamed": "Sans nom",
-  "notFound": "Profil introuvable",
-  "changePhoto": "Changer la photo",
-  "namePlaceholder": "Votre nom",
-  "editProfile": "Modifier le profil",
-  "settings": "Paramètres",
-  "share": "Partager",
-  "cancel": "Annuler",
-  "save": "Enregistrer",
-  "saving": "Enregistrement...",
-  "saved": "Profil mis à jour",
-  "bioPlaceholder": "Parlez-nous de vous...",
-  "noBio": "Aucune bio pour le moment",
-  "linkCopied": "Lien copié",
-  "agencyInfo": "Informations agence",
-  "companyName": "Nom de l'entreprise",
-  "companyNamePlaceholder": "Ex : Ma super agence",
-  "rccmNumber": "Numéro RCCM",
-  "rccmPlaceholder": "Ex : CI-ABJ-2024-B-12345",
-  "providerInfo": "Informations prestataire",
-  "providerType": "Type de prestation",
-  "hourlyRate": "Tarif horaire",
-  "select": "Sélectionner",
-  "contact": "Contact",
-  "verified": "Vérifié",
-  "addFavorite": "Ajouter aux favoris",
-  "removeFavorite": "Retirer des favoris",
-  "accountType": {
-    "CLIENT": "Client",
-    "PROVIDER": "Prestataire",
-    "ADMIN": "Administrateur"
-  },
-  "providerTypes": {
-    "BABYSITTER": "Baby-sitter",
-    "GARDE_PERISCOLAIRE": "Garde périscolaire",
-    "MENAGE": "Ménage",
-    "AIDE_PERSONNES_AGEES": "Aide aux personnes âgées",
-    "RESIDENTIEL": "Résidentiel (logé sur place)",
-    "COURT_TERME": "Court terme"
-  },
-  "tabs": {
-    "bookings": "Réservations",
-    "reviews": "Avis",
-    "favorites": "Favoris",
-    "videos": "Vidéos"
-  },
-  "empty": {
-    "bookings": "Aucune réservation pour le moment",
-    "reviews": "Aucun avis pour le moment",
-    "favorites": "Aucun favori pour le moment"
-  },
-  "videos": {
-    "retry": "Réessayer",
-    
-  "empty": "Aucune vidéo pour le moment"
+"ProfilePage": {
+    "back": "Retour",
+    "unnamed": "Sans nom",
+    "notFound": "Profil introuvable",
+    "saved": "Profil enregistré",
+    "save": "Enregistrer",
+    "saving": "Enregistrement...",
+    "cancel": "Annuler",
+    "editProfile": "Modifier le profil",
+    "settings": "Paramètres",
+    "share": "Partager",
+    "linkCopied": "Lien copié",
+    "changePhoto": "Changer la photo",
+    "namePlaceholder": "Votre nom",
+    "bioPlaceholder": "Parlez-nous de vous...",
+    "noBio": "Aucune bio",
+    "socialNetworks": "Réseaux sociaux",
+    "agencyInfo": "Informations de l'agence",
+    "companyName": "Nom de l'entreprise",
+    "companyNamePlaceholder": "Ex: Mon Agence",
+    "rccmNumber": "Numéro RCCM",
+    "rccmPlaceholder": "Ex: CI-ABJ-2024-B-12345",
+    "providerInfo": "Informations prestataire",
+    "providerType": "Type de prestataire",
+    "select": "Sélectionner",
+    "hourlyRate": "Tarif horaire",
+    "publishOffer": "Publier une offre",
+    "publishOfferShort": "Publier",
+    "publishService": "Publier un service",
+    "publishServiceShort": "Publier",
 
+    "tabs": {
+      "bookings": "Réservations",
+      "reviews": "Avis",
+      "favorites": "Favoris",
+      "announcements": "Annonces"
+    },
 
+    "accountType": {
+      "CLIENT": "Client",
+      "PROVIDER": "Prestataire",
+      "ADMIN": "Administrateur"
+    },
+
+    "providerTypes": {
+      "BABYSITTER": "Baby-sitter",
+      "GARDE_PERISCOLAIRE": "Garde périscolaire",
+      "MENAGE": "Ménage",
+      "AIDE_PERSONNES_AGEES": "Aide aux personnes âgées",
+      "RESIDENTIEL": "Résidentiel",
+      "COURT_TERME": "Court terme"
+    },
+
+    "social": {
+      "website": "Site web",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "tiktok": "TikTok",
+      "linkedin": "LinkedIn",
+      "youtube": "YouTube",
+      "twitter": "X (Twitter)"
+    },
+
+    "announcements": {
+      "quota": "{used}/{max} annonces utilisées",
+      "quotaFull": "Quota atteint",
+      "views": "{count} vue(s)",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "deleteConfirm": "Supprimer cette annonce ?"
+    },
+
+    "empty": {
+      "announcements": "Aucune annonce pour le moment",
+      "announcementsCta": "Publier une annonce",
+      "bookings": "Aucune réservation",
+      "reviews": "Aucun avis",
+      "favorites": "Aucun favori"
+    },
+
+    "errors": {
+      "announcementsLoadFailed": "Impossible de charger les annonces",
+      "announcementDeleteFailed": "Impossible de supprimer l'annonce",
+      "saveFailed": "Échec de l'enregistrement",
+      "invalidImage": "Fichier image invalide",
+      "imageTooLarge": "Image trop volumineuse (max 5 Mo)",
+      "uploadFailed": "Échec du téléchargement"
+    },
+
+    "publishOfferForm": {
+      "title": "Publier une offre",
+      "editTitle": "Modifier l'offre",
+      "close": "Fermer",
+      "cancel": "Annuler",
+      "save": "Enregistrer",
+      "saving": "Enregistrement...",
+      "submit": "Publier",
+      "submitting": "Publication...",
+
+      "fields": {
+        "jobType": "Poste",
+        "jobTypePlaceholder": "Sélectionner un poste",
+        "description": "Description",
+        "descriptionPlaceholder": "Décrivez votre besoin...",
+        "salary": "Salaire",
+        "salaryHint": "Minimum 10 000 FCFA",
+        "region": "Région",
+        "regionPlaceholder": "Sélectionner une région"
+      },
+
+      "errors": {
+        "optionsLoadFailed": "Impossible de charger les options",
+        "jobTypeRequired": "Veuillez sélectionner un poste",
+        "regionRequired": "Veuillez sélectionner une région",
+        "salaryMin": "Le salaire minimum est de 10 000 FCFA",
+        "submitFailed": "Échec de la publication"
+      }
+    }
   },
-  "errors": {
-    "saveFailed": "Échec de l'enregistrement. Réessaie.",
-    "invalidImage": "Fichier image invalide.",
-    "imageTooLarge": "Image trop lourde (max 5 Mo).",
-    "uploadFailed": "Échec de l'upload de la photo. Réessaie."
-  }
-},
   "TopToolbar": {
   "quickSearchPlaceholder": "Rechercher une ville...",
   "searching": "Recherche...",

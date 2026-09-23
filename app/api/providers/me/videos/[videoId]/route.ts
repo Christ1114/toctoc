@@ -19,12 +19,9 @@ const MAX_DESCRIPTION_LENGTH = 500;
 
 type RouteParams = { params: Promise<{ videoId: string }> };
 
-/**
- * Guard commun : rate limit + auth + vérifie que la vidéo appartient au user.
- * Retourne soit { error }, soit { session, video, limit }.
- */
+
 async function guard(req: NextRequest, videoId: string) {
-  // 1. Rate limit
+
   const ip = getClientIp(req.headers);
   const limit = await checkRateLimit(`my-video:${ip}`, RATE_MAX);
 
