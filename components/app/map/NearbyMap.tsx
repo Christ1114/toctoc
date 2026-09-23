@@ -586,7 +586,7 @@ export default function NearbyMap() {
     absolute z-40 bg-black/60 hover:bg-black/75 active:bg-black/90
     backdrop-blur-sm text-white rounded-lg shadow-md cursor-pointer
     transition-all touch-manipulation select-none
-    left-2 sm:left-3 md:left-4 lg:left-5
+    left-2 sm:left-5 md:left-4 lg:left-5
     top-[calc(50%+70px)]
     text-xs px-2.5 h-9 min-w-9
     sm:text-sm sm:px-3 sm:h-10 sm:min-w-10

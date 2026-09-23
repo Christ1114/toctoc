@@ -1,4 +1,6 @@
-
+/* ═══════════════════════════════════════════════════════════
+   TYPES
+   ═══════════════════════════════════════════════════════════ */
 
 export type CategoryIconName =
   | "baby"
@@ -14,9 +16,13 @@ export type CategoryIconName =
 export type CategoryConfig = {
   color: string;
   label: string;
-  icon: CategoryIconName;  
+  icon: CategoryIconName;
   position: number;
 };
+
+/* ═══════════════════════════════════════════════════════════
+   CONFIG UI (source de vérité pour l'affichage)
+   ═══════════════════════════════════════════════════════════ */
 
 export const CATEGORY_CONFIG: Record<string, CategoryConfig> = {
   GARDE_ENFANTS: { color: "#F5C542", label: "Garde d'enfants", icon: "baby",               position: 1 },
@@ -36,13 +42,69 @@ export const DEFAULT_CATEGORY = {
   position: 999,
 } as const satisfies CategoryConfig;
 
-const normalizeKey = (s: string) => s.trim().toUpperCase().replace(/[\s-]+/g, "_");
+/* ═══════════════════════════════════════════════════════════
+   MAPPING DB → TOOLBAR
+   ─────────────────────────────────────────────────────────
+   Les valeurs à gauche viennent de l'enum Prisma `ProviderType`.
+   Les valeurs à droite sont les clés de CATEGORY_CONFIG (UI).
+   ═══════════════════════════════════════════════════════════ */
 
-export function getCategoryConfig(category: string | null | undefined): CategoryConfig {
-  if (!category) return DEFAULT_CATEGORY;
-  const key = normalizeKey(category);
-  return CATEGORY_CONFIG[key] ?? { ...DEFAULT_CATEGORY, label: category };
+export const DB_TO_TOOLBAR: Record<string, string> = {
+  // Enum DB                     → Clé toolbar
+  BABYSITTER:                    "GARDE_ENFANTS",
+  GARDE_PERISCOLAIRE:            "GARDE_ENFANTS",
+  MENAGE:                        "MENAGE",
+  AIDE_PERSONNES_AGEES:          "AIDE_PERSONNE",
+  RESIDENTIEL:                   "GARDIENNAGE",
+  COURT_TERME:                   "MAJORDOME",
+
+  // Optionnel : si la DB contient aussi des valeurs "toolbar" brutes
+  GARDE_ENFANTS:                 "GARDE_ENFANTS",
+  AIDE_PERSONNE:                 "AIDE_PERSONNE",
+  CUISINE:                       "CUISINE",
+  CHAUFFEUR:                     "CHAUFFEUR",
+  JARDINAGE:                     "JARDINAGE",
+  GARDIENNAGE:                   "GARDIENNAGE",
+  MAJORDOME:                     "MAJORDOME",
+};
+
+/* ═══════════════════════════════════════════════════════════
+   HELPERS
+   ═══════════════════════════════════════════════════════════ */
+
+const normalizeKey = (s: string) =>
+  s.trim().toUpperCase().replace(/[\s-]+/g, "_");
+
+/**
+ * Convertit une valeur DB (enum) en clé toolbar.
+ * Fallback : la valeur normalisée elle-même.
+ */
+export function getToolbarKeyFromDbCategory(
+  dbCategory: string | null | undefined,
+): string | null {
+  if (!dbCategory) return null;
+  const key = normalizeKey(dbCategory);
+  return DB_TO_TOOLBAR[key] ?? key;
 }
+
+/**
+ * Récupère la config d'affichage (couleur, label, icône).
+ * Accepte indifféremment une valeur DB ou une clé toolbar.
+ */
+export function getCategoryConfig(
+  category: string | null | undefined,
+): CategoryConfig {
+  if (!category) return DEFAULT_CATEGORY;
+  const toolbarKey = getToolbarKeyFromDbCategory(category);
+  if (!toolbarKey) return DEFAULT_CATEGORY;
+  return (
+    CATEGORY_CONFIG[toolbarKey] ?? { ...DEFAULT_CATEGORY, label: category }
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   EXPORTS POUR LE TOOLBAR
+   ═══════════════════════════════════════════════════════════ */
 
 export type ToolbarCategory = CategoryConfig & { key: string; slug: string };
 
