@@ -116,7 +116,7 @@ type AnnouncementsQuota = {
   remaining: number;
 };
 
-export default function ProviderPrivateProfilePage() {
+export default function ProviderPrivateProfilePageT() {
   const t = useTranslations("ProfilePage");
   const locale = useLocale();
   const router = useRouter();
