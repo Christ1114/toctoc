@@ -51,7 +51,7 @@ export async function GET(
 async function guard(req: NextRequest) {
 
   const ip = getClientIp(req.headers);
-  const limit = checkRateLimit(`favorite:${ip}`, RATE_MAX);
+  const limit = await checkRateLimit(`favorite:${ip}`, RATE_MAX);
 
   if (!limit.allowed) {
     return {

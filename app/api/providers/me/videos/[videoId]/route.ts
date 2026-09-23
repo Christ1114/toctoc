@@ -26,7 +26,7 @@ type RouteParams = { params: Promise<{ videoId: string }> };
 async function guard(req: NextRequest, videoId: string) {
   // 1. Rate limit
   const ip = getClientIp(req.headers);
-  const limit = checkRateLimit(`my-video:${ip}`, RATE_MAX);
+  const limit = await checkRateLimit(`my-video:${ip}`, RATE_MAX);
 
   if (!limit.allowed) {
     return {

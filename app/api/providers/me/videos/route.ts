@@ -23,7 +23,7 @@ const MAX_DESCRIPTION_LENGTH = 500;
 export async function GET(req: NextRequest) {
   try {
     const ip = getClientIp(req.headers);
-    const limit = checkRateLimit(`my-videos-get:${ip}`, 60);
+    const limit = await checkRateLimit(`my-videos-get:${ip}`, 60);
     if (!limit.allowed) {
       return NextResponse.json(
         { error: "Trop de requêtes" },
@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
   try {
   
     const ip = getClientIp(req.headers);
-    const limit = checkRateLimit(`my-videos-post:${ip}`, RATE_MAX);
+    const limit = await checkRateLimit(`my-videos-post:${ip}`, RATE_MAX);
     if (!limit.allowed) {
       return NextResponse.json(
         { error: "Trop de requêtes. Réessayez plus tard." },

@@ -18,7 +18,7 @@ export async function GET(
 ) {
   try {
     const ip = getClientIp(req.headers);
-    const limit = checkRateLimit(`videos:${ip}`, RATE_MAX);
+    const limit =await  checkRateLimit(`videos:${ip}`, RATE_MAX);
 
     if (!limit.allowed) {
       return NextResponse.json(
