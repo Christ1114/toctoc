@@ -150,6 +150,23 @@
   "publishService": "Publish a service",
   "publishServiceShort": "Publish",
 
+  "title": "Publish an offer",
+  "editTitle": "Edit offer",
+  "close": "Close",
+  "submit": "Publish",
+  "submitting": "Publishing...",
+
+  "fields": {
+    "jobType": "Position",
+    "jobTypePlaceholder": "Select a position",
+    "description": "Description",
+    "descriptionPlaceholder": "Describe your need...",
+    "salary": "Salary",
+    "salaryHint": "Minimum 10,000 FCFA",
+    "region": "Region",
+    "regionPlaceholder": "Select a region"
+  },
+
   "accountType": {
     "CLIENT": "Client",
     "PROVIDER": "Provider",
@@ -201,37 +218,13 @@
     "imageTooLarge": "Image must be smaller than 5 MB",
     "uploadFailed": "Failed to upload image",
     "announcementsLoadFailed": "Could not load announcements",
-    "announcementDeleteFailed": "Could not delete announcement"
-  },
+    "announcementDeleteFailed": "Could not delete announcement",
 
-  "publishOfferForm": {
-    "title": "Publish an offer",
-    "editTitle": "Edit offer",
-    "close": "Close",
-    "cancel": "Cancel",
-    "save": "Save",
-    "saving": "Saving...",
-    "submit": "Publish",
-    "submitting": "Publishing...",
-
-    "fields": {
-      "jobType": "Position",
-      "jobTypePlaceholder": "Select a position",
-      "description": "Description",
-      "descriptionPlaceholder": "Describe your need...",
-      "salary": "Salary",
-      "salaryHint": "Minimum 10,000 FCFA",
-      "region": "Region",
-      "regionPlaceholder": "Select a region"
-    },
-
-    "errors": {
-      "optionsLoadFailed": "Could not load options",
-      "jobTypeRequired": "Please select a position",
-      "regionRequired": "Please select a region",
-      "salaryMin": "Minimum salary is 10,000 FCFA",
-      "submitFailed": "Failed to publish"
-    }
+    "optionsLoadFailed": "Could not load options",
+    "jobTypeRequired": "Please select a position",
+    "regionRequired": "Please select a region",
+    "salaryMin": "Minimum salary is 10,000 FCFA",
+    "submitFailed": "Failed to publish"
   }
 },
   "TopToolbar": {

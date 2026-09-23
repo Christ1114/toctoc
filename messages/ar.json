@@ -150,6 +150,23 @@
   "publishService": "نشر خدمة",
   "publishServiceShort": "نشر",
 
+  "title": "نشر عرض",
+  "editTitle": "تعديل العرض",
+  "close": "إغلاق",
+  "submit": "نشر",
+  "submitting": "جارٍ النشر...",
+
+  "fields": {
+    "jobType": "الوظيفة",
+    "jobTypePlaceholder": "اختر وظيفة",
+    "description": "الوصف",
+    "descriptionPlaceholder": "صف احتياجك...",
+    "salary": "الراتب",
+    "salaryHint": "الحد الأدنى 10,000 فرنك أفريقي",
+    "region": "المنطقة",
+    "regionPlaceholder": "اختر منطقة"
+  },
+
   "accountType": {
     "CLIENT": "عميل",
     "PROVIDER": "مقدم خدمة",
@@ -201,37 +218,13 @@
     "imageTooLarge": "الصورة كبيرة جدًا (الحد الأقصى 5 ميغابايت).",
     "uploadFailed": "فشل رفع الصورة. حاول مرة أخرى.",
     "announcementsLoadFailed": "تعذّر تحميل الإعلانات",
-    "announcementDeleteFailed": "تعذّر حذف الإعلان"
-  },
+    "announcementDeleteFailed": "تعذّر حذف الإعلان",
 
-  "publishOfferForm": {
-    "title": "نشر عرض",
-    "editTitle": "تعديل العرض",
-    "close": "إغلاق",
-    "cancel": "إلغاء",
-    "save": "حفظ",
-    "saving": "جارٍ الحفظ...",
-    "submit": "نشر",
-    "submitting": "جارٍ النشر...",
-
-    "fields": {
-      "jobType": "الوظيفة",
-      "jobTypePlaceholder": "اختر وظيفة",
-      "description": "الوصف",
-      "descriptionPlaceholder": "صف احتياجك...",
-      "salary": "الراتب",
-      "salaryHint": "الحد الأدنى 10,000 فرنك أفريقي",
-      "region": "المنطقة",
-      "regionPlaceholder": "اختر منطقة"
-    },
-
-    "errors": {
-      "optionsLoadFailed": "تعذّر تحميل الخيارات",
-      "jobTypeRequired": "يرجى اختيار وظيفة",
-      "regionRequired": "يرجى اختيار منطقة",
-      "salaryMin": "الحد الأدنى للراتب هو 10,000 فرنك أفريقي",
-      "submitFailed": "فشل النشر"
-    }
+    "optionsLoadFailed": "تعذّر تحميل الخيارات",
+    "jobTypeRequired": "يرجى اختيار وظيفة",
+    "regionRequired": "يرجى اختيار منطقة",
+    "salaryMin": "الحد الأدنى للراتب هو 10,000 فرنك أفريقي",
+    "submitFailed": "فشل النشر"
   }
 },
   "TopToolbar": {

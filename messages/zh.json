@@ -150,6 +150,23 @@
   "publishService": "发布服务",
   "publishServiceShort": "发布",
 
+  "title": "发布招聘",
+  "editTitle": "编辑招聘",
+  "close": "关闭",
+  "submit": "发布",
+  "submitting": "发布中...",
+
+  "fields": {
+    "jobType": "职位",
+    "jobTypePlaceholder": "选择职位",
+    "description": "描述",
+    "descriptionPlaceholder": "描述您的需求...",
+    "salary": "薪资",
+    "salaryHint": "最低 10,000 西非法郎",
+    "region": "地区",
+    "regionPlaceholder": "选择地区"
+  },
+
   "accountType": {
     "CLIENT": "客户",
     "PROVIDER": "服务者",
@@ -201,37 +218,13 @@
     "imageTooLarge": "图片过大（最大 5 MB）。",
     "uploadFailed": "图片上传失败，请重试。",
     "announcementsLoadFailed": "无法加载公告",
-    "announcementDeleteFailed": "无法删除公告"
-  },
+    "announcementDeleteFailed": "无法删除公告",
 
-  "publishOfferForm": {
-    "title": "发布招聘",
-    "editTitle": "编辑招聘",
-    "close": "关闭",
-    "cancel": "取消",
-    "save": "保存",
-    "saving": "保存中...",
-    "submit": "发布",
-    "submitting": "发布中...",
-
-    "fields": {
-      "jobType": "职位",
-      "jobTypePlaceholder": "选择职位",
-      "description": "描述",
-      "descriptionPlaceholder": "描述您的需求...",
-      "salary": "薪资",
-      "salaryHint": "最低 10,000 西非法郎",
-      "region": "地区",
-      "regionPlaceholder": "选择地区"
-    },
-
-    "errors": {
-      "optionsLoadFailed": "无法加载选项",
-      "jobTypeRequired": "请选择职位",
-      "regionRequired": "请选择地区",
-      "salaryMin": "最低薪资为 10,000 西非法郎",
-      "submitFailed": "发布失败"
-    }
+    "optionsLoadFailed": "无法加载选项",
+    "jobTypeRequired": "请选择职位",
+    "regionRequired": "请选择地区",
+    "salaryMin": "最低薪资为 10,000 西非法郎",
+    "submitFailed": "发布失败"
   }
 },
   "TopToolbar": {
