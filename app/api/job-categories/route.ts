@@ -12,12 +12,12 @@ import { getAllCategoryConfigs } from "@/app/lib/jobs/category-colors";
    ═══════════════════════════════════════════════════════════ */
 
 export const runtime = "edge";
-export const revalidate = 86_400; // 24h
+// ⚠️ revalidate retiré : ignoré quand Cache-Control est défini manuellement
 
-// ✅ Headers statiques → pas de recalcul par requête
 const CACHE_HEADERS = {
   "Cache-Control": "public, max-age=86400, stale-while-revalidate=604800",
   "CDN-Cache-Control": "public, max-age=86400, stale-while-revalidate=604800",
+  "Vercel-CDN-Cache-Control": "public, max-age=86400, stale-while-revalidate=604800",
 } as const;
 
 export async function GET() {
@@ -29,14 +29,13 @@ export async function GET() {
       { headers: CACHE_HEADERS },
     );
   } catch (error) {
-    // ✅ Log uniquement en dev (pas de bruit en prod)
     if (process.env.NODE_ENV === "development") {
       console.error("[job-categories] error", error);
     }
     // TODO: Sentry.captureException(error)
 
     return NextResponse.json(
-      { error: "Erreur serveur", categories: [] },
+      { error: "Erreur serveur", categories: [], count: 0 },
       { status: 500 },
     );
   }
