@@ -177,10 +177,16 @@ model Announcement {
   id   String      @id @default(cuid())
   type ListingType
 
-  source   Source @relation(fields: [sourceId], references: [id])
-  sourceId String
+  // ✅ Source optionnelle : les annonces créées par un utilisateur
+  // n'ont pas de source externe (scraper). Les annonces scrapées, elles,
+  // continuent de pointer vers leur Source.
+  source   Source? @relation(fields: [sourceId], references: [id])
+  sourceId String?
 
-  externalId String
+  // ✅ externalId optionnel : utile pour les scrapers (dédup), inutile
+  // pour les annonces user-generated. La contrainte unique composite
+  // tolère les NULL en Postgres (plusieurs NULL coexistent).
+  externalId String?
 
   title       String
   description String? @db.Text
@@ -189,6 +195,7 @@ model Announcement {
   salaryMax    Decimal?      @db.Decimal(10, 2)
   salaryPeriod SalaryPeriod?
   salaryRaw    String?
+   isUserGenerated Boolean @default(false)
 
   isUrgent Boolean @default(false)
 
@@ -216,6 +223,9 @@ model Announcement {
   region   Region? @relation(fields: [regionId], references: [id])
   regionId String?
 
+  // ⚠️ jobTypeId reste obligatoire : c'est la clé de catégorisation
+  // pour la recherche. Le formulaire doit donc inclure un sélecteur
+  // de JobType. Si tu veux le rendre optionnel aussi, dis-le-moi.
   jobType   JobType @relation(fields: [jobTypeId], references: [id])
   jobTypeId String
 
@@ -228,8 +238,14 @@ model Announcement {
   url      String?
   rawData  Json?
 
+  // ✅ Lien vers le compte créateur (déjà optionnel, inchangé)
   userId String?
   user   User?   @relation(fields: [userId], references: [id])
+
+  // ✅ NOUVEAU : distingue les annonces créées par un utilisateur
+  // de celles scrapées. Utile pour filtrer, modérer, ou afficher
+  // un badge "Annonce utilisateur" dans l'UI.
+
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -243,6 +259,7 @@ model Announcement {
   @@index([isFeatured])
   @@index([language])
   @@index([userId])
+  @@index([isUserGenerated])  
   @@map("announcements")
 }
 
@@ -281,7 +298,7 @@ model User {
   phoneCountryCode String? @default("+225")
 
   phoneVerified Boolean @default(false)
-  password      String?
+  password      String? 
   image         String?
   accountType   Role    @default(CLIENT)
 
@@ -600,8 +617,8 @@ model VerifiedPhone {
 }
 
 model RateLimit {
-  id          String @id @default(uuid())
-  key         String
+  id          String @id @default(uuid()) 
+  key         String  @unique
   count       Int
   lastRequest BigInt @map("last_request")
 

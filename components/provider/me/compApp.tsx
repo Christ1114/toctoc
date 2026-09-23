@@ -24,12 +24,18 @@ import {
   YoutubeLogoIcon,
   XLogoIcon,
   EyeIcon,
+  PlusIcon,
+  PencilSimpleIcon,
+  TrashIcon,
+  MegaphoneIcon,
+  MapPinIcon,
 } from "@phosphor-icons/react";
 import { orbitron } from "@/fonts/font";
 import { updateUser } from "@/app/lib/auth-client";
 import { useSession } from "@/app/context/SessionContext";
 import SettingsPopover from "@/components/app/utils/settingsPopover";
-import ImageCropModal from "@/components/app/profile/ImageCropModal"; 
+import ImageCropModal from "@/components/app/profile/ImageCropModal";
+import ProviderPublishServiceForm from "@/components/app/ProviderPublishServiceForm";
 import { isSafeUrl } from "@/app/lib/security/url-validation";
 
 type ProviderType =
@@ -85,7 +91,30 @@ type Stats = {
   averageRating: number | null;
 };
 
-type TabKey = "bookings" | "reviews" | "videos";
+type TabKey = "bookings" | "reviews" | "videos" | "announcements";
+
+type MyAnnouncement = {
+  id: string;
+  type: "OFFER" | "PROFILE";
+  title: string;
+  description: string | null;
+  salaryMin: number | null;
+  salaryPeriod: string | null;
+  city: string | null;
+  isUrgent: boolean;
+  viewCount: number;
+  postedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  jobType: { id: string; name: string; slug: string } | null;
+  region: { id: string; name: string; slug: string } | null;
+};
+
+type AnnouncementsQuota = {
+  used: number;
+  max: number;
+  remaining: number;
+};
 
 export default function ProviderPrivateProfilePage() {
   const t = useTranslations("ProfilePage");
@@ -108,6 +137,15 @@ export default function ProviderPrivateProfilePage() {
   const [success, setSuccess] = useState<string | null>(null);
   const [form, setForm] = useState<Partial<ProviderUser>>({});
 
+  // ─── Annonces / services publiés ───
+  const [myAnnouncements, setMyAnnouncements] = useState<MyAnnouncement[]>([]);
+  const [announcementsLoading, setAnnouncementsLoading] = useState(false);
+  const [announcementsError, setAnnouncementsError] = useState<string | null>(null);
+  const [announcementsQuota, setAnnouncementsQuota] = useState<AnnouncementsQuota | null>(null);
+  const [publishServiceModalOpen, setPublishServiceModalOpen] = useState(false);
+  const [editingService, setEditingService] = useState<MyAnnouncement | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
   // ─── Hydratation depuis la session ───
   useEffect(() => {
     if (sessionLoading) return;
@@ -118,7 +156,7 @@ export default function ProviderPrivateProfilePage() {
   useEffect(() => {
     if (sessionLoading || !user) return;
     if (user.accountType !== "PROVIDER") {
-      router.replace("/profile"); // ou /client/me si tu préfères
+      router.replace("/profile");
     }
   }, [user, sessionLoading, router]);
 
@@ -129,6 +167,64 @@ export default function ProviderPrivateProfilePage() {
       .then((d) => d && setStats(d))
       .catch(() => {});
   }, []);
+
+  // ─── Charger les annonces ───
+  const loadMyAnnouncements = async () => {
+    if (!user) return;
+    setAnnouncementsLoading(true);
+    setAnnouncementsError(null);
+    try {
+      const res = await fetch("/api/announcements/mine?limit=50");
+      if (!res.ok) throw new Error("load failed");
+      const data = await res.json();
+      setMyAnnouncements(data.announcements || []);
+      setAnnouncementsQuota(data.quota || null);
+    } catch (err) {
+      console.error("Erreur chargement annonces:", err);
+      setAnnouncementsError(t("errors.announcementsLoadFailed"));
+    } finally {
+      setAnnouncementsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!user) return;
+    if (user.accountType === "PROVIDER") {
+      loadMyAnnouncements();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
+
+  const handleDeleteAnnouncement = async (id: string) => {
+    if (!window.confirm(t("announcements.deleteConfirm"))) return;
+    setDeletingId(id);
+    try {
+      const res = await fetch(`/api/announcements/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("delete failed");
+      setMyAnnouncements((prev) => prev.filter((a) => a.id !== id));
+      loadMyAnnouncements();
+    } catch (err) {
+      console.error(err);
+      setAnnouncementsError(t("errors.announcementDeleteFailed"));
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
+  const handleOpenPublishService = () => {
+    setEditingService(null);
+    setPublishServiceModalOpen(true);
+  };
+
+  const handleOpenEdit = (announcement: MyAnnouncement) => {
+    setEditingService(announcement);
+    setPublishServiceModalOpen(true);
+  };
+
+  const handleClosePublishServiceModal = () => {
+    setPublishServiceModalOpen(false);
+    setEditingService(null);
+  };
 
   const startEditing = () => {
     if (!user) return;
@@ -285,6 +381,12 @@ export default function ProviderPrivateProfilePage() {
     { key: "bookings", icon: CalendarCheckIcon, label: t("tabs.bookings"), count: stats?.bookingsCount ?? 0 },
     { key: "reviews", icon: StarIcon, label: t("tabs.reviews"), count: stats?.reviewsCount ?? 0 },
     { key: "videos", icon: VideoCameraIcon, label: t("tabs.videos"), count: stats?.videosCount ?? 0 },
+    {
+      key: "announcements",
+      icon: MegaphoneIcon,
+      label: t("tabs.announcements"),
+      count: myAnnouncements.length,
+    },
   ];
 
   return (
@@ -365,6 +467,17 @@ export default function ProviderPrivateProfilePage() {
             <div className="flex items-center justify-center sm:justify-start gap-2 mt-3 sm:mt-4 flex-wrap">
               {!editing ? (
                 <>
+                  {/* ✅ Bouton Publier un service */}
+                  <button
+                    onClick={handleOpenPublishService}
+                    disabled={announcementsQuota?.remaining === 0}
+                    className={`flex items-center gap-1.5 h-9 sm:h-10 px-4 rounded-lg bg-[#432dd7] hover:bg-[#432dd7]/90 text-xs sm:text-sm text-white cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${orbitron.className}`}
+                  >
+                    <PlusIcon size={14} weight="bold" />
+                    <span className="hidden sm:inline">{t("publishService")}</span>
+                    <span className="sm:hidden">{t("publishServiceShort")}</span>
+                  </button>
+
                   <button
                     onClick={startEditing}
                     className={`h-9 sm:h-10 px-4 rounded-lg bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/15 text-xs sm:text-sm text-gray-900 dark:text-white/90 cursor-pointer transition-colors ${orbitron.className}`}
@@ -372,7 +485,6 @@ export default function ProviderPrivateProfilePage() {
                     {t("editProfile")}
                   </button>
 
-                  {/* Voir mon profil public */}
                   <button
                     onClick={() => router.push(`/provider/${user.id}`)}
                     className={`flex items-center gap-1.5 h-9 sm:h-10 px-3 rounded-lg bg-[#432dd7]/10 text-[#432dd7] hover:bg-[#432dd7]/20 text-xs sm:text-sm cursor-pointer transition-colors ${orbitron.className}`}
@@ -549,28 +661,157 @@ export default function ProviderPrivateProfilePage() {
           ))}
         </div>
 
-        {/* ═══ ÉTAT VIDE ═══ */}
-        <div className="py-10 sm:py-14 flex flex-col items-center justify-center text-center px-4">
-          {activeTab === "bookings" && (
-            <>
-              <CalendarCheckIcon size={32} className="text-gray-300 dark:text-white/20 mb-2" />
-              <p className={`text-xs sm:text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}>{t("empty.bookings")}</p>
-            </>
-          )}
-          {activeTab === "reviews" && (
-            <>
-              <StarIcon size={32} className="text-gray-300 dark:text-white/20 mb-2" />
-              <p className={`text-xs sm:text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}>{t("empty.reviews")}</p>
-            </>
-          )}
-          {activeTab === "videos" && (
-            <>
-              <VideoCameraIcon size={32} className="text-gray-300 dark:text-white/20 mb-2" />
-              <p className={`text-xs sm:text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}>{t("empty.videos")}</p>
-            </>
-          )}
-        </div>
+        {/* ═══ CONTENU DES ONGLETS ═══ */}
+        {activeTab === "announcements" ? (
+          <div className="pt-4 sm:pt-5">
+            {announcementsQuota && (
+              <div className="flex items-center justify-between mb-4 px-1">
+                <p className={`text-xs text-gray-500 dark:text-white/40 ${orbitron.className}`}>
+                  {t("announcements.quota", {
+                    used: announcementsQuota.used,
+                    max: announcementsQuota.max,
+                  })}
+                </p>
+                {announcementsQuota.remaining === 0 && (
+                  <span className={`text-[10px] px-2 py-0.5 rounded-md bg-red-50 text-red-500 dark:bg-red-500/10 dark:text-red-400 ${orbitron.className}`}>
+                    {t("announcements.quotaFull")}
+                  </span>
+                )}
+              </div>
+            )}
+
+            {announcementsLoading && (
+              <div className="flex items-center justify-center py-10">
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-black/30 dark:border-white/30" />
+              </div>
+            )}
+
+            {!announcementsLoading && announcementsError && (
+              <p className={`text-sm text-red-500 dark:text-red-400/80 text-center py-8 ${orbitron.className}`}>
+                {announcementsError}
+              </p>
+            )}
+
+            {!announcementsLoading && !announcementsError && myAnnouncements.length === 0 && (
+              <div className="py-10 sm:py-14 flex flex-col items-center justify-center text-center px-4">
+                <MegaphoneIcon size={32} className="text-gray-300 dark:text-white/20 mb-2" />
+                <p className={`text-xs sm:text-sm text-gray-400 dark:text-white/40 mb-4 ${orbitron.className}`}>
+                  {t("empty.announcements")}
+                </p>
+                <button
+                  onClick={handleOpenPublishService}
+                  className={`flex items-center gap-1.5 h-10 px-4 rounded-lg bg-[#432dd7] hover:bg-[#432dd7]/90 text-sm text-white cursor-pointer transition-colors ${orbitron.className}`}
+                >
+                  <PlusIcon size={14} weight="bold" />
+                  {t("empty.announcementsCta")}
+                </button>
+              </div>
+            )}
+
+            {!announcementsLoading && !announcementsError && myAnnouncements.length > 0 && (
+              <ul className="flex flex-col gap-3">
+                {myAnnouncements.map((a) => (
+                  <li
+                    key={a.id}
+                    className="rounded-xl border border-gray-100 dark:border-white/5 p-4 hover:border-gray-200 dark:hover:border-white/10 transition-colors"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <h3 className={`text-sm sm:text-base font-semibold text-gray-900 dark:text-white/90 truncate ${orbitron.className}`}>
+                          {a.title}
+                        </h3>
+                        <div className="flex items-center gap-3 mt-1.5 flex-wrap">
+                          {a.jobType && (
+                            <span className={`text-xs text-gray-500 dark:text-white/40 ${orbitron.className}`}>
+                              {a.jobType.name}
+                            </span>
+                          )}
+                          {a.city && (
+                            <span className={`flex items-center gap-1 text-xs text-gray-500 dark:text-white/40 ${orbitron.className}`}>
+                              <MapPinIcon size={12} />
+                              {a.city}
+                            </span>
+                          )}
+                          {a.salaryMin != null && (
+                            <span className={`text-xs text-[#432dd7] dark:text-[#432dd7]/90 font-medium ${orbitron.className}`}>
+                              {a.salaryMin.toLocaleString()} FCFA
+                              {a.salaryPeriod === "HEURE" && "/h"}
+                              {a.salaryPeriod === "JOUR" && "/j"}
+                              {a.salaryPeriod === "SEMAINE" && "/sem"}
+                              {a.salaryPeriod === "MOIS" && "/mois"}
+                            </span>
+                          )}
+                          <span className={`flex items-center gap-1 text-xs text-gray-400 dark:text-white/30 ${orbitron.className}`}>
+                            <EyeIcon size={12} />
+                            {t("announcements.views", { count: a.viewCount })}
+                          </span>
+                        </div>
+                        {a.description && (
+                          <p className={`text-xs text-gray-500 dark:text-white/40 mt-2 line-clamp-2 ${orbitron.className}`}>
+                            {a.description}
+                          </p>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <button
+                          onClick={() => handleOpenEdit(a)}
+                          className="h-8 w-8 rounded-lg bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/15 flex items-center justify-center text-gray-700 dark:text-white/70 cursor-pointer transition-colors"
+                          aria-label={t("announcements.edit")}
+                          title={t("announcements.edit")}
+                        >
+                          <PencilSimpleIcon size={14} />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteAnnouncement(a.id)}
+                          disabled={deletingId === a.id}
+                          className="h-8 w-8 rounded-lg bg-red-50 dark:bg-red-500/10 hover:bg-red-100 dark:hover:bg-red-500/20 flex items-center justify-center text-red-500 cursor-pointer transition-colors disabled:opacity-40"
+                          aria-label={t("announcements.delete")}
+                          title={t("announcements.delete")}
+                        >
+                          {deletingId === a.id ? (
+                            <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-red-500" />
+                          ) : (
+                            <TrashIcon size={14} />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ) : (
+          <div className="py-10 sm:py-14 flex flex-col items-center justify-center text-center px-4">
+            {activeTab === "bookings" && (
+              <>
+                <CalendarCheckIcon size={32} className="text-gray-300 dark:text-white/20 mb-2" />
+                <p className={`text-xs sm:text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}>{t("empty.bookings")}</p>
+              </>
+            )}
+            {activeTab === "reviews" && (
+              <>
+                <StarIcon size={32} className="text-gray-300 dark:text-white/20 mb-2" />
+                <p className={`text-xs sm:text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}>{t("empty.reviews")}</p>
+              </>
+            )}
+            {activeTab === "videos" && (
+              <>
+                <VideoCameraIcon size={32} className="text-gray-300 dark:text-white/20 mb-2" />
+                <p className={`text-xs sm:text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}>{t("empty.videos")}</p>
+              </>
+            )}
+          </div>
+        )}
       </div>
+
+      {/* ═══ MODALES ═══ */}
+      <ProviderPublishServiceForm
+        open={publishServiceModalOpen}
+        onClose={handleClosePublishServiceModal}
+        onSuccess={loadMyAnnouncements}
+        service={editingService}
+      />
 
       <SettingsPopover open={settingsOpen} onClose={() => setSettingsOpen(false)} />
 

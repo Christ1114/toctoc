@@ -4,6 +4,8 @@ import { auth } from "@/app/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { ProviderType, type Prisma } from "@/generated/prisma/client";
 
+const normalizeType = (s: string) => s.toLowerCase().replace(/[\s-]/g, "");
+
 export async function GET(request: NextRequest) {
   try {
     const session = await auth.api.getSession({
@@ -53,11 +55,13 @@ export async function GET(request: NextRequest) {
     const searchType = user.accountType;
 
     // === RECHERCHE POUR LES CLIENTS ===
-    // - CLIENT individuel : toutes les annonces (missions ET offres de service), sans filtre de type.
-    // - CLIENT agence : toutes les annonces + profils de prestataires.
+    // ✅ Tous les clients (particulier OU agence) voient désormais :
+    //    - les annonces (missions + offres de service)
+    //    - les profils de prestataires actifs
+    // Auparavant, seules les agences voyaient les profils : c'était
+    // la cause du "aucun résultat" quand on cherchait un prestataire
+    // fraîchement inscrit.
     if (user.accountType === "CLIENT") {
-      const isAgency = user.clientType === "AGENCY";
-
       const announcementWhere: Prisma.AnnouncementWhereInput = {
         OR: [
           { title: { contains: query, mode: "insensitive" } },
@@ -80,8 +84,6 @@ export async function GET(request: NextRequest) {
             },
           },
         ],
-        // Pas de filtre "type: OFFER" ici : un client individuel ou agence
-        // doit voir toutes les annonces, quel que soit leur type.
       };
 
       const announcementSelect = {
@@ -125,29 +127,30 @@ export async function GET(request: NextRequest) {
         },
       } satisfies Prisma.AnnouncementSelect;
 
-      if (isAgency) {
-        // Agence : on partage la limite entre annonces et profils pour garder
-        // un total raisonnable de résultats affichés (ex: 8 -> 4 + 4).
-        const halfLimit = Math.max(Math.ceil(limit / 2), 1);
+      // ✅ On partage la limite entre annonces et profils (ex: 8 -> 4 + 4)
+      const halfLimit = Math.max(Math.ceil(limit / 2), 1);
 
-        const matchingProviderTypes = Object.values(ProviderType).filter((type) =>
-          type.toLowerCase().includes(query.toLowerCase())
-        );
+      // ✅ Comparaison normalisée : "baby-sitting" matche "BABYSITTER"
+      const normalizedQuery = normalizeType(query);
+      const matchingProviderTypes = Object.values(ProviderType).filter((type) =>
+        normalizeType(type).includes(normalizedQuery)
+      );
 
-        const providerWhere: Prisma.UserWhereInput = {
-          accountType: "PROVIDER",
-          isActive: true,
-          OR: [
-            { name: { contains: query, mode: "insensitive" } },
-            { bio: { contains: query, mode: "insensitive" } },
-            { lastKnownRegion: { contains: query, mode: "insensitive" } },
-            ...(matchingProviderTypes.length > 0
-              ? [{ providerType: { in: matchingProviderTypes } }]
-              : []),
-          ],
-        };
+      const providerWhere: Prisma.UserWhereInput = {
+        accountType: "PROVIDER",
+        isActive: true,
+        OR: [
+          { name: { contains: query, mode: "insensitive" } },
+          { bio: { contains: query, mode: "insensitive" } },
+          { lastKnownRegion: { contains: query, mode: "insensitive" } },
+          ...(matchingProviderTypes.length > 0
+            ? [{ providerType: { in: matchingProviderTypes } }]
+            : []),
+        ],
+      };
 
-        const [announcements, providers, announcementCount, providerCount] = await Promise.all([
+      const [announcements, providers, announcementCount, providerCount] =
+        await Promise.all([
           prisma.announcement.findMany({
             where: announcementWhere,
             take: halfLimit,
@@ -185,31 +188,11 @@ export async function GET(request: NextRequest) {
           prisma.user.count({ where: providerWhere }),
         ]);
 
-        results = [
-          ...announcements.map((a) => ({ ...a, resultType: "JOB" as const })),
-          ...providers.map((p) => ({ ...p, resultType: "PROFILE" as const })),
-        ];
-        total = announcementCount + providerCount;
-      } else {
-        // Client individuel : uniquement les annonces, mais toutes (pas de filtre de type)
-        const [announcements, count] = await Promise.all([
-          prisma.announcement.findMany({
-            where: announcementWhere,
-            take: limit,
-            skip,
-            orderBy: [
-              { isFeatured: "desc" },
-              { isUrgent: "desc" },
-              { postedAt: "desc" },
-            ],
-            select: announcementSelect,
-          }),
-          prisma.announcement.count({ where: announcementWhere }),
-        ]);
-
-        results = announcements.map((a) => ({ ...a, resultType: "JOB" as const }));
-        total = count;
-      }
+      results = [
+        ...announcements.map((a) => ({ ...a, resultType: "JOB" as const })),
+        ...providers.map((p) => ({ ...p, resultType: "PROFILE" as const })),
+      ];
+      total = announcementCount + providerCount;
     }
 
     // === RECHERCHE POUR LES PRESTATAIRES (inchangé) ===
@@ -298,7 +281,7 @@ export async function GET(request: NextRequest) {
       total = count;
     }
 
-    // === RECHERCHE POUR LES ADMIN (inchangé, déjà avec resultType) ===
+    // === RECHERCHE POUR LES ADMIN (inchangé) ===
     else if (user.accountType === "ADMIN") {
       const announcementWhere: Prisma.AnnouncementWhereInput = {
         OR: [
@@ -321,42 +304,43 @@ export async function GET(request: NextRequest) {
         ],
       };
 
-      const [announcements, providers, announcementCount, providerCount] = await Promise.all([
-        prisma.announcement.findMany({
-          where: announcementWhere,
-          take: Math.ceil(limit / 2),
-          orderBy: { postedAt: "desc" },
-          select: {
-            id: true,
-            type: true,
-            title: true,
-            description: true,
-            city: true,
-            isUrgent: true,
-            isVerified: true,
-            postedAt: true,
-            jobType: {
-              select: { id: true, name: true },
+      const [announcements, providers, announcementCount, providerCount] =
+        await Promise.all([
+          prisma.announcement.findMany({
+            where: announcementWhere,
+            take: Math.ceil(limit / 2),
+            orderBy: { postedAt: "desc" },
+            select: {
+              id: true,
+              type: true,
+              title: true,
+              description: true,
+              city: true,
+              isUrgent: true,
+              isVerified: true,
+              postedAt: true,
+              jobType: {
+                select: { id: true, name: true },
+              },
             },
-          },
-        }),
-        prisma.user.findMany({
-          where: userWhere,
-          take: Math.ceil(limit / 2),
-          orderBy: { createdAt: "desc" },
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            accountType: true,
-            providerType: true,
-            companyName: true,
-            isActive: true,
-          },
-        }),
-        prisma.announcement.count({ where: announcementWhere }),
-        prisma.user.count({ where: userWhere }),
-      ]);
+          }),
+          prisma.user.findMany({
+            where: userWhere,
+            take: Math.ceil(limit / 2),
+            orderBy: { createdAt: "desc" },
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              accountType: true,
+              providerType: true,
+              companyName: true,
+              isActive: true,
+            },
+          }),
+          prisma.announcement.count({ where: announcementWhere }),
+          prisma.user.count({ where: userWhere }),
+        ]);
 
       results = [
         ...announcements.map((a) => ({ ...a, resultType: "JOB" as const })),

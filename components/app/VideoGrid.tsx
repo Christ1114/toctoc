@@ -5,8 +5,6 @@ import { useTranslations } from "next-intl";
 import { PlayIcon, XIcon, EyeIcon } from "@phosphor-icons/react";
 import { orbitron } from "@/fonts/font";
 
-// ⚠️ Ajuste ces champs pour matcher exactement ce que renvoie ta fonction
-// getProviderVideos() côté serveur — ce sont des noms de champs supposés.
 export type ProviderVideo = {
   id: string;
   thumbnailUrl: string | null;
@@ -17,7 +15,24 @@ export type ProviderVideo = {
 
 const PAGE_SIZE = 12;
 
-export default function VideoGrid({ providerId }: { providerId: string }) {
+/* ═══════════════════════════════════════════════════════════
+   Props
+   - emptyText      : texte à afficher quand il n'y a aucune vidéo
+                      (fallback : t("videos.empty"))
+   - emptyClassName : classe CSS additionnelle sur le <p> de l'empty
+                      (permet d'appliquer orbitron.className depuis le parent)
+   ═══════════════════════════════════════════════════════════ */
+type VideoGridProps = {
+  providerId: string;
+  emptyText?: string;
+  emptyClassName?: string;
+};
+
+export default function VideoGrid({
+  providerId,
+  emptyText,
+  emptyClassName,
+}: VideoGridProps) {
   const t = useTranslations("ProfilePage");
   const [videos, setVideos] = useState<ProviderVideo[]>([]);
   const [page, setPage] = useState(0);
@@ -48,7 +63,9 @@ export default function VideoGrid({ providerId }: { providerId: string }) {
 
         setVideos((prev) => (replace ? newVideos : [...prev, ...newVideos]));
         setHasMore(
-          typeof data.hasMore === "boolean" ? data.hasMore : newVideos.length === PAGE_SIZE
+          typeof data.hasMore === "boolean"
+            ? data.hasMore
+            : newVideos.length === PAGE_SIZE
         );
       } catch (err) {
         console.error("Erreur chargement vidéos prestataire:", err);
@@ -90,7 +107,9 @@ export default function VideoGrid({ providerId }: { providerId: string }) {
   if (error && videos.length === 0) {
     return (
       <div className="py-10 flex flex-col items-center text-center">
-        <p className={`text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}>
+        <p
+          className={`text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}
+        >
           {t("videos.loadError")}
         </p>
         <button
@@ -103,12 +122,15 @@ export default function VideoGrid({ providerId }: { providerId: string }) {
     );
   }
 
+  // ─── Empty state (accepte une surcharge depuis le parent) ───
   if (videos.length === 0) {
     return (
       <div className="py-10 flex flex-col items-center text-center">
         <PlayIcon size={32} className="text-gray-300 dark:text-white/20 mb-2" />
-        <p className={`text-sm text-gray-400 dark:text-white/40 ${orbitron.className}`}>
-          {t("videos.empty")}
+        <p
+          className={`text-sm text-gray-400 dark:text-white/40 ${emptyClassName ?? orbitron.className}`}
+        >
+          {emptyText ?? t("videos.empty")}
         </p>
       </div>
     );
