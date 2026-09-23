@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import * as maplibregl from "maplibre-gl";
 import { setWorkerUrl } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -10,11 +10,17 @@ import { useSession } from "@/app/context/SessionContext";
 import { useGeolocation } from "@/app/hooks/useGeolocation";
 import { createAvatarMarkerElement } from "./AvatarMarker";
 import TopToolbar, { type CityResult } from "./TopToolbar";
+import BottomToolbar from "@/components/app/nearby/BottomToolbar";
 import AiSearchPanel from "./AiSearchPanel";
+import { getCategoryConfig } from "@/app/lib/jobs/category-colors";
 import { orbitron } from "@/fonts/font";
 import { useRouter } from "@/i18n/navigation";
 
 setWorkerUrl("/maplibre/maplibre-gl-worker.mjs");
+
+/* ═══════════════════════════════════════════════════════════
+   CONSTANTES
+   ═══════════════════════════════════════════════════════════ */
 
 const STYLES = {
   light: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
@@ -35,6 +41,10 @@ const INIT_TIMEOUT_MS = 10_000;
 const PROVIDER_PATH = "/app/provider";
 const CLIENT_PATH = "/app/client";
 
+/* ═══════════════════════════════════════════════════════════
+   TYPES
+   ═══════════════════════════════════════════════════════════ */
+
 type NearbyUser = {
   id: string;
   name: string | null;
@@ -51,13 +61,28 @@ type NearbyUser = {
   lastLongitude: number | null;
   lastKnownRegion: string | null;
   lastLocationUpdatedAt: string | null;
+  category: string | null; // 🆕 catégorie du user (JARDINAGE, MENAGE, ...)
 };
+
+/* ═══════════════════════════════════════════════════════════
+   HELPERS
+   ═══════════════════════════════════════════════════════════ */
 
 function getPublicProfilePath(user: NearbyUser): string | null {
   if (user.accountType === "PROVIDER") return `${PROVIDER_PATH}/${user.id}`;
   if (user.accountType === "CLIENT") return `${CLIENT_PATH}/${user.id}`;
   return null;
 }
+
+const logError = (context: string, err: unknown, extra?: Record<string, unknown>) => {
+  if (process.env.NODE_ENV === "development") {
+    console.error(`[${context}]`, err, extra);
+  }
+};
+
+/* ═══════════════════════════════════════════════════════════
+   COMPOSANT
+   ═══════════════════════════════════════════════════════════ */
 
 export default function NearbyMap() {
   const t = useTranslations("NearbyMap");
@@ -67,6 +92,7 @@ export default function NearbyMap() {
   const { user } = useSession();
   const { latitude, longitude, error: geoError, requestLocation } = useGeolocation();
 
+  /* ─── Refs stables ─── */
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const userMarkerRef = useRef<maplibregl.Marker | null>(null);
@@ -75,7 +101,7 @@ export default function NearbyMap() {
   const hasInitRef = useRef(false);
   const fetchAbortRef = useRef<AbortController | null>(null);
 
-  // ✅ Refs pour éviter les closures stale dans les handlers MapLibre
+  // ✅ Refs pour éviter closures stale
   const userRef = useRef(user);
   const routerRef = useRef(router);
   const labelsRef = useRef({
@@ -100,6 +126,7 @@ export default function NearbyMap() {
     };
   }, [t]);
 
+  /* ─── State ─── */
   const [initialCenter, setInitialCenter] = useState<[number, number] | null>(null);
   const [loadingPosition, setLoadingPosition] = useState(true);
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -107,9 +134,25 @@ export default function NearbyMap() {
   const [aiSearchOpen, setAiSearchOpen] = useState(false);
   const [nearbyUsers, setNearbyUsers] = useState<NearbyUser[]>([]);
   const [searchMessage, setSearchMessage] = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null); // 🆕
 
   /* ═══════════════════════════════════════════════════════
-     POSITION INITIALE (une seule fois)
+     FILTRE PAR CATÉGORIE (memo)
+     ═══════════════════════════════════════════════════════ */
+  const filteredUsers = useMemo(() => {
+    if (!activeCategory) return nearbyUsers;
+
+    // "jardinage" → "JARDINAGE" (comparaison tolérante)
+    const normalizedFilter = activeCategory.toUpperCase().replace(/-/g, "_");
+
+    return nearbyUsers.filter((u) => {
+      const cat = (u.category ?? "").toUpperCase().replace(/[\s-]/g, "_");
+      return cat === normalizedFilter;
+    });
+  }, [nearbyUsers, activeCategory]);
+
+  /* ═══════════════════════════════════════════════════════
+     POSITION INITIALE
      ═══════════════════════════════════════════════════════ */
   useEffect(() => {
     if (hasInitRef.current) return;
@@ -167,7 +210,7 @@ export default function NearbyMap() {
   }, [geoError]);
 
   /* ═══════════════════════════════════════════════════════
-     INIT MAP (une seule fois)
+     INIT MAP
      ═══════════════════════════════════════════════════════ */
   useEffect(() => {
     if (!mapContainer.current || mapRef.current || !initialCenter) return;
@@ -175,7 +218,7 @@ export default function NearbyMap() {
     try {
       const map = new maplibregl.Map({
         container: mapContainer.current,
-        style: resolvedTheme === "dark" ? STYLES.dark : STYLES.light,
+        style: STYLES.light, // toujours light à l'init, setStyle corrige après
         center: initialCenter,
         zoom: DEFAULT_ZOOM,
         pitch: DEFAULT_PITCH,
@@ -197,7 +240,7 @@ export default function NearbyMap() {
           showZoom: true,
           showCompass: true,
         }),
-        "bottom-left"
+        "bottom-left",
       );
 
       map.dragRotate.enable();
@@ -206,7 +249,7 @@ export default function NearbyMap() {
       map.on("error", (e: any) => {
         const msg = String(e?.error?.message ?? "");
         if (msg.includes("Failed to fetch") || msg.includes("AbortError")) return;
-        console.error("Map error:", e);
+        logError("nearbyMap.mapError", e);
       });
 
       map.once("load", () => {
@@ -223,21 +266,18 @@ export default function NearbyMap() {
             bio: me?.bio ?? null,
             username: me?.name ?? null,
             lastSeenAt: new Date(),
-            // ✅ Utilise userRef → pas de closure stale
-           onClick: () => {
-  const current = userRef.current as any;
-  if (!current?.id) return;
-
-  if (current.accountType === "PROVIDER") {
-    routerRef.current.push(`/app/provider/${current.id}`);
-  } else if (current.accountType === "CLIENT") {
-    routerRef.current.push(`/app/client/${current.id}`);
-  }
-},
+            onClick: () => {
+              const current = userRef.current as any;
+              if (!current?.id) return;
+              if (current.accountType === "PROVIDER") {
+                routerRef.current.push(`${PROVIDER_PATH}/${current.id}`);
+              } else if (current.accountType === "CLIENT") {
+                routerRef.current.push(`${CLIENT_PATH}/${current.id}`);
+              }
+            },
             labels: labelsRef.current,
           });
 
-          // ✅ pointer-events explicite
           el.style.pointerEvents = "auto";
           el.style.cursor = "pointer";
 
@@ -248,18 +288,18 @@ export default function NearbyMap() {
             .setLngLat(initialCenterRef.current ?? DEFAULT_CENTER)
             .addTo(map);
         } catch (err) {
-          console.error("Erreur création marker user:", err);
+          logError("nearbyMap.userMarker", err);
         }
       });
     } catch (err) {
-      console.error("Erreur init map:", err);
-      setMapError("Erreur d'initialisation de la carte");
+      logError("nearbyMap.initMap", err);
+      setMapError(t("errors.initFailed"));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialCenter]);
 
   /* ═══════════════════════════════════════════════════════
-     CLEANUP GLOBAL (unmount)
+     CLEANUP GLOBAL
      ═══════════════════════════════════════════════════════ */
   useEffect(() => {
     return () => {
@@ -292,7 +332,7 @@ export default function NearbyMap() {
   }, [initialCenter, mapLoaded]);
 
   /* ═══════════════════════════════════════════════════════
-     FETCH NEARBY (avec AbortController)
+     FETCH NEARBY
      ═══════════════════════════════════════════════════════ */
   const fetchNearby = useCallback(async (lng: number, lat: number) => {
     fetchAbortRef.current?.abort();
@@ -302,13 +342,13 @@ export default function NearbyMap() {
     try {
       const res = await fetch(
         `/api/user/nearby?lat=${lat}&lng=${lng}&radius=${NEARBY_RADIUS_KM}`,
-        { signal: controller.signal }
+        { signal: controller.signal },
       );
-      if (!res.ok) throw new Error("fetch failed");
-      const data = await res.json();
-      const list: NearbyUser[] = data.users ?? [];
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-      // ✅ Skip re-render si la liste est identique
+      const data = await res.json();
+      const list: NearbyUser[] = Array.isArray(data?.users) ? data.users : [];
+
       setNearbyUsers((prev) => {
         if (prev.length !== list.length) return list;
         for (let i = 0; i < list.length; i++) {
@@ -320,7 +360,7 @@ export default function NearbyMap() {
       });
     } catch (err) {
       if ((err as any)?.name === "AbortError") return;
-      console.error("Erreur fetch nearby:", err);
+      logError("nearbyMap.fetchNearby", err);
       setNearbyUsers([]);
     }
   }, []);
@@ -332,7 +372,7 @@ export default function NearbyMap() {
   }, [initialCenter, fetchNearby]);
 
   /* ═══════════════════════════════════════════════════════
-     MARKERS DES USERS PROCHES (diffing par id)
+     MARKERS DES USERS PROCHES (filtrés + colorés)
      ═══════════════════════════════════════════════════════ */
   useEffect(() => {
     const map = mapRef.current;
@@ -341,7 +381,7 @@ export default function NearbyMap() {
     const current = nearbyMarkersRef.current;
     const seen = new Set<string>();
 
-    nearbyUsers.forEach((nu) => {
+    filteredUsers.forEach((nu) => {
       if (nu.lastLatitude == null || nu.lastLongitude == null) return;
       seen.add(nu.id);
 
@@ -353,7 +393,10 @@ export default function NearbyMap() {
         Date.now() - lastUpdate.getTime() < ONLINE_THRESHOLD_MS;
       const profilePath = getPublicProfilePath(nu);
 
-      // ✅ Marker déjà présent → update position uniquement
+      // ✅ Couleur DB-driven depuis la catégorie
+      const cfg = getCategoryConfig(nu.category);
+
+      // Marker existant → update position seulement
       const existing = current.get(nu.id);
       if (existing) {
         existing.setLngLat([nu.lastLongitude, nu.lastLatitude]);
@@ -363,7 +406,7 @@ export default function NearbyMap() {
       const el = createAvatarMarkerElement({
         imageUrl: nu.image,
         fallbackLabel: nu.name ?? "?",
-        color: nu.accountType === "PROVIDER" ? "#2F7A4F" : "#432dd7",
+        color: cfg.color, // ✅ couleur selon la catégorie
         isOnline,
         bio: nu.bio,
         username: nu.name,
@@ -387,14 +430,14 @@ export default function NearbyMap() {
       current.set(nu.id, marker);
     });
 
-    // ✅ Suppression des markers qui ne sont plus dans la liste
+    // Suppression des markers plus dans la liste filtrée
     current.forEach((marker, id) => {
       if (!seen.has(id)) {
         marker.remove();
         current.delete(id);
       }
     });
-  }, [nearbyUsers, mapLoaded]);
+  }, [filteredUsers, mapLoaded]); // ✅ filteredUsers au lieu de nearbyUsers
 
   /* ═══════════════════════════════════════════════════════
      STYLE (light/dark)
@@ -405,7 +448,7 @@ export default function NearbyMap() {
     try {
       mapRef.current.setStyle(url);
     } catch (err) {
-      console.error("Erreur changement style:", err);
+      logError("nearbyMap.setStyle", err);
     }
   }, [resolvedTheme, mapLoaded]);
 
@@ -456,7 +499,7 @@ export default function NearbyMap() {
       }
       fetchNearby(city.longitude, city.latitude);
     },
-    [mapLoaded, fetchNearby, tToolbar]
+    [mapLoaded, fetchNearby, tToolbar],
   );
 
   /* ═══════════════════════════════════════════════════════
@@ -468,13 +511,8 @@ export default function NearbyMap() {
       style={{ minHeight: "500px" }}
     >
       <style jsx global>{`
-        /* ✅ Les markers reçoivent les clics */
-        .maplibregl-marker {
-          pointer-events: auto !important;
-        }
-        .maplibregl-marker > * {
-          pointer-events: auto;
-        }
+        .maplibregl-marker { pointer-events: auto !important; }
+        .maplibregl-marker > * { pointer-events: auto; }
 
         .maplibregl-ctrl-bottom-left {
           bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
@@ -503,8 +541,7 @@ export default function NearbyMap() {
           border: 1px solid rgba(255, 255, 255, 0.08);
         }
         .maplibregl-ctrl-bottom-left .maplibregl-ctrl-group button {
-          width: 40px !important;
-          height: 40px !important;
+          width: 40px !important; height: 40px !important;
           background: transparent !important;
           color: white !important;
           touch-action: manipulation;
@@ -559,7 +596,7 @@ export default function NearbyMap() {
         className="absolute inset-0 w-full h-full bg-gray-200 dark:bg-gray-800"
       />
 
-      {/* ✅ TopToolbar : wrapper transparent, contenu cliquable */}
+      {/* ✅ TopToolbar */}
       <div className="absolute inset-x-0 top-0 z-20 pointer-events-none">
         <div className="pointer-events-auto">
           <TopToolbar
@@ -570,7 +607,13 @@ export default function NearbyMap() {
         </div>
       </div>
 
-      {/* ✅ AiSearchPanel monté uniquement quand ouvert → ne bloque pas la carte */}
+      {/* ✅ BottomToolbar — filtre par catégorie */}
+      <BottomToolbar
+        activeSlug={activeCategory}
+        onSelect={setActiveCategory}
+      />
+
+      {/* ✅ AiSearchPanel */}
       {aiSearchOpen && (
         <AiSearchPanel
           open={aiSearchOpen}
@@ -578,9 +621,10 @@ export default function NearbyMap() {
         />
       )}
 
+      {/* Bouton 3D — décalé au-dessus du toolbar */}
       <button
         onClick={resetView}
-        aria-label="Réinitialiser la vue 3D"
+        aria-label={t("reset3D")}
         className={`
           absolute z-10 bg-black/60 hover:bg-black/75 active:bg-black/90
           backdrop-blur-sm text-white rounded-lg shadow-md cursor-pointer
@@ -598,4 +642,4 @@ export default function NearbyMap() {
       </button>
     </div>
   );
-} 
+}
