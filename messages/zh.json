@@ -401,17 +401,25 @@
   "SearchPopover": {
     "title": "搜索",
     "close": "关闭",
-    "placeholder": "职位、简历...",
+    "placeholder": "搜索广告或服务提供者…",
+    "noResults": "没有结果",
+    "noResultsHint": "请尝试其他关键词或检查拼写",
     "recentSearches": "最近搜索",
-    "clearAll": "清除全部",
+    "clearAll": "全部清除",
     "noSearches": "暂无搜索记录",
-    "noSearchesHint": "您的最近搜索将显示在这里",
+    "noSearchesHint": "您的搜索记录将显示在此处",
     "deleteSearch": "删除",
+    "sections": {
+      "jobs": "招聘信息",
+      "profiles": "服务提供者"
+    },
     "errors": {
-      "loadFailed": "无法加载历史记录",
-      "saveFailed": "保存时出错",
-      "deleteFailed": "删除时出错",
-      "clearFailed": "清除历史记录时出错"
+      "loadFailed": "无法加载搜索记录",
+      "searchFailed": "搜索失败",
+      "rateLimited": "搜索过于频繁，请稍后再试",
+      "saveFailed": "保存失败",
+      "deleteFailed": "删除失败",
+      "clearFailed": "清除记录失败"
     }
   },
 

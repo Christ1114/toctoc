@@ -396,17 +396,25 @@
   "SearchPopover": {
     "title": "Search",
     "close": "Close",
-    "placeholder": "Job, profile...",
+    "placeholder": "Search for an ad or a provider…",
+    "noResults": "No results",
+    "noResultsHint": "Try a different keyword or check the spelling",
     "recentSearches": "Recent searches",
     "clearAll": "Clear all",
-    "noSearches": "No searches yet",
+    "noSearches": "No recent searches",
     "noSearchesHint": "Your recent searches will appear here",
     "deleteSearch": "Delete",
+    "sections": {
+      "jobs": "Listings",
+      "profiles": "Providers"
+    },
     "errors": {
-      "loadFailed": "Unable to load history",
-      "saveFailed": "Error while saving",
-      "deleteFailed": "Error while deleting",
-      "clearFailed": "Error while clearing history"
+      "loadFailed": "Failed to load history",
+      "searchFailed": "Search failed",
+      "rateLimited": "Too many searches, please wait",
+      "saveFailed": "Failed to save",
+      "deleteFailed": "Failed to delete",
+      "clearFailed": "Failed to clear history"
     }
   },
 

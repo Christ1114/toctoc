@@ -405,16 +405,24 @@
   },
 
   "SearchPopover": {
-    "title": "Rechercher",
+    "title": "Recherche",
     "close": "Fermer",
-    "placeholder": "Offre, profil...",
+    "placeholder": "Rechercher une annonce ou un prestataire…",
+    "noResults": "Aucun résultat",
+    "noResultsHint": "Essayez un autre mot-clé ou vérifiez l'orthographe",
     "recentSearches": "Recherches récentes",
     "clearAll": "Tout effacer",
     "noSearches": "Aucune recherche pour le moment",
     "noSearchesHint": "Vos recherches récentes apparaîtront ici",
     "deleteSearch": "Supprimer",
+    "sections": {
+      "jobs": "Annonces",
+      "profiles": "Prestataires"
+    },
     "errors": {
       "loadFailed": "Impossible de charger l'historique",
+      "searchFailed": "La recherche a échoué",
+      "rateLimited": "Trop de recherches, veuillez patienter",
       "saveFailed": "Erreur lors de la sauvegarde",
       "deleteFailed": "Erreur lors de la suppression",
       "clearFailed": "Erreur lors de la suppression de l'historique"
