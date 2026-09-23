@@ -1,26 +1,34 @@
-
+// app/api/search/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { ProviderType, type Prisma } from "@/generated/prisma/client";
 
-
+// ─── Config ──────────────────────────────────────────────────────
 const MAX_LIMIT = 50;
 const DEFAULT_LIMIT = 8;
 const MIN_QUERY_LENGTH = 2;
 const MAX_QUERY_LENGTH = 100;
 
-
+/**
+ * 🚨 FILTRE ANTI-SEED
+ * On ne remonte QUE les annonces publiées depuis la plateforme
+ * par un vrai user — jamais le seed / démo / scraped.
+ */
 const EXCLUDE_SEED: Prisma.AnnouncementWhereInput = {
-   isUserGenerated: true,
-
+  isUserGenerated: true,
 };
 
-
+// ─── Helpers ─────────────────────────────────────────────────────
 const normalize = (s: string) => s.toLowerCase().replace(/[\s-]/g, "");
 
-const clampInt = (v: string | null, fallback: number, min: number, max: number) => {
+const clampInt = (
+  v: string | null,
+  fallback: number,
+  min: number,
+  max: number,
+) => {
   const n = parseInt(v ?? "", 10);
   return Number.isNaN(n) ? fallback : Math.min(Math.max(n, min), max);
 };
@@ -126,7 +134,7 @@ export async function GET(request: NextRequest) {
     let total = 0;
 
     // ── CLIENT ───────────────────────────────────────────────────
-    // Voit : annonces publiées par les users + profils providers actifs
+    // Voit : toutes les annonces user + tous les providers actifs
     if (searchType === "CLIENT") {
       const halfLimit = Math.max(Math.ceil(limit / 2), 1);
       const halfSkip  = (page - 1) * halfLimit;
@@ -136,10 +144,9 @@ export async function GET(request: NextRequest) {
         (type) => normalize(type).includes(normalizedQuery),
       );
 
-      // ✅ anti-seed appliqué
+      // ✅ AND : combine proprement anti-seed + recherche texte
       const announcementWhere: Prisma.AnnouncementWhereInput = {
-        ...EXCLUDE_SEED,
-        ...buildAnnouncementSearch(rawQuery),
+        AND: [EXCLUDE_SEED, buildAnnouncementSearch(rawQuery)],
       };
 
       const providerWhere: Prisma.UserWhereInput = {
@@ -183,12 +190,29 @@ export async function GET(request: NextRequest) {
     }
 
     // ── PROVIDER ─────────────────────────────────────────────────
-    // Voit uniquement les annonces de type OFFER publiées par les users
+    // Voit : les missions clients (OFFER) + ses propres annonces (PROFILE)
+    //
+    // ⚠️ Un provider publie en `type: "PROFILE"` (cf. POST /api/announcements),
+    //    mais cherche les missions `type: "OFFER"` des clients.
+    //    Sans le OR ci-dessous, il ne retrouve JAMAIS ses propres annonces.
+    //
+    // ⚠️ On utilise AND (et non un spread de OR) car `buildAnnouncementSearch`
+    //    contient déjà un OR → sinon il écrase le filtre de type.
     else if (searchType === "PROVIDER") {
       const where: Prisma.AnnouncementWhereInput = {
-        type: "OFFER",
-        ...EXCLUDE_SEED,          // ✅ anti-seed
-        ...buildAnnouncementSearch(rawQuery),
+        AND: [
+          // 1. Type : missions clients OU mes propres annonces
+          {
+            OR: [
+              { type: "OFFER" },
+              { type: "PROFILE", userId: user.id },
+            ],
+          },
+          // 2. Anti-seed
+          EXCLUDE_SEED,
+          // 3. Recherche texte
+          buildAnnouncementSearch(rawQuery),
+        ],
       };
 
       const [announcements, count] = await Promise.all([
@@ -205,6 +229,9 @@ export async function GET(request: NextRequest) {
       results = announcements.map((a) => ({ ...a, resultType: "JOB" as const }));
       total = count;
     }
+
+    // ── ADMIN ────────────────────────────────────────────────────
+    // Voit TOUT (seed inclus) pour la modération
     else if (searchType === "ADMIN") {
       const halfLimit = Math.max(Math.ceil(limit / 2), 1);
       const halfSkip  = (page - 1) * halfLimit;
@@ -263,7 +290,7 @@ export async function GET(request: NextRequest) {
     const totalPages = Math.ceil(total / limit);
     const hasMore = page < totalPages;
 
-    // 6. Réponse (cache court côté client, jamais partagé entre users)
+    // 6. Réponse (cache privé court, jamais partagé entre users)
     return NextResponse.json(
       {
         results,
