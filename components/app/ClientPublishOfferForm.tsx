@@ -69,7 +69,7 @@ async function loadReferentials() {
       return { jobTypes: cachedJobTypes!, regions: cachedRegions! };
     })
     .catch((err) => {
-      optionsPromise = null; // permet un retry au prochain appel
+      optionsPromise = null;
       throw err;
     });
 

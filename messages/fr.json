@@ -1,6 +1,5 @@
 {
-  
-   "AppProfilProvider": {
+  "AppProfilProvider": {
     "notFound": "Utilisateur introuvable",
     "unnamed": "Sans nom",
     "verified": "Vérifié",
@@ -58,7 +57,8 @@
       "imageTooLarge": "Image trop volumineuse (max 5 Mo)"
     }
   },
-"ProviderProfile": {
+
+  "ProviderProfile": {
     "videoModal": {
       "invalidUrl": "URL vidéo invalide",
       "invalidYoutubeId": "ID YouTube invalide",
@@ -69,6 +69,7 @@
       "close": "Fermer"
     }
   },
+
   "VideoManager": {
     "addVideo": "Ajouter une vidéo",
     "empty": "Aucune vidéo pour le moment",
@@ -102,128 +103,171 @@
       "invalidUrl": "Lien invalide (YouTube, Vimeo ou .mp4)"
     }
   },
-"ProfilePage": {
-  "back": "Retour",
-  "unnamed": "Sans nom",
-  "notFound": "Profil introuvable",
-  "saved": "Profil enregistré",
-  "save": "Enregistrer",
-  "saving": "Enregistrement...",
-  "cancel": "Annuler",
-  "editProfile": "Modifier le profil",
-  "settings": "Paramètres",
-  "share": "Partager",
-  "linkCopied": "Lien copié",
-  "changePhoto": "Changer la photo",
-  "namePlaceholder": "Votre nom",
-  "bioPlaceholder": "Parlez-nous de vous...",
-  "noBio": "Aucune bio",
-  "socialNetworks": "Réseaux sociaux",
-  "agencyInfo": "Informations de l'agence",
-  "companyName": "Nom de l'entreprise",
-  "companyNamePlaceholder": "Ex: Mon Agence",
-  "rccmNumber": "Numéro RCCM",
-  "rccmPlaceholder": "Ex: CI-ABJ-2024-B-12345",
-  "providerInfo": "Informations prestataire",
-  "providerType": "Type de prestataire",
-  "select": "Sélectionner",
-  "hourlyRate": "Tarif horaire",
-  "publishOffer": "Publier une offre",
-  "publishOfferShort": "Publier",
-  "publishService": "Publier un service",
-  "publishServiceShort": "Publier",
 
-  "title": "Publier une offre",
-  "editTitle": "Modifier l'offre",
-  "close": "Fermer",
-  "submit": "Publier",
-  "submitting": "Publication...",
+  "ProfilePage": {
+    "back": "Retour",
+    "unnamed": "Sans nom",
+    "notFound": "Profil introuvable",
+    "saved": "Profil enregistré",
+    "save": "Enregistrer",
+    "saving": "Enregistrement...",
+    "cancel": "Annuler",
+    "editProfile": "Modifier le profil",
+    "settings": "Paramètres",
+    "share": "Partager",
+    "linkCopied": "Lien copié",
+    "changePhoto": "Changer la photo",
+    "namePlaceholder": "Votre nom",
+    "bioPlaceholder": "Parlez-nous de vous...",
+    "noBio": "Aucune bio",
+    "socialNetworks": "Réseaux sociaux",
+    "agencyInfo": "Informations de l'agence",
+    "companyName": "Nom de l'entreprise",
+    "companyNamePlaceholder": "Ex: Mon Agence",
+    "rccmNumber": "Numéro RCCM",
+    "rccmPlaceholder": "Ex: CI-ABJ-2024-B-12345",
+    "providerInfo": "Informations prestataire",
+    "providerType": "Type de prestataire",
+    "select": "Sélectionner",
+    "hourlyRate": "Tarif horaire",
+    "publishOffer": "Publier une offre",
+    "publishOfferShort": "Publier",
+    "publishService": "Publier un service",
+    "publishServiceShort": "Publier",
 
-  "fields": {
-    "jobType": "Poste",
-    "jobTypePlaceholder": "Sélectionner un poste",
-    "description": "Description",
-    "descriptionPlaceholder": "Décrivez votre besoin...",
-    "salary": "Salaire",
-    "salaryHint": "Minimum 10 000 FCFA",
-    "region": "Région",
-    "regionPlaceholder": "Sélectionner une région"
+    "title": "Publier une offre",
+    "editTitle": "Modifier l'offre",
+    "close": "Fermer",
+    "submit": "Publier",
+    "submitting": "Publication...",
+
+    "urgent": "Urgent",
+    "addFavorite": "Ajouter aux favoris",
+    "removeFavorite": "Retirer des favoris",
+
+    "fields": {
+      "jobType": "Poste",
+      "jobTypePlaceholder": "Sélectionner un poste",
+      "description": "Description",
+      "descriptionPlaceholder": "Décrivez votre besoin...",
+      "salary": "Salaire",
+      "salaryHint": "Minimum 10 000 FCFA",
+      "region": "Région",
+      "regionPlaceholder": "Sélectionner une région"
+    },
+
+    "tabs": {
+      "bookings": "Réservations",
+      "reviews": "Avis",
+      "favorites": "Favoris",
+      "announcements": "Annonces",
+      "servicesPublic": "Services",
+      "videos": "Vidéos"
+    },
+
+    "accountType": {
+      "CLIENT": "Client",
+      "PROVIDER": "Prestataire",
+      "ADMIN": "Administrateur"
+    },
+
+    "providerTypes": {
+      "BABYSITTER": "Baby-sitter",
+      "GARDE_PERISCOLAIRE": "Garde périscolaire",
+      "MENAGE": "Ménage",
+      "AIDE_PERSONNES_AGEES": "Aide aux personnes âgées",
+      "RESIDENTIEL": "Résidentiel",
+      "COURT_TERME": "Court terme"
+    },
+
+    "social": {
+      "website": "Site web",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "tiktok": "TikTok",
+      "linkedin": "LinkedIn",
+      "youtube": "YouTube",
+      "twitter": "X (Twitter)"
+    },
+
+    "announcements": {
+      "quota": "{used}/{max} annonces utilisées",
+      "quotaFull": "Quota atteint",
+      "views": "{count, plural, =0 {Aucune vue} =1 {1 vue} other {# vues}}",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "deleteConfirm": "Supprimer cette annonce ?"
+    },
+
+    "empty": {
+      "announcements": "Aucune annonce pour le moment",
+      "announcementsCta": "Publier une annonce",
+      "bookings": "Aucune réservation",
+      "reviews": "Aucun avis",
+      "favorites": "Aucun favori",
+      "servicesPublic": "Aucun service publié pour le moment"
+    },
+
+    "videos": {
+      "retry": "Réessayer",
+      "empty": "Aucune vidéo pour le moment"
+    },
+
+    "errors": {
+      "announcementsLoadFailed": "Impossible de charger les annonces",
+      "announcementDeleteFailed": "Impossible de supprimer l'annonce",
+      "saveFailed": "Échec de l'enregistrement",
+      "invalidImage": "Fichier image invalide",
+      "imageTooLarge": "Image trop volumineuse (max 5 Mo)",
+      "uploadFailed": "Échec du téléchargement",
+
+      "optionsLoadFailed": "Impossible de charger les options",
+      "jobTypeRequired": "Veuillez sélectionner un poste",
+      "regionRequired": "Veuillez sélectionner une région",
+      "salaryMin": "Le salaire minimum est de 10 000 FCFA",
+      "submitFailed": "Échec de la publication"
+    }
   },
 
-  "tabs": {
-    "bookings": "Réservations",
-    "reviews": "Avis",
-    "favorites": "Favoris",
-    "announcements": "Annonces"
+  "PublishService": {
+    "title": "Publier un service",
+    "editTitle": "Modifier le service",
+    "submit": "Publier",
+    "submitting": "Publication...",
+    "save": "Enregistrer",
+    "saving": "Enregistrement...",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "fields": {
+      "jobType": "Poste / Service",
+      "jobTypePlaceholder": "Sélectionner un poste",
+      "description": "Description",
+      "descriptionPlaceholder": "Décrivez votre service...",
+      "hourlyRate": "Tarif horaire",
+      "hourlyRateHint": "Minimum 500 FCFA par heure",
+      "region": "Région",
+      "regionPlaceholder": "Sélectionner une région"
+    },
+    "errors": {
+      "optionsLoadFailed": "Impossible de charger les options",
+      "jobTypeRequired": "Veuillez sélectionner un poste",
+      "regionRequired": "Veuillez sélectionner une région",
+      "hourlyRateMin": "Le tarif horaire minimum est de 500 FCFA",
+      "submitFailed": "Échec de la publication"
+    }
   },
 
-  "accountType": {
-    "CLIENT": "Client",
-    "PROVIDER": "Prestataire",
-    "ADMIN": "Administrateur"
-  },
-
-  "providerTypes": {
-    "BABYSITTER": "Baby-sitter",
-    "GARDE_PERISCOLAIRE": "Garde périscolaire",
-    "MENAGE": "Ménage",
-    "AIDE_PERSONNES_AGEES": "Aide aux personnes âgées",
-    "RESIDENTIEL": "Résidentiel",
-    "COURT_TERME": "Court terme"
-  },
-
-  "social": {
-    "website": "Site web",
-    "instagram": "Instagram",
-    "facebook": "Facebook",
-    "tiktok": "TikTok",
-    "linkedin": "LinkedIn",
-    "youtube": "YouTube",
-    "twitter": "X (Twitter)"
-  },
-
-  "announcements": {
-    "quota": "{used}/{max} annonces utilisées",
-    "quotaFull": "Quota atteint",
-    "views": "{count} vue(s)",
-    "edit": "Modifier",
-    "delete": "Supprimer",
-    "deleteConfirm": "Supprimer cette annonce ?"
-  },
-
-  "empty": {
-    "announcements": "Aucune annonce pour le moment",
-    "announcementsCta": "Publier une annonce",
-    "bookings": "Aucune réservation",
-    "reviews": "Aucun avis",
-    "favorites": "Aucun favori"
-  },
-
-  "errors": {
-    "announcementsLoadFailed": "Impossible de charger les annonces",
-    "announcementDeleteFailed": "Impossible de supprimer l'annonce",
-    "saveFailed": "Échec de l'enregistrement",
-    "invalidImage": "Fichier image invalide",
-    "imageTooLarge": "Image trop volumineuse (max 5 Mo)",
-    "uploadFailed": "Échec du téléchargement",
-
-    "optionsLoadFailed": "Impossible de charger les options",
-    "jobTypeRequired": "Veuillez sélectionner un poste",
-    "regionRequired": "Veuillez sélectionner une région",
-    "salaryMin": "Le salaire minimum est de 10 000 FCFA",
-    "submitFailed": "Échec de la publication"
-  }
-},
   "TopToolbar": {
-  "quickSearchPlaceholder": "Rechercher une ville...",
-  "searching": "Recherche...",
-  "noCityFound": "Aucune ville trouvée",
-  "offersCount": "{count} offre(s)",
-  "noOffers": "Aucune offre",
-  "noOffersInCity": "Aucune offre disponible à {city} pour le moment.",
-  "searchByAi": "Rechercher par IA",
-  "profile": "Profil"
-},
+    "quickSearchPlaceholder": "Rechercher une ville...",
+    "searching": "Recherche...",
+    "noCityFound": "Aucune ville trouvée",
+    "offersCount": "{count} offre(s)",
+    "noOffers": "Aucune offre",
+    "noOffersInCity": "Aucune offre disponible à {city} pour le moment.",
+    "searchByAi": "Rechercher par IA",
+    "profile": "Profil"
+  },
+
   "ProfilePopover": {
     "title": "Mon compte",
     "profileTab": "Profil",
@@ -246,6 +290,7 @@
       }
     }
   },
+
   "AiSearchPanel": {
     "title": "Recherche IA",
     "close": "Fermer",
@@ -254,6 +299,7 @@
     "send": "Envoyer",
     "mockResponse": "J'ai trouvé un profil qui correspond à ta recherche :"
   },
+
   "AgencyDashboard": {
     "welcome": "Bienvenue, {name}",
     "subtitle": "Gère ton agence et tes profils depuis ce tableau de bord.",
@@ -261,27 +307,30 @@
     "rccm": "Numéro RCCM",
     "verificationStatus": "Statut de vérification"
   },
+
   "IndividualDashboard": {
     "welcome": "Bienvenue, {name}",
     "subtitle": "Trouve du personnel de maison près de chez toi."
   },
+
   "NearbyMap": {
-     "online": "En ligne",
+    "online": "En ligne",
     "offline": "Hors ligne",
     "justNow": "À l'instant",
     "minutesAgo": "Vu il y a {n} min",
     "hoursAgo": "Vu il y a {n} h",
     "daysAgo": "Vu il y a {n} j",
     "searching": "Recherche...",
-"noCityFound": "Aucune ville trouvée",
-"offersCount": "{count} offre(s)",
-"noOffers": "Aucune offre",
-"noOffersInCity": "Aucune offre disponible à {city} pour le moment.",
+    "noCityFound": "Aucune ville trouvée",
+    "offersCount": "{count} offre(s)",
+    "noOffers": "Aucune offre",
+    "noOffersInCity": "Aucune offre disponible à {city} pour le moment.",
     "me": "Moi",
     "youAreHere": "Vous êtes ici",
     "locateMe": "Me localiser",
     "retry": "Réessayer"
   },
+
   "VrConfirmPopover": {
     "title": "Confirmation entretien VR",
     "description": "Voulez-vous vraiment passer un entretien en réalité virtuelle ?",
@@ -292,6 +341,7 @@
     "cancel": "Annuler",
     "close": "Fermer"
   },
+
   "Sidebar": {
     "search": "Rechercher",
     "home": "Accueil",
@@ -306,6 +356,7 @@
     "collapse": "Réduire",
     "expand": "Déplier"
   },
+
   "SettingsPopover": {
     "title": "Paramètres",
     "close": "Fermer",
@@ -352,6 +403,7 @@
       "deleteFailed": "Échec de la suppression du compte. Réessaie."
     }
   },
+
   "SearchPopover": {
     "title": "Rechercher",
     "close": "Fermer",
@@ -368,6 +420,7 @@
       "clearFailed": "Erreur lors de la suppression de l'historique"
     }
   },
+
   "navbar": {
     "findProfile": "Trouver un profil",
     "candidates": "Trouver une offre",
@@ -378,6 +431,7 @@
       "placeholder": "Mots-clés: Ménage, servante, nounou, chauffeure, jardinier..."
     }
   },
+
   "precheck": {
     "title": "Vérification de sécurité...",
     "message": "Veuillez patienter pendant que nous vérifions votre connexion.",
@@ -415,6 +469,7 @@
       "continue": "Continuer"
     }
   },
+
   "notFound": {
     "title": "Page non trouvée",
     "description": "Désolé, cette page n'existe pas ou a été déplacée.",
@@ -422,6 +477,7 @@
     "backHome": "Retour à l'accueil",
     "backToLogin": "Retour à la connexion"
   },
+
   "firstModuleHome": {
     "card_title1": "Nounou",
     "card_description1": "Partez l'esprit tranquille. Nos nounous certifiées prennent soin de vos enfants comme si c'était les leurs.",
@@ -435,6 +491,7 @@
     "P1_title": "La plateforme N°1 du personnel à domicile en Côte d'Ivoire !!!",
     "btn_1": "Depuis 2024"
   },
+
   "secondModuleHome": {
     "H2_title": "Search engine des talents à domicile en Côte d'Ivoire",
     "description1": "Les offres d'emplois pour lesquelles un profil a déjà été trouvé ne sont pas affichées ou pour lesquelles l'utilisateur ne s'est pas encore connecté.",
@@ -447,6 +504,7 @@
       "description3": "Des intervenants dotés d'un équipement de pointe et adaptés à toutes les situations."
     }
   },
+
   "footer": {
     "links": {
       "heading": "Annonces",
@@ -466,6 +524,7 @@
       "womanPhone": "Utilisatrice sur téléphone"
     }
   },
+
   "intro": {
     "slogan": {
       "subtitle": "Une nouvelle façon de",
@@ -485,12 +544,14 @@
       }
     }
   },
+
   "home": {
     "quote": {
       "text": "En Côte d'Ivoire, on recrute désormais son personnel de maison",
       "highlight": "grâce à l'IA."
     }
   },
+
   "profileCard": {
     "title": "Exemples d'offre",
     "morelesse": "voir plus",
@@ -522,6 +583,7 @@
       "contact": "Contacter {name}"
     }
   },
+
   "announcementCard": {
     "title": "Exemples de profil",
     "description": "Les offres d'emplois pour lesquelles un profil a déjà été trouvé ne sont pas affichées ou pour lesquelles l'utilisateur ne s'est pas encore connecté.",
@@ -567,6 +629,7 @@
       "DIM": "Dim"
     }
   },
+
   "fourModuleHome": {
     "title": "Faîtes un choix",
     "items": [
@@ -579,11 +642,13 @@
     ],
     "btnTocer": "Tocer"
   },
+
   "thirdModuleHome": {
     "title1": "Recherchez rapidement en fonction de vos critères",
     "btnAdvancedSearch": "Recherche Avancée",
     "title2": "Retrouvez des offres d'autres agences ainsi que la notre"
   },
+
   "mapComponent": {
     "title": "Offres par localité",
     "loading": "Chargement de la carte...",
@@ -602,6 +667,7 @@
       "MAJORDOME": "Majordome / Gouvernante"
     }
   },
+
   "policy": {
     "table": {
       "titleHeader": "Titre",
@@ -624,6 +690,7 @@
       "point4": "④ La Société ne peut pas identifier les personnes physiques grâce à la valeur d'identification ci-dessus et n'utilise pas les informations à d'autres fins que la restriction de la réinscription."
     }
   },
+
   "resetPassword": {
     "title": "Réinitialiser votre mot de passe",
     "subtitle": "Choisissez un nouveau mot de passe sécurisé",
@@ -661,6 +728,7 @@
     },
     "backToForgotPassword": "Retour à la page de réinitialisation du mot de passe"
   },
+
   "warning": {
     "table": {
       "titleHeader": "Titre",
@@ -683,6 +751,7 @@
       "point4": "④ En cas de doute, contactez directement le service client de TocToc via l'application officielle ou le site web. Ne passez jamais par les coordonnées fournies dans le SMS suspect."
     }
   },
+
   "contact": {
     "category": "Catégorie",
     "messagePlaceholder": "Écrivez votre message ici...",
@@ -708,9 +777,11 @@
     "message": "Message",
     "submitBtn": "Envoyer"
   },
+
   "auth": {
     "loading": "Chargement..."
   },
+
   "register": {
     "progress": {
       "step": "Étape",
@@ -838,6 +909,7 @@
       "vr": "Entretien en VR"
     }
   },
+
   "login": {
     "title": "Connexion",
     "subtitle": "Accédez à votre compte",
@@ -869,6 +941,7 @@
       "invalidCredentials": "Identifiants invalides"
     }
   },
+
   "forgotPassword": {
     "title": "Mot de passe oublié",
     "subtitle": "Récupérez l'accès à votre compte",
@@ -901,6 +974,7 @@
       "goToLogin": "Aller à la connexion"
     }
   },
+
   "terms": {
     "table": {
       "titleHeader": "Titre",

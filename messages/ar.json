@@ -1,5 +1,5 @@
 {
-    "ProviderProfile": {
+  "ProviderProfile": {
     "videoModal": {
       "invalidUrl": "رابط الفيديو غير صالح",
       "invalidYoutubeId": "معرّف يوتيوب غير صالح",
@@ -10,7 +10,8 @@
       "close": "إغلاق"
     }
   },
-   "AppProfilProvider": {
+
+  "AppProfilProvider": {
     "notFound": "المستخدم غير موجود",
     "unnamed": "بدون اسم",
     "verified": "موثّق",
@@ -68,6 +69,7 @@
       "imageTooLarge": "الصورة كبيرة جداً (5 MB كحد أقصى)"
     }
   },
+
   "VideoManager": {
     "addVideo": "إضافة فيديو",
     "empty": "لا توجد فيديوهات بعد",
@@ -101,142 +103,176 @@
       "invalidUrl": "رابط غير صالح (يوتيوب أو فيميو أو .mp4)"
     }
   },
-"ProfilePage": {
-  "socialNetworks": "شبكات التواصل الاجتماعي",
-  "social": {
-    "website": "الموقع الإلكتروني",
-    "instagram": "إنستغرام",
-    "facebook": "فيسبوك",
-    "tiktok": "تيك توك",
-    "linkedin": "لينكدإن",
-    "youtube": "يوتيوب",
-    "twitter": "إكس (تويتر)"
+
+  "ProfilePage": {
+    "socialNetworks": "شبكات التواصل الاجتماعي",
+    "social": {
+      "website": "الموقع الإلكتروني",
+      "instagram": "إنستغرام",
+      "facebook": "فيسبوك",
+      "tiktok": "تيك توك",
+      "linkedin": "لينكدإن",
+      "youtube": "يوتيوب",
+      "twitter": "إكس (تويتر)"
+    },
+    "cropTitle": "قص الصورة",
+    "zoom": "تكبير",
+    "crop": "قص",
+    "cropConfirm": "تأكيد",
+    "back": "رجوع",
+    "unnamed": "بدون اسم",
+    "notFound": "الملف الشخصي غير موجود",
+    "changePhoto": "تغيير الصورة",
+    "namePlaceholder": "اسمك",
+    "editProfile": "تعديل الملف الشخصي",
+    "settings": "الإعدادات",
+    "share": "مشاركة",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "saving": "جارٍ الحفظ...",
+    "saved": "تم تحديث الملف الشخصي",
+    "bioPlaceholder": "حدثنا عن نفسك...",
+    "noBio": "لا توجد سيرة ذاتية بعد",
+    "linkCopied": "تم نسخ الرابط",
+    "agencyInfo": "معلومات الوكالة",
+    "companyName": "اسم الشركة",
+    "companyNamePlaceholder": "مثال: وكالتي الرائعة",
+    "rccmNumber": "رقم RCCM",
+    "rccmPlaceholder": "مثال: CI-ABJ-2024-B-12345",
+    "providerInfo": "معلومات مقدم الخدمة",
+    "providerType": "نوع الخدمة",
+    "hourlyRate": "الأجر بالساعة",
+    "select": "اختر",
+    "contact": "اتصال",
+    "verified": "موثّق",
+    "addFavorite": "إضافة إلى المفضلة",
+    "removeFavorite": "إزالة من المفضلة",
+    "urgent": "عاجل",
+
+    "publishOffer": "نشر عرض",
+    "publishOfferShort": "نشر",
+    "publishService": "نشر خدمة",
+    "publishServiceShort": "نشر",
+
+    "title": "نشر عرض",
+    "editTitle": "تعديل العرض",
+    "close": "إغلاق",
+    "submit": "نشر",
+    "submitting": "جارٍ النشر...",
+
+    "fields": {
+      "jobType": "الوظيفة",
+      "jobTypePlaceholder": "اختر وظيفة",
+      "description": "الوصف",
+      "descriptionPlaceholder": "صف احتياجك...",
+      "salary": "الراتب",
+      "salaryHint": "الحد الأدنى 10,000 فرنك أفريقي",
+      "region": "المنطقة",
+      "regionPlaceholder": "اختر منطقة"
+    },
+
+    "accountType": {
+      "CLIENT": "عميل",
+      "PROVIDER": "مقدم خدمة",
+      "ADMIN": "مسؤول"
+    },
+
+    "providerTypes": {
+      "BABYSITTER": "جليس أطفال",
+      "GARDE_PERISCOLAIRE": "رعاية بعد المدرسة",
+      "MENAGE": "تنظيف",
+      "AIDE_PERSONNES_AGEES": "رعاية المسنين",
+      "RESIDENTIEL": "سكني (إقامة داخل المنزل)",
+      "COURT_TERME": "قصير المدى"
+    },
+
+    "tabs": {
+      "bookings": "الحجوزات",
+      "reviews": "التقييمات",
+      "favorites": "المفضلة",
+      "videos": "الفيديوهات",
+      "announcements": "الإعلانات",
+      "servicesPublic": "الخدمات"
+    },
+
+    "announcements": {
+      "quota": "تم استخدام {used}/{max} إعلانًا",
+      "quotaFull": "تم الوصول إلى الحد الأقصى",
+      "views": "{count, plural, zero {لا مشاهدات} one {مشاهدة واحدة} two {مشاهدتان} few {# مشاهدات} many {# مشاهدة} other {# مشاهدة}}",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "deleteConfirm": "هل تريد حذف هذا الإعلان؟"
+    },
+
+    "empty": {
+      "bookings": "لا توجد حجوزات حتى الآن",
+      "reviews": "لا توجد تقييمات حتى الآن",
+      "favorites": "لا توجد مفضلات حتى الآن",
+      "announcements": "لا توجد إعلانات حتى الآن",
+      "announcementsCta": "نشر إعلان",
+      "servicesPublic": "لم يتم نشر أي خدمة بعد"
+    },
+
+    "videos": {
+      "retry": "إعادة المحاولة",
+      "empty": "لا توجد فيديوهات حتى الآن"
+    },
+
+    "errors": {
+      "saveFailed": "فشل الحفظ. حاول مرة أخرى.",
+      "invalidImage": "ملف صورة غير صالح.",
+      "imageTooLarge": "الصورة كبيرة جدًا (الحد الأقصى 5 ميغابايت).",
+      "uploadFailed": "فشل رفع الصورة. حاول مرة أخرى.",
+      "announcementsLoadFailed": "تعذّر تحميل الإعلانات",
+      "announcementDeleteFailed": "تعذّر حذف الإعلان",
+
+      "optionsLoadFailed": "تعذّر تحميل الخيارات",
+      "jobTypeRequired": "يرجى اختيار وظيفة",
+      "regionRequired": "يرجى اختيار منطقة",
+      "salaryMin": "الحد الأدنى للراتب هو 10,000 فرنك أفريقي",
+      "submitFailed": "فشل النشر"
+    }
   },
-  "cropTitle": "قص الصورة",
-  "zoom": "تكبير",
-  "crop": "قص",
-  "cropConfirm": "تأكيد",
-  "back": "رجوع",
-  "unnamed": "بدون اسم",
-  "notFound": "الملف الشخصي غير موجود",
-  "changePhoto": "تغيير الصورة",
-  "namePlaceholder": "اسمك",
-  "editProfile": "تعديل الملف الشخصي",
-  "settings": "الإعدادات",
-  "share": "مشاركة",
-  "cancel": "إلغاء",
-  "save": "حفظ",
-  "saving": "جارٍ الحفظ...",
-  "saved": "تم تحديث الملف الشخصي",
-  "bioPlaceholder": "حدثنا عن نفسك...",
-  "noBio": "لا توجد سيرة ذاتية بعد",
-  "linkCopied": "تم نسخ الرابط",
-  "agencyInfo": "معلومات الوكالة",
-  "companyName": "اسم الشركة",
-  "companyNamePlaceholder": "مثال: وكالتي الرائعة",
-  "rccmNumber": "رقم RCCM",
-  "rccmPlaceholder": "مثال: CI-ABJ-2024-B-12345",
-  "providerInfo": "معلومات مقدم الخدمة",
-  "providerType": "نوع الخدمة",
-  "hourlyRate": "الأجر بالساعة",
-  "select": "اختر",
-  "contact": "اتصال",
-  "verified": "موثّق",
-  "addFavorite": "إضافة إلى المفضلة",
-  "removeFavorite": "إزالة من المفضلة",
 
-  "publishOffer": "نشر عرض",
-  "publishOfferShort": "نشر",
-  "publishService": "نشر خدمة",
-  "publishServiceShort": "نشر",
-
-  "title": "نشر عرض",
-  "editTitle": "تعديل العرض",
-  "close": "إغلاق",
-  "submit": "نشر",
-  "submitting": "جارٍ النشر...",
-
-  "fields": {
-    "jobType": "الوظيفة",
-    "jobTypePlaceholder": "اختر وظيفة",
-    "description": "الوصف",
-    "descriptionPlaceholder": "صف احتياجك...",
-    "salary": "الراتب",
-    "salaryHint": "الحد الأدنى 10,000 فرنك أفريقي",
-    "region": "المنطقة",
-    "regionPlaceholder": "اختر منطقة"
+  "PublishService": {
+    "title": "نشر خدمة",
+    "editTitle": "تعديل الخدمة",
+    "submit": "نشر",
+    "submitting": "جارٍ النشر...",
+    "save": "حفظ",
+    "saving": "جارٍ الحفظ...",
+    "cancel": "إلغاء",
+    "close": "إغلاق",
+    "fields": {
+      "jobType": "الوظيفة / الخدمة",
+      "jobTypePlaceholder": "اختر وظيفة",
+      "description": "الوصف",
+      "descriptionPlaceholder": "صف خدمتك...",
+      "hourlyRate": "الأجر بالساعة",
+      "hourlyRateHint": "الحد الأدنى 500 فرنك أفريقي في الساعة",
+      "region": "المنطقة",
+      "regionPlaceholder": "اختر منطقة"
+    },
+    "errors": {
+      "optionsLoadFailed": "تعذّر تحميل الخيارات",
+      "jobTypeRequired": "يرجى اختيار وظيفة",
+      "regionRequired": "يرجى اختيار منطقة",
+      "hourlyRateMin": "الحد الأدنى للأجر بالساعة هو 500 فرنك أفريقي",
+      "submitFailed": "فشل النشر"
+    }
   },
 
-  "accountType": {
-    "CLIENT": "عميل",
-    "PROVIDER": "مقدم خدمة",
-    "ADMIN": "مسؤول"
-  },
-
-  "providerTypes": {
-    "BABYSITTER": "جليس أطفال",
-    "GARDE_PERISCOLAIRE": "رعاية بعد المدرسة",
-    "MENAGE": "تنظيف",
-    "AIDE_PERSONNES_AGEES": "رعاية المسنين",
-    "RESIDENTIEL": "سكني (إقامة داخل المنزل)",
-    "COURT_TERME": "قصير المدى"
-  },
-
-  "tabs": {
-    "bookings": "الحجوزات",
-    "reviews": "التقييمات",
-    "favorites": "المفضلة",
-    "videos": "الفيديوهات",
-    "announcements": "الإعلانات"
-  },
-
-  "announcements": {
-    "quota": "تم استخدام {used}/{max} إعلانًا",
-    "quotaFull": "تم الوصول إلى الحد الأقصى",
-    "views": "{count} مشاهدة",
-    "edit": "تعديل",
-    "delete": "حذف",
-    "deleteConfirm": "هل تريد حذف هذا الإعلان؟"
-  },
-
-  "empty": {
-    "bookings": "لا توجد حجوزات حتى الآن",
-    "reviews": "لا توجد تقييمات حتى الآن",
-    "favorites": "لا توجد مفضلات حتى الآن",
-    "announcements": "لا توجد إعلانات حتى الآن",
-    "announcementsCta": "نشر إعلان"
-  },
-
-  "videos": {
-    "retry": "إعادة المحاولة",
-    "empty": "لا توجد فيديوهات حتى الآن"
-  },
-
-  "errors": {
-    "saveFailed": "فشل الحفظ. حاول مرة أخرى.",
-    "invalidImage": "ملف صورة غير صالح.",
-    "imageTooLarge": "الصورة كبيرة جدًا (الحد الأقصى 5 ميغابايت).",
-    "uploadFailed": "فشل رفع الصورة. حاول مرة أخرى.",
-    "announcementsLoadFailed": "تعذّر تحميل الإعلانات",
-    "announcementDeleteFailed": "تعذّر حذف الإعلان",
-
-    "optionsLoadFailed": "تعذّر تحميل الخيارات",
-    "jobTypeRequired": "يرجى اختيار وظيفة",
-    "regionRequired": "يرجى اختيار منطقة",
-    "salaryMin": "الحد الأدنى للراتب هو 10,000 فرنك أفريقي",
-    "submitFailed": "فشل النشر"
-  }
-},
   "TopToolbar": {
-     "quickSearchPlaceholder": "ابحث عن مدينة...",
-  "searching": "جارٍ البحث...",
-  "noCityFound": "لم يتم العثور على مدينة",
-  "offersCount": "{count} عرض/عروض",
-  "noOffers": "لا توجد عروض",
-  "noOffersInCity": "لا توجد عروض متاحة في {city} في الوقت الحالي.",
-  "searchByAi": "البحث بالذكاء الاصطناعي",
-  "profile": "الملف الشخصي"
+    "quickSearchPlaceholder": "ابحث عن مدينة...",
+    "searching": "جارٍ البحث...",
+    "noCityFound": "لم يتم العثور على مدينة",
+    "offersCount": "{count} عرض/عروض",
+    "noOffers": "لا توجد عروض",
+    "noOffersInCity": "لا توجد عروض متاحة في {city} في الوقت الحالي.",
+    "searchByAi": "البحث بالذكاء الاصطناعي",
+    "profile": "الملف الشخصي"
   },
+
   "AiSearchPanel": {
     "title": "البحث بالذكاء الاصطناعي",
     "close": "إغلاق",
@@ -245,6 +281,7 @@
     "send": "إرسال",
     "mockResponse": "وجدت ملفاً يطابق بحثك:"
   },
+
   "NearbyMap": {
     "online": "متصل",
     "offline": "غير متصل",
@@ -252,18 +289,17 @@
     "minutesAgo": "شوهد قبل {n} دقيقة",
     "hoursAgo": "شوهد قبل {n} ساعة",
     "daysAgo": "شوهد قبل {n} يوم",
-    
-  "searching": "جارٍ البحث...",
-  "noCityFound": "لم يتم العثور على مدينة",
-  "offersCount": "{count} عرض/عروض",
-  "noOffers": "لا توجد عروض",
-  "noOffersInCity": "لا توجد عروض متاحة في {city} في الوقت الحالي.",
-
+    "searching": "جارٍ البحث...",
+    "noCityFound": "لم يتم العثور على مدينة",
+    "offersCount": "{count} عرض/عروض",
+    "noOffers": "لا توجد عروض",
+    "noOffersInCity": "لا توجد عروض متاحة في {city} في الوقت الحالي.",
     "me": "أنا",
     "youAreHere": "أنت هنا",
     "locateMe": "تحديد موقعي",
     "retry": "إعادة المحاولة"
   },
+
   "ProfilePopover": {
     "title": "حسابي",
     "profileTab": "الملف الشخصي",
@@ -286,6 +322,7 @@
       }
     }
   },
+
   "VrConfirmPopover": {
     "title": "مقابلة افتراضية",
     "description": "تُجرى هذه المقابلة في بيئة غامرة. يلزم توفر سماعة واقع افتراضي متوافقة للمشاركة.",
@@ -296,11 +333,7 @@
     "continue": "متابعة",
     "close": "إغلاق"
   },
-  "downloadApp": "تحميل التطبيق",
-  "scanToDownload": "امسح هذا الرمز لتحميل تطبيق TocToc على هاتفك.",
-  "mobileDownloadHint": "حمّل التطبيق مباشرة من متجرك",
-  "downloadQr": "تحميل رمز QR",
-  "downloading": "جارٍ التحميل...",
+
   "Sidebar": {
     "search": "بحث",
     "home": "الصفحة الرئيسية",
@@ -315,6 +348,7 @@
     "collapse": "طي",
     "expand": "توسيع"
   },
+
   "SettingsPopover": {
     "title": "الإعدادات",
     "close": "إغلاق",
@@ -372,6 +406,7 @@
       "networkFailed": "خطأ في الشبكة. تحقق من اتصالك وحاول مرة أخرى."
     }
   },
+
   "SearchPopover": {
     "title": "بحث",
     "close": "إغلاق",
@@ -388,6 +423,7 @@
       "clearFailed": "خطأ أثناء مسح السجل"
     }
   },
+
   "navbar": {
     "findProfile": "البحث عن ملف",
     "candidates": "ابحث عن عرض عمل",
@@ -398,6 +434,7 @@
       "placeholder": "كلمات مفتاحية: تدبير منزلي، خادمة، مربية أطفال، سائق، بستاني..."
     }
   },
+
   "precheck": {
     "title": "التحقق من الأمان...",
     "message": "يرجى الانتظار بينما نتحقق من اتصالك.",
@@ -435,6 +472,7 @@
       "continue": "متابعة"
     }
   },
+
   "notFound": {
     "title": "الصفحة غير موجودة",
     "description": "عذرًا، هذه الصفحة غير موجودة أو تم نقلها.",
@@ -442,6 +480,7 @@
     "backHome": "العودة إلى الصفحة الرئيسية",
     "backToLogin": "العودة إلى تسجيل الدخول"
   },
+
   "firstModuleHome": {
     "card_title1": "جليسة أطفال",
     "card_description1": "اذهب مطمئن البال، جليسات الأطفال المعتمدات لدينا يعتنين بأطفالك كما لو كانوا أطفالهن.",
@@ -455,6 +494,7 @@
     "P1_title": "المنصة الأولى للعمالة المنزلية في كوت ديفوار !!!",
     "btn_1": "منذ عام 2024"
   },
+
   "secondModuleHome": {
     "H2_title": "محرك بحث المواهب للخدمات المنزلية في كوت ديفوار",
     "description1": "عروض العمل التي تم العثور على ملف شخصي لها لا يتم عرضها، أو تلك التي لم يسجل المستخدم الدخول إليها بعد.",
@@ -467,6 +507,7 @@
       "description3": "متدخلون مزودون بمعدات متطورة تتكيف مع جميع المواقف."
     }
   },
+
   "footer": {
     "links": {
       "heading": "إعلانات",
@@ -486,6 +527,7 @@
       "womanPhone": "مستخدمة على الهاتف"
     }
   },
+
   "intro": {
     "slogan": {
       "subtitle": "طريقة جديدة لـ",
@@ -505,12 +547,14 @@
       }
     }
   },
+
   "home": {
     "quote": {
       "text": "في كوت ديفوار، نقوم الآن بتوظيف العمالة المنزلية",
       "highlight": "بفضل الذكاء الاصطناعي."
     }
   },
+
   "profileCard": {
     "title": "أمثلة على العروض",
     "morelesse": "عرض المزيد",
@@ -542,6 +586,7 @@
       "contact": "اتصل بـ {name}"
     }
   },
+
   "announcementCard": {
     "title": "أمثلة على الملفات الشخصية",
     "loading": "تحميل...",
@@ -587,6 +632,7 @@
       "DIM": "الأحد"
     }
   },
+
   "fourModuleHome": {
     "title": "اختر",
     "items": [
@@ -599,11 +645,13 @@
     ],
     "btnTocer": "Tocer"
   },
+
   "thirdModuleHome": {
     "title1": "ابحث بسرعة وفقًا لمعاييرك",
     "btnAdvancedSearch": "بحث متقدم",
     "title2": "ابحث عن عروض من وكالات أخرى بالإضافة إلى عروضنا"
   },
+
   "mapComponent": {
     "title": "العروض حسب الموقع",
     "loading": "جارٍ تحميل الخريطة...",
@@ -622,6 +670,7 @@
       "MAJORDOME": "مدبر منزل / مديرة منزل"
     }
   },
+
   "policy": {
     "table": {
       "titleHeader": "العنوان",
@@ -644,6 +693,7 @@
       "point4": "④ لا يمكن للشركة تحديد هوية الأشخاص الطبيعيين من خلال قيمة التعريف أعلاه، ولا تستخدم المعلومات لأي أغراض أخرى غير تقييد إعادة التسجيل."
     }
   },
+
   "warning": {
     "table": {
       "titleHeader": "العنوان",
@@ -666,6 +716,7 @@
       "point4": "④ في حال الشك، اتصل بخدمة عملاء TocToc مباشرة عبر التطبيق الرسمي أو الموقع الإلكتروني. لا تستخدم أبداً معلومات الاتصال المقدمة في الرسالة النصية المشبوهة."
     }
   },
+
   "contact": {
     "category": "الفئة",
     "messagePlaceholder": "اكتب رسالتك هنا...",
@@ -691,9 +742,11 @@
     "message": "الرسالة",
     "submitBtn": "إرسال"
   },
+
   "auth": {
     "loading": "جارٍ التحميل..."
   },
+
   "register": {
     "progress": {
       "step": "خطوة",
@@ -821,6 +874,7 @@
       "vr": "مقابلة عبر الواقع الافتراضي"
     }
   },
+
   "login": {
     "title": "تسجيل الدخول",
     "subtitle": "الوصول إلى حسابك",
@@ -852,6 +906,7 @@
       "invalidCredentials": "بيانات الدخول غير صالحة"
     }
   },
+
   "forgotPassword": {
     "title": "نسيت كلمة المرور",
     "subtitle": "استعادة الوصول إلى حسابك",
@@ -884,6 +939,7 @@
       "goToLogin": "الانتقال إلى تسجيل الدخول"
     }
   },
+
   "resetPassword": {
     "title": "إعادة تعيين كلمة المرور",
     "subtitle": "اختر كلمة مرور جديدة آمنة",
@@ -921,6 +977,7 @@
     },
     "backToForgotPassword": "العودة إلى صفحة إعادة تعيين كلمة المرور"
   },
+
   "terms": {
     "table": {
       "titleHeader": "العنوان",
@@ -953,6 +1010,7 @@
       "point10": "المادة 6: الاتصال: لأي أسئلة بخصوص هذه الشروط، يرجى الاتصال بنا على contact@toctoc.com."
     }
   },
+
   "AgencyDashboard": {
     "welcome": "مرحباً، {name}",
     "subtitle": "قم بإدارة وكالتك وملفاتك من لوحة التحكم هذه.",
@@ -960,11 +1018,13 @@
     "rccm": "رقم RCCM",
     "verificationStatus": "حالة التحقق"
   },
+
   "IndividualDashboard": {
     "welcome": "مرحباً، {name}",
     "subtitle": "ابحث عن عمالة منزلية بالقرب منك."
   },
+
   "cropTitle": "تعديل الصورة",
-"zoom": "تكبير/تصغير",
-"cropConfirm": "تأكيد"
+  "zoom": "تكبير/تصغير",
+  "cropConfirm": "تأكيد"
 }

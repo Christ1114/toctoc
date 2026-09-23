@@ -56,9 +56,9 @@
       "invalidImage": "Invalid image format",
       "imageTooLarge": "Image too large (max 5 MB)"
     }
-  }
-,
-   "ProviderProfile": {
+  },
+
+  "ProviderProfile": {
     "videoModal": {
       "invalidUrl": "Invalid video URL",
       "invalidYoutubeId": "Invalid YouTube ID",
@@ -69,7 +69,8 @@
       "close": "Close"
     }
   },
-   "VideoManager": {
+
+  "VideoManager": {
     "addVideo": "Add a video",
     "empty": "No videos yet",
     "untitled": "Untitled",
@@ -102,141 +103,175 @@
       "invalidUrl": "Invalid URL (YouTube, Vimeo or .mp4)"
     }
   },
-"ProfilePage": {
-  "socialNetworks": "Social networks",
-  "social": {
-    "website": "Website",
-    "instagram": "Instagram",
-    "facebook": "Facebook",
-    "tiktok": "TikTok",
-    "linkedin": "LinkedIn",
-    "youtube": "YouTube",
-    "twitter": "X (Twitter)"
+
+  "ProfilePage": {
+    "socialNetworks": "Social networks",
+    "social": {
+      "website": "Website",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "tiktok": "TikTok",
+      "linkedin": "LinkedIn",
+      "youtube": "YouTube",
+      "twitter": "X (Twitter)"
+    },
+    "cropTitle": "Crop image",
+    "zoom": "Zoom",
+    "cropConfirm": "Confirm",
+    "back": "Back",
+    "unnamed": "Unnamed",
+    "notFound": "User not found",
+    "changePhoto": "Change photo",
+    "namePlaceholder": "Your name",
+    "editProfile": "Edit profile",
+    "settings": "Settings",
+    "share": "Share",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving...",
+    "saved": "Saved successfully",
+    "bioPlaceholder": "Tell us about yourself...",
+    "noBio": "No bio yet",
+    "linkCopied": "Link copied to clipboard",
+    "agencyInfo": "Agency information",
+    "companyName": "Company name",
+    "companyNamePlaceholder": "e.g. Acme Care",
+    "rccmNumber": "RCCM number",
+    "rccmPlaceholder": "e.g. CI-ABJ-2024-B-12345",
+    "providerInfo": "Provider information",
+    "providerType": "Service type",
+    "hourlyRate": "Hourly rate",
+    "select": "Select",
+    "contact": "Contact",
+    "verified": "Verified",
+    "addFavorite": "Add to favorites",
+    "removeFavorite": "Remove from favorites",
+    "urgent": "Urgent",
+
+    "publishOffer": "Publish an offer",
+    "publishOfferShort": "Publish",
+    "publishService": "Publish a service",
+    "publishServiceShort": "Publish",
+
+    "title": "Publish an offer",
+    "editTitle": "Edit offer",
+    "close": "Close",
+    "submit": "Publish",
+    "submitting": "Publishing...",
+
+    "fields": {
+      "jobType": "Position",
+      "jobTypePlaceholder": "Select a position",
+      "description": "Description",
+      "descriptionPlaceholder": "Describe your need...",
+      "salary": "Salary",
+      "salaryHint": "Minimum 10,000 FCFA",
+      "region": "Region",
+      "regionPlaceholder": "Select a region"
+    },
+
+    "accountType": {
+      "CLIENT": "Client",
+      "PROVIDER": "Provider",
+      "ADMIN": "Admin"
+    },
+
+    "providerTypes": {
+      "BABYSITTER": "Babysitter",
+      "GARDE_PERISCOLAIRE": "After-school care",
+      "MENAGE": "Housekeeping",
+      "AIDE_PERSONNES_AGEES": "Elderly care",
+      "RESIDENTIEL": "Residential",
+      "COURT_TERME": "Short-term"
+    },
+
+    "tabs": {
+      "bookings": "Bookings",
+      "reviews": "Reviews",
+      "favorites": "Favorites",
+      "videos": "Videos",
+      "announcements": "Announcements",
+      "servicesPublic": "Services"
+    },
+
+    "announcements": {
+      "quota": "{used}/{max} announcements used",
+      "quotaFull": "Quota reached",
+      "views": "{count, plural, =0 {No views} =1 {1 view} other {# views}}",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteConfirm": "Delete this announcement?"
+    },
+
+    "empty": {
+      "bookings": "No bookings yet",
+      "reviews": "No reviews yet",
+      "favorites": "No favorites yet",
+      "announcements": "No announcements yet",
+      "announcementsCta": "Publish an announcement",
+      "servicesPublic": "No services published yet"
+    },
+
+    "videos": {
+      "retry": "Retry",
+      "empty": "No videos yet"
+    },
+
+    "errors": {
+      "saveFailed": "Failed to save changes",
+      "invalidImage": "Please select a valid image file",
+      "imageTooLarge": "Image must be smaller than 5 MB",
+      "uploadFailed": "Failed to upload image",
+      "announcementsLoadFailed": "Could not load announcements",
+      "announcementDeleteFailed": "Could not delete announcement",
+
+      "optionsLoadFailed": "Could not load options",
+      "jobTypeRequired": "Please select a position",
+      "regionRequired": "Please select a region",
+      "salaryMin": "Minimum salary is 10,000 FCFA",
+      "submitFailed": "Failed to publish"
+    }
   },
-  "cropTitle": "Crop image",
-  "zoom": "Zoom",
-  "cropConfirm": "Confirm",
-  "back": "Back",
-  "unnamed": "Unnamed",
-  "notFound": "User not found",
-  "changePhoto": "Change photo",
-  "namePlaceholder": "Your name",
-  "editProfile": "Edit profile",
-  "settings": "Settings",
-  "share": "Share",
-  "cancel": "Cancel",
-  "save": "Save",
-  "saving": "Saving...",
-  "saved": "Saved successfully",
-  "bioPlaceholder": "Tell us about yourself...",
-  "noBio": "No bio yet",
-  "linkCopied": "Link copied to clipboard",
-  "agencyInfo": "Agency information",
-  "companyName": "Company name",
-  "companyNamePlaceholder": "e.g. Acme Care",
-  "rccmNumber": "RCCM number",
-  "rccmPlaceholder": "e.g. CI-ABJ-2024-B-12345",
-  "providerInfo": "Provider information",
-  "providerType": "Service type",
-  "hourlyRate": "Hourly rate",
-  "select": "Select",
-  "contact": "Contact",
-  "verified": "Verified",
-  "addFavorite": "Add to favorites",
-  "removeFavorite": "Remove from favorites",
 
-  "publishOffer": "Publish an offer",
-  "publishOfferShort": "Publish",
-  "publishService": "Publish a service",
-  "publishServiceShort": "Publish",
-
-  "title": "Publish an offer",
-  "editTitle": "Edit offer",
-  "close": "Close",
-  "submit": "Publish",
-  "submitting": "Publishing...",
-
-  "fields": {
-    "jobType": "Position",
-    "jobTypePlaceholder": "Select a position",
-    "description": "Description",
-    "descriptionPlaceholder": "Describe your need...",
-    "salary": "Salary",
-    "salaryHint": "Minimum 10,000 FCFA",
-    "region": "Region",
-    "regionPlaceholder": "Select a region"
+  "PublishService": {
+    "title": "Publish a service",
+    "editTitle": "Edit service",
+    "submit": "Publish",
+    "submitting": "Publishing...",
+    "save": "Save",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "close": "Close",
+    "fields": {
+      "jobType": "Position / Service",
+      "jobTypePlaceholder": "Select a position",
+      "description": "Description",
+      "descriptionPlaceholder": "Describe your service...",
+      "hourlyRate": "Hourly rate",
+      "hourlyRateHint": "Minimum 500 FCFA per hour",
+      "region": "Region",
+      "regionPlaceholder": "Select a region"
+    },
+    "errors": {
+      "optionsLoadFailed": "Could not load options",
+      "jobTypeRequired": "Please select a position",
+      "regionRequired": "Please select a region",
+      "hourlyRateMin": "Minimum hourly rate is 500 FCFA",
+      "submitFailed": "Failed to publish"
+    }
   },
 
-  "accountType": {
-    "CLIENT": "Client",
-    "PROVIDER": "Provider",
-    "ADMIN": "Admin"
-  },
-
-  "providerTypes": {
-    "BABYSITTER": "Babysitter",
-    "GARDE_PERISCOLAIRE": "After-school care",
-    "MENAGE": "Housekeeping",
-    "AIDE_PERSONNES_AGEES": "Elderly care",
-    "RESIDENTIEL": "Residential",
-    "COURT_TERME": "Short-term"
-  },
-
-  "tabs": {
-    "bookings": "Bookings",
-    "reviews": "Reviews",
-    "favorites": "Favorites",
-    "videos": "Videos",
-    "announcements": "Announcements"
-  },
-
-  "announcements": {
-    "quota": "{used}/{max} announcements used",
-    "quotaFull": "Quota reached",
-    "views": "{count} view(s)",
-    "edit": "Edit",
-    "delete": "Delete",
-    "deleteConfirm": "Delete this announcement?"
-  },
-
-  "empty": {
-    "bookings": "No bookings yet",
-    "reviews": "No reviews yet",
-    "favorites": "No favorites yet",
-    "announcements": "No announcements yet",
-    "announcementsCta": "Publish an announcement"
-  },
-
-  "videos": {
-    "retry": "Retry",
-    "empty": "No videos yet"
-  },
-
-  "errors": {
-    "saveFailed": "Failed to save changes",
-    "invalidImage": "Please select a valid image file",
-    "imageTooLarge": "Image must be smaller than 5 MB",
-    "uploadFailed": "Failed to upload image",
-    "announcementsLoadFailed": "Could not load announcements",
-    "announcementDeleteFailed": "Could not delete announcement",
-
-    "optionsLoadFailed": "Could not load options",
-    "jobTypeRequired": "Please select a position",
-    "regionRequired": "Please select a region",
-    "salaryMin": "Minimum salary is 10,000 FCFA",
-    "submitFailed": "Failed to publish"
-  }
-},
   "TopToolbar": {
-  "searching": "Searching...",
-  "noCityFound": "No city found",
-  "offersCount": "{count} offer(s)",
-  "noOffers": "No offers",
-  "noOffersInCity": "No offers available in {city} at the moment.",
-  "searchByAi": "Search by AI",
-  "profile": "Profile",
+    "searching": "Searching...",
+    "noCityFound": "No city found",
+    "offersCount": "{count} offer(s)",
+    "noOffers": "No offers",
+    "noOffersInCity": "No offers available in {city} at the moment.",
+    "searchByAi": "Search by AI",
+    "profile": "Profile",
     "quickSearchPlaceholder": "Quick search..."
   },
+
   "ProfilePopover": {
     "title": "My account",
     "profileTab": "Profile",
@@ -250,6 +285,7 @@
       "reminder": { "title": "Interview reminder", "description": "Virtual interview scheduled tomorrow at 10:00 AM." }
     }
   },
+
   "AiSearchPanel": {
     "title": "AI Search",
     "close": "Close",
@@ -258,23 +294,25 @@
     "send": "Send",
     "mockResponse": "I found a profile that matches your search:"
   },
+
   "NearbyMap": {
-     "online": "Online",
+    "online": "Online",
     "offline": "Offline",
     "justNow": "Just now",
     "minutesAgo": "Seen {n} min ago",
     "hoursAgo": "Seen {n} h ago",
     "daysAgo": "Seen {n} d ago",
     "searching": "Searching...",
-"noCityFound": "No city found",
-"offersCount": "{count} offer(s)",
-"noOffers": "No offers",
-"noOffersInCity": "No offers available in {city} at the moment.",
+    "noCityFound": "No city found",
+    "offersCount": "{count} offer(s)",
+    "noOffers": "No offers",
+    "noOffersInCity": "No offers available in {city} at the moment.",
     "me": "Me",
     "youAreHere": "You are here",
     "locateMe": "Locate me",
     "retry": "Retry"
   },
+
   "VrConfirmPopover": {
     "title": "Virtual interview",
     "description": "This interview takes place in an immersive space. A compatible VR headset is required to participate.",
@@ -285,6 +323,7 @@
     "continue": "Continue",
     "close": "Close"
   },
+
   "Sidebar": {
     "search": "Search",
     "home": "Home",
@@ -299,6 +338,7 @@
     "collapse": "Collapse",
     "expand": "Expand"
   },
+
   "SettingsPopover": {
     "title": "Settings",
     "close": "Close",
@@ -352,6 +392,7 @@
       "networkFailed": "Network error. Check your connection and try again."
     }
   },
+
   "SearchPopover": {
     "title": "Search",
     "close": "Close",
@@ -368,6 +409,7 @@
       "clearFailed": "Error while clearing history"
     }
   },
+
   "navbar": {
     "findProfile": "Find a profile",
     "candidates": "Find a job offer",
@@ -378,6 +420,7 @@
       "placeholder": "Keywords: Housekeeping, Maid, Nanny, Driver, Gardener..."
     }
   },
+
   "precheck": {
     "title": "Security check...",
     "message": "Please wait while we verify your connection.",
@@ -415,6 +458,7 @@
       "continue": "Continue"
     }
   },
+
   "notFound": {
     "title": "Page not found",
     "description": "Sorry, this page doesn't exist or has been moved.",
@@ -422,6 +466,7 @@
     "backHome": "Back to home",
     "backToLogin": "Back to login"
   },
+
   "firstModuleHome": {
     "card_title1": "Nanny",
     "card_description1": "Leave with peace of mind. Our certified nannies take care of your children as if they were their own.",
@@ -435,6 +480,7 @@
     "P1_title": "The N°1 platform for household staff in Ivory Coast !!!",
     "btn_1": "Since 2024"
   },
+
   "secondModuleHome": {
     "H2_title": "Home services talent search engine in Côte d'Ivoire",
     "description1": "Job offers for which a profile has already been found are not displayed, or for which the user has not yet logged in.",
@@ -447,6 +493,7 @@
       "description3": "Interventionists equipped with state-of-the-art equipment adapted to all situations."
     }
   },
+
   "footer": {
     "links": {
       "heading": "Announcements",
@@ -466,6 +513,7 @@
       "womanPhone": "User on phone"
     }
   },
+
   "intro": {
     "slogan": {
       "subtitle": "A new way to",
@@ -485,12 +533,14 @@
       }
     }
   },
+
   "home": {
     "quote": {
       "text": "In Côte d'Ivoire, we now recruit domestic staff",
       "highlight": "thanks to AI."
     }
   },
+
   "profileCard": {
     "title": "Offer examples",
     "morelesse": "view more",
@@ -522,6 +572,7 @@
       "contact": "Contact {name}"
     }
   },
+
   "announcementCard": {
     "title": "Profile examples",
     "loading": "Loading...",
@@ -567,6 +618,7 @@
       "DIM": "Sun"
     }
   },
+
   "fourModuleHome": {
     "title": "Make a choice",
     "items": [
@@ -579,11 +631,13 @@
     ],
     "btnTocer": "Tocer"
   },
+
   "thirdModuleHome": {
     "title1": "Quickly search according to your criteria",
     "btnAdvancedSearch": "Advanced Search",
     "title2": "Find offers from other agencies as well as ours"
   },
+
   "mapComponent": {
     "title": "Offers by location",
     "loading": "Loading map...",
@@ -602,6 +656,7 @@
       "MAJORDOME": "Butler / Housekeeper"
     }
   },
+
   "policy": {
     "table": {
       "titleHeader": "Title",
@@ -624,6 +679,7 @@
       "point4": "④ The Company cannot identify individuals through the above identification value and does not use the information for any purpose other than restricting re-registration."
     }
   },
+
   "warning": {
     "table": {
       "titleHeader": "Title",
@@ -646,6 +702,7 @@
       "point4": "④ If in doubt, contact TocToc customer service directly via the official app or website. Never use the contact details provided in the suspicious SMS."
     }
   },
+
   "contact": {
     "category": "Category",
     "messagePlaceholder": "Write your message here...",
@@ -671,9 +728,11 @@
     "message": "Message",
     "submitBtn": "Send"
   },
+
   "auth": {
     "loading": "Loading..."
   },
+
   "register": {
     "progress": {
       "step": "Step",
@@ -801,6 +860,7 @@
       "vr": "VR Interview"
     }
   },
+
   "login": {
     "title": "Login",
     "subtitle": "Access your account",
@@ -832,6 +892,7 @@
       "invalidCredentials": "Invalid credentials"
     }
   },
+
   "forgotPassword": {
     "title": "Forgot Password",
     "subtitle": "Recover access to your account",
@@ -864,6 +925,7 @@
       "goToLogin": "Go to login"
     }
   },
+
   "resetPassword": {
     "title": "Reset your password",
     "subtitle": "Choose a new secure password",
@@ -901,6 +963,7 @@
     },
     "backToForgotPassword": "Back to password reset page"
   },
+
   "terms": {
     "table": {
       "titleHeader": "Title",
@@ -933,6 +996,7 @@
       "point10": "Article 6: Contact: For any questions regarding these terms, contact us at contact@toctoc.com."
     }
   },
+
   "AgencyDashboard": {
     "welcome": "Welcome, {name}",
     "subtitle": "Manage your agency and profiles from this dashboard.",
@@ -940,11 +1004,13 @@
     "rccm": "RCCM Number",
     "verificationStatus": "Verification status"
   },
+
   "IndividualDashboard": {
     "welcome": "Welcome, {name}",
     "subtitle": "Find domestic staff near you."
   },
+
   "cropTitle": "Adjust photo",
-"zoom": "Zoom",
-"cropConfirm": "Confirm"
+  "zoom": "Zoom",
+  "cropConfirm": "Confirm"
 }
