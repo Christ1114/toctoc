@@ -169,7 +169,8 @@
     "favorites": "暂无收藏"
   },
   "videos": {
-    "retry": "重试"
+    "retry": "重试",
+     "empty": "暂无视频"
   },
   "errors": {
     "saveFailed": "保存失败，请重试。",

@@ -169,7 +169,8 @@
     "favorites": "No favorites yet"
   },
   "videos": {
-    "retry": "Retry"
+    "retry": "Retry",
+     "empty": "No videos yet"
   },
   "errors": {
     "saveFailed": "Failed to save changes",

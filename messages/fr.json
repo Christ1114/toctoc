@@ -170,7 +170,11 @@
     "favorites": "Aucun favori pour le moment"
   },
   "videos": {
-    "retry": "Réessayer"
+    "retry": "Réessayer",
+    
+  "empty": "Aucune vidéo pour le moment"
+
+
   },
   "errors": {
     "saveFailed": "Échec de l'enregistrement. Réessaie.",
