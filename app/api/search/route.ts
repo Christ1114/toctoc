@@ -47,7 +47,7 @@ const buildAnnouncementSearch = (q: string): Prisma.AnnouncementWhereInput => ({
 
 // ─── Selects / OrderBy réutilisables ─────────────────────────────
 const ANNOUNCEMENT_SELECT = {
-  id: true, type: true, title: true, description: true,
+  id: true, type: true, title: true, description: true,userId: true, 
   city: true, location: true, isUrgent: true, isVerified: true,
   isFeatured: true, postedAt: true, salaryMin: true, salaryMax: true,
   salaryPeriod: true, salaryRaw: true, workArrangement: true,
@@ -188,20 +188,9 @@ export async function GET(request: NextRequest) {
       ];
       total = announcementCount + providerCount;
     }
-
-    // ── PROVIDER ─────────────────────────────────────────────────
-    // Voit : les missions clients (OFFER) + ses propres annonces (PROFILE)
-    //
-    // ⚠️ Un provider publie en `type: "PROFILE"` (cf. POST /api/announcements),
-    //    mais cherche les missions `type: "OFFER"` des clients.
-    //    Sans le OR ci-dessous, il ne retrouve JAMAIS ses propres annonces.
-    //
-    // ⚠️ On utilise AND (et non un spread de OR) car `buildAnnouncementSearch`
-    //    contient déjà un OR → sinon il écrase le filtre de type.
     else if (searchType === "PROVIDER") {
       const where: Prisma.AnnouncementWhereInput = {
         AND: [
-          // 1. Type : missions clients OU mes propres annonces
           {
             OR: [
               { type: "OFFER" },
