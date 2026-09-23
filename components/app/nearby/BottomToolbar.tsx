@@ -6,6 +6,9 @@ import { orbitron } from "@/fonts/font";
 import type { ToolbarCategory } from "@/app/lib/jobs/category-colors";
 import { getCategoryIcon } from "@/app/lib/jobs/category-icons";
 
+/* ═══════════════════════════════════════════════════════════
+   CACHE + FETCH
+   ═══════════════════════════════════════════════════════════ */
 
 let categoriesCache: ToolbarCategory[] | null = null;
 let inflightPromise: Promise<ToolbarCategory[]> | null = null;
@@ -62,45 +65,57 @@ function BottomToolbarInner({
   const [categories, setCategories] = useState<ToolbarCategory[]>(
     external ?? categoriesCache ?? [],
   );
+  const [loading, setLoading] = useState(!external && !categoriesCache);
 
   useEffect(() => {
     if (external) {
       setCategories(external);
+      setLoading(false);
       return;
     }
     if (categoriesCache) {
       setCategories(categoriesCache);
+      setLoading(false);
       return;
     }
 
     let mounted = true;
+    setLoading(true);
     fetchCategories().then((list) => {
-      if (mounted) setCategories(list);
+      if (mounted) {
+        setCategories(list);
+        setLoading(false);
+      }
     });
     return () => {
       mounted = false;
     };
   }, [external]);
 
-  if (categories.length === 0) return null;
+  // ❌ SUPPRIMÉ : if (categories.length === 0) return null;
+  // ✅ On rend TOUJOURS la barre (au moins le bouton "Tous")
 
+  /* ═══════════════════════════════════════════════════════
+     RENDER
+     ═══════════════════════════════════════════════════════ */
   return (
+    /* ✅ Wrapper responsive : marges adaptatives + safe-area */
     <div
       className="
-        absolute z-20 pointer-events-none
-        left-2 right-2
-        bottom-[calc(10px+env(safe-area-inset-bottom,0px))]
-        sm:left-3 sm:right-3 sm:bottom-[calc(12px+env(safe-area-inset-bottom,0px))]
-        md:left-4 md:right-4 md:bottom-4
+        pointer-events-auto
+        mx-2 mb-[calc(10px+env(safe-area-inset-bottom,0px))]
+        sm:mx-3 sm:mb-[calc(12px+env(safe-area-inset-bottom,0px))]
+        md:mx-4 md:mb-4
+        lg:mx-5 lg:mb-5
       "
     >
       <div
         role="tablist"
         aria-label={t("filterByCategory")}
         className="
-          pointer-events-auto mx-auto
+          mx-auto
           flex flex-nowrap items-center
-          gap-2 sm:gap-1.5
+          gap-1.5 sm:gap-1.5 md:gap-2
           overflow-x-auto
           min-w-0 max-w-full
           snap-x snap-mandatory scroll-smooth
@@ -108,23 +123,25 @@ function BottomToolbarInner({
           bg-black/55 backdrop-blur-md
           sm:backdrop-blur-xl
           border border-white/15
-          px-2 py-2 sm:px-2.5
+          px-2 py-1.5 sm:px-2.5 sm:py-2
           shadow-2xl shadow-black/40
           no-scrollbar overscroll-x-contain
           contain-[paint]
         "
         style={{ WebkitOverflowScrolling: "touch" }}
       >
+        {/* ─── Bouton "Tous" — TOUJOURS visible ─── */}
         <button
           type="button"
           role="tab"
           aria-selected={activeSlug === null}
+          aria-label={t("all")}
           onClick={() => onSelect(null)}
           className={`
             shrink-0 snap-start
-            flex items-center gap-2
-            pl-1 pr-2.5
-            h-9 sm:h-8
+            flex items-center gap-1.5 sm:gap-2
+            pl-1 pr-1.5 sm:pr-2.5
+            h-8 sm:h-8 md:h-9
             rounded-full
             text-[11px] sm:text-xs
             transition-all duration-200 cursor-pointer
@@ -138,7 +155,7 @@ function BottomToolbarInner({
           <span
             className="
               flex items-center justify-center
-              h-6 w-6 sm:h-5 sm:w-5
+              h-5 w-5 sm:h-5 sm:w-5 md:h-6 md:w-6
               rounded-full
               bg-white/15 backdrop-blur-md
               border border-white/20
@@ -147,7 +164,10 @@ function BottomToolbarInner({
           >
             <span className="h-1.5 w-1.5 rounded-full bg-white/80" />
           </span>
-          <span className="whitespace-nowrap">{t("all")}</span>
+          {/* Label : masqué sur très petits écrans, visible dès 480px */}
+          <span className="hidden min-[480px]:inline whitespace-nowrap">
+            {t("all")}
+          </span>
         </button>
 
         {/* ─── Catégories ─── */}
@@ -161,13 +181,14 @@ function BottomToolbarInner({
               type="button"
               role="tab"
               aria-selected={isActive}
+              aria-label={cat.label}
               onClick={() => onSelect(isActive ? null : cat.slug)}
               title={cat.label}
               className={`
                 shrink-0 snap-start
-                flex items-center gap-2
-                pl-1 pr-2.5
-                h-9 sm:h-8
+                flex items-center gap-1.5 sm:gap-2
+                pl-1 pr-1.5 sm:pr-2.5
+                h-8 sm:h-8 md:h-9
                 rounded-full
                 text-[11px] sm:text-xs
                 transition-all duration-200 cursor-pointer
@@ -182,11 +203,12 @@ function BottomToolbarInner({
               <span
                 className="
                   relative flex items-center justify-center
-                  h-6 w-6 sm:h-5 sm:w-5
+                  h-5 w-5 sm:h-5 sm:w-5 md:h-6 md:w-6
                   rounded-full
                   backdrop-blur-md
                   border border-white/25
                   transition-all duration-200
+                  shrink-0
                 "
                 style={{
                   backgroundColor: `${cat.color}22`,
@@ -210,7 +232,7 @@ function BottomToolbarInner({
                   className="
                     absolute top-0 left-0 right-0 h-1/2
                     rounded-t-full
-                    bg-gradient-to-b from-white/25 to-transparent
+                    bg-linear-to-b from-white/25 to-transparent
                     pointer-events-none
                   "
                 />
@@ -226,11 +248,26 @@ function BottomToolbarInner({
                 />
               </span>
 
-              {/* Label — toujours visible */}
-              <span className="whitespace-nowrap">{cat.label}</span>
+              {/* Label : masqué sur très petits écrans, visible dès 480px */}
+              <span className="hidden min-[480px]:inline whitespace-nowrap">
+                {cat.label}
+              </span>
             </button>
           );
         })}
+
+        {/* ─── Skeleton pendant le chargement (discret, en fin de liste) ─── */}
+        {loading &&
+          Array.from({ length: 3 }).map((_, i) => (
+            <div
+              key={`sk-${i}`}
+              className="
+                shrink-0 h-8 sm:h-8 md:h-9
+                w-8 sm:w-16
+                rounded-full bg-white/10 animate-pulse
+              "
+            />
+          ))}
       </div>
     </div>
   );
