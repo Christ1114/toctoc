@@ -621,7 +621,7 @@ export default function PublicProviderProfilePage() {
                           onClick={() =>
                             router.push(announcementDetailPath(a.id))
                           }
-                          className={`w-full text-left rounded-xl border border-gray-100 dark:border-white/5 p-4 hover:border-gray-200 dark:hover:border-white/10 hover:bg-gray-50/50 dark:hover:bg-white/[0.02] transition-colors cursor-pointer ${orbitron.className}`}
+                          className={`w-full text-left rounded-xl border border-gray-100 dark:border-white/5 p-4 hover:border-gray-200 dark:hover:border-white/10 hover:bg-gray-50/50 dark:hover:bg-white/2 transition-colors cursor-pointer ${orbitron.className}`}
                         >
                           <div className="flex items-start gap-3">
                             <div className="flex-1 min-w-0">
