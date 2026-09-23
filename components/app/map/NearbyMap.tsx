@@ -61,7 +61,7 @@ type NearbyUser = {
   lastLongitude: number | null;
   lastKnownRegion: string | null;
   lastLocationUpdatedAt: string | null;
-  category: string | null; // 🆕 catégorie du user (JARDINAGE, MENAGE, ...)
+  category: string | null;
 };
 
 /* ═══════════════════════════════════════════════════════════
@@ -134,7 +134,7 @@ export default function NearbyMap() {
   const [aiSearchOpen, setAiSearchOpen] = useState(false);
   const [nearbyUsers, setNearbyUsers] = useState<NearbyUser[]>([]);
   const [searchMessage, setSearchMessage] = useState<string | null>(null);
-  const [activeCategory, setActiveCategory] = useState<string | null>(null); // 🆕
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   /* ═══════════════════════════════════════════════════════
      FILTRE PAR CATÉGORIE (memo)
@@ -142,7 +142,6 @@ export default function NearbyMap() {
   const filteredUsers = useMemo(() => {
     if (!activeCategory) return nearbyUsers;
 
-    // "jardinage" → "JARDINAGE" (comparaison tolérante)
     const normalizedFilter = activeCategory.toUpperCase().replace(/-/g, "_");
 
     return nearbyUsers.filter((u) => {
@@ -218,7 +217,7 @@ export default function NearbyMap() {
     try {
       const map = new maplibregl.Map({
         container: mapContainer.current,
-        style: STYLES.light, // toujours light à l'init, setStyle corrige après
+        style: STYLES.light,
         center: initialCenter,
         zoom: DEFAULT_ZOOM,
         pitch: DEFAULT_PITCH,
@@ -393,10 +392,8 @@ export default function NearbyMap() {
         Date.now() - lastUpdate.getTime() < ONLINE_THRESHOLD_MS;
       const profilePath = getPublicProfilePath(nu);
 
-      // ✅ Couleur DB-driven depuis la catégorie
       const cfg = getCategoryConfig(nu.category);
 
-      // Marker existant → update position seulement
       const existing = current.get(nu.id);
       if (existing) {
         existing.setLngLat([nu.lastLongitude, nu.lastLatitude]);
@@ -406,7 +403,7 @@ export default function NearbyMap() {
       const el = createAvatarMarkerElement({
         imageUrl: nu.image,
         fallbackLabel: nu.name ?? "?",
-        color: cfg.color, // ✅ couleur selon la catégorie
+        color: cfg.color,
         isOnline,
         bio: nu.bio,
         username: nu.name,
@@ -430,14 +427,13 @@ export default function NearbyMap() {
       current.set(nu.id, marker);
     });
 
-    // Suppression des markers plus dans la liste filtrée
     current.forEach((marker, id) => {
       if (!seen.has(id)) {
         marker.remove();
         current.delete(id);
       }
     });
-  }, [filteredUsers, mapLoaded]); // ✅ filteredUsers au lieu de nearbyUsers
+  }, [filteredUsers, mapLoaded]);
 
   /* ═══════════════════════════════════════════════════════
      STYLE (light/dark)
@@ -514,6 +510,15 @@ export default function NearbyMap() {
         .maplibregl-marker { pointer-events: auto !important; }
         .maplibregl-marker > * { pointer-events: auto; }
 
+        /* ⚠️ IMPORTANT : le canvas MapLibre doit rester SOUS nos toolbars */
+        .maplibregl-canvas-container,
+        .maplibregl-canvas {
+          z-index: 0 !important;
+        }
+        .maplibregl-control-container {
+          z-index: 1 !important;
+        }
+
         .maplibregl-ctrl-bottom-left {
           bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
           left: max(8px, env(safe-area-inset-left, 0px)) !important;
@@ -577,7 +582,7 @@ export default function NearbyMap() {
       )}
 
       {mapError && (
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 bg-red-100 dark:bg-red-900/80 text-red-700 dark:text-red-100 p-4 sm:p-5 rounded-xl shadow-lg max-w-[92vw] sm:max-w-sm border border-red-200 dark:border-red-800">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-red-100 dark:bg-red-900/80 text-red-700 dark:text-red-100 p-4 sm:p-5 rounded-xl shadow-lg max-w-[92vw] sm:max-w-sm border border-red-200 dark:border-red-800">
           <p className="text-sm sm:text-base">{mapError}</p>
           <button
             onClick={() => {
@@ -591,12 +596,13 @@ export default function NearbyMap() {
         </div>
       )}
 
+      {/* 🗺️ Canvas MapLibre — reste à z-0 (voir style global ci-dessus) */}
       <div
         ref={mapContainer}
-        className="absolute inset-0 w-full h-full bg-gray-200 dark:bg-gray-800"
+        className="absolute inset-0 w-full h-full bg-gray-200 dark:bg-gray-800 z-0"
       />
 
-      {/* ✅ TopToolbar */}
+      {/* ✅ TopToolbar — z-20 */}
       <div className="absolute inset-x-0 top-0 z-20 pointer-events-none">
         <div className="pointer-events-auto">
           <TopToolbar
@@ -607,26 +613,20 @@ export default function NearbyMap() {
         </div>
       </div>
 
-      {/* ✅ BottomToolbar — filtre par catégorie */}
-      <BottomToolbar
-        activeSlug={activeCategory}
-        onSelect={setActiveCategory}
-      />
-
-      {/* ✅ AiSearchPanel */}
-      {aiSearchOpen && (
-        <AiSearchPanel
-          open={aiSearchOpen}
-          onClose={() => setAiSearchOpen(false)}
+      {/* ✅ BottomToolbar — z-30 (AU-DESSUS du canvas MapLibre) */}
+      <div className="absolute inset-x-0 bottom-0 z-30 pointer-events-none">
+        <BottomToolbar
+          activeSlug={activeCategory}
+          onSelect={setActiveCategory}
         />
-      )}
+      </div>
 
-      {/* Bouton 3D — décalé au-dessus du toolbar */}
+      {/* ✅ Bouton 3D — z-40 pour rester au-dessus du BottomToolbar si chevauchement */}
       <button
         onClick={resetView}
         aria-label={t("reset3D")}
         className={`
-          absolute z-10 bg-black/60 hover:bg-black/75 active:bg-black/90
+          absolute z-40 bg-black/60 hover:bg-black/75 active:bg-black/90
           backdrop-blur-sm text-white rounded-lg shadow-md cursor-pointer
           transition-all touch-manipulation select-none
           right-2 bottom-[calc(72px+env(safe-area-inset-bottom,0px))]
@@ -640,6 +640,14 @@ export default function NearbyMap() {
       >
         3D
       </button>
+
+      {/* ✅ AiSearchPanel — z-50 (au-dessus de tout) */}
+      {aiSearchOpen && (
+        <AiSearchPanel
+          open={aiSearchOpen}
+          onClose={() => setAiSearchOpen(false)}
+        />
+      )}
     </div>
   );
 }
