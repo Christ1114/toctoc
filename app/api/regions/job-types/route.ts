@@ -2,10 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit, rateLimitHeaders, getClientIp } from "@/app/lib/security/rate-limit";
-
 const RATE_LIMIT_MAX = 60;
 const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 min
-
 export async function GET(req: NextRequest) {
   try {
     // Rate limit par IP
@@ -21,7 +19,6 @@ export async function GET(req: NextRequest) {
         { status: 429, headers: rateLimitHeaders(RATE_LIMIT_MAX, rl) }
       );
     }
-
     const jobTypes = await prisma.jobType.findMany({
       orderBy: [{ category: "asc" }, { name: "asc" }],
       select: {
@@ -31,7 +28,6 @@ export async function GET(req: NextRequest) {
         category: true,
       },
     });
-
     return NextResponse.json(
       { jobTypes },
       {

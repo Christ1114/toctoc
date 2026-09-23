@@ -1,7 +1,5 @@
 "use client";
-
 import { useEffect } from "react";
-
 type PopoverProps = {
   open: boolean;
   onClose: () => void;
@@ -9,7 +7,6 @@ type PopoverProps = {
   children: React.ReactNode;
   widthClassName?: string;
 };
-
 export default function Popover({ open, onClose, title, children, widthClassName }: PopoverProps) {
   useEffect(() => {
     if (!open) return;
@@ -19,9 +16,7 @@ export default function Popover({ open, onClose, title, children, widthClassName
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, [open, onClose]);
-
   if (!open) return null;
-
   return (
     <>
       <div

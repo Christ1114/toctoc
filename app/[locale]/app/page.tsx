@@ -1,22 +1,18 @@
 "use client";
-
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/app/context/SessionContext";
 import Appclient from "@/components/app/appClient";
-
 export default function DashboardPage() {
   const router = useRouter();
   const { user, loading } = useSession();
   const redirectedRef = useRef(false);
-
   useEffect(() => {
     if (!loading && !user && !redirectedRef.current) {
       redirectedRef.current = true;
       router.replace("/login");
     }
   }, [loading, user, router]);
-
   if (loading || !user) {
     return (
       <div className="flex items-center justify-center h-screen bg-white dark:bg-zinc-900">
@@ -24,6 +20,5 @@ export default function DashboardPage() {
       </div>
     );
   }
-
   return <Appclient user={user} />;
 }

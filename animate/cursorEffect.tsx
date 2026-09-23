@@ -1,11 +1,9 @@
 "use client";
 import { ReactNode } from "react";
 import { useEffect } from "react";
-
 interface Props {
     children: ReactNode;
 }
-
 export default function CursorEffect({ children }: Props) {
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
@@ -16,10 +14,8 @@ export default function CursorEffect({ children }: Props) {
             document.body.appendChild(particle);
             setTimeout(() => particle.remove(), 800);
         };
-
         window.addEventListener("mousemove", handleMouseMove);
         return () => window.removeEventListener("mousemove", handleMouseMove);
     }, []);
-
     return <>{children}</>;
 }

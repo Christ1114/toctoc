@@ -1,11 +1,8 @@
 "use client";
-
 import type { User } from "@/app/lib/auth-client";
-
 interface AgencyDashboardProps {
   user: User;
 }
-
 export default function AgencyDashboard({ user }: AgencyDashboardProps) {
   return (
     <div>

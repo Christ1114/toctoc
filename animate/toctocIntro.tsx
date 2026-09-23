@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { orbitron } from '@/fonts/font';
 import { useTranslations } from 'next-intl';
 import Img1 from "@/public/assets/pictures/masquote1.png";
-
 const BUBBLES_DATA = [
   { text: "Szia", top: "20%", left: "10%", delay: 0.1 },
   { text: "HELLO", top: "18%", left: "25%", delay: 0.3 },
@@ -31,40 +30,32 @@ const BUBBLES_DATA = [
   { text: "расти", top: "35%", left: "1%", delay: 0.9 },
   { text: "Салом", top: "12%", left: "2%", delay: 1.2 }
 ];
-
 export default function IntroTocToc() {
   const t = useTranslations("intro");
   const [timeline, setTimeline] = useState('bubbles');
   const [isMobile, setIsMobile] = useState(false);
-
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
-
   useEffect(() => {
     const toSlogan = setTimeout(() => setTimeline('slogan'), 5000);
     const toBrand = setTimeout(() => setTimeline('brand'), 9000);
     const toMap = setTimeout(() => setTimeline('map'), 12000);
-    
     return () => {
       clearTimeout(toSlogan);
       clearTimeout(toBrand);
       clearTimeout(toMap);
     };
   }, []);
-
   const displayBubbles = isMobile 
     ? BUBBLES_DATA.filter((_, i) => i % 2 === 0)
     : BUBBLES_DATA;
-
   return (
     <div className={`relative w-full h-[420px] sm:h-[480px] md:h-screen overflow-hidden bg-white dark:bg-stone-950 font-sans select-none ${orbitron.className}`}>
       <AnimatePresence mode="wait">
-
-        
         {timeline === 'bubbles' && (
           <motion.div
             key="bubbles-stage"
@@ -95,8 +86,6 @@ export default function IntroTocToc() {
                 {bubble.text}
               </motion.div>
             ))}
-
-          
             <motion.div 
               className="absolute bottom-[15%] sm:bottom-[20%] md:bottom-[23%] 
                          right-[2%] sm:right-[4%] md:right-[5%] 
@@ -115,8 +104,6 @@ export default function IntroTocToc() {
             </motion.div>
           </motion.div>
         )}
-
-        
         {timeline === 'slogan' && (
           <motion.div
             key="slogan-stage"
@@ -151,8 +138,6 @@ export default function IntroTocToc() {
             </motion.h1>
           </motion.div>
         )}
-
-       
         {timeline === 'brand' && (
           <motion.div
             key="brand-stage"
@@ -185,13 +170,11 @@ export default function IntroTocToc() {
             <div className="absolute inset-0 opacity-[0.06] 
                             bg-[linear-gradient(to_right,#432dd7_2px,transparent_2px),linear-gradient(to_bottom,#432dd7_2px,transparent_2px)] 
                             bg-[length:30px_30px] sm:bg-[length:40px_40px] md:bg-[length:60px_60px] xl:bg-[length:80px_80px]" />
-            
             <div className="hidden sm:block absolute top-1/4 left-1/3 w-48 sm:w-64 xl:w-72 h-20 sm:h-24 xl:h-28 border-2 border-[#432dd7] opacity-10 rounded-full pointer-events-none" />
             <div className="hidden sm:block absolute bottom-1/3 right-1/4 w-72 sm:w-96 xl:w-100 h-32 sm:h-40 xl:h-44 border border-[#432dd7] opacity-5 rounded-full pointer-events-none" />
             <div className="absolute bottom-[8%] right-[10%] sm:bottom-[12%] sm:right-[18%] md:bottom-[15%] md:right-[22%] 
                             w-20 h-20 sm:w-36 sm:h-36 md:w-48 md:h-48 xl:w-56 xl:h-56
                             bg-[#432dd7] opacity-5 rounded-full animate-ping pointer-events-none" />
-
             <motion.div 
               className="absolute top-4 right-2 sm:top-10 sm:right-8 md:top-20 md:right-24 z-0 text-[#432dd7] opacity-20 sm:opacity-30"
               initial={{ x: 100, y: -50, opacity: 0 }}
@@ -215,7 +198,6 @@ export default function IntroTocToc() {
                 <circle cx="12" cy="7.5" r="1" fill="currentColor"/>
               </motion.svg>
             </motion.div>
-
             {/* Pins */}
             <motion.div 
               className="hidden sm:block absolute top-1/3 right-1/3 bg-[#432dd7] w-2 sm:w-3 h-2 sm:h-3 rounded-full"
@@ -223,14 +205,12 @@ export default function IntroTocToc() {
             >
               <div className="absolute -inset-2 border border-[#432dd7] rounded-full animate-ping opacity-70" />
             </motion.div>
-
             <motion.div 
               className="hidden sm:block absolute bottom-1/3 left-1/4 bg-[#432dd7] w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full opacity-60"
               initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.3 }}
             >
               <div className="absolute -inset-3 border border-[#432dd7] rounded-full animate-ping opacity-40" />
             </motion.div>
-
             {/* Texte */}
             <div className="z-10 text-center md:text-left 
                             max-w-[92%] sm:max-w-xl xl:max-w-2xl
@@ -254,7 +234,6 @@ export default function IntroTocToc() {
                 {t("map.description")}
               </motion.p>
             </div>
-
             {/* Avatar */}
             <motion.div 
               className="absolute bottom-6 right-2 sm:bottom-12 sm:right-8 md:bottom-24 md:right-32 
@@ -264,7 +243,6 @@ export default function IntroTocToc() {
               transition={{ delay: 0.7, type: 'spring', stiffness: 100 }}
             >
               <div className="w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8 xl:w-10 xl:h-10 bg-[#432dd7] opacity-20 rounded-full absolute bottom-0 blur-sm animate-pulse" />
-            
               <motion.div
                 animate={{ y: [0, -8, 0] }}
                 transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
@@ -281,10 +259,8 @@ export default function IntroTocToc() {
                 />
               </motion.div>
             </motion.div>
-
           </motion.div>
         )}
-
       </AnimatePresence>
     </div>
   );

@@ -1,7 +1,6 @@
 import Sidebar from "@/components/app/sidebarComp";
 import PublicProviderProfilePage from "./compApp";
 export default function ProviderPublicProfilePage() {
- 
     return (
         <div className="bg-white dark:bg-zinc-900 w-full h-screen flex">
       <Sidebar />
@@ -10,5 +9,4 @@ export default function ProviderPublicProfilePage() {
       </main>
     </div>
     )
-
 }

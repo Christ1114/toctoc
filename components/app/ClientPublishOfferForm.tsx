@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import {
@@ -10,22 +9,18 @@ import {
   XIcon,
 } from "@phosphor-icons/react";
 import { orbitron } from "@/fonts/font";
-
 /* ═══════════════ Types ═══════════════ */
-
 type JobType = {
   id: string;
   name: string;
   slug: string;
   category: string;
 };
-
 type Region = {
   id: string;
   name: string;
   slug: string;
 };
-
 type EditableAnnouncement = {
   id: string;
   title: string;
@@ -36,29 +31,24 @@ type EditableAnnouncement = {
   jobType: { id: string; name: string; slug: string } | null;
   region: { id: string; name: string; slug: string } | null;
 };
-
 type Props = {
   open: boolean;
   onClose: () => void;
   onSuccess?: () => void;
   announcement?: EditableAnnouncement | null;
 };
-
 /* ═══════════════ Cache module-level des référentiels ═══════════════
    Chargés une seule fois par session, réutilisés sur toutes les
    ouvertures de la modale. Évite 10 fetchs si l'user ouvre 5 fois.
    ═══════════════════════════════════════════════════════════════════ */
-
 let cachedJobTypes: JobType[] | null = null;
 let cachedRegions: Region[] | null = null;
 let optionsPromise: Promise<{ jobTypes: JobType[]; regions: Region[] }> | null = null;
-
 async function loadReferentials() {
   if (cachedJobTypes && cachedRegions) {
     return { jobTypes: cachedJobTypes, regions: cachedRegions };
   }
   if (optionsPromise) return optionsPromise;
-
   optionsPromise = Promise.all([
     fetch("/api/regions/job-types").then((r) => r.json()),
     fetch("/api/regions/fields").then((r) => r.json()),
@@ -72,12 +62,8 @@ async function loadReferentials() {
       optionsPromise = null;
       throw err;
     });
-
   return optionsPromise;
 }
-
-
-
 export default function ClientPublishOfferForm({
   open,
   onClose,
@@ -86,37 +72,29 @@ export default function ClientPublishOfferForm({
 }: Props) {
  const t = useTranslations("ProfilePage");
   const isEdit = !!announcement;
-
   const dialogRef = useRef<HTMLDivElement>(null);
   const firstFieldRef = useRef<HTMLSelectElement>(null);
   const submittingRef = useRef(false); // anti double-submit immédiat
-
   const [jobTypes, setJobTypes] = useState<JobType[]>(cachedJobTypes ?? []);
   const [regions, setRegions] = useState<Region[]>(cachedRegions ?? []);
   const [loadingOptions, setLoadingOptions] = useState(!cachedJobTypes);
-
   const [jobTypeId, setJobTypeId] = useState("");
   const [description, setDescription] = useState("");
   const [salaryMin, setSalaryMin] = useState<number | "">("");
   const [regionId, setRegionId] = useState("");
-
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
   /* ─── Charger les options ─── */
   useEffect(() => {
     if (!open) return;
-
     if (cachedJobTypes && cachedRegions) {
       setJobTypes(cachedJobTypes);
       setRegions(cachedRegions);
       setLoadingOptions(false);
       return;
     }
-
     let cancelled = false;
     setLoadingOptions(true);
-
     loadReferentials()
       .then(({ jobTypes: jt, regions: rg }) => {
         if (cancelled) return;
@@ -131,12 +109,10 @@ export default function ClientPublishOfferForm({
         if (cancelled) return;
         setLoadingOptions(false);
       });
-
     return () => {
       cancelled = true;
     };
   }, [open, t]);
-
   /* ─── Préremplir / reset ─── */
   useEffect(() => {
     if (!open) return;
@@ -153,7 +129,6 @@ export default function ClientPublishOfferForm({
       setRegionId("");
     }
   }, [open, announcement]);
-
   /* ─── Focus initial ─── */
   useEffect(() => {
     if (!open) return;
@@ -161,7 +136,6 @@ export default function ClientPublishOfferForm({
     const id = setTimeout(() => firstFieldRef.current?.focus(), 50);
     return () => clearTimeout(id);
   }, [open]);
-
   /* ─── Bloquer le scroll du body ─── */
   useEffect(() => {
     if (!open) return;
@@ -171,11 +145,9 @@ export default function ClientPublishOfferForm({
       document.body.style.overflow = previousOverflow;
     };
   }, [open]);
-
   /* ─── Escape pour fermer + focus trap ─── */
   useEffect(() => {
     if (!open) return;
-
     const handleKeyDown = (e: KeyboardEvent) => {
       // Escape → fermer (sauf pendant submit)
       if (e.key === "Escape") {
@@ -185,18 +157,15 @@ export default function ClientPublishOfferForm({
         }
         return;
       }
-
       // Focus trap (Tab)
       if (e.key === "Tab" && dialogRef.current) {
         const focusables = dialogRef.current.querySelectorAll<HTMLElement>(
           'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
         );
         if (focusables.length === 0) return;
-
         const first = focusables[0];
         const last = focusables[focusables.length - 1];
         const active = document.activeElement;
-
         if (e.shiftKey && active === first) {
           e.preventDefault();
           last.focus();
@@ -206,39 +175,30 @@ export default function ClientPublishOfferForm({
         }
       }
     };
-
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [open, onClose]);
-
   /* ─── Soumission ─── */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     // Anti double-submit synchrone (avant que React ne disable le bouton)
     if (submittingRef.current) return;
-
     setError(null);
-
     // Validation client
     if (!jobTypeId) return setError(t("errors.jobTypeRequired"));
     if (!regionId) return setError(t("errors.regionRequired"));
     if (typeof salaryMin !== "number" || salaryMin < 10000) {
       return setError(t("errors.salaryMin"));
     }
-
     const selectedJobType = jobTypes.find((j) => j.id === jobTypeId);
     const selectedRegion = regions.find((r) => r.id === regionId);
-
     submittingRef.current = true;
     setSubmitting(true);
-
     try {
       const url = isEdit
         ? `/api/announcements/${announcement!.id}`
         : "/api/announcements";
       const method = isEdit ? "PATCH" : "POST";
-
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
@@ -251,12 +211,10 @@ export default function ClientPublishOfferForm({
           city: selectedRegion?.name || "",
         }),
       });
-
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error || t("errors.submitFailed"));
       }
-
       // ✅ Fermer AVANT d'appeler onSuccess (ordre inversé)
       onClose();
       onSuccess?.();
@@ -267,16 +225,13 @@ export default function ClientPublishOfferForm({
       setSubmitting(false);
     }
   };
-
   /* ─── Clic sur backdrop ─── */
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget && !submittingRef.current) {
       onClose();
     }
   };
-
   if (!open) return null;
-
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-3 sm:px-4"
@@ -309,7 +264,6 @@ export default function ClientPublishOfferForm({
             <XIcon size={18} />
           </button>
         </div>
-
         {/* Form */}
         <form
           onSubmit={handleSubmit}
@@ -341,7 +295,6 @@ export default function ClientPublishOfferForm({
               ))}
             </select>
           </div>
-
           {/* Description */}
           <div>
             <label
@@ -365,7 +318,6 @@ export default function ClientPublishOfferForm({
               {description.length} / 5000
             </p>
           </div>
-
           {/* Salaire + Localisation */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
@@ -403,7 +355,6 @@ export default function ClientPublishOfferForm({
                 {t("fields.salaryHint")}
               </p>
             </div>
-
             <div>
               <label
                 htmlFor="publish-region"
@@ -428,7 +379,6 @@ export default function ClientPublishOfferForm({
               </select>
             </div>
           </div>
-
           {/* Erreur */}
           {error && (
             <p
@@ -438,7 +388,6 @@ export default function ClientPublishOfferForm({
               {error}
             </p>
           )}
-
           {/* Actions */}
           <div className="flex items-center justify-end gap-2 pt-2">
             <button

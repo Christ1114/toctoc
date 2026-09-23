@@ -1,17 +1,14 @@
 import { PrismaClient, SalaryPeriod } from "../generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import "dotenv/config";
-
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
-
 async function main() {
   const source = await prisma.source.upsert({
     where: { name: "seed-multilingual" },
     create: { name: "seed-multilingual", baseUrl: "https://example.local", active: false },
     update: {},
   });
-
   const regionDefs = [
     { name: "Cocody", slug: "cocody", latitude: 5.345, longitude: -3.988 },
     { name: "Yopougon", slug: "yopougon", latitude: 5.3167, longitude: -4.0833 },
@@ -25,7 +22,6 @@ async function main() {
     const created = await prisma.region.upsert({ where: { slug: r.slug }, create: r, update: {} });
     regions[r.slug] = created.id;
   }
-
   const jobTypeDefs = [
     { name: "Nounou", slug: "nounou", category: "garde-enfants" },
     { name: "Aide ménagère", slug: "menagere", category: "menage" },
@@ -39,9 +35,6 @@ async function main() {
     const created = await prisma.jobType.upsert({ where: { slug: j.slug }, create: j, update: {} });
     jobTypes[j.slug] = created.id;
   }
-
-
-
   type OfferInput = {
     language: string;
     title: string;
@@ -67,15 +60,12 @@ async function main() {
     experienceYearsRequired?: number | null;
     viewCount?: number;
   };
-
   type ProfileInput = OfferInput & {
     firstName: string;
     lastName: string;
     age?: number;
     phone?: string;
   };
-
- 
   const FR: OfferInput[] = [
     {
       language: "fr",
@@ -187,7 +177,6 @@ async function main() {
       contractDuration: "TEMPORAIRE", viewCount: 54,
     },
   ];
-
   const EN: OfferInput[] = [
     {
       language: "en",
@@ -222,7 +211,6 @@ async function main() {
       contractDuration: "PERMANENT", viewCount: 92,
     },
   ];
-
   const AR: OfferInput[] = [
     {
       language: "ar",
@@ -257,7 +245,6 @@ async function main() {
       contractDuration: "PERMANENT", viewCount: 88,
     },
   ];
-
   const ZH: OfferInput[] = [
     {
       language: "zh",
@@ -292,12 +279,8 @@ async function main() {
       isFeatured: true, experienceYearsRequired: 3, viewCount: 199,
     },
   ];
-
   const allOffers = [...FR, ...EN, ...AR, ...ZH];
-
-
   const allProfiles: ProfileInput[] = [
-
     {
       language: "fr",
       firstName: "Marie",
@@ -350,7 +333,6 @@ async function main() {
       viewCount: 78,
       phone: "0707234567",
     },
-  
     {
       language: "en",
       firstName: "Sarah",
@@ -402,7 +384,6 @@ async function main() {
       viewCount: 98,
       phone: "0708234567",
     },
-    
     {
       language: "ar",
       firstName: "فاطمة",
@@ -455,7 +436,6 @@ async function main() {
       viewCount: 87,
       phone: "0708789012",
     },
-   
     {
       language: "zh",
       firstName: "Mei",
@@ -483,7 +463,6 @@ async function main() {
       phone: "0709123456",
     },
   ];
-
   for (const [i, offer] of allOffers.entries()) {
     await prisma.announcement.upsert({
       where: { sourceId_externalId: { sourceId: source.id, externalId: `offer-${i}` } },
@@ -520,8 +499,6 @@ async function main() {
       update: {},
     });
   }
-
-
   for (const [i, profile] of allProfiles.entries()) {
     await prisma.announcement.upsert({
       where: { sourceId_externalId: { sourceId: source.id, externalId: `profile-${i}` } },
@@ -558,12 +535,10 @@ async function main() {
       update: {},
     });
   }
-
   console.log(
     `✅ ${allOffers.length} offres + ${allProfiles.length} profils créés (FR/EN/AR/ZH)`
   );
 }
-
 main()
   .catch((e) => {
     console.error(e);

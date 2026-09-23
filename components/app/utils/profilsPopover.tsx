@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
@@ -17,7 +16,6 @@ import {
 import Popover from "../utils/Popover";
 import { orbitron } from "@/fonts/font";
 import { useNotifications, type AppNotification, type NotificationType } from "@/app/hooks/useNotifications";
-
 type ProfileUser = {
   id?: string;
   name?: string | null;
@@ -25,15 +23,12 @@ type ProfileUser = {
   image?: string | null;
   accountType?: string | null;
 };
-
 type ProfilePopoverProps = {
   open: boolean;
   onClose: () => void;
   user?: ProfileUser | null;
 };
-
 type TabKey = "profile" | "notifications";
-
 const NOTIFICATION_ICONS: Record<NotificationType, PhosphorIcon> = {
   NEW_OFFER: BriefcaseIcon,
   PROFILE_VERIFIED: CheckCircleIcon,
@@ -42,25 +37,20 @@ const NOTIFICATION_ICONS: Record<NotificationType, PhosphorIcon> = {
   REVIEW_RECEIVED: StarIcon,
   SYSTEM: MegaphoneIcon,
 };
-
 export default function ProfilePopover({ open, onClose, user }: ProfilePopoverProps) {
   const t = useTranslations("ProfilePopover");
   const format = useFormatter();
   const locale = useLocale();
   const router = useRouter();
   const isRTL = locale === "ar";
-
   const [activeTab, setActiveTab] = useState<TabKey>("profile");
-
   const { notifications, loading, unreadCount, markAsRead, markAllAsRead } = useNotifications(
     user?.id
   );
-
   const goToFullProfile = () => {
     router.push(`/${locale}/app/profile`);
     onClose();
   };
-
   const handleNotificationClick = (notif: AppNotification) => {
     if (!notif.read) markAsRead([notif.id]);
     if (notif.link) {
@@ -68,7 +58,6 @@ export default function ProfilePopover({ open, onClose, user }: ProfilePopoverPr
       onClose();
     }
   };
-
   return (
     <Popover open={open} onClose={onClose} title={t("title")}>
       <div dir={isRTL ? "rtl" : "ltr"} className="w-full flex flex-col">
@@ -89,13 +78,11 @@ export default function ProfilePopover({ open, onClose, user }: ProfilePopoverPr
             onSelect={setActiveTab}
           />
         </div>
-
         <div role="tabpanel" hidden={activeTab !== "profile"}>
           {activeTab === "profile" && (
             <ProfileTab t={t} user={user} isRTL={isRTL} onViewFullProfile={goToFullProfile} />
           )}
         </div>
-
         <div role="tabpanel" hidden={activeTab !== "notifications"}>
           {activeTab === "notifications" && (
             <NotificationsTab
@@ -112,7 +99,6 @@ export default function ProfilePopover({ open, onClose, user }: ProfilePopoverPr
     </Popover>
   );
 }
-
 function TabButton({
   tab,
   icon: Icon,
@@ -151,7 +137,6 @@ function TabButton({
     </button>
   );
 }
-
 function ProfileTab({
   t,
   user,
@@ -184,13 +169,11 @@ function ProfileTab({
           </p>
         </div>
       </div>
-
       {user?.accountType && (
         <span className={`mt-3 inline-flex self-start items-center px-2 py-1 rounded-md bg-[#432dd7]/10 text-[#432dd7] text-xs font-medium ${orbitron.className}`}>
           {user.accountType}
         </span>
       )}
-
       <button
         onClick={onViewFullProfile}
         className="mt-4 w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm text-gray-700 dark:text-white/80 hover:bg-gray-100 dark:hover:bg-white/5 cursor-pointer transition-colors"
@@ -201,7 +184,6 @@ function ProfileTab({
     </div>
   );
 }
-
 function NotificationsTab({
   t,
   format,
@@ -224,7 +206,6 @@ function NotificationsTab({
       </div>
     );
   }
-
   if (notifications.length === 0) {
     return (
       <div className="text-center py-8">
@@ -235,9 +216,7 @@ function NotificationsTab({
       </div>
     );
   }
-
   const unreadCount = notifications.filter((n) => !n.read).length;
-
   return (
     <div className="flex flex-col gap-2">
       {unreadCount > 0 && (
@@ -252,7 +231,6 @@ function NotificationsTab({
         {notifications.map((notif) => {
           const Icon = NOTIFICATION_ICONS[notif.type] ?? BellIcon;
           const kind = notif.type.toLowerCase();
-
           return (
             <li key={notif.id}>
               <button

@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
@@ -32,7 +31,6 @@ import SettingsPopover from "@/components/app/utils/settingsPopover";
 import ImageCropModal from "./ImageCropModal";
 import VideoManager from "@/components/provider/VideoManager";
 import { isSafeUrl } from "@/app/lib/security/url-validation";
-
 type AccountType = "CLIENT" | "PROVIDER" | "ADMIN";
 type ProviderType =
   | "BABYSITTER"
@@ -41,7 +39,6 @@ type ProviderType =
   | "AIDE_PERSONNES_AGEES"
   | "RESIDENTIEL"
   | "COURT_TERME";
-
 const PROVIDER_TYPES: ProviderType[] = [
   "BABYSITTER",
   "GARDE_PERISCOLAIRE",
@@ -50,9 +47,7 @@ const PROVIDER_TYPES: ProviderType[] = [
   "RESIDENTIEL",
   "COURT_TERME",
 ];
-
 const CURRENCIES = ["XOF", "USD", "EUR"];
-
 type SocialKey =
   | "website"
   | "instagram"
@@ -61,7 +56,6 @@ type SocialKey =
   | "linkedin"
   | "youtube"
   | "twitter";
-
 type ProfileUser = {
   id: string;
   name?: string | null;
@@ -86,24 +80,19 @@ type ProfileUser = {
   youtube?: string | null;
   twitter?: string | null;
 };
-
 type Stats = {
   bookingsCount: number;
   reviewsCount: number;
   averageRating: number | null;
 };
-
 type TabKey = "bookings" | "videos" | "reviews";
-
 export default function AppProfilProvider() {
   const t = useTranslations("AppProfilProvider");
   const locale = useLocale();
   const router = useRouter();
   const isRTL = locale === "ar";
   const fileInputRef = useRef<HTMLInputElement>(null);
-
   const { user: sessionUser, loading: sessionLoading } = useSession();
-
   const [user, setUser] = useState<ProfileUser | null>(null);
   const [stats, setStats] = useState<Stats | null>(null);
   const [editing, setEditing] = useState(false);
@@ -115,13 +104,11 @@ export default function AppProfilProvider() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [form, setForm] = useState<Partial<ProfileUser>>({});
-
   // ─── Charge user ───
   useEffect(() => {
     if (sessionLoading) return;
     setUser(sessionUser ? (sessionUser as unknown as ProfileUser) : null);
   }, [sessionUser, sessionLoading]);
-
   // ─── Charge stats ───
   useEffect(() => {
     const load = async () => {
@@ -134,7 +121,6 @@ export default function AppProfilProvider() {
     };
     load();
   }, []);
-
   // ─── Édition ───
   const startEditing = () => {
     if (!user) return;
@@ -156,12 +142,10 @@ export default function AppProfilProvider() {
     setSuccess(null);
     setEditing(true);
   };
-
   const cancelEditing = () => {
     setEditing(false);
     setError(null);
   };
-
   const handleSave = async () => {
     setSaving(true);
     setError(null);
@@ -180,12 +164,10 @@ export default function AppProfilProvider() {
         youtube: form.youtube || null,
         twitter: form.twitter || null,
       });
-
       if (err) {
         setError(err.message || t("errors.saveFailed"));
         return;
       }
-
       setUser((prev) => (prev ? ({ ...prev, ...form } as ProfileUser) : prev));
       setEditing(false);
       setSuccess(t("saved"));
@@ -196,14 +178,11 @@ export default function AppProfilProvider() {
       setSaving(false);
     }
   };
-
   // ─── Photo ───
   const handlePhotoClick = () => fileInputRef.current?.click();
-
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     if (!file.type.startsWith("image/")) {
       setError(t("errors.invalidImage"));
       return;
@@ -212,15 +191,12 @@ export default function AppProfilProvider() {
       setError(t("errors.imageTooLarge"));
       return;
     }
-
     setError(null);
     const reader = new FileReader();
     reader.onload = () => setCropImageSrc(reader.result as string);
     reader.readAsDataURL(file);
-
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
-
   const handleCropConfirm = async (blob: Blob) => {
     if (!user) return;
     setUploadingPhoto(true);
@@ -228,7 +204,6 @@ export default function AppProfilProvider() {
     try {
       const formData = new FormData();
       formData.append("file", blob, "avatar.jpg");
-
       const uploadRes = await fetch("/api/profils/avatar", {
         method: "POST",
         body: formData,
@@ -238,13 +213,11 @@ export default function AppProfilProvider() {
         return;
       }
       const { url } = await uploadRes.json();
-
       const { error: updateError } = await updateUser({ image: url });
       if (updateError) {
         setError(t("errors.saveFailed"));
         return;
       }
-
       setUser((prev) => (prev ? { ...prev, image: url } : prev));
       setCropImageSrc(null);
     } catch {
@@ -253,7 +226,6 @@ export default function AppProfilProvider() {
       setUploadingPhoto(false);
     }
   };
-
   // ─── Partage ───
   const handleShare = async () => {
     if (!user) return;
@@ -270,7 +242,6 @@ export default function AppProfilProvider() {
       /* silent */
     }
   };
-
   // ─── Loading / Not found ───
   if (sessionLoading) {
     return (
@@ -279,7 +250,6 @@ export default function AppProfilProvider() {
       </div>
     );
   }
-
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white dark:bg-zinc-900 px-4">
@@ -291,15 +261,12 @@ export default function AppProfilProvider() {
       </div>
     );
   }
-
   // Garde-fou : si ce n'est pas un provider, on redirige
   if (user.accountType !== "PROVIDER") {
     router.replace("/profile");
     return null;
   }
-
   const isVerified = user.verificationStatus === "VERIFIED";
-
   const TABS: {
     key: TabKey;
     icon: typeof CalendarCheckIcon;
@@ -324,7 +291,6 @@ export default function AppProfilProvider() {
       count: stats?.reviewsCount ?? 0,
     },
   ];
-
   // ─── Réseaux sociaux ───
   const SOCIAL_FIELDS: {
     key: SocialKey;
@@ -383,12 +349,10 @@ export default function AppProfilProvider() {
       displayLabel: t("social.twitter"),
     },
   ];
-
   const socialLinks = SOCIAL_FIELDS.map((f) => ({
     ...f,
     href: user[f.key] ?? null,
   })).filter((l) => isSafeUrl(l.href));
-
   return (
     <div
       dir={isRTL ? "rtl" : "ltr"}
@@ -402,10 +366,7 @@ export default function AppProfilProvider() {
           <ArrowLeftIcon size={16} className={isRTL ? "rotate-180" : ""} />
           {t("back")}
         </button>
-
-        
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8">
-        
           <div className="relative shrink-0 mx-auto sm:mx-0">
             <div className="h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 rounded-full overflow-hidden bg-[#432dd7]/10 flex items-center justify-center border border-black/5 dark:border-white/10">
               {user.image ? (
@@ -454,7 +415,6 @@ export default function AppProfilProvider() {
               className="hidden"
             />
           </div>
-
           {/* Identité */}
           <div className="flex-1 min-w-0 text-center sm:text-start">
             <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
@@ -488,7 +448,6 @@ export default function AppProfilProvider() {
                 {t("accountType.PROVIDER")}
               </span>
             </div>
-
             {/* Stats inline */}
             <div className="flex items-center justify-center sm:justify-start gap-3 sm:gap-5 mt-2.5 sm:mt-3 flex-wrap">
               {stats && (
@@ -631,7 +590,6 @@ export default function AppProfilProvider() {
             )}
           </div>
         </div>
-
         {/* Feedback */}
         {error && (
           <p
@@ -678,7 +636,6 @@ export default function AppProfilProvider() {
                   ))}
                 </select>
               </div>
-
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
                 <span className="text-xs sm:text-sm text-gray-500 dark:text-white/50 shrink-0">
                   {t("hourlyRate")}
@@ -784,7 +741,6 @@ export default function AppProfilProvider() {
             </div>
           )}
           {activeTab === "videos" && <VideoManager />}
-
           {activeTab === "reviews" && (
             <div className="py-10 sm:py-14 flex flex-col items-center text-center px-4">
               <StarIcon
@@ -800,12 +756,10 @@ export default function AppProfilProvider() {
           )}
         </div>
       </div>
-
       <SettingsPopover
         open={settingsOpen}
         onClose={() => setSettingsOpen(false)}
       />
-
       {cropImageSrc && (
         <ImageCropModal
           imageSrc={cropImageSrc}

@@ -1,6 +1,5 @@
 import PreloadingPage from '@/components/preloading/comp'
 import React from 'react'
-
 const page = () => {
   return (
     <div>
@@ -8,5 +7,4 @@ const page = () => {
     </div>
   )
 }
-
 export default page

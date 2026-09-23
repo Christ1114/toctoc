@@ -1,27 +1,22 @@
 "use client";
-
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { VirtualRealityIcon, XIcon } from "@phosphor-icons/react";
 import Popover from "../utils/Popover";
 import { orbitron } from "@/fonts/font";
-
 type VrConfirmPopoverProps = {
   open: boolean;
   onClose: () => void;
   onConfirm: () => void;
 };
-
 export default function VrConfirmPopover({ open, onClose, onConfirm }: VrConfirmPopoverProps) {
   const t = useTranslations("VrConfirmPopover");
   const [checked, setChecked] = useState(false);
-
   const handleContinue = () => {
     if (!checked) return;
     onConfirm();
     onClose();
   };
-
   return (
     <Popover open={open} onClose={onClose} title={t("title")}>
       <div className={`flex items-center justify-between mb-4 ${orbitron.className} antialiased`}>
@@ -39,11 +34,9 @@ export default function VrConfirmPopover({ open, onClose, onConfirm }: VrConfirm
           <XIcon size={18} />
         </button>
       </div>
-
       <p className={`text-sm text-gray-600 dark:text-white/60 mb-4 ${orbitron.className} antialiased`}>
         {t("description")}
       </p>
-
       <label className="flex items-start gap-3 mb-5 cursor-pointer group">
         <input
           type="checkbox"
@@ -55,7 +48,6 @@ export default function VrConfirmPopover({ open, onClose, onConfirm }: VrConfirm
           {t("checkboxLabel")}
         </span>
       </label>
-
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
         <button
           onClick={onClose}

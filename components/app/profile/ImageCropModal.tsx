@@ -1,19 +1,16 @@
 "use client";
-
 import { useState, useCallback } from "react";
 import Cropper from "react-easy-crop";
 import { useTranslations } from "next-intl";
 import { XIcon, CheckIcon } from "@phosphor-icons/react";
 import { orbitron } from "@/fonts/font";
 import { getCroppedImageBlob, type CropArea } from "@/lib/cropImage";
-
 interface ImageCropModalProps {
   imageSrc: string;
   onCancel: () => void;
   onConfirm: (blob: Blob) => void;
   processing?: boolean;
 }
-
 export default function ImageCropModal({
   imageSrc,
   onCancel,
@@ -24,17 +21,14 @@ export default function ImageCropModal({
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<CropArea | null>(null);
-
   const onCropComplete = useCallback((_croppedArea: CropArea, croppedAreaPixels: CropArea) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
-
   const handleConfirm = async () => {
     if (!croppedAreaPixels) return;
     const blob = await getCroppedImageBlob(imageSrc, croppedAreaPixels);
     onConfirm(blob);
   };
-
   return (
     <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
       <div className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-xl overflow-hidden shadow-2xl">
@@ -63,7 +57,6 @@ export default function ImageCropModal({
             onCropComplete={onCropComplete}
           />
         </div>
-
         <div className="px-4 py-3 flex items-center gap-3">
           <span className="text-xs text-gray-500 dark:text-white/40 shrink-0">{t("zoom")}</span>
           <input
@@ -76,7 +69,6 @@ export default function ImageCropModal({
             className="flex-1 accent-[#432dd7]"
           />
         </div>
-
         <div className="flex items-center gap-2 px-4 py-3 border-t border-gray-100 dark:border-white/5">
           <button
             onClick={onCancel}

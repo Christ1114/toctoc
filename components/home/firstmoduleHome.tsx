@@ -4,18 +4,15 @@ import React, { useState, useEffect } from 'react';
 import Image from "next/image";
 import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
-
 type SliderItem = {
     index: number;
     title: string;
     description: string;
     image: string;
 };
-
 const FirstModuleHome = () => {
     const t = useTranslations("firstModuleHome");
     const [current, setCurrent] = useState(0);
-
     const slider: SliderItem[] = [
         {
             index: 1,
@@ -42,36 +39,29 @@ const FirstModuleHome = () => {
             image: "/assets/pictures/card4.png",
         }
     ];
-
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrent(prev => (prev + 1) % slider.length);
         }, 4000);
         return () => clearInterval(interval);
     }, [slider.length]);
-
     const goTo = (index: number) => setCurrent(index);
-
     const item = slider[current];
-
     const imageVariants = {
         initial: { opacity: 0, scale: 0.95 },
         animate: { opacity: 1, scale: 1 },
         exit: { opacity: 0, scale: 0.95 }
     };
-
     const textVariants = {
         initial: { opacity: 0, x: 20 },
         animate: { opacity: 1, x: 0 },
         exit: { opacity: 0, x: -20 }
     };
-
     return (
         <div className="w-full pt-8 sm:pt-10 lg:pt-15  flex items-start justify-center relative z-0 px-2 sm:px-3 lg:px-0">
             <div
                 className="w-full max-w-4xl xl:max-w-5xl bg-[#432dd7] overflow-hidden mx-auto rounded-xl sm:rounded-2xl relative"
             >
-
                 <div className="grid grid-cols-[auto_1fr] sm:grid-cols-[auto_auto_1fr] items-center
                                 w-full
                                 px-3 sm:px-5 lg:px-8 xl:px-10
@@ -80,8 +70,6 @@ const FirstModuleHome = () => {
                                 gap-2 sm:gap-4 lg:gap-6 xl:gap-8
                                 relative z-10
                                 min-h-19 sm:min-h-23 lg:min-h-27 xl:min-h-32">
-
-
                     <div className="flex items-center justify-center sm:justify-start self-center shrink-0">
                         <span className={`text-[10px] sm:text-xs xl:text-sm font-bold text-[#432dd7] bg-white
                                          px-2 sm:px-2.5 xl:px-3 py-0.5 xl:py-1 rounded-full w-fit whitespace-nowrap
@@ -89,7 +77,6 @@ const FirstModuleHome = () => {
                             {t("btn_1")}
                         </span>
                     </div>
-
                     <div className="hidden sm:flex relative overflow-hidden items-center justify-center shrink-0">
                         <AnimatePresence mode="wait">
                             <motion.div
@@ -114,8 +101,6 @@ const FirstModuleHome = () => {
                             </motion.div>
                         </AnimatePresence>
                     </div>
-
-
                     <div className="flex flex-col gap-0.5 sm:gap-1 xl:gap-1.5 min-w-0 justify-center">
                         <AnimatePresence mode="wait">
                             <motion.div
@@ -184,5 +169,4 @@ const FirstModuleHome = () => {
         </div>
     );
 };
-
 export default FirstModuleHome;

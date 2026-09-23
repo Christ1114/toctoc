@@ -1,19 +1,14 @@
 import { prisma } from "@/lib/prisma";
-
-
 export type RateLimitResult = {
   allowed: boolean;
   remaining: number;
   retryAfterMs: number;
 };
-
 const DEFAULT_WINDOW_MS = 60 * 1000;
-
 type Entry = { count: number; timestamp: number };
 const memoryStore = new Map<string, Entry>();
 const CLEANUP_THRESHOLD = 5000;
 const CLEANUP_PROBABILITY = 0.01;
-
 function checkRateLimitMemory(
   key: string,
   max: number,
@@ -25,14 +20,11 @@ function checkRateLimitMemory(
       if (now - v.timestamp > windowMs) memoryStore.delete(k);
     }
   }
-
   const entry = memoryStore.get(key);
-
   if (!entry || now - entry.timestamp > windowMs) {
     memoryStore.set(key, { count: 1, timestamp: now });
     return { allowed: true, remaining: max - 1, retryAfterMs: 0 };
   }
-
   if (entry.count >= max) {
     return {
       allowed: false,
@@ -40,11 +32,9 @@ function checkRateLimitMemory(
       retryAfterMs: Math.max(0, windowMs - (now - entry.timestamp)),
     };
   }
-
   memoryStore.set(key, { ...entry, count: entry.count + 1 });
   return { allowed: true, remaining: max - entry.count - 1, retryAfterMs: 0 };
 }
-
 async function checkRateLimitPostgres(
   key: string,
   max: number,
@@ -70,16 +60,13 @@ async function checkRateLimitPostgres(
         END
     RETURNING count, last_request;
   `;
-
   const row = rows[0];
   if (!row) {
     // Cas théorique impossible, on laisse passer pour ne pas bloquer l'utilisateur
     return { allowed: true, remaining: max - 1, retryAfterMs: 0 };
   }
-
   const currentCount = Number(row.count);
   const lastRequest = Number(row.last_request);
-
   if (currentCount > max) {
     return {
       allowed: false,
@@ -87,16 +74,12 @@ async function checkRateLimitPostgres(
       retryAfterMs: Math.max(0, lastRequest + windowMs - now),
     };
   }
-
   return {
     allowed: true,
     remaining: max - currentCount,
     retryAfterMs: 0,
   };
 }
-
-
-
 export async function checkRateLimit(
   key: string,
   max: number,
@@ -109,8 +92,6 @@ export async function checkRateLimit(
     return checkRateLimitMemory(key, max, windowMs);
   }
 }
-
-
 export function getClientIp(headers: Headers): string {
   return (
     headers.get("cf-connecting-ip") ||
@@ -119,7 +100,6 @@ export function getClientIp(headers: Headers): string {
     "unknown"
   );
 }
-
 export function rateLimitHeaders(
   max: number,
   result: RateLimitResult
@@ -128,10 +108,8 @@ export function rateLimitHeaders(
     "X-RateLimit-Limit": String(max),
     "X-RateLimit-Remaining": String(result.remaining),
   };
-
   if (result.retryAfterMs > 0) {
     headers["Retry-After"] = String(Math.ceil(result.retryAfterMs / 1000));
   }
-
   return headers;
 }

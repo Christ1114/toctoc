@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
@@ -25,21 +24,17 @@ import {
 import { orbitron } from "@/fonts/font";
 import { isSafeUrl } from "@/app/lib/security/url-validation";
 import VideoGrid from "@/components/app/VideoGrid";
-
 /* ═══════════════════════════════════════════════════════════
    ⚙️ CONFIGURATION
    ═══════════════════════════════════════════════════════════ */
-
 /**
  * Route vers le détail d'une annonce.
  * ⚠️ À VÉRIFIER selon ton arborescence réelle
  */
 const announcementDetailPath = (id: string) => `/app/announcement/${id}`;
-
 /* ═══════════════════════════════════════════════════════════
    TYPES
    ═══════════════════════════════════════════════════════════ */
-
 type ProviderType =
   | "BABYSITTER"
   | "GARDE_PERISCOLAIRE"
@@ -47,7 +42,6 @@ type ProviderType =
   | "AIDE_PERSONNES_AGEES"
   | "RESIDENTIEL"
   | "COURT_TERME";
-
 type SocialKey =
   | "website"
   | "instagram"
@@ -56,7 +50,6 @@ type SocialKey =
   | "linkedin"
   | "youtube"
   | "twitter";
-
 type PublicProvider = {
   id: string;
   name: string | null;
@@ -73,13 +66,11 @@ type PublicProvider = {
   youtube?: string | null;
   twitter?: string | null;
 };
-
 type PublicStats = {
   reviewsCount: number;
   averageRating: number | null;
   bookingsCount: number;
 };
-
 type PublicAnnouncement = {
   id: string;
   type: "OFFER" | "PROFILE";
@@ -95,13 +86,10 @@ type PublicAnnouncement = {
   jobType: { id: string; name: string; slug: string } | null;
   region: { id: string; name: string; slug: string } | null;
 };
-
 type TabKey = "services" | "videos" | "reviews" | "favorites";
-
 /* ═══════════════════════════════════════════════════════════
    COMPOSANT
    ═══════════════════════════════════════════════════════════ */
-
 export default function PublicProviderProfilePage() {
   const t = useTranslations("ProfilePage");
   const locale = useLocale();
@@ -110,24 +98,20 @@ export default function PublicProviderProfilePage() {
   // ✅ Le dossier de route est [id], pas [userId]
   const providerId = (params?.id as string) || "";
   const isRTL = locale === "ar";
-
   const [provider, setProvider] = useState<PublicProvider | null>(null);
   const [stats, setStats] = useState<PublicStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
   const [notFound, setNotFound] = useState(false);
   const [activeTab, setActiveTab] = useState<TabKey>("services");
-
   const [isFavorite, setIsFavorite] = useState(false);
   const [favoriteLoading, setFavoriteLoading] = useState(false);
   const [favoritePending, setFavoritePending] = useState(false);
-
   // ─── Services publiés ───
   const [announcements, setAnnouncements] = useState<PublicAnnouncement[]>([]);
   const [announcementsLoading, setAnnouncementsLoading] = useState(false);
   const [announcementsError, setAnnouncementsError] = useState(false);
   const [announcementsLoaded, setAnnouncementsLoaded] = useState(false);
-
   /* ─── Charger le profil ─── */
   const loadProfile = useCallback(async () => {
     if (!providerId) {
@@ -135,11 +119,9 @@ export default function PublicProviderProfilePage() {
       setNotFound(true);
       return;
     }
-
     setLoading(true);
     setNotFound(false);
     setLoadError(false);
-
     try {
       const res = await fetch(`/api/profils/${providerId}`);
       if (res.status === 404) {
@@ -147,15 +129,12 @@ export default function PublicProviderProfilePage() {
         return;
       }
       if (!res.ok) throw new Error("Erreur chargement profil");
-
       const data = await res.json();
-
       // ✅ Sécurité : on n'affiche QUE les prestataires
       if (data?.user?.accountType !== "PROVIDER") {
         setNotFound(true);
         return;
       }
-
       setProvider(data.user);
       setStats(data.stats);
     } catch (err) {
@@ -165,11 +144,9 @@ export default function PublicProviderProfilePage() {
       setLoading(false);
     }
   }, [providerId]);
-
   useEffect(() => {
     loadProfile();
   }, [loadProfile]);
-
   /* ─── État initial du favori (indépendant) ─── */
   useEffect(() => {
     if (!providerId) return;
@@ -180,19 +157,15 @@ export default function PublicProviderProfilePage() {
       .catch(() => setIsFavorite(false))
       .finally(() => setFavoriteLoading(false));
   }, [providerId]);
-
   /* ─── Services publiés (lazy, à l'ouverture de l'onglet) ─── */
   useEffect(() => {
     if (activeTab !== "services") return;
     if (!providerId) return;
     if (announcementsLoaded) return;
-
     const controller = new AbortController();
     let cancelled = false;
-
     setAnnouncementsLoading(true);
     setAnnouncementsError(false);
-
     fetch(`/api/profils/${providerId}/announcements?limit=20`, {
       signal: controller.signal,
     })
@@ -210,21 +183,17 @@ export default function PublicProviderProfilePage() {
         if (cancelled) return;
         setAnnouncementsLoading(false);
       });
-
     return () => {
       cancelled = true;
       controller.abort();
     };
   }, [activeTab, providerId, announcementsLoaded]);
-
   /* ─── Toggle favori ─── */
   const handleToggleFavorite = async () => {
     if (favoritePending) return;
-
     const next = !isFavorite;
     setIsFavorite(next);
     setFavoritePending(true);
-
     try {
       const res = await fetch(`/api/providers/${providerId}/favorite`, {
         method: next ? "POST" : "DELETE",
@@ -237,7 +206,6 @@ export default function PublicProviderProfilePage() {
       setFavoritePending(false);
     }
   };
-
   const handleShare = async () => {
     const url = window.location.href;
     try {
@@ -247,7 +215,6 @@ export default function PublicProviderProfilePage() {
       /* annulation du partage, rien à faire */
     }
   };
-
   /* ─── Loading ─── */
   if (loading) {
     return (
@@ -256,7 +223,6 @@ export default function PublicProviderProfilePage() {
       </div>
     );
   }
-
   /* ─── Erreur réseau ─── */
   if (loadError) {
     return (
@@ -275,7 +241,6 @@ export default function PublicProviderProfilePage() {
       </div>
     );
   }
-
   /* ─── 404 / mauvais type ─── */
   if (notFound || !provider) {
     return (
@@ -288,7 +253,6 @@ export default function PublicProviderProfilePage() {
       </div>
     );
   }
-
   const SOCIAL_FIELDS: {
     key: SocialKey;
     icon: React.ReactNode;
@@ -302,12 +266,10 @@ export default function PublicProviderProfilePage() {
     { key: "youtube", icon: <YoutubeLogoIcon size={16} />, displayLabel: t("social.youtube") },
     { key: "twitter", icon: <XLogoIcon size={16} />, displayLabel: t("social.twitter") },
   ];
-
   const socialLinks = SOCIAL_FIELDS.map((f) => ({
     ...f,
     href: provider[f.key] ?? null,
   })).filter((l) => isSafeUrl(l.href));
-
   const TABS: {
     key: TabKey;
     icon: typeof MegaphoneIcon;
@@ -327,7 +289,6 @@ export default function PublicProviderProfilePage() {
     { key: "reviews", icon: StarIcon, label: t("tabs.reviews") },
     { key: "favorites", icon: HeartIcon, label: t("tabs.favorites") },
   ];
-
   const salarySuffix = (period: string | null) => {
     if (period === "HEURE") return " /h";
     if (period === "JOUR") return " /j";
@@ -335,7 +296,6 @@ export default function PublicProviderProfilePage() {
     if (period === "MOIS") return " /mois";
     return "";
   };
-
   return (
     <div
       dir={isRTL ? "rtl" : "ltr"}
@@ -349,7 +309,6 @@ export default function PublicProviderProfilePage() {
           <ArrowLeftIcon size={16} className={isRTL ? "rotate-180" : ""} />
           {t("back")}
         </button>
-
         {/* ═══════════════ EN-TÊTE ═══════════════ */}
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8">
           <div className="relative shrink-0 mx-auto sm:mx-0">
@@ -377,7 +336,6 @@ export default function PublicProviderProfilePage() {
               )}
             </div>
           </div>
-
           <div className="flex-1 min-w-0 text-center sm:text-start">
             <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
               <h1
@@ -391,7 +349,6 @@ export default function PublicProviderProfilePage() {
                 {t("accountType.PROVIDER")}
               </span>
             </div>
-
             <div className="flex items-center justify-center sm:justify-start gap-3 sm:gap-5 mt-2.5 sm:mt-3 flex-wrap">
               <div className="flex items-baseline gap-1">
                 <span
@@ -429,7 +386,6 @@ export default function PublicProviderProfilePage() {
                 </span>
               )}
             </div>
-
             {/* Actions : favori + partager */}
             <div className="flex items-center justify-center sm:justify-start gap-2 mt-3 sm:mt-4 flex-wrap">
               <button
@@ -456,7 +412,6 @@ export default function PublicProviderProfilePage() {
                 <ShareNetworkIcon size={18} />
               </button>
             </div>
-
             {/* Bio */}
             <div className="mt-3 sm:mt-4">
               <p
@@ -465,7 +420,6 @@ export default function PublicProviderProfilePage() {
                 {provider.bio || t("noBio")}
               </p>
             </div>
-
             {/* Réseaux sociaux */}
             {socialLinks.length > 0 && (
               <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-3">
@@ -486,7 +440,6 @@ export default function PublicProviderProfilePage() {
             )}
           </div>
         </div>
-
         {/* ═══════════════ SECTION PRESTATAIRE ═══════════════ */}
         <section className="border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6 pt-4 sm:pt-5">
           <h2
@@ -514,7 +467,6 @@ export default function PublicProviderProfilePage() {
             />
           </div>
         </section>
-
         {/* ═══════════════ TABS ═══════════════ */}
         <div
           role="tablist"
@@ -548,7 +500,6 @@ export default function PublicProviderProfilePage() {
             </button>
           ))}
         </div>
-
         {/* ═══════════════ CONTENU DES ONGLETS ═══════════════ */}
         <div className="pt-4 sm:pt-5">
           {/* ─── SERVICES ─── */}
@@ -568,7 +519,6 @@ export default function PublicProviderProfilePage() {
                   ))}
                 </ul>
               )}
-
               {!announcementsLoading && announcementsError && (
                 <div className="py-10 sm:py-14 flex flex-col items-center justify-center text-center px-4">
                   <MegaphoneIcon
@@ -593,7 +543,6 @@ export default function PublicProviderProfilePage() {
                   </button>
                 </div>
               )}
-
               {!announcementsLoading &&
                 !announcementsError &&
                 announcements.length === 0 && (
@@ -609,7 +558,6 @@ export default function PublicProviderProfilePage() {
                     </p>
                   </div>
                 )}
-
               {!announcementsLoading &&
                 !announcementsError &&
                 announcements.length > 0 && (
@@ -688,7 +636,6 @@ export default function PublicProviderProfilePage() {
                 )}
             </div>
           )}
-
           {/* ─── VIDÉOS ─── */}
           {activeTab === "videos" && (
             <VideoGrid
@@ -697,7 +644,6 @@ export default function PublicProviderProfilePage() {
               emptyClassName={orbitron.className}
             />
           )}
-
           {/* ─── AVIS ─── */}
           {activeTab === "reviews" && (
             <div className="py-10 sm:py-14 flex flex-col items-center justify-center text-center px-4">
@@ -712,7 +658,6 @@ export default function PublicProviderProfilePage() {
               </p>
             </div>
           )}
-
           {/* ─── FAVORIS ─── */}
           {activeTab === "favorites" && (
             <div className="py-10 sm:py-14 flex flex-col items-center justify-center text-center px-4">
@@ -732,7 +677,6 @@ export default function PublicProviderProfilePage() {
     </div>
   );
 }
-
 /* ═══════════════ ReadField ═══════════════ */
 function ReadField({ label, value }: { label: string; value?: string | null }) {
   return (

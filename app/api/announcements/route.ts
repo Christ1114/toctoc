@@ -10,15 +10,12 @@ import {
   rateLimitHeaders,
   getClientIp,
 } from "@/app/lib/security/rate-limit";
-
 /* ═══════════════ Constantes ═══════════════ */
 const MAX_ACTIVE_ANNOUNCEMENTS_PER_USER = 10;
 const CREATE_RATE_LIMIT_MAX = 5;
 const CREATE_RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1h
-
 const LIST_RATE_LIMIT_MAX = 100;
 const LIST_RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1h
-
 /* ═══════════════ GET — Liste publique ═══════════════ */
 export async function GET(req: NextRequest) {
   try {
@@ -34,20 +31,16 @@ export async function GET(req: NextRequest) {
         { status: 429, headers: rateLimitHeaders(LIST_RATE_LIMIT_MAX, rl) }
       );
     }
-
     const params = req.nextUrl.searchParams;
     const limit = Math.min(Math.max(Number(params.get("limit") ?? 30), 1), 50);
     const page = Math.max(Number(params.get("page") ?? 1), 1);
     const skip = (page - 1) * limit;
-
     const type = params.get("type");
     const jobTypeSlug = params.get("jobType");
     const regionSlug = params.get("region");
     const city = params.get("city");
     const q = params.get("q")?.trim();
-
     const where: Prisma.AnnouncementWhereInput = {};
-
     if (type === "OFFER" || type === "PROFILE") {
       where.type = type as ListingType;
     }
@@ -61,7 +54,6 @@ export async function GET(req: NextRequest) {
         { city: { contains: q, mode: "insensitive" } },
       ];
     }
-
     const [announcements, total] = await Promise.all([
       prisma.announcement.findMany({
         where,
@@ -111,7 +103,6 @@ export async function GET(req: NextRequest) {
       }),
       prisma.announcement.count({ where }),
     ]);
-
     return NextResponse.json(
       {
         announcements,
@@ -133,7 +124,6 @@ export async function GET(req: NextRequest) {
     );
   }
 }
-
 /* ═══════════════ POST — Créer une annonce ═══════════════ */
 export async function POST(req: NextRequest) {
   try {
@@ -142,7 +132,6 @@ export async function POST(req: NextRequest) {
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
-
     // 2. Charger user + flags
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
@@ -155,11 +144,9 @@ export async function POST(req: NextRequest) {
         emailVerified: true,
       },
     });
-
     if (!user) {
       return NextResponse.json({ error: "Utilisateur non trouvé" }, { status: 404 });
     }
-
     // 3. Checks de sécurité
     if (user.banned && (!user.banExpires || user.banExpires > new Date())) {
       return NextResponse.json({ error: "Compte suspendu" }, { status: 403 });
@@ -173,7 +160,6 @@ export async function POST(req: NextRequest) {
         { status: 403 }
       );
     }
-
     // 4. Rate limit par user
     const rl = await checkRateLimit(
       `announce:create:${user.id}`,
@@ -186,7 +172,6 @@ export async function POST(req: NextRequest) {
         { status: 429, headers: rateLimitHeaders(CREATE_RATE_LIMIT_MAX, rl) }
       );
     }
-
     // 5. Limite annonces actives
     const activeCount = await prisma.announcement.count({
       where: { userId: user.id, isUserGenerated: true },
@@ -197,13 +182,11 @@ export async function POST(req: NextRequest) {
         { status: 429 }
       );
     }
-
     // 6. Validation Zod 4
     const json = await req.json().catch(() => null);
     if (!json || typeof json !== "object") {
       return NextResponse.json({ error: "Corps de requête invalide" }, { status: 400 });
     }
-
     const parsed = createAnnouncementSchema.safeParse(json);
     if (!parsed.success) {
       return NextResponse.json(
@@ -215,7 +198,6 @@ export async function POST(req: NextRequest) {
       );
     }
     const data = parsed.data;
-
     // 7. Vérifier les référentiels
     const [jobType, region] = await Promise.all([
       prisma.jobType.findUnique({ where: { id: data.jobTypeId } }),
@@ -227,11 +209,9 @@ export async function POST(req: NextRequest) {
     if (!region) {
       return NextResponse.json({ error: "Localisation introuvable" }, { status: 400 });
     }
-
     // 8. Type calculé serveur
     const type: ListingType =
       user.accountType === "PROVIDER" ? "PROFILE" : "OFFER";
-
     // 9. Création
     const announcement = await prisma.announcement.create({
       data: {
@@ -261,7 +241,6 @@ export async function POST(req: NextRequest) {
       select: {
         id: true,
         type: true,
-        
         title: true,
         description: true,
         salaryMin: true,
@@ -272,7 +251,6 @@ export async function POST(req: NextRequest) {
         region: { select: { id: true, name: true, slug: true } },
       },
     });
-
     return NextResponse.json({ announcement }, { status: 201 });
   } catch (error) {
     console.error("Erreur POST announcement:", error);

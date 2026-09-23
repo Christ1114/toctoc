@@ -32,8 +32,6 @@ import {
   ProviderType
 } from "@/app/lib/validation/registerValidation";
 import { signUpWithEmail } from "@/app/lib/auth-client";
-
-
 interface Step1Data {
   name: string;
   email: string;
@@ -45,7 +43,6 @@ interface Step1Data {
   acceptNoVpn: boolean;
   acceptVr: boolean;
 }
-
 interface Step2Data {
   role: Role;
   clientType?: ClientType;
@@ -54,12 +51,10 @@ interface Step2Data {
   providerType?: ProviderType;
   bio?: string;
 }
-
 interface Step3Data {
   verificationMethod: 'email' | 'phone';
   acceptNewsletter: boolean;
 }
-
 const RegisterForm = () => {
   const t = useTranslations('register');
   const router = useRouter();
@@ -70,7 +65,6 @@ const RegisterForm = () => {
   const [detectedOperator, setDetectedOperator] = useState<string | null>(null);
   const [isVerifyingPhone, setIsVerifyingPhone] = useState(false);
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
-  
   const [step1Data, setStep1Data] = useState<Step1Data>({
     name: '',
     email: '',
@@ -84,16 +78,13 @@ const RegisterForm = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  
   const [step2Data, setStep2Data] = useState<Step2Data>({
     role: 'CLIENT'
   });
-  
   const [step3Data, setStep3Data] = useState<Step3Data>({
     verificationMethod: 'email',
     acceptNewsletter: false
   });
-
   const validationContent = {
     nameWarning: { value: t('errors.nameRequired') },
     emailWarning: { value: t('errors.invalidEmail') },
@@ -108,7 +99,6 @@ const RegisterForm = () => {
     rccmNumberWarning: { value: t('errors.invalidRccm') },
     phoneCountryCodeWarning: { value: t('errors.phoneCountryCodeWarning') }
   };
-
   const handleNameChange = (value: string) => {
     setStep1Data({ ...step1Data, name: value });
     if (value.trim() === '' || !isNameValid(value)) {
@@ -117,7 +107,6 @@ const RegisterForm = () => {
       setErrors({ ...errors, name: undefined });
     }
   };
-
   const handleEmailChange = (value: string) => {
     setStep1Data({ ...step1Data, email: value });
     if (value.trim() === '' || !isEmailValid(value)) {
@@ -126,31 +115,25 @@ const RegisterForm = () => {
       setErrors({ ...errors, email: undefined });
     }
   };
-
   const handlePhoneChange = async (value: string) => {
     setStep1Data({ ...step1Data, phone: value });
     setDetectedOperator(null);
-    
     if (value.trim() === '') {
       setErrors({ ...errors, phone: validationContent.phoneNumberWarning.value });
       return;
     }
-    
     if (!value.startsWith("+225")) {
       setErrors({ ...errors, phone: validationContent.phoneNumberWarning.value });
       return;
     }
-    
     if (!isPhoneValid(value)) {
       setErrors({ ...errors, phone: validationContent.phoneNumberWarning.value });
       return;
     }
-    
     if (!isValidCountryCode(value)) {
       setErrors({ ...errors, phone: validationContent.phoneCountryCodeWarning.value });
       return;
     }
-    
     const cleanedLength = value.replace(/\D/g, "").length;
     if (value.startsWith("+225") && cleanedLength === 13) {
       setIsVerifyingPhone(true);
@@ -160,9 +143,7 @@ const RegisterForm = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ phoneNumber: value }),
         });
-        
         const data = await response.json();
-        
         if (data.success) {
           setDetectedOperator(data.operator);
           setErrors({ ...errors, phone: undefined });
@@ -178,7 +159,6 @@ const RegisterForm = () => {
       }
     }
   };
-
   const handlePasswordChange = (value: string) => {
     setStep1Data({ ...step1Data, password: value });
     if (value === '' || !isPasswordValid(value)) {
@@ -186,7 +166,6 @@ const RegisterForm = () => {
     } else {
       setErrors({ ...errors, password: undefined });
     }
-    
     if (step1Data.confirmPassword) {
       if (value !== step1Data.confirmPassword) {
         setErrors(prev => ({ ...prev, confirmPassword: validationContent.confirmPasswordWarning.value }));
@@ -195,7 +174,6 @@ const RegisterForm = () => {
       }
     }
   };
-
   const handleConfirmPasswordChange = (value: string) => {
     setStep1Data({ ...step1Data, confirmPassword: value });
     if (value === '' || !isPasswordConfirmed(step1Data.password, value)) {
@@ -204,27 +182,22 @@ const RegisterForm = () => {
       setErrors({ ...errors, confirmPassword: undefined });
     }
   };
-
   const handleAcceptTermsChange = (checked: boolean) => {
     setStep1Data({ ...step1Data, acceptTerms: checked });
     setErrors({ ...errors, acceptTerms: checked ? undefined : validationContent.termsWarning.value });
   };
-
   const handleAcceptLocationChange = (checked: boolean) => {
     setStep1Data({ ...step1Data, acceptLocation: checked });
     setErrors({ ...errors, acceptLocation: checked ? undefined : validationContent.locationWarning.value });
   };
-
   const handleAcceptNoVpnChange = (checked: boolean) => {
     setStep1Data({ ...step1Data, acceptNoVpn: checked });
     setErrors({ ...errors, acceptNoVpn: checked ? undefined : validationContent.noVpnWarning.value });
   };
-
   const handleAcceptVrChange = (checked: boolean) => {
     setStep1Data({ ...step1Data, acceptVr: checked });
     setErrors({ ...errors, acceptVr: checked ? undefined : validationContent.vrWarning.value });
   };
-
   const handleCompanyNameChange = (value: string) => {
     setStep2Data({ ...step2Data, companyName: value });
     if (value.trim() === '' || !isCompanyNameValid(value)) {
@@ -233,7 +206,6 @@ const RegisterForm = () => {
       setErrors({ ...errors, companyName: undefined });
     }
   };
-
   const handleRccmChange = (value: string) => {
     setStep2Data({ ...step2Data, rccmNumber: value });
     if (value.trim() === '' || !isRccmValid(value)) {
@@ -242,7 +214,6 @@ const RegisterForm = () => {
       setErrors({ ...errors, rccmNumber: undefined });
     }
   };
-
   const handleStep1Submit = (e: React.FormEvent) => {
     e.preventDefault();
     const stepErrors = validateStep1(step1Data, validationContent);
@@ -254,7 +225,6 @@ const RegisterForm = () => {
     setCurrentStep(2);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
   const handleStep2Submit = (e: React.FormEvent) => {
     e.preventDefault();
     const stepErrors = validateStep2(step2Data, validationContent);
@@ -266,28 +236,23 @@ const RegisterForm = () => {
     setCurrentStep(3);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
   const handleFinalSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitError(null);
-    
     const allErrors = {
       ...validateStep1(step1Data, validationContent),
       ...validateStep2(step2Data, validationContent),
     };
-    
     if (hasErrors(allErrors)) {
       setErrors(allErrors);
       setIsSubmitting(false);
       return;
     }
-    
     if (!validateStep3(step3Data, step1Data.phone !== '')) {
       setIsSubmitting(false);
       return;
     }
-    
     try {
       const { error } = await signUpWithEmail({
         name: step1Data.name,
@@ -309,7 +274,6 @@ const RegisterForm = () => {
           VR_CONFERENCE: step1Data.acceptVr,
         },
       });
-      
       if (error) {
         console.error('Erreur serveur:', error);
         setSubmitError(error.message ?? t('errors.submitFailed'));
@@ -324,13 +288,11 @@ const RegisterForm = () => {
       setIsSubmitting(false);
     }
   };
-
   const handlePrevious = () => {
     setCurrentStep(Math.max(1, currentStep - 1));
     setErrors({});
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
   const ProgressBar = () => (
     <div className={`w-full max-w-4xl mx-auto mb-4 sm:mb-6 px-3 sm:px-6 md:px-8 ${orbitron.className}`}>
       <div className="flex items-center justify-between mb-2">
@@ -359,11 +321,9 @@ const RegisterForm = () => {
       </div>
     </div>
   );
-
   return (
     <div className="min-h-screen py-4 sm:py-6 md:py-8 px-2 sm:px-4">
       {!registrationSuccess && <ProgressBar />}
-
       {registrationSuccess && (
         <div className={`w-full max-w-4xl mx-auto pt-6 sm:pt-8 pb-6 sm:pb-8 px-3 sm:px-6 md:px-8 text-black dark:text-zinc-300 ${orbitron.className}`}>
           <div className="text-center">
@@ -389,7 +349,6 @@ const RegisterForm = () => {
           </div>
         </div>
       )}
-      
       {!registrationSuccess && currentStep === 1 && (
         <form onSubmit={handleStep1Submit} className={`w-full max-w-4xl mx-auto pt-4 sm:pt-6 md:pt-8 pb-4 sm:pb-6 md:pb-8 px-3 sm:px-6 md:px-8  text-black dark:text-zinc-300 ${orbitron.className}`}>
           <div className="mb-4 sm:mb-6 text-center">
@@ -403,9 +362,7 @@ const RegisterForm = () => {
             <h2 className="text-lg sm:text-xl font-bold">{t('step1.title')}</h2>
             <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">{t('step1.subtitle')}</p>
           </div>
-
           <div className="space-y-3 sm:space-y-4">
-            
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
                 <User className="w-4 h-4 shrink-0" />
@@ -431,8 +388,6 @@ const RegisterForm = () => {
                 )}
               </div>
             </div>
-
-            
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
                 <Mail className="w-4 h-4 shrink-0" />
@@ -458,8 +413,6 @@ const RegisterForm = () => {
                 )}
               </div>
             </div>
-
-          
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
                 <Phone className="w-4 h-4 shrink-0" />
@@ -496,8 +449,6 @@ const RegisterForm = () => {
                 )}
               </div>
             </div>
-
-          
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
                 <Lock className="w-4 h-4 shrink-0" />
@@ -537,8 +488,6 @@ const RegisterForm = () => {
                 )}
               </div>
             </div>
-
-    
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
                 <Lock className="w-4 h-4 shrink-0" />
@@ -578,8 +527,6 @@ const RegisterForm = () => {
                 )}
               </div>
             </div>
-
-            
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
                 <Shield className="w-4 h-4 shrink-0" />
@@ -608,8 +555,6 @@ const RegisterForm = () => {
                 )}
               </div>
             </div>
-
-          
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
                 <MapPin className="w-4 h-4 shrink-0" />
@@ -635,8 +580,6 @@ const RegisterForm = () => {
                 )}
               </div>
             </div>
-
-            
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
                 <ShieldOff className="w-4 h-4 shrink-0" />
@@ -662,8 +605,6 @@ const RegisterForm = () => {
                 )}
               </div>
             </div>
-
-            
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
                 <Glasses className="w-4 h-4 shrink-0" />
@@ -690,7 +631,6 @@ const RegisterForm = () => {
               </div>
             </div>
           </div>
-
           <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 mt-4 sm:mt-6 pt-4 border-t border-zinc-300 dark:border-zinc-700">
             <button
               type="button"
@@ -714,7 +654,6 @@ const RegisterForm = () => {
           </div>
         </form>
       )}
-
       {!registrationSuccess && currentStep === 2 && (
         <form onSubmit={handleStep2Submit} className={`w-full max-w-4xl mx-auto pt-4 sm:pt-6 md:pt-8 pb-4 sm:pb-6 md:pb-8 px-3 sm:px-6 md:px-8  text-black dark:text-zinc-300 ${orbitron.className}`}>
           <div className="mb-4 sm:mb-6 text-center">
@@ -728,7 +667,6 @@ const RegisterForm = () => {
             <h2 className="text-lg sm:text-xl font-bold">{t('step2.title')}</h2>
             <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">{t('step2.subtitle')}</p>
           </div>
-
           <div className="space-y-3 sm:space-y-4">
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
@@ -766,7 +704,6 @@ const RegisterForm = () => {
                 </div>
               </div>
             </div>
-
             {step2Data.role === 'CLIENT' && (
               <>
                 <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
@@ -792,7 +729,6 @@ const RegisterForm = () => {
                     </select>
                   </div>
                 </div>
-
                 {step2Data.clientType === 'AGENCY' && (
                   <>
                     <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
@@ -820,7 +756,6 @@ const RegisterForm = () => {
                         )}
                       </div>
                     </div>
-
                     <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
                       <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
                         <Building2 className="w-4 h-4 shrink-0" />
@@ -850,7 +785,6 @@ const RegisterForm = () => {
                 )}
               </>
             )}
-
             {step2Data.role === 'PROVIDER' && (
               <>
                 <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
@@ -881,7 +815,6 @@ const RegisterForm = () => {
                     </select>
                   </div>
                 </div>
-
                 <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
                   <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
                     <Briefcase className="w-4 h-4 shrink-0" />
@@ -904,7 +837,6 @@ const RegisterForm = () => {
               </>
             )}
           </div>
-
           <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 mt-4 sm:mt-6 pt-4 border-t border-zinc-300 dark:border-zinc-700">
             <button
               type="button"
@@ -929,7 +861,6 @@ const RegisterForm = () => {
           </div>
         </form>
       )}
-
       {!registrationSuccess && currentStep === 3 && (
         <form onSubmit={handleFinalSubmit} className={`w-full max-w-4xl mx-auto pt-4 sm:pt-6 md:pt-8 pb-4 sm:pb-6 md:pb-8 px-3 sm:px-6 md:px-8  text-black dark:text-zinc-300 ${orbitron.className}`}>
           <div className="mb-4 sm:mb-6 text-center">
@@ -943,14 +874,12 @@ const RegisterForm = () => {
             <h2 className="text-lg sm:text-xl font-bold">{t('step3.title')}</h2>
             <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">{t('step3.subtitle')}</p>
           </div>
-
           {submitError && (
             <div className="mb-4 flex items-start gap-2 p-3 bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800 rounded-lg">
               <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-500 shrink-0 mt-0.5" />
               <p className="text-xs sm:text-sm text-red-800 dark:text-red-300">{submitError}</p>
             </div>
           )}
-
           <div className="space-y-3 sm:space-y-4">
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 p-3 sm:p-4">
@@ -1017,7 +946,6 @@ const RegisterForm = () => {
                 </div>
               </div>
             </div>
-
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
                 <Shield className="w-4 h-4 shrink-0" />
@@ -1059,7 +987,6 @@ const RegisterForm = () => {
                 </div>
               </div>
             </div>
-
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
                 <Mail className="w-4 h-4 shrink-0" />
@@ -1080,7 +1007,6 @@ const RegisterForm = () => {
               </div>
             </div>
           </div>
-
           <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 mt-4 sm:mt-6 pt-4 border-t border-zinc-300 dark:border-zinc-700">
             <button
               type="button"
@@ -1113,5 +1039,4 @@ const RegisterForm = () => {
     </div>
   );
 };
-
 export default RegisterForm;

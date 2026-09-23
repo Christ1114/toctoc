@@ -7,13 +7,11 @@ import {
   checkRateLimit,
   rateLimitHeaders,
 } from "@/app/lib/security/rate-limit";
-
 /* ═══════════════ Constantes ═══════════════ */
 const RATE_LIMIT_MAX = 60;
 const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
 const MAX_LIMIT = 50;
 const DEFAULT_LIMIT = 20;
-
 /* ═══════════════ Validation des query params ═══════════════ */
 const querySchema = z.object({
   limit: z.coerce.number().int().min(1).max(MAX_LIMIT).default(DEFAULT_LIMIT),
@@ -21,7 +19,6 @@ const querySchema = z.object({
   type: z.enum(["OFFER", "PROFILE"]).optional(),
   sort: z.enum(["recent", "oldest", "views"]).default("recent"),
 });
-
 /* ═══════════════ GET — Mes annonces ═══════════════ */
 export async function GET(req: NextRequest) {
   try {
@@ -30,13 +27,11 @@ export async function GET(req: NextRequest) {
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
-
     // ── 2. Vérifier que le compte est actif ──
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
       select: { id: true, isActive: true, banned: true, banExpires: true },
     });
-
     if (!user) {
       return NextResponse.json({ error: "Utilisateur non trouvé" }, { status: 404 });
     }
@@ -46,7 +41,6 @@ export async function GET(req: NextRequest) {
     if (!user.isActive) {
       return NextResponse.json({ error: "Compte désactivé" }, { status: 403 });
     }
-
     // ── 3. Rate limit par user ──
     const rl = await checkRateLimit(
       `announce:mine:${user.id}`,
@@ -59,7 +53,6 @@ export async function GET(req: NextRequest) {
         { status: 429, headers: rateLimitHeaders(RATE_LIMIT_MAX, rl) }
       );
     }
-
     // ── 4. Validation des query params ──
     const rawParams = Object.fromEntries(req.nextUrl.searchParams);
     const parsed = querySchema.safeParse(rawParams);
@@ -69,17 +62,14 @@ export async function GET(req: NextRequest) {
         { status: 400 }
       );
     }
-
     const { limit, page, type, sort } = parsed.data;
     const skip = (page - 1) * limit;
-
     // ── 5. Construction du filtre ──
     const where = {
       userId: user.id,
       isUserGenerated: true,
       ...(type && { type }),
     };
-
     // ── 6. Tri ──
     const orderBy =
       sort === "oldest"
@@ -87,7 +77,6 @@ export async function GET(req: NextRequest) {
         : sort === "views"
         ? { viewCount: "desc" as const }
         : { createdAt: "desc" as const };
-
     // ── 7. Requêtes parallèles ──
     const [announcements, total, activeCount] = await Promise.all([
       prisma.announcement.findMany({
@@ -120,7 +109,6 @@ export async function GET(req: NextRequest) {
         where: { userId: user.id, isUserGenerated: true },
       }),
     ]);
-
     return NextResponse.json(
       {
         announcements,

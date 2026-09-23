@@ -1,20 +1,15 @@
 "use client";
-
 import { createContext, useContext, useEffect, useState, useCallback, ReactNode } from "react";
 import { getSession, type User } from "@/app/lib/auth-client";
-
 interface SessionContextValue {
   user: User | null;
   loading: boolean;
   refresh: () => Promise<void>;
 }
-
 const SessionContext = createContext<SessionContextValue | undefined>(undefined);
-
 export function SessionProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-
   const refresh = useCallback(async () => {
     try {
       const { session } = await getSession();
@@ -26,11 +21,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     }
   }, []);
-
   useEffect(() => {
     refresh();
   }, [refresh]);
-
   return (
     <SessionContext.Provider value={{ user, loading, refresh }}>
       {children}

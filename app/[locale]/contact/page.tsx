@@ -2,7 +2,6 @@ import ContactFormComponent from '@/components/contact/first.component';
 import FooterComponent from '@/components/footer/footer';
 import Navbar from '@/components/shared/navbar/navbar';
 import React from 'react'
-
 const ConctactPage = () => {
   return (
     <div className='w-full h-full bg-white dark:bg-zinc-900'>
@@ -18,5 +17,4 @@ const ConctactPage = () => {
     </div>
   )
 }
-
 export default ConctactPage;

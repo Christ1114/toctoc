@@ -3,7 +3,6 @@ import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import React from 'react';
 import { useTranslations } from 'next-intl';
-
 type BtnProps = {
   title: string;
   href: string;
@@ -14,10 +13,8 @@ type GridProps = {
   icon: string;
   btn2: BtnProps;
 };
-
 export default function FourModuleHome() {
   const t = useTranslations("fourModuleHome");
-
   const Grid: GridProps[] = [
     {
       id: 1,
@@ -56,10 +53,8 @@ export default function FourModuleHome() {
       btn2: { title: t("btnTocer"), href: '/login' },
     },
   ];
-
   return (
     <div className="w-full flex flex-col relative">
-
       <div
         className="absolute inset-0 -z-10"
       />
@@ -92,7 +87,6 @@ export default function FourModuleHome() {
             }}
           >
             <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 min-w-0 flex-1 relative z-10">
-
               <div className="w-7 h-7 sm:w-9 sm:h-9 lg:w-10 lg:h-10 xl:w-12 xl:h-12
                               shrink-0 rounded-lg sm:rounded-xl 
                               bg-white/80 backdrop-blur-sm 
@@ -112,7 +106,6 @@ export default function FourModuleHome() {
                              w-3.5 h-3.5 sm:w-5 sm:h-5 lg:w-5.5 lg:h-5.5 xl:w-6.5 xl:h-6.5"
                 />
               </div>
-
               <h6 className={`font-bold text-zinc-700 dark:text-neutral-950 
                              group-hover:text-neutral-950 
                              transition-colors duration-300 
@@ -124,7 +117,6 @@ export default function FourModuleHome() {
                 {item.title}
               </h6>
             </div>
-
             <svg
               className="w-3.5 h-3.5 sm:w-4 sm:h-4 xl:w-5 xl:h-5
                          shrink-0 text-zinc-500

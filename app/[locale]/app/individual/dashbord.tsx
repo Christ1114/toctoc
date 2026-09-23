@@ -1,11 +1,8 @@
 "use client";
-
 import type { User } from "@/app/lib/auth-client";
-
 interface IndividualDashboardProps {
   user: User;
 }
-
 export default function IndividualDashboard({ user }: IndividualDashboardProps) {
   return (
     <div>

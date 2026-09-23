@@ -1,10 +1,8 @@
 "use client";
-
 import { useEffect, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { PlayIcon, XIcon, EyeIcon } from "@phosphor-icons/react";
 import { orbitron } from "@/fonts/font";
-
 export type ProviderVideo = {
   id: string;
   thumbnailUrl: string | null;
@@ -12,9 +10,7 @@ export type ProviderVideo = {
   viewCount?: number | null;
   createdAt?: string;
 };
-
 const PAGE_SIZE = 12;
-
 /* ═══════════════════════════════════════════════════════════
    Props
    - emptyText      : texte à afficher quand il n'y a aucune vidéo
@@ -27,7 +23,6 @@ type VideoGridProps = {
   emptyText?: string;
   emptyClassName?: string;
 };
-
 export default function VideoGrid({
   providerId,
   emptyText,
@@ -41,13 +36,11 @@ export default function VideoGrid({
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(false);
   const [activeVideo, setActiveVideo] = useState<ProviderVideo | null>(null);
-
   const loadPage = useCallback(
     async (pageToLoad: number, replace: boolean) => {
       if (pageToLoad === 0) setLoading(true);
       else setLoadingMore(true);
       setError(false);
-
       try {
         const res = await fetch(
           `/api/providers/${providerId}/videos?page=${pageToLoad}&pageSize=${PAGE_SIZE}`
@@ -57,10 +50,8 @@ export default function VideoGrid({
           return;
         }
         if (!res.ok) throw new Error("Erreur chargement vidéos");
-
         const data = await res.json();
         const newVideos: ProviderVideo[] = data.videos ?? [];
-
         setVideos((prev) => (replace ? newVideos : [...prev, ...newVideos]));
         setHasMore(
           typeof data.hasMore === "boolean"
@@ -77,20 +68,17 @@ export default function VideoGrid({
     },
     [providerId]
   );
-
   useEffect(() => {
     setVideos([]);
     setPage(0);
     setHasMore(true);
     loadPage(0, true);
   }, [providerId, loadPage]);
-
   const handleLoadMore = () => {
     const next = page + 1;
     setPage(next);
     loadPage(next, false);
   };
-
   if (loading) {
     return (
       <div className="grid grid-cols-3 gap-1 sm:gap-2">
@@ -103,7 +91,6 @@ export default function VideoGrid({
       </div>
     );
   }
-
   if (error && videos.length === 0) {
     return (
       <div className="py-10 flex flex-col items-center text-center">
@@ -121,7 +108,6 @@ export default function VideoGrid({
       </div>
     );
   }
-
   // ─── Empty state (accepte une surcharge depuis le parent) ───
   if (videos.length === 0) {
     return (
@@ -135,7 +121,6 @@ export default function VideoGrid({
       </div>
     );
   }
-
   return (
     <>
       <div className="grid grid-cols-3 gap-1 sm:gap-2">
@@ -174,7 +159,6 @@ export default function VideoGrid({
           </button>
         ))}
       </div>
-
       {hasMore && (
         <div className="flex justify-center mt-4">
           <button
@@ -186,7 +170,6 @@ export default function VideoGrid({
           </button>
         </div>
       )}
-
       {/* Lecteur en overlay */}
       {activeVideo && (
         <div

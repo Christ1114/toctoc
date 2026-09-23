@@ -16,8 +16,6 @@ import {
 } from "@/app/lib/validation/forgotPasswordValidation";
 import { forgotPassword } from "@/app/lib/auth-client";
 import Img1 from "@/public/assets/pictures/masquote3.webp";
-
-
 const ForgotPasswordForm = () => {
   const t = useTranslations('forgotPassword');
   const [email, setEmail] = useState('');
@@ -26,11 +24,9 @@ const ForgotPasswordForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [resendTimer, setResendTimer] = useState(0);
-
   const validationContent = {
     emailWarning: { value: t('errors.invalidEmail') },
   };
-
   const handleEmailChange = (value: string) => {
     setEmail(value);
     if (value.trim() === '') {
@@ -40,7 +36,6 @@ const ForgotPasswordForm = () => {
       setErrors(stepErrors);
     }
   };
-
   const startResendTimer = () => {
     setResendTimer(60);
     const timer = setInterval(() => {
@@ -53,24 +48,18 @@ const ForgotPasswordForm = () => {
       });
     }, 1000);
   };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     const submitErrors = validateForgotPasswordEmail(email, validationContent);
     if (hasForgotPasswordErrors(submitErrors)) {
       setErrors(submitErrors);
       return;
     }
-
     setIsLoading(true);
     setError('');
-
     try {
       const { error: requestError } = await forgotPassword(email);
-
       if (requestError) {
-       
         console.error('Erreur demande reset:', requestError);
         setError(t('errors.sendFailed'));
       } else {
@@ -84,14 +73,11 @@ const ForgotPasswordForm = () => {
       setIsLoading(false);
     }
   };
-
   const handleResend = async () => {
     setIsLoading(true);
     setError('');
-
     try {
       const { error: requestError } = await forgotPassword(email);
-
       if (requestError) {
         console.error('Erreur renvoi:', requestError);
         setError(t('errors.resendFailed'));
@@ -105,7 +91,6 @@ const ForgotPasswordForm = () => {
       setIsLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen py-4 sm:py-6 md:py-8 lg:py-10 px-3 sm:px-4 md:px-6 flex items-center justify-center">
       <div className="w-full max-w-4xl mx-auto">
@@ -125,14 +110,12 @@ const ForgotPasswordForm = () => {
                   {t('subtitle')}
                 </p>
               </div>
-
               <div className="mb-4 sm:mb-5 md:mb-6 flex items-start gap-2 sm:gap-3 p-2.5 sm:p-3 md:p-4 bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-800 rounded-lg">
                 <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-blue-600 dark:text-blue-500 shrink-0 mt-0.5" />
                 <p className="text-[10px] sm:text-xs md:text-sm text-blue-800 dark:text-blue-300">
                   {t('info')}
                 </p>
               </div>
-
               {error && (
                 <div className="mb-4 sm:mb-5 md:mb-6 flex items-start gap-2 sm:gap-3 p-2.5 sm:p-3 md:p-4 bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800 rounded-lg">
                   <AlertCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-red-600 dark:text-red-500 shrink-0 mt-0.5" />
@@ -141,10 +124,8 @@ const ForgotPasswordForm = () => {
                   </p>
                 </div>
               )}
-
               <form onSubmit={handleSubmit} noValidate>
                 <div className="space-y-3 sm:space-y-4 md:space-y-5">
-
                   <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
                     <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-[10px] sm:text-xs md:text-sm p-2 sm:p-2.5 md:p-3 flex items-center gap-1.5 sm:gap-2">
                       <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 text-[#432dd7]" />
@@ -171,7 +152,6 @@ const ForgotPasswordForm = () => {
                       )}
                     </div>
                   </div>
-
                   <button
                     type="submit"
                     disabled={isLoading || !email || Boolean(errors.email)}
@@ -186,7 +166,6 @@ const ForgotPasswordForm = () => {
                   </button>
                 </div>
               </form>
-
               <div className="mt-4 sm:mt-5 md:mt-6 text-center">
                 <Link 
                   href="/login" 
@@ -210,7 +189,6 @@ const ForgotPasswordForm = () => {
                   {t('success.message')}
                 </p>
               </div>
-
               <div className="mb-4 sm:mb-5 md:mb-6 flex items-start gap-2 sm:gap-3 p-2.5 sm:p-3 md:p-4 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg">
                 <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-[#432dd7] shrink-0 mt-0.5" />
                 <div className="flex-1">
@@ -222,7 +200,6 @@ const ForgotPasswordForm = () => {
                   </p>
                 </div>
               </div>
-
               {error && (
                 <div className="mb-4 sm:mb-5 md:mb-6 flex items-start gap-2 sm:gap-3 p-2.5 sm:p-3 md:p-4 bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800 rounded-lg">
                   <AlertCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-red-600 dark:text-red-500 shrink-0 mt-0.5" />
@@ -231,7 +208,6 @@ const ForgotPasswordForm = () => {
                   </p>
                 </div>
               )}
-
               <button
                 type="button"
                 onClick={handleResend}
@@ -247,7 +223,6 @@ const ForgotPasswordForm = () => {
                   ? t('buttons.resendIn', { seconds: resendTimer })
                   : t('buttons.resend')}
               </button>
-
               <div className="mt-4 sm:mt-5 md:mt-6 text-center">
                 <Link 
                   href="/login" 
@@ -264,5 +239,4 @@ const ForgotPasswordForm = () => {
     </div>
   );
 };
-
 export default ForgotPasswordForm;

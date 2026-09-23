@@ -1,6 +1,5 @@
 import LoginForm from '@/components/login/page'
 import React from 'react'
-
 const page = () => {
   return (
     <div className='w-full min-h-screen'>
@@ -8,5 +7,4 @@ const page = () => {
     </div>
   )
 }
-
 export default page

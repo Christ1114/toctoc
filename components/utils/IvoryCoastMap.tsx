@@ -1,11 +1,8 @@
 'use client';
-
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useLocale, useTranslations } from 'next-intl';
 import { orbitron } from '@/fonts/font';
-
-
 type CategoryKey =
   | 'NOUNOU'
   | 'MENAGERE'
@@ -15,7 +12,6 @@ type CategoryKey =
   | 'GARDIEN'
   | 'AIDE_PERSONNE_AGEE'
   | 'MAJORDOME';
-
 type RegionPoint = {
   name: string;
   lat: number;
@@ -58,8 +54,6 @@ const MapComponent = dynamic(
     )
   }
 );
-
-
 export default function IvoryCoastMap() {
   const t = useTranslations("mapComponent");
   const locale = useLocale();
@@ -69,13 +63,11 @@ export default function IvoryCoastMap() {
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await fetch('/api/announcements/map');
         const result = await response.json();
-
         if (result.success && result.data?.points) {
           const mappedRegions: RegionPoint[] = result.data.points
             .filter((point: any) => point.city && cityCoordinates[point.city])
@@ -88,7 +80,6 @@ export default function IvoryCoastMap() {
                 total: point.count,
               };
             });
-
           setRegions(mappedRegions);
         }
       } catch (error) {
@@ -97,10 +88,8 @@ export default function IvoryCoastMap() {
         setLoading(false);
       }
     }
-
     if (isMounted) fetchData();
   }, [isMounted]);
-
   return (
     <section className={`w-full lg:-translate-y-10 px-4 sm:px-6 lg:px-8 xl:px-10 py-6 sm:py-8 lg:py-12 xl:py-14 ${orbitron.className}`}>
       <div className="max-w-7xl mx-auto">
@@ -114,14 +103,12 @@ export default function IvoryCoastMap() {
               : ``}
           </p>
         </div>
-
         <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-2xl
                         h-87.5 
                         sm:h-112.5
                         lg:h-137.5 
                         xl:h-150 
                         transition-all duration-300">
-          
           {!isMounted || loading ? (
             <div className="w-full h-full flex items-center justify-center bg-black/20">
               <div className="flex flex-col items-center gap-3">

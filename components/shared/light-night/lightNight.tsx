@@ -2,10 +2,8 @@
 import React from 'react'
 import { SunIcon, MoonIcon } from "@phosphor-icons/react";
 import { useTheme } from 'next-themes';
-
 const LightNightComponent = () => {
     const { theme, setTheme } = useTheme();
-
     return (
         <button
             className="relative w-6 h-6 text-black dark:text-white cursor-pointer"
@@ -22,5 +20,4 @@ const LightNightComponent = () => {
         </button>
     );
 }
-
 export default LightNightComponent;

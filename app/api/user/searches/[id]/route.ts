@@ -1,30 +1,23 @@
-
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { ProviderType, type Prisma } from "@/generated/prisma/client";
-
 export async function GET(request: NextRequest) {
   try {
     const session = await auth.api.getSession({
       headers: await headers(),
     });
-
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
-
     const searchParams = request.nextUrl.searchParams;
     const query = searchParams.get("q")?.trim();
-
     const rawLimit = parseInt(searchParams.get("limit") || "5", 10);
     const rawPage = parseInt(searchParams.get("page") || "1", 10);
-
     const limit = Number.isNaN(rawLimit) ? 5 : Math.min(Math.max(rawLimit, 1), 50);
     const page = Number.isNaN(rawPage) ? 1 : Math.max(rawPage, 1);
     const skip = (page - 1) * limit;
-
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
       select: {
@@ -34,11 +27,9 @@ export async function GET(request: NextRequest) {
         providerType: true,
       },
     });
-
     if (!user) {
       return NextResponse.json({ error: "Utilisateur non trouvé" }, { status: 404 });
     }
-
     if (!query || query.length < 2) {
       return NextResponse.json({
         results: [],
@@ -48,18 +39,13 @@ export async function GET(request: NextRequest) {
         message: "La recherche doit contenir au moins 2 caractères",
       });
     }
-
     let results: unknown[] = [];
     let total = 0;
     const searchType = user.accountType;
-
-   
     if (user.accountType === "CLIENT") {
-      
       const matchingProviderTypes = Object.values(ProviderType).filter((type) =>
         type.toLowerCase().includes(query.toLowerCase())
       );
-
       const where: Prisma.UserWhereInput = {
         accountType: "PROVIDER",
         isActive: true,
@@ -72,7 +58,6 @@ export async function GET(request: NextRequest) {
             : []),
         ],
       };
-
       const [providers, count] = await Promise.all([
         prisma.user.findMany({
           where,
@@ -100,12 +85,9 @@ export async function GET(request: NextRequest) {
         }),
         prisma.user.count({ where }),
       ]);
-
       results = providers;
       total = count;
     }
-
-   
     else if (user.accountType === "PROVIDER") {
       const where: Prisma.AnnouncementWhereInput = {
         type: "OFFER",
@@ -131,7 +113,6 @@ export async function GET(request: NextRequest) {
           },
         ],
       };
-
       const [announcements, count] = await Promise.all([
         prisma.announcement.findMany({
           where,
@@ -185,11 +166,9 @@ export async function GET(request: NextRequest) {
         }),
         prisma.announcement.count({ where }),
       ]);
-
       results = announcements;
       total = count;
     }
-
     // === RECHERCHE POUR LES ADMIN ===
     else if (user.accountType === "ADMIN") {
       const announcementWhere: Prisma.AnnouncementWhereInput = {
@@ -204,7 +183,6 @@ export async function GET(request: NextRequest) {
           },
         ],
       };
-
       const userWhere: Prisma.UserWhereInput = {
         OR: [
           { name: { contains: query, mode: "insensitive" } },
@@ -212,7 +190,6 @@ export async function GET(request: NextRequest) {
           { companyName: { contains: query, mode: "insensitive" } },
         ],
       };
-
       const [announcements, providers, announcementCount, providerCount] = await Promise.all([
         prisma.announcement.findMany({
           where: announcementWhere,
@@ -249,17 +226,14 @@ export async function GET(request: NextRequest) {
         prisma.announcement.count({ where: announcementWhere }),
         prisma.user.count({ where: userWhere }),
       ]);
-
       results = [
         ...announcements.map((a) => ({ ...a, resultType: "announcement" as const })),
         ...providers.map((p) => ({ ...p, resultType: "user" as const })),
       ];
       total = announcementCount + providerCount;
     }
-
     const totalPages = Math.ceil(total / limit);
     const hasMore = page < totalPages;
-
     return NextResponse.json({
       results,
       total,

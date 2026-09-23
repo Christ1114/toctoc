@@ -2,10 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit, rateLimitHeaders, getClientIp } from "@/app/lib/security/rate-limit";
-
 const RATE_LIMIT_MAX = 60;
 const RATE_LIMIT_WINDOW_MS = 60 * 1000;
-
 export async function GET(req: NextRequest) {
   try {
     const ip = getClientIp(await headers());
@@ -20,7 +18,6 @@ export async function GET(req: NextRequest) {
         { status: 429, headers: rateLimitHeaders(RATE_LIMIT_MAX, rl) }
       );
     }
-
     const regions = await prisma.region.findMany({
       orderBy: { name: "asc" },
       select: {
@@ -31,7 +28,6 @@ export async function GET(req: NextRequest) {
         longitude: true,
       },
     });
-
     return NextResponse.json(
       { regions },
       {

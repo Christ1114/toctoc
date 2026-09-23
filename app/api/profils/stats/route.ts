@@ -2,31 +2,22 @@ import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { auth } from "@/app/lib/auth"; 
 import { prisma } from "@/lib/prisma"; 
-
 export async function GET() {
 	try {
-		
 		const session = await auth.api.getSession({
 			headers: await headers(),
 		});
-
 		if (!session?.user?.id) {
 			return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 		}
-
 		const userId = session.user.id;
-
-	
 		const user = await prisma.user.findUnique({
 			where: { id: userId },
 			select: { accountType: true },
 		});
-
 		if (!user) {
 			return NextResponse.json({ error: "User not found" }, { status: 404 });
 		}
-
-	
 		const [bookingsCount, reviewsCount, favoritesCount, ratingAgg] =
 		await Promise.all([
 			prisma.booking.count({
@@ -47,7 +38,6 @@ export async function GET() {
 				_avg: { rating: true },
 			}),
 		]);
-
 		return NextResponse.json({
 			bookingsCount,
 			reviewsCount,

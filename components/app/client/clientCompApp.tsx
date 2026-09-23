@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
@@ -23,24 +22,19 @@ import {
 } from "@phosphor-icons/react";
 import { orbitron } from "@/fonts/font";
 import { isSafeUrl } from "@/app/lib/security/url-validation";
-
 /* ═══════════════════════════════════════════════════════════
    ⚙️ CONFIGURATION
    ═══════════════════════════════════════════════════════════ */
-
 /**
  * Route vers le détail d'une annonce.
  * ⚠️ À VÉRIFIER : adapte selon ton arborescence réelle
  *    (ex. "/app/offer/[id]", "/app/listing/[id]", "/announcement/[id]")
  */
 const announcementDetailPath = (id: string) => `/app/announcement/${id}`;
-
 /* ═══════════════════════════════════════════════════════════
    TYPES
    ═══════════════════════════════════════════════════════════ */
-
 type ClientType = "INDIVIDUAL" | "AGENCY";
-
 type SocialKey =
   | "website"
   | "instagram"
@@ -49,7 +43,6 @@ type SocialKey =
   | "linkedin"
   | "youtube"
   | "twitter";
-
 type PublicClient = {
   id: string;
   name: string | null;
@@ -67,13 +60,11 @@ type PublicClient = {
   youtube?: string | null;
   twitter?: string | null;
 };
-
 type PublicStats = {
   bookingsCount: number;
   reviewsCount: number;
   averageRating: number | null;
 };
-
 type PublicAnnouncement = {
   id: string;
   type: "OFFER" | "PROFILE";
@@ -89,13 +80,10 @@ type PublicAnnouncement = {
   jobType: { id: string; name: string; slug: string } | null;
   region: { id: string; name: string; slug: string } | null;
 };
-
 type TabKey = "about" | "announcements" | "reviews";
-
 /* ═══════════════════════════════════════════════════════════
    COMPOSANT
    ═══════════════════════════════════════════════════════════ */
-
 export default function PublicClientProfilePage() {
   const t = useTranslations("ProfilePage");
   const locale = useLocale();
@@ -104,20 +92,17 @@ export default function PublicClientProfilePage() {
   // ✅ Le dossier de route est [id], pas [userId]
   const clientId = (params?.id as string) || "";
   const isRTL = locale === "ar";
-
   const [client, setClient] = useState<PublicClient | null>(null);
   const [stats, setStats] = useState<PublicStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
   const [notFound, setNotFound] = useState(false);
   const [activeTab, setActiveTab] = useState<TabKey>("about");
-
   // ─── Annonces du client ───
   const [announcements, setAnnouncements] = useState<PublicAnnouncement[]>([]);
   const [announcementsLoading, setAnnouncementsLoading] = useState(false);
   const [announcementsError, setAnnouncementsError] = useState(false);
   const [announcementsLoaded, setAnnouncementsLoaded] = useState(false);
-
   // ─── Charger le profil ───
   const loadProfile = useCallback(async () => {
     if (!clientId) {
@@ -125,11 +110,9 @@ export default function PublicClientProfilePage() {
       setNotFound(true);
       return;
     }
-
     setLoading(true);
     setNotFound(false);
     setLoadError(false);
-
     try {
       const res = await fetch(`/api/profils/${clientId}`);
       if (res.status === 404) {
@@ -137,15 +120,12 @@ export default function PublicClientProfilePage() {
         return;
       }
       if (!res.ok) throw new Error("Erreur chargement profil");
-
       const data = await res.json();
-
       // ✅ Sécurité : on n'affiche QUE les clients sur cette page
       if (data?.user?.accountType !== "CLIENT") {
         setNotFound(true);
         return;
       }
-
       setClient(data.user);
       setStats(data.stats);
     } catch (err) {
@@ -155,23 +135,18 @@ export default function PublicClientProfilePage() {
       setLoading(false);
     }
   }, [clientId]);
-
   useEffect(() => {
     loadProfile();
   }, [loadProfile]);
-
   // ─── Charger les annonces (lazy, à l'ouverture de l'onglet) ───
   useEffect(() => {
     if (activeTab !== "announcements") return;
     if (!clientId) return;
     if (announcementsLoaded) return;
-
     const controller = new AbortController();
     let cancelled = false;
-
     setAnnouncementsLoading(true);
     setAnnouncementsError(false);
-
     fetch(`/api/profils/${clientId}/announcements?limit=20`, {
       signal: controller.signal,
     })
@@ -189,13 +164,11 @@ export default function PublicClientProfilePage() {
         if (cancelled) return;
         setAnnouncementsLoading(false);
       });
-
     return () => {
       cancelled = true;
       controller.abort();
     };
   }, [activeTab, clientId, announcementsLoaded]);
-
   const handleShare = async () => {
     const url = window.location.href;
     try {
@@ -205,7 +178,6 @@ export default function PublicClientProfilePage() {
       /* annulation du partage, rien à faire */
     }
   };
-
   /* ─── Loading ─── */
   if (loading) {
     return (
@@ -214,7 +186,6 @@ export default function PublicClientProfilePage() {
       </div>
     );
   }
-
   /* ─── Erreur réseau ─── */
   if (loadError) {
     return (
@@ -233,7 +204,6 @@ export default function PublicClientProfilePage() {
       </div>
     );
   }
-
   /* ─── 404 / mauvais type ─── */
   if (notFound || !client) {
     return (
@@ -246,9 +216,7 @@ export default function PublicClientProfilePage() {
       </div>
     );
   }
-
   const isAgency = client.clientType === "AGENCY";
-
   const SOCIAL_FIELDS: {
     key: SocialKey;
     icon: React.ReactNode;
@@ -262,12 +230,10 @@ export default function PublicClientProfilePage() {
     { key: "youtube", icon: <YoutubeLogoIcon size={16} />, displayLabel: t("social.youtube") },
     { key: "twitter", icon: <XLogoIcon size={16} />, displayLabel: t("social.twitter") },
   ];
-
   const socialLinks = SOCIAL_FIELDS.map((f) => ({
     ...f,
     href: client[f.key] ?? null,
   })).filter((l) => isSafeUrl(l.href));
-
   const TABS: {
     key: TabKey;
     icon: typeof InfoIcon;
@@ -287,7 +253,6 @@ export default function PublicClientProfilePage() {
     },
     { key: "reviews", icon: StarIcon, label: t("tabs.reviews") },
   ];
-
   const salarySuffix = (period: string | null) => {
     if (period === "HEURE") return " /h";
     if (period === "JOUR") return " /j";
@@ -295,7 +260,6 @@ export default function PublicClientProfilePage() {
     if (period === "MOIS") return " /mois";
     return "";
   };
-
   return (
     <div
       dir={isRTL ? "rtl" : "ltr"}
@@ -309,7 +273,6 @@ export default function PublicClientProfilePage() {
           <ArrowLeftIcon size={16} className={isRTL ? "rotate-180" : ""} />
           {t("back")}
         </button>
-
         {/* ═══════════════ EN-TÊTE ═══════════════ */}
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8">
           <div className="relative shrink-0 mx-auto sm:mx-0">
@@ -337,7 +300,6 @@ export default function PublicClientProfilePage() {
               )}
             </div>
           </div>
-
           <div className="flex-1 min-w-0 text-center sm:text-start">
             <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
               <h1
@@ -353,7 +315,6 @@ export default function PublicClientProfilePage() {
                 {isAgency ? t("clientTypes.AGENCY") : t("accountType.CLIENT")}
               </span>
             </div>
-
             <div className="flex items-center justify-center sm:justify-start gap-3 sm:gap-5 mt-2.5 sm:mt-3 flex-wrap">
               <div className="flex items-baseline gap-1">
                 <span
@@ -391,7 +352,6 @@ export default function PublicClientProfilePage() {
                 </span>
               )}
             </div>
-
             <div className="flex items-center justify-center sm:justify-start gap-2 mt-3 sm:mt-4 flex-wrap">
               <button
                 onClick={handleShare}
@@ -401,7 +361,6 @@ export default function PublicClientProfilePage() {
                 <ShareNetworkIcon size={18} />
               </button>
             </div>
-
             <div className="mt-3 sm:mt-4">
               <p
                 className={`text-xs sm:text-sm text-gray-600 dark:text-white/50 wrap-break-words ${orbitron.className}`}
@@ -409,7 +368,6 @@ export default function PublicClientProfilePage() {
                 {client.bio || t("noBio")}
               </p>
             </div>
-
             {socialLinks.length > 0 && (
               <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-3">
                 {socialLinks.map(({ key, href, icon, displayLabel }) => (
@@ -429,7 +387,6 @@ export default function PublicClientProfilePage() {
             )}
           </div>
         </div>
-
         {/* ═══════════════ SECTION AGENCE ═══════════════ */}
         {isAgency && (client.companyName || client.rccmNumber) && (
           <section className="border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6 pt-4 sm:pt-5">
@@ -445,7 +402,6 @@ export default function PublicClientProfilePage() {
             </div>
           </section>
         )}
-
         {/* ═══════════════ TABS ═══════════════ */}
         <div
           role="tablist"
@@ -479,7 +435,6 @@ export default function PublicClientProfilePage() {
             </button>
           ))}
         </div>
-
         {/* ═══════════════ CONTENU ═══════════════ */}
         <div className="pt-4 sm:pt-5">
           {/* ─── À PROPOS ─── */}
@@ -499,7 +454,6 @@ export default function PublicClientProfilePage() {
                   </p>
                 </section>
               )}
-
               <section>
                 <h3
                   className={`text-xs uppercase tracking-wide text-gray-400 dark:text-white/40 mb-2 ${orbitron.className}`}
@@ -525,7 +479,6 @@ export default function PublicClientProfilePage() {
               </section>
             </div>
           )}
-
           {/* ─── ANNONCES ─── */}
           {activeTab === "announcements" && (
             <div>
@@ -544,7 +497,6 @@ export default function PublicClientProfilePage() {
                   ))}
                 </ul>
               )}
-
               {!announcementsLoading && announcementsError && (
                 <div className="py-10 sm:py-14 flex flex-col items-center justify-center text-center px-4">
                   <MegaphoneIcon
@@ -570,7 +522,6 @@ export default function PublicClientProfilePage() {
                   </button>
                 </div>
               )}
-
               {!announcementsLoading &&
                 !announcementsError &&
                 announcements.length === 0 && (
@@ -586,7 +537,6 @@ export default function PublicClientProfilePage() {
                     </p>
                   </div>
                 )}
-
               {!announcementsLoading &&
                 !announcementsError &&
                 announcements.length > 0 && (
@@ -666,7 +616,6 @@ export default function PublicClientProfilePage() {
                 )}
             </div>
           )}
-
           {/* ─── AVIS ─── */}
           {activeTab === "reviews" && (
             <div className="py-10 sm:py-14 flex flex-col items-center justify-center text-center px-4">
@@ -686,7 +635,6 @@ export default function PublicClientProfilePage() {
     </div>
   );
 }
-
 /* ═══════════════ ReadField ═══════════════ */
 function ReadField({ label, value }: { label: string; value?: string | null }) {
   return (

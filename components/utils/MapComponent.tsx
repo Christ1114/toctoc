@@ -1,5 +1,4 @@
 'use client';
-
 import { useEffect, useRef, useState } from 'react';
 import type { LatLngBoundsExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -7,23 +6,17 @@ import L from 'leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import { useTranslations } from 'next-intl';
-
-
 let DefaultIcon = L.icon({
   iconUrl: icon.src,
   shadowUrl: iconShadow.src,
   iconSize: [25, 41],
   iconAnchor: [12, 41],
 });
-
 L.Marker.prototype.options.icon = DefaultIcon;
-
-
 const IVORY_COAST_BOUNDS: LatLngBoundsExpression = [
   [4.1, -8.6],
   [10.8, -2.5],
 ];
-
 type CategoryKey =
   | 'NOUNOU'
   | 'MENAGERE'
@@ -33,7 +26,6 @@ type CategoryKey =
   | 'GARDIEN'
   | 'AIDE_PERSONNE_AGEE'
   | 'MAJORDOME';
-
 const CATEGORY_COLORS: Record<CategoryKey, string> = {
   NOUNOU: '#F5C542',
   MENAGERE: '#2F7A4F',
@@ -44,7 +36,6 @@ const CATEGORY_COLORS: Record<CategoryKey, string> = {
   AIDE_PERSONNE_AGEE: '#D1637A',
   MAJORDOME: '#C9A227',
 };
-
 type RegionPoint = {
   name: string;
   lat: number;
@@ -52,8 +43,6 @@ type RegionPoint = {
   byCategory?: Partial<Record<CategoryKey, number>>;
   total?: number; 
 };
-
-
 function jitterAround(lat: number, lng: number, index: number, total: number, radiusDeg = 0.04) {
   if (total <= 1) return { lat, lng };
   const angle = (2 * Math.PI * index) / total;
@@ -70,14 +59,12 @@ export default function MapComponent({ regions }: MapComponentProps) {
   const [isClient, setIsClient] = useState(false);
   const [pulseTick, setPulseTick] = useState(0);
   const mapContainerRef = useRef<HTMLDivElement>(null);
-
   const allCounts = regions.flatMap((r) => {
     if (r.byCategory) return Object.values(r.byCategory);
     if (r.total) return [r.total];
     return [];
   });
   const globalMax = Math.max(...allCounts, 1);
-
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -93,38 +80,29 @@ export default function MapComponent({ regions }: MapComponentProps) {
     Popup: any;
     Tooltip: any;
   } | null>(null);
-
   useEffect(() => {
     if (!isClient) return;
-
     const loadMap = async () => {
       const { MapContainer, TileLayer, CircleMarker, Popup, Tooltip } = await import('react-leaflet');
       setMapComponents({ MapContainer, TileLayer, CircleMarker, Popup, Tooltip });
     };
-
     loadMap();
   }, [isClient]);
   if (!isClient || !MapComponents) {
-    
     return (
       <div className="w-full h-full rounded-3xl bg-black/20 flex items-center justify-center">
         <div className="text-white/60">{t("loading")}</div>
       </div>
     );
   }
-
   const { MapContainer, TileLayer, CircleMarker, Popup, Tooltip } = MapComponents;
   const getRadius = (count: number) => {
     const minRadius = 6;
     const maxRadius = 22;
     return minRadius + (count / globalMax) * (maxRadius - minRadius);
   };
-
-
   return (
-    
     <div ref={mapContainerRef} className="w-full h-full rounded-3xl overflow-hidden border border-white/10 relative">
-  
       <style jsx global>{`
         .pulse-point {
           animation: pulse-glow 1.4s ease-in-out infinite;
@@ -156,7 +134,6 @@ export default function MapComponent({ regions }: MapComponentProps) {
           filter: invert(1) hue-rotate(180deg) brightness(0.85) contrast(0.9) saturate(0.6);
         }
       `}</style>
-
       <MapContainer
         center={[7.5, -5.5]}
         zoom={7}
@@ -172,20 +149,15 @@ export default function MapComponent({ regions }: MapComponentProps) {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           className="dark-osm-tiles"
         />
-
         {regions.map((region) => {
           const hasCategories = region.byCategory && Object.keys(region.byCategory).length > 0;
-
           if (hasCategories) {
-            
             const entries = Object.entries(region.byCategory!) as [CategoryKey, number][];
-
             return entries.map(([category, count], i) => {
               const pos = jitterAround(region.lat, region.lng, i, entries.length);
               const radius = getRadius(count);
               const color = CATEGORY_COLORS[category];
               const isStrong = count > globalMax * 0.5;
-
               return (
                 <CircleMarker
                   key={`${region.name}-${category}`}
@@ -218,11 +190,9 @@ export default function MapComponent({ regions }: MapComponentProps) {
               );
             });
           } else if (region.total) {
-            
             const radius = getRadius(region.total);
             const isStrong = region.total > globalMax * 0.5;
             const color = '#F5C542';
-
             return (
               <CircleMarker
                 key={`${region.name}-total`}
@@ -240,7 +210,6 @@ export default function MapComponent({ regions }: MapComponentProps) {
               </CircleMarker>
             );
           }
-
           return null;
         })} 
       </MapContainer>

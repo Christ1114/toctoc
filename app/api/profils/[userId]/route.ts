@@ -1,10 +1,7 @@
-
-
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/lib/prisma";
-
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ userId: string }> }
@@ -13,9 +10,7 @@ export async function GET(
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
-
   const { userId } = await params;
-
   const user = await prisma.user.findUnique({
     where: { id: userId },
     select: {
@@ -42,13 +37,10 @@ export async function GET(
       // le contact passe par le flux de réservation de la plateforme.
     },
   });
-
   if (!user) {
     return NextResponse.json({ error: "Utilisateur introuvable" }, { status: 404 });
   }
-
   const isProvider = user.accountType === "PROVIDER";
-
   const [reviewsCount, ratingAgg, bookingsCount] = await Promise.all([
     prisma.review.count({ where: { receiverId: userId } }),
     prisma.review.aggregate({
@@ -59,7 +51,6 @@ export async function GET(
       ? prisma.booking.count({ where: { providerId: userId, status: "COMPLETED" } })
       : Promise.resolve(0),
   ]);
-
   return NextResponse.json({
     user,
     stats: {

@@ -8,25 +8,21 @@ import { XIcon, List, SignIn } from "@phosphor-icons/react";
 import LightNightComponent from "../light-night/lightNight";
 import { useLocale, useTranslations } from 'next-intl';
 import TranslateFunction from '../translate/translateFunction';
-
 interface NavbarItem {
     title: string;
     href: string;
 }
-
 export default function Navbar() {
     const t = useTranslations("navbar");
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const router = useRouter();
     const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
     const locale = useLocale();
-
     const NAVBAR: NavbarItem[] = [
         { title: t("resources"), href: "" },
         { title: t("findProfile"), href: "/login" },
         { title: t("candidates"), href: "/login" },
     ];
-
     const handleNavigation = (href: string) => {
         if (href) {
             router.push(href);
@@ -34,7 +30,6 @@ export default function Navbar() {
             setIsMobileMenuOpen(false);
         }
     };
-
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Escape') {
@@ -44,7 +39,6 @@ export default function Navbar() {
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, []);
-
     useEffect(() => {
         if (isMobileMenuOpen) {
             document.body.style.overflow = 'hidden';
@@ -53,14 +47,11 @@ export default function Navbar() {
         }
         return () => { document.body.style.overflow = ''; };
     }, [isMobileMenuOpen]);
-
     return (
         <>
             <header className={`fixed w-full z-50 bg-white dark:bg-neutral-900 dark:border-zinc-600 border-b-2 border-b-zinc-400 px-5 ${orbitron.className}`} >
                 <nav className="relative w-full" onMouseLeave={() => setActiveDropdown(null)}>
-
                     <div className="w-full flex items-center justify-between px-3 sm:px-4 lg:px-6 h-14 sm:h-16 lg:h-19">
-
                         <div className="flex items-center gap-x-2 sm:gap-x-3">
                             <Link href="/" className="flex items-center justify-center shrink-0">
                                 <Image
@@ -94,11 +85,9 @@ export default function Navbar() {
                                 ))}
                             </div>
                         </div>
-
                         <div className="hidden md:flex items-center gap-1.5 lg:gap-3">
                             <LightNightComponent />
                             <TranslateFunction defaultValue={locale} label="Changer de langue" />
-
                             <button
                                 onClick={() => handleNavigation('/login')}
                                 className={`flex items-center justify-center gap-1.5 px-2.5 lg:px-4 py-1.5 lg:py-2
@@ -125,15 +114,11 @@ export default function Navbar() {
                                 {isMobileMenuOpen ? <XIcon size={22} /> : <List size={22} />}
                             </button>
                         </div>
-
                         <div className="flex md:hidden items-center gap-1 sm:gap-2">
-
                             <div className="scale-75 sm:scale-90 origin-center">
                                 <TranslateFunction defaultValue={locale} label="" />
                             </div>
-
                             <LightNightComponent />
-
                             {/* 👇 Hamburger en vue mobile — orbitron ajouté */}
                             <button
                                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -146,14 +131,12 @@ export default function Navbar() {
                     </div>
                 </nav>
             </header>
-
             {isMobileMenuOpen && (
                 <div
                     className="fixed inset-0 z-40 lg:hidden"
                     onClick={() => setIsMobileMenuOpen(false)}
                 >
                     <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
-
                     <div
                         className={`absolute top-14 sm:top-16 right-0 w-[85%] max-w-87.5 sm:max-w-sm
                                     h-[calc(100vh-56px)] sm:h-[calc(100vh-64px)]
@@ -185,7 +168,6 @@ export default function Navbar() {
                                 <SignIn size={18} />
                                 {t("findProfileBtn")}
                             </button>
-
                             {/* 👇 Bouton "S'inscrire" du menu mobile — orbitron ajouté */}
                             <button
                                 onClick={() => handleNavigation('/register')}

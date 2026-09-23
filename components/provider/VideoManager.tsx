@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import {
@@ -16,7 +15,6 @@ import {
 } from "@phosphor-icons/react";
 import { orbitron } from "@/fonts/font";
 import { isSafeUrl } from "@/app/lib/security/url-validation";
-
 type ManagedVideo = {
   id: string;
   url: string;
@@ -29,20 +27,16 @@ type ManagedVideo = {
   isVisible: boolean;
   createdAt: string;
 };
-
 export default function VideoManager() {
   const t = useTranslations("VideoManager");
-
   const [videos, setVideos] = useState<ManagedVideo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-
   const [adding, setAdding] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
-
   // ─── Chargement initial ───
   const loadVideos = useCallback(async () => {
     try {
@@ -57,26 +51,21 @@ export default function VideoManager() {
       setLoading(false);
     }
   }, [t]);
-
   useEffect(() => {
     loadVideos();
   }, [loadVideos]);
-
   // ─── Helpers ───
   const showSuccess = (msg: string) => {
     setSuccess(msg);
     setTimeout(() => setSuccess(null), 3000);
   };
-
   const handleAdd = async (url: string, title: string, description: string) => {
     setError(null);
-
     // Validation client rapide (le serveur revalide)
     if (!isSafeUrl(url)) {
       setError(t("errors.invalidUrl"));
       return;
     }
-
     try {
       setBusyId("new");
       const res = await fetch("/api/providers/me/videos", {
@@ -88,14 +77,11 @@ export default function VideoManager() {
           description: description || undefined,
         }),
       });
-
       const data = await res.json();
-
       if (!res.ok) {
         setError(data.error ?? t("errors.addFailed"));
         return;
       }
-
       setVideos((prev) => [...prev, data.video]);
       setAdding(false);
       showSuccess(t("added"));
@@ -105,34 +91,29 @@ export default function VideoManager() {
       setBusyId(null);
     }
   };
-
   const handleUpdate = async (
     id: string,
     patch: { title?: string | null; description?: string | null; isVisible?: boolean }
   ) => {
     setError(null);
     setBusyId(id);
-
     // Optimistic update
     const previous = videos;
     setVideos((prev) =>
       prev.map((v) => (v.id === id ? { ...v, ...patch } : v))
     );
-
     try {
       const res = await fetch(`/api/providers/me/videos/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(patch),
       });
-
       if (!res.ok) {
         const data = await res.json();
         setVideos(previous); // rollback
         setError(data.error ?? t("errors.updateFailed"));
         return;
       }
-
       const data = await res.json();
       setVideos((prev) => prev.map((v) => (v.id === id ? data.video : v)));
       setEditingId(null);
@@ -144,27 +125,22 @@ export default function VideoManager() {
       setBusyId(null);
     }
   };
-
   const handleDelete = async (id: string) => {
     setError(null);
     setBusyId(id);
-
     // Optimistic
     const previous = videos;
     setVideos((prev) => prev.filter((v) => v.id !== id));
-
     try {
       const res = await fetch(`/api/providers/me/videos/${id}`, {
         method: "DELETE",
       });
-
       if (!res.ok) {
         const data = await res.json();
         setVideos(previous); // rollback
         setError(data.error ?? t("errors.deleteFailed"));
         return;
       }
-
       setDeletingId(null);
       showSuccess(t("deleted"));
     } catch {
@@ -174,7 +150,6 @@ export default function VideoManager() {
       setBusyId(null);
     }
   };
-
   // ─── Rendu ───
   if (loading) {
     return (
@@ -186,7 +161,6 @@ export default function VideoManager() {
       </div>
     );
   }
-
   return (
     <div className="flex flex-col gap-4">
       {/* Feedback */}
@@ -202,7 +176,6 @@ export default function VideoManager() {
           <p className="flex-1">{success}</p>
         </div>
       )}
-
       {/* Bouton ajouter */}
       {!adding && videos.length < 20 && (
         <button
@@ -213,7 +186,6 @@ export default function VideoManager() {
           {t("addVideo")}
         </button>
       )}
-
       {/* Formulaire d'ajout */}
       {adding && (
         <AddVideoForm
@@ -223,7 +195,6 @@ export default function VideoManager() {
           t={t}
         />
       )}
-
       {/* Liste vide */}
       {videos.length === 0 && !adding && (
         <div className="py-10 flex flex-col items-center text-center">
@@ -238,7 +209,6 @@ export default function VideoManager() {
           </p>
         </div>
       )}
-
       {/* Liste des vidéos */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {videos.map((video) =>
@@ -266,7 +236,6 @@ export default function VideoManager() {
           )
         )}
       </div>
-
       {/* Confirmation suppression */}
       {deletingId && (
         <ConfirmDeleteModal
@@ -279,9 +248,7 @@ export default function VideoManager() {
     </div>
   );
 }
-
 /* ═══════════════ Sous-composants ═══════════════ */
-
 function VideoCard({
   video,
   onEdit,
@@ -320,7 +287,6 @@ function VideoCard({
           </div>
         )}
       </div>
-
       <div className="p-3">
         <p className="text-sm font-medium text-gray-900 dark:text-white/90 line-clamp-1">
           {video.title || t("untitled")}
@@ -330,7 +296,6 @@ function VideoCard({
             {video.description}
           </p>
         )}
-
         <div className="flex items-center gap-1 mt-3">
           <button
             onClick={onEdit}
@@ -361,7 +326,6 @@ function VideoCard({
     </div>
   );
 }
-
 function AddVideoForm({
   onCancel,
   onSubmit,
@@ -376,13 +340,11 @@ function AddVideoForm({
   const [url, setUrl] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!url.trim() || busy) return;
     onSubmit(url.trim(), title.trim(), description.trim());
   };
-
   return (
     <form
       onSubmit={handleSubmit}
@@ -405,7 +367,6 @@ function AddVideoForm({
           {t("form.urlHint")}
         </p>
       </div>
-
       <div>
         <label className="block text-[10px] sm:text-xs text-gray-500 dark:text-white/50 mb-1">
           {t("form.title")}
@@ -419,7 +380,6 @@ function AddVideoForm({
           className="w-full h-10 px-3 rounded-lg bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white/90 focus:outline-none focus:border-[#432dd7] disabled:opacity-50"
         />
       </div>
-
       <div>
         <label className="block text-[10px] sm:text-xs text-gray-500 dark:text-white/50 mb-1">
           {t("form.description")}
@@ -433,7 +393,6 @@ function AddVideoForm({
           className="w-full px-3 py-2 rounded-lg bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white/90 resize-none focus:outline-none focus:border-[#432dd7] disabled:opacity-50"
         />
       </div>
-
       <div className="flex items-center gap-2 justify-end">
         <button
           type="button"
@@ -460,7 +419,6 @@ function AddVideoForm({
     </form>
   );
 }
-
 function EditVideoCard({
   video,
   onCancel,
@@ -476,7 +434,6 @@ function EditVideoCard({
 }) {
   const [title, setTitle] = useState(video.title ?? "");
   const [description, setDescription] = useState(video.description ?? "");
-
   const handleSave = () => {
     if (busy) return;
     onSave({
@@ -484,7 +441,6 @@ function EditVideoCard({
       description: description.trim() || null,
     });
   };
-
   return (
     <div className="rounded-xl border border-[#432dd7] bg-white dark:bg-white/5 p-3 flex flex-col gap-2">
       <div className="aspect-video rounded-lg overflow-hidden bg-gray-100 dark:bg-white/5">
@@ -497,7 +453,6 @@ function EditVideoCard({
           </div>
         )}
       </div>
-
       <input
         type="text"
         value={title}
@@ -516,7 +471,6 @@ function EditVideoCard({
         disabled={busy}
         className="w-full px-3 py-2 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-sm text-gray-900 dark:text-white/90 resize-none focus:outline-none focus:border-[#432dd7] disabled:opacity-50"
       />
-
       <div className="flex items-center gap-2 justify-end">
         <button
           onClick={onCancel}
@@ -537,7 +491,6 @@ function EditVideoCard({
     </div>
   );
 }
-
 function ConfirmDeleteModal({
   onCancel,
   onConfirm,
@@ -556,7 +509,6 @@ function ConfirmDeleteModal({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [onCancel, busy]);
-
   return (
     <div
       className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4"

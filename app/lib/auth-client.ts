@@ -1,5 +1,4 @@
 "use client";
-
 import { createAuthClient } from "better-auth/react";
 import { inferAdditionalFields, phoneNumberClient, emailOTPClient } from "better-auth/client/plugins";
 import type { auth } from "@/app/lib/auth";
@@ -43,7 +42,6 @@ export const signUpWithEmail = async (data: {
       password: data.password,
       name: data.name,
       phone: data.phone,
-  
       ...(data.accountType && { accountType: data.accountType }),
       ...(data.clientType && { clientType: data.clientType }),
       ...(data.companyName && { companyName: data.companyName }),
@@ -53,7 +51,6 @@ export const signUpWithEmail = async (data: {
       ...(data.verificationMethod && { verificationMethod: data.verificationMethod }),
       ...(data.acceptNewsletter !== undefined && { acceptNewsletter: data.acceptNewsletter }),
     });
-
     console.log("SignUp result:", { result, error }); 
     return { result, error };
   } catch (err) {
@@ -61,7 +58,6 @@ export const signUpWithEmail = async (data: {
     return { result: null, error: err as Error };
   }
 };
-
 export const signInWithEmail = async (data: {
   email: string;
   password: string;
@@ -73,28 +69,24 @@ export const signInWithEmail = async (data: {
       password: data.password,
       rememberMe: data.rememberMe,
     });
-
     return { result, error };
   } catch (err) {
     console.error("SignIn error:", err);
     return { result: null, error: err as Error };
   }
 };
-
 export const signInWithGoogle = async () => {
   try {
     const { data: result, error } = await authClient.signIn.social({
       provider: "google",
       callbackURL: "/app",
     });
-
     return { result, error };
   } catch (err) {
     console.error("Google SignIn error:", err);
     return { result: null, error: err as Error };
   }
 };
-
 export const signInWithTikTok = async () => {
   try {
     const { data: result, error } = await authClient.signIn.social({
@@ -102,14 +94,12 @@ export const signInWithTikTok = async () => {
       callbackURL: "/app",
       errorCallbackURL: "/sign-in?error=tiktok",
     });
-
     return { success: !error, error };
   } catch (err) {
     console.error("TikTok SignIn error:", err);
     return { success: false, error: err as Error };
   }
 };
-
 export const signOut = async () => {
   try {
     const { data: result, error } = await authClient.signOut();
@@ -119,28 +109,23 @@ export const signOut = async () => {
     return { result: null, error: err as Error };
   }
 };
-
 export const getSession = async () => {
   try {
     const { data: session, error } = await authClient.getSession();
-    
     if (error) {
       console.error("GetSession error:", error);
       return { session: null, error };
     }
-    
     return { session, error: null };
   } catch (err) {
     console.error("GetSession exception:", err);
     return { session: null, error: err as Error };
   }
 };
-
 export const isAuthenticated = async (): Promise<boolean> => {
   const { session } = await getSession();
   return !!session?.user;
 };
-
 export const getCurrentUser = async (): Promise<UserData | null> => {
   try {
     const { session } = await getSession();
@@ -150,7 +135,6 @@ export const getCurrentUser = async (): Promise<UserData | null> => {
     return null;
   }
 };
-
 export const verifyEmail = async (token: string) => {
   try {
     const { data: result, error } = await authClient.verifyEmail({
@@ -162,17 +146,13 @@ export const verifyEmail = async (token: string) => {
     return { result: null, error: err as Error };
   }
 };
-
-
 export const sendVerificationEmail = async (email: string) => {
   try {
     console.log("Envoi email de vérification à:", email); 
-    
     const { data: result, error } = await authClient.sendVerificationEmail({
       email,
       callbackURL: `${process.env.NEXT_PUBLIC_APP_ORIGIN || "http://localhost:3000"}/verify-email`,
     });
-    
     console.log("Résultat envoi email:", { result, error }); 
     return { result, error };
   } catch (err) {
@@ -180,19 +160,16 @@ export const sendVerificationEmail = async (email: string) => {
     return { result: null, error: err as Error };
   }
 };
-
 export const sendEmailOTP = async (
   email: string,
   type: "sign-in" | "email-verification" | "forget-password" = "email-verification"
 ) => {
   try {
     console.log("Envoi OTP email à:", email);
-
     const { data: result, error } = await authClient.emailOtp.sendVerificationOtp({
       email,
       type,
     });
-
     console.log("Résultat envoi OTP email:", { result, error });
     return { result, error };
   } catch (err) {
@@ -200,16 +177,13 @@ export const sendEmailOTP = async (
     return { result: null, error: err as Error };
   }
 };
-
 export const verifyEmailOTP = async (data: { email: string; otp: string }) => {
   try {
     console.log("Vérification OTP email:", { email: data.email });
-
     const { data: result, error } = await authClient.emailOtp.verifyEmail({
       email: data.email,
       otp: data.otp,
     });
-
     console.log("Résultat vérification OTP email:", { result, error });
     return { result, error };
   } catch (err) {
@@ -217,7 +191,6 @@ export const verifyEmailOTP = async (data: { email: string; otp: string }) => {
     return { result: null, error: err as Error };
   }
 };
-
 export const forgotPassword = async (email: string, redirectTo?: string) => {
   try {
     const { data: result, error } = await authClient.requestPasswordReset({
@@ -230,7 +203,6 @@ export const forgotPassword = async (email: string, redirectTo?: string) => {
     return { result: null, error: err as Error };
   }
 };
-
 export const resetPassword = async (data: {
   token: string;
   newPassword: string;
@@ -246,7 +218,6 @@ export const resetPassword = async (data: {
     return { result: null, error: err as Error };
   }
 };
-
 export const changePassword = async (data: {
   currentPassword: string;
   newPassword: string;
@@ -262,18 +233,13 @@ export const changePassword = async (data: {
     return { result: null, error: err as Error };
   }
 };
-
-
 export const sendPhoneOTP = async (phoneNumber: string) => {
   try {
     console.log("Envoi OTP à:", phoneNumber);
-    
     const cleanPhone = phoneNumber.replace(/[\s\-\(\)]/g, '');
-    
     const { data: result, error } = await authClient.phoneNumber.sendOtp({
       phoneNumber: cleanPhone,
     });
-    
     console.log("Résultat envoi OTP:", { result, error }); 
     return { result, error };
   } catch (err) {
@@ -281,22 +247,17 @@ export const sendPhoneOTP = async (phoneNumber: string) => {
     return { result: null, error: err as Error };
   }
 };
-
 export const verifyPhoneOTP = async (data: {
   phoneNumber: string;
   code: string;
 }) => {
   try {
-   
     const cleanPhone = data.phoneNumber.replace(/[\s\-\(\)]/g, '');
-    
     console.log("Vérification OTP:", { phone: cleanPhone, code: data.code }); 
-    
     const { data: result, error } = await authClient.phoneNumber.verify({
       phoneNumber: cleanPhone,
       code: data.code,
     });
-    
     console.log("Résultat vérification OTP:", { result, error }); 
     return { result, error };
   } catch (err) {
@@ -304,7 +265,6 @@ export const verifyPhoneOTP = async (data: {
     return { result: null, error: err as Error };
   }
 };
-
 export const updateUser = async (data: {
   name?: string;
   image?: string;
@@ -325,11 +285,9 @@ export const updateUser = async (data: {
   verificationMethod?: 'email' | 'phone';
 }) => {
   try {
-    
     const cleanData = Object.fromEntries(
       Object.entries(data).filter(([_, v]) => v !== undefined)
     );
-    
     const { data: result, error } = await authClient.updateUser(cleanData);
     return { result, error };
   } catch (err) {

@@ -3,17 +3,14 @@ import { orbitron } from '@/fonts/font';
 import React from 'react';
 import { useTranslations } from 'next-intl';
 import { FileText, Calendar, Info } from 'lucide-react';
-
 const FirstModuleComponent = () => {
   const t = useTranslations("policy");
-
   const table = {
     titleHeader: t("table.titleHeader"),
     dateHeader: t("table.dateHeader"),
     title: t("table.title"),
     date: t("table.date"),
   };
-
   const content = {
     intro: t("content.intro"),
     modifiedDateLabel: t("content.modifiedDateLabel"),
@@ -28,12 +25,10 @@ const FirstModuleComponent = () => {
     point3Item2: t("content.point3Item2"),
     point4: t("content.point4"),
   };
-
   return (
     <div
       className={`w-full max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 lg:py-12 h-full flex flex-col gap-y-4 sm:gap-y-6 lg:gap-y-8 items-center justify-center text-black dark:text-zinc-300 ${orbitron.className}`}
     >
-     
       <div className="w-full overflow-x-auto rounded-lg border border-zinc-300 dark:border-zinc-700">
         <table
           className={`w-full min-w-70 sm:min-w-100 border-collapse text-xs sm:text-sm md:text-base ${orbitron.className}`}
@@ -62,7 +57,6 @@ const FirstModuleComponent = () => {
           </tbody>
         </table>
       </div>
-
       {/* Contenu textuel */}
       <div className="mt-4 sm:mt-6 lg:mt-8 leading-relaxed w-full text-xs sm:text-sm md:text-base lg:text-lg">
         <div className="space-y-3 sm:space-y-4 lg:space-y-5">
@@ -70,34 +64,25 @@ const FirstModuleComponent = () => {
           <p className="text-zinc-700 dark:text-zinc-300 wrap-break-words">
             {content.intro}
           </p>
-
           {/* Date de modification */}
           <div className="flex items-start gap-2 flex-wrap">
             <strong className="shrink-0">{content.modifiedDateLabel}</strong>
             <span className="wrap-break-words">{content.modifiedDate}</span>
           </div>
-
           {/* Détails */}
           <div className="flex items-start gap-2 flex-wrap">
             <strong className="shrink-0">{content.detailsLabel}</strong>
             <span className="wrap-break-words">{content.detailsText}</span>
           </div>
-
-         
           <h2 className="font-semibold text-sm sm:text-base md:text-lg lg:text-xl mt-4 sm:mt-6 lg:mt-8 border-l-4 border-[#432dd7] pl-3 sm:pl-4">
             {content.articleTitle}
           </h2>
-
-        
           <p className="text-zinc-700 dark:text-zinc-300 wrap-break-words">
             {content.point1}
           </p>
-
           <p className="text-zinc-700 dark:text-zinc-300 wrap-break-words">
             {content.point2}
           </p>
-
-         
           <div className="space-y-2">
             <p className="font-medium wrap-break-words">{content.point3Label}</p>
             <ul className="list-disc pl-4 sm:pl-6 space-y-1.5 sm:space-y-2">
@@ -105,7 +90,6 @@ const FirstModuleComponent = () => {
               <li className="wrap-break-words text-zinc-700 dark:text-zinc-300">{content.point3Item2}</li>
             </ul>
           </div>
-
           <p className="text-zinc-700 dark:text-zinc-300 wrap-break-words">
             {content.point4}
           </p>
@@ -114,5 +98,4 @@ const FirstModuleComponent = () => {
     </div>
   );
 };
-
 export default FirstModuleComponent;

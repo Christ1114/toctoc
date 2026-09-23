@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
@@ -37,7 +36,6 @@ import SettingsPopover from "@/components/app/utils/settingsPopover";
 import ImageCropModal from "@/components/app/profile/ImageCropModal";
 import ProviderPublishServiceForm from "@/components/app/ProviderPublishServiceForm";
 import { isSafeUrl } from "@/app/lib/security/url-validation";
-
 type ProviderType =
   | "BABYSITTER"
   | "GARDE_PERISCOLAIRE"
@@ -45,7 +43,6 @@ type ProviderType =
   | "AIDE_PERSONNES_AGEES"
   | "RESIDENTIEL"
   | "COURT_TERME";
-
 const PROVIDER_TYPES: ProviderType[] = [
   "BABYSITTER",
   "GARDE_PERISCOLAIRE",
@@ -54,9 +51,7 @@ const PROVIDER_TYPES: ProviderType[] = [
   "RESIDENTIEL",
   "COURT_TERME",
 ];
-
 const CURRENCIES = ["XOF", "USD", "EUR"];
-
 type SocialKey =
   | "website"
   | "instagram"
@@ -65,7 +60,6 @@ type SocialKey =
   | "linkedin"
   | "youtube"
   | "twitter";
-
 type ProviderUser = {
   id: string;
   name?: string | null;
@@ -83,16 +77,13 @@ type ProviderUser = {
   youtube?: string | null;
   twitter?: string | null;
 };
-
 type Stats = {
   bookingsCount: number;
   reviewsCount: number;
   videosCount: number;
   averageRating: number | null;
 };
-
 type TabKey = "bookings" | "reviews" | "videos" | "announcements";
-
 type MyAnnouncement = {
   id: string;
   type: "OFFER" | "PROFILE";
@@ -109,22 +100,18 @@ type MyAnnouncement = {
   jobType: { id: string; name: string; slug: string } | null;
   region: { id: string; name: string; slug: string } | null;
 };
-
 type AnnouncementsQuota = {
   used: number;
   max: number;
   remaining: number;
 };
-
 export default function ProviderPrivateProfilePageT() {
   const t = useTranslations("ProfilePage");
   const locale = useLocale();
   const router = useRouter();
   const isRTL = locale === "ar";
   const fileInputRef = useRef<HTMLInputElement>(null);
-
   const { user: sessionUser, loading: sessionLoading } = useSession();
-
   const [user, setUser] = useState<ProviderUser | null>(null);
   const [stats, setStats] = useState<Stats | null>(null);
   const [editing, setEditing] = useState(false);
@@ -136,7 +123,6 @@ export default function ProviderPrivateProfilePageT() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [form, setForm] = useState<Partial<ProviderUser>>({});
-
   // ─── Annonces / services publiés ───
   const [myAnnouncements, setMyAnnouncements] = useState<MyAnnouncement[]>([]);
   const [announcementsLoading, setAnnouncementsLoading] = useState(false);
@@ -145,13 +131,11 @@ export default function ProviderPrivateProfilePageT() {
   const [publishServiceModalOpen, setPublishServiceModalOpen] = useState(false);
   const [editingService, setEditingService] = useState<MyAnnouncement | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
-
   // ─── Hydratation depuis la session ───
   useEffect(() => {
     if (sessionLoading) return;
     setUser(sessionUser ? (sessionUser as unknown as ProviderUser) : null);
   }, [sessionUser, sessionLoading]);
-
   // ─── Sécurité : redirige les non-providers ───
   useEffect(() => {
     if (sessionLoading || !user) return;
@@ -159,7 +143,6 @@ export default function ProviderPrivateProfilePageT() {
       router.replace("/profile");
     }
   }, [user, sessionLoading, router]);
-
   // ─── Stats ───
   useEffect(() => {
     fetch("/api/profils/stats")
@@ -167,7 +150,6 @@ export default function ProviderPrivateProfilePageT() {
       .then((d) => d && setStats(d))
       .catch(() => {});
   }, []);
-
   // ─── Charger les annonces ───
   const loadMyAnnouncements = async () => {
     if (!user) return;
@@ -186,7 +168,6 @@ export default function ProviderPrivateProfilePageT() {
       setAnnouncementsLoading(false);
     }
   };
-
   useEffect(() => {
     if (!user) return;
     if (user.accountType === "PROVIDER") {
@@ -194,7 +175,6 @@ export default function ProviderPrivateProfilePageT() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]);
-
   const handleDeleteAnnouncement = async (id: string) => {
     if (!window.confirm(t("announcements.deleteConfirm"))) return;
     setDeletingId(id);
@@ -210,22 +190,18 @@ export default function ProviderPrivateProfilePageT() {
       setDeletingId(null);
     }
   };
-
   const handleOpenPublishService = () => {
     setEditingService(null);
     setPublishServiceModalOpen(true);
   };
-
   const handleOpenEdit = (announcement: MyAnnouncement) => {
     setEditingService(announcement);
     setPublishServiceModalOpen(true);
   };
-
   const handleClosePublishServiceModal = () => {
     setPublishServiceModalOpen(false);
     setEditingService(null);
   };
-
   const startEditing = () => {
     if (!user) return;
     setForm({
@@ -246,12 +222,10 @@ export default function ProviderPrivateProfilePageT() {
     setSuccess(null);
     setEditing(true);
   };
-
   const cancelEditing = () => {
     setEditing(false);
     setError(null);
   };
-
   const handleSave = async () => {
     setSaving(true);
     setError(null);
@@ -270,12 +244,10 @@ export default function ProviderPrivateProfilePageT() {
         youtube: form.youtube || null,
         twitter: form.twitter || null,
       });
-
       if (err) {
         setError(err.message || t("errors.saveFailed"));
         return;
       }
-
       setUser((prev) => (prev ? ({ ...prev, ...form } as ProviderUser) : prev));
       setEditing(false);
       setSuccess(t("saved"));
@@ -286,23 +258,19 @@ export default function ProviderPrivateProfilePageT() {
       setSaving(false);
     }
   };
-
   // ─── Photo ───
   const handlePhotoClick = () => fileInputRef.current?.click();
-
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     if (!file.type.startsWith("image/")) return setError(t("errors.invalidImage"));
     if (file.size > 5 * 1024 * 1024) return setError(t("errors.imageTooLarge"));
-
     setError(null);
     const reader = new FileReader();
     reader.onload = () => setCropImageSrc(reader.result as string);
     reader.readAsDataURL(file);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
-
   const handleCropConfirm = async (blob: Blob) => {
     if (!user) return;
     setUploadingPhoto(true);
@@ -310,14 +278,11 @@ export default function ProviderPrivateProfilePageT() {
     try {
       const fd = new FormData();
       fd.append("file", blob, "avatar.jpg");
-
       const up = await fetch("/api/profils/avatar", { method: "POST", body: fd });
       if (!up.ok) return setError(t("errors.uploadFailed"));
       const { url } = await up.json();
-
       const { error: e2 } = await updateUser({ image: url });
       if (e2) return setError(t("errors.saveFailed"));
-
       setUser((prev) => (prev ? { ...prev, image: url } : prev));
       setCropImageSrc(null);
     } catch {
@@ -326,7 +291,6 @@ export default function ProviderPrivateProfilePageT() {
       setUploadingPhoto(false);
     }
   };
-
   // ─── Partage du profil PUBLIC ───
   const handleSharePublic = async () => {
     if (!user) return;
@@ -338,7 +302,6 @@ export default function ProviderPrivateProfilePageT() {
       setTimeout(() => setSuccess(null), 2000);
     } catch {}
   };
-
   // ─── Loading / erreurs ───
   if (sessionLoading) {
     return (
@@ -347,7 +310,6 @@ export default function ProviderPrivateProfilePageT() {
       </div>
     );
   }
-
   if (!user || user.accountType !== "PROVIDER") {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white dark:bg-zinc-900 px-4">
@@ -357,7 +319,6 @@ export default function ProviderPrivateProfilePageT() {
       </div>
     );
   }
-
   const SOCIAL_FIELDS: {
     key: SocialKey;
     icon: React.ReactNode;
@@ -373,10 +334,8 @@ export default function ProviderPrivateProfilePageT() {
     { key: "youtube", icon: <YoutubeLogoIcon size={16} />, labelKey: "social.youtube", placeholder: "https://youtube.com/@...", displayLabel: t("social.youtube") },
     { key: "twitter", icon: <XLogoIcon size={16} />, labelKey: "social.twitter", placeholder: "https://x.com/...", displayLabel: t("social.twitter") },
   ];
-
   const socialLinks = SOCIAL_FIELDS.map((f) => ({ ...f, href: user[f.key] ?? null }))
     .filter((l) => isSafeUrl(l.href));
-
   const TABS: { key: TabKey; icon: typeof CalendarCheckIcon; label: string; count: number }[] = [
     { key: "bookings", icon: CalendarCheckIcon, label: t("tabs.bookings"), count: stats?.bookingsCount ?? 0 },
     { key: "reviews", icon: StarIcon, label: t("tabs.reviews"), count: stats?.reviewsCount ?? 0 },
@@ -388,7 +347,6 @@ export default function ProviderPrivateProfilePageT() {
       count: myAnnouncements.length,
     },
   ];
-
   return (
     <div dir={isRTL ? "rtl" : "ltr"} className="min-h-screen bg-white dark:bg-zinc-900">
       <div className="max-w-5xl mx-auto px-3 sm:px-6 pb-24 md:pb-6 py-4 sm:py-6">
@@ -399,7 +357,6 @@ export default function ProviderPrivateProfilePageT() {
           <ArrowLeftIcon size={16} className={isRTL ? "rotate-180" : ""} />
           {t("back")}
         </button>
-
         {/* ═══ EN-TÊTE ═══ */}
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8">
           <div className="relative shrink-0 mx-auto sm:mx-0">
@@ -427,7 +384,6 @@ export default function ProviderPrivateProfilePageT() {
             </button>
             <input ref={fileInputRef} type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
           </div>
-
           <div className="flex-1 min-w-0 text-center sm:text-start">
             <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
               {editing ? (
@@ -446,7 +402,6 @@ export default function ProviderPrivateProfilePageT() {
                 {t("accountType.PROVIDER")}
               </span>
             </div>
-
             {/* Stats */}
             <div className="flex items-center justify-center sm:justify-start gap-3 sm:gap-5 mt-2.5 sm:mt-3 flex-wrap">
               {TABS.map(({ key, count, label }) => (
@@ -462,7 +417,6 @@ export default function ProviderPrivateProfilePageT() {
                 </span>
               )}
             </div>
-
             {/* Actions */}
             <div className="flex items-center justify-center sm:justify-start gap-2 mt-3 sm:mt-4 flex-wrap">
               {!editing ? (
@@ -477,14 +431,12 @@ export default function ProviderPrivateProfilePageT() {
                     <span className="hidden sm:inline">{t("publishService")}</span>
                     <span className="sm:hidden">{t("publishServiceShort")}</span>
                   </button>
-
                   <button
                     onClick={startEditing}
                     className={`h-9 sm:h-10 px-4 rounded-lg bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/15 text-xs sm:text-sm text-gray-900 dark:text-white/90 cursor-pointer transition-colors ${orbitron.className}`}
                   >
                     {t("editProfile")}
                   </button>
-
                   <button
                     onClick={() => router.push(`/provider/${user.id}`)}
                     className={`flex items-center gap-1.5 h-9 sm:h-10 px-3 rounded-lg bg-[#432dd7]/10 text-[#432dd7] hover:bg-[#432dd7]/20 text-xs sm:text-sm cursor-pointer transition-colors ${orbitron.className}`}
@@ -492,7 +444,6 @@ export default function ProviderPrivateProfilePageT() {
                     <EyeIcon size={16} />
                     <span className="hidden sm:inline">{t("viewPublicProfile")}</span>
                   </button>
-
                   <button
                     onClick={() => setSettingsOpen(true)}
                     className="h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/15 flex items-center justify-center text-gray-900 dark:text-white/90 cursor-pointer transition-colors"
@@ -528,7 +479,6 @@ export default function ProviderPrivateProfilePageT() {
                 </div>
               )}
             </div>
-
             {/* Bio */}
             <div className="mt-3 sm:mt-4">
               {editing ? (
@@ -546,7 +496,6 @@ export default function ProviderPrivateProfilePageT() {
                 </p>
               )}
             </div>
-
             {/* Réseaux sociaux (affichage) */}
             {!editing && socialLinks.length > 0 && (
               <div className={`flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-3 ${orbitron.className}`}>
@@ -567,11 +516,9 @@ export default function ProviderPrivateProfilePageT() {
             )}
           </div>
         </div>
-
         {/* Erreur / succès */}
         {error && <p className={`text-xs sm:text-sm text-red-500 dark:text-red-400 mt-3 sm:mt-4 ${orbitron.className}`}>{error}</p>}
         {success && <p className={`text-xs sm:text-sm text-green-600 dark:text-green-400 mt-3 sm:mt-4 ${orbitron.className}`}>{success}</p>}
-
         {/* ═══ SECTION PROVIDER (édition) ═══ */}
         {editing && (
           <section className="border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6 pt-4 sm:pt-5">
@@ -592,7 +539,6 @@ export default function ProviderPrivateProfilePageT() {
                   ))}
                 </select>
               </div>
-
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
                 <span className="text-xs sm:text-sm text-gray-500 dark:text-white/50 shrink-0">{t("hourlyRate")}</span>
                 <div className="flex gap-2 w-full sm:w-auto">
@@ -616,7 +562,6 @@ export default function ProviderPrivateProfilePageT() {
             </div>
           </section>
         )}
-
         {/* ═══ RÉSEAUX SOCIAUX (édition) ═══ */}
         {editing && (
           <section className="border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6 pt-4 sm:pt-5">
@@ -642,7 +587,6 @@ export default function ProviderPrivateProfilePageT() {
             </div>
           </section>
         )}
-
         {/* ═══ TABS ═══ */}
         <div className="flex items-center border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6">
           {TABS.map(({ key, icon: Icon, label }) => (
@@ -660,7 +604,6 @@ export default function ProviderPrivateProfilePageT() {
             </button>
           ))}
         </div>
-
         {/* ═══ CONTENU DES ONGLETS ═══ */}
         {activeTab === "announcements" ? (
           <div className="pt-4 sm:pt-5">
@@ -679,19 +622,16 @@ export default function ProviderPrivateProfilePageT() {
                 )}
               </div>
             )}
-
             {announcementsLoading && (
               <div className="flex items-center justify-center py-10">
                 <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-black/30 dark:border-white/30" />
               </div>
             )}
-
             {!announcementsLoading && announcementsError && (
               <p className={`text-sm text-red-500 dark:text-red-400/80 text-center py-8 ${orbitron.className}`}>
                 {announcementsError}
               </p>
             )}
-
             {!announcementsLoading && !announcementsError && myAnnouncements.length === 0 && (
               <div className="py-10 sm:py-14 flex flex-col items-center justify-center text-center px-4">
                 <MegaphoneIcon size={32} className="text-gray-300 dark:text-white/20 mb-2" />
@@ -707,7 +647,6 @@ export default function ProviderPrivateProfilePageT() {
                 </button>
               </div>
             )}
-
             {!announcementsLoading && !announcementsError && myAnnouncements.length > 0 && (
               <ul className="flex flex-col gap-3">
                 {myAnnouncements.map((a) => (
@@ -804,7 +743,6 @@ export default function ProviderPrivateProfilePageT() {
           </div>
         )}
       </div>
-
       {/* ═══ MODALES ═══ */}
       <ProviderPublishServiceForm
         open={publishServiceModalOpen}
@@ -812,9 +750,7 @@ export default function ProviderPrivateProfilePageT() {
         onSuccess={loadMyAnnouncements}
         service={editingService}
       />
-
       <SettingsPopover open={settingsOpen} onClose={() => setSettingsOpen(false)} />
-
       {cropImageSrc && (
         <ImageCropModal
           imageSrc={cropImageSrc}

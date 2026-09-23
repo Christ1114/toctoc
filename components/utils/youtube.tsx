@@ -1,9 +1,7 @@
 import React from 'react'
-
 type Props = {
   videoId: string;
 }
-
 const YoutubeVideo = ({ videoId }: Props) => {
   return (
     <iframe
@@ -17,5 +15,4 @@ const YoutubeVideo = ({ videoId }: Props) => {
     />
   )
 }
-
 export default YoutubeVideo

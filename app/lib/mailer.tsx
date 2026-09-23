@@ -1,5 +1,4 @@
 import nodemailer from "nodemailer";
-
 const REQUIRED_MAILER_ENV = ["EMAIL_USER", "EMAIL_PASSWORD"] as const;
 if (process.env.NEXT_PHASE !== "phase-production-build") {
   for (const key of REQUIRED_MAILER_ENV) {
@@ -9,7 +8,6 @@ if (process.env.NEXT_PHASE !== "phase-production-build") {
   }
 }
 let cachedTransporter: ReturnType<typeof nodemailer.createTransport> | null = null;
-
 function getTransporter() {
   if (!cachedTransporter) {
     cachedTransporter = nodemailer.createTransport({
@@ -22,15 +20,12 @@ function getTransporter() {
   }
   return cachedTransporter;
 }
-
 interface SendMailParams {
   to: string;
   subject: string;
   html: string;
 }
-
 const FROM_NAME = process.env.EMAIL_FROM_NAME || "TOCTOC";
-
 export async function sendMail({ to, subject, html }: SendMailParams) {
   try {
     await getTransporter().sendMail({

@@ -1,46 +1,36 @@
 "use client";
-
 import { useState, useRef, useEffect } from "react";
 import { XIcon, PaperPlaneRightIcon, SparkleIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { orbitron } from "@/fonts/font";
-
 type ChatMessage = {
   id: string;
   role: "user" | "ai";
   content: string;
 };
-
 type ResultProfile = {
   name: string;
   providerType: string;
   city: string;
   imageUrl?: string;
 };
-
 type AiSearchPanelProps = {
   open: boolean;
   onClose: () => void;
 };
-
 export default function AiSearchPanel({ open, onClose }: AiSearchPanelProps) {
   const t = useTranslations("AiSearchPanel");
-
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [thinking, setThinking] = useState(false);
   const [result, setResult] = useState<ResultProfile | null>(null);
-
   const scrollRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, thinking]);
-
   const handleSend = async () => {
     const query = input.trim();
     if (!query) return;
-
     const userMsg: ChatMessage = { id: crypto.randomUUID(), role: "user", content: query };
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
@@ -62,16 +52,13 @@ export default function AiSearchPanel({ open, onClose }: AiSearchPanelProps) {
       setThinking(false);
     }, 1500);
   };
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
       handleSend();
     }
   };
-
   if (!open) return null;
-
   return (
     <div className="absolute top-0 right-0 h-full w-full sm:w-95 bg-black/80 backdrop-blur-md border-l border-white/10 z-20 flex flex-col">
       <div className={`flex items-center justify-between px-4 h-14 border-b border-white/10 ${orbitron.className}`}>
@@ -91,7 +78,6 @@ export default function AiSearchPanel({ open, onClose }: AiSearchPanelProps) {
         {messages.length === 0 && !thinking && (
           <p className="text-sm text-white/40 text-center mt-8">{t("emptyState")}</p>
         )}
-
         {messages.map((msg) => (
           <div
             key={msg.id}
@@ -104,7 +90,6 @@ export default function AiSearchPanel({ open, onClose }: AiSearchPanelProps) {
             {msg.content}
           </div>
         ))}
-
         {thinking && (
           <div className="self-start flex items-center gap-1.5 bg-white/10 px-3 py-2 rounded-xl">
             <span className="w-1.5 h-1.5 rounded-full bg-white/50 animate-bounce [animation-delay:-0.3s]" />

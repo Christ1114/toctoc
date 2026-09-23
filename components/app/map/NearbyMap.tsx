@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import * as maplibregl from "maplibre-gl";
 import { setWorkerUrl } from "maplibre-gl";
@@ -10,35 +9,26 @@ import { useSession } from "@/app/context/SessionContext";
 import { useGeolocation } from "@/app/hooks/useGeolocation";
 import { createAvatarMarkerElement } from "./AvatarMarker";
 import TopToolbar, { type CityResult } from "./TopToolbar";
-import BottomToolbar from "@/components/app/nearby/BottomToolbar";
+
 import AiSearchPanel from "./AiSearchPanel";
-import { getCategoryConfig } from "@/app/lib/jobs/category-colors";
 import { orbitron } from "@/fonts/font";
 import { useRouter } from "@/i18n/navigation";
-
 setWorkerUrl("/maplibre/maplibre-gl-worker.mjs");
-
-
 const STYLES = {
   light: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
   dark: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
 } as const;
-
 const DEFAULT_CENTER: [number, number] = [2.3522, 48.8566];
 const DEFAULT_ZOOM = 15;
 const CITY_SEARCH_ZOOM = 12;
 const DEFAULT_PITCH = 60;
 const DEFAULT_BEARING = -17.6;
-
 const ONLINE_THRESHOLD_MS = 5 * 60 * 1000;
 const NEARBY_RADIUS_KM = 20;
 const FLY_DURATION_MS = 1200;
 const INIT_TIMEOUT_MS = 10_000;
-
 const PROVIDER_PATH = "/app/provider";
 const CLIENT_PATH = "/app/client";
-
-
 type NearbyUser = {
   id: string;
   name: string | null;
@@ -57,23 +47,19 @@ type NearbyUser = {
   lastLocationUpdatedAt: string | null;
   category: string | null;
 };
-
 /* ═══════════════════════════════════════════════════════════
    HELPERS
    ═══════════════════════════════════════════════════════════ */
-
 function getPublicProfilePath(user: NearbyUser): string | null {
   if (user.accountType === "PROVIDER") return `${PROVIDER_PATH}/${user.id}`;
   if (user.accountType === "CLIENT") return `${CLIENT_PATH}/${user.id}`;
   return null;
 }
-
 const logError = (context: string, err: unknown, extra?: Record<string, unknown>) => {
   if (process.env.NODE_ENV === "development") {
     console.error(`[${context}]`, err, extra);
   }
 };
-
 export default function NearbyMap() {
   const t = useTranslations("NearbyMap");
   const tToolbar = useTranslations("TopToolbar");
@@ -81,7 +67,6 @@ export default function NearbyMap() {
   const router = useRouter();
   const { user } = useSession();
   const { latitude, longitude, error: geoError, requestLocation } = useGeolocation();
-
   /* ─── Refs stables ─── */
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
@@ -90,7 +75,6 @@ export default function NearbyMap() {
   const initialCenterRef = useRef<[number, number] | null>(null);
   const hasInitRef = useRef(false);
   const fetchAbortRef = useRef<AbortController | null>(null);
-
   // ✅ Refs pour éviter closures stale
   const userRef = useRef(user);
   const routerRef = useRef(router);
@@ -102,7 +86,6 @@ export default function NearbyMap() {
     hoursAgo: (n: number) => t("hoursAgo", { n }),
     daysAgo: (n: number) => t("daysAgo", { n }),
   });
-
   useEffect(() => { userRef.current = user; }, [user]);
   useEffect(() => { routerRef.current = router; }, [router]);
   useEffect(() => {
@@ -115,7 +98,6 @@ export default function NearbyMap() {
       daysAgo: (n: number) => t("daysAgo", { n }),
     };
   }, [t]);
-
   /* ─── State ─── */
   const [initialCenter, setInitialCenter] = useState<[number, number] | null>(null);
   const [loadingPosition, setLoadingPosition] = useState(true);
@@ -127,26 +109,20 @@ export default function NearbyMap() {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const filteredUsers = useMemo(() => {
     if (!activeCategory) return nearbyUsers;
-
     const normalizedFilter = activeCategory.toUpperCase().replace(/-/g, "_");
-
     return nearbyUsers.filter((u) => {
       const cat = (u.category ?? "").toUpperCase().replace(/[\s-]/g, "_");
       return cat === normalizedFilter;
     });
   }, [nearbyUsers, activeCategory]);
-
   useEffect(() => {
     if (hasInitRef.current) return;
     hasInitRef.current = true;
-
     let isMounted = true;
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
-
     const u = userRef.current as any;
     const storedLat = u?.lastLatitude;
     const storedLng = u?.lastLongitude;
-
     if (storedLat && storedLng) {
       const pos: [number, number] = [storedLng, storedLat];
       initialCenterRef.current = pos;
@@ -157,9 +133,7 @@ export default function NearbyMap() {
       setInitialCenter(DEFAULT_CENTER);
       setLoadingPosition(false);
     }
-
     requestLocation();
-
     timeoutId = setTimeout(() => {
       if (isMounted && !initialCenterRef.current) {
         initialCenterRef.current = DEFAULT_CENTER;
@@ -167,13 +141,11 @@ export default function NearbyMap() {
         setLoadingPosition(false);
       }
     }, INIT_TIMEOUT_MS);
-
     return () => {
       isMounted = false;
       if (timeoutId) clearTimeout(timeoutId);
     };
   }, []);
-
   useEffect(() => {
     if (!latitude || !longitude) return;
     const pos: [number, number] = [longitude, latitude];
@@ -181,7 +153,6 @@ export default function NearbyMap() {
     setInitialCenter(pos);
     setLoadingPosition(false);
   }, [latitude, longitude]);
-
   useEffect(() => {
     if (geoError && !initialCenterRef.current) {
       initialCenterRef.current = DEFAULT_CENTER;
@@ -189,10 +160,8 @@ export default function NearbyMap() {
       setLoadingPosition(false);
     }
   }, [geoError]);
-
   useEffect(() => {
     if (!mapContainer.current || mapRef.current || !initialCenter) return;
-
     try {
       const map = new maplibregl.Map({
         container: mapContainer.current,
@@ -209,9 +178,7 @@ export default function NearbyMap() {
         fadeDuration: 100,
         refreshExpiredTiles: false,
       });
-
       mapRef.current = map;
-
       map.addControl(
         new maplibregl.NavigationControl({
           visualizePitch: true,
@@ -220,22 +187,17 @@ export default function NearbyMap() {
         }),
         "bottom-left",
       );
-
       map.dragRotate.enable();
       map.touchZoomRotate.enableRotation();
-
       map.on("error", (e: any) => {
         const msg = String(e?.error?.message ?? "");
         if (msg.includes("Failed to fetch") || msg.includes("AbortError")) return;
         logError("nearbyMap.mapError", e);
       });
-
       map.once("load", () => {
         setMapLoaded(true);
-
         try {
           const me = userRef.current as any;
-
           const el = createAvatarMarkerElement({
             imageUrl: me?.image ?? null,
             fallbackLabel: me?.name ?? "?",
@@ -255,10 +217,8 @@ export default function NearbyMap() {
             },
             labels: labelsRef.current,
           });
-
           el.style.pointerEvents = "auto";
           el.style.cursor = "pointer";
-
           userMarkerRef.current = new maplibregl.Marker({
             element: el,
             anchor: "bottom",
@@ -274,7 +234,6 @@ export default function NearbyMap() {
       setMapError(t("errors.initFailed"));
     }
   }, [initialCenter]);
-
   useEffect(() => {
     return () => {
       fetchAbortRef.current?.abort();
@@ -286,10 +245,8 @@ export default function NearbyMap() {
       mapRef.current = null;
     };
   }, []);
-
   useEffect(() => {
     if (!mapRef.current || !mapLoaded || !initialCenter) return;
-
     mapRef.current.flyTo({
       center: initialCenter,
       zoom: DEFAULT_ZOOM,
@@ -298,24 +255,20 @@ export default function NearbyMap() {
       essential: true,
       duration: FLY_DURATION_MS,
     });
-
     userMarkerRef.current?.setLngLat(initialCenter);
   }, [initialCenter, mapLoaded]);
   const fetchNearby = useCallback(async (lng: number, lat: number) => {
     fetchAbortRef.current?.abort();
     const controller = new AbortController();
     fetchAbortRef.current = controller;
-
     try {
       const res = await fetch(
         `/api/user/nearby?lat=${lat}&lng=${lng}&radius=${NEARBY_RADIUS_KM}`,
         { signal: controller.signal },
       );
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
       const data = await res.json();
       const list: NearbyUser[] = Array.isArray(data?.users) ? data.users : [];
-
       setNearbyUsers((prev) => {
         if (prev.length !== list.length) return list;
         for (let i = 0; i < list.length; i++) {
@@ -331,7 +284,6 @@ export default function NearbyMap() {
       setNearbyUsers([]);
     }
   }, []);
-
   useEffect(() => {
     if (!initialCenter) return;
     const [lng, lat] = initialCenter;
@@ -340,14 +292,11 @@ export default function NearbyMap() {
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !mapLoaded) return;
-
     const current = nearbyMarkersRef.current;
     const seen = new Set<string>();
-
     filteredUsers.forEach((nu) => {
       if (nu.lastLatitude == null || nu.lastLongitude == null) return;
       seen.add(nu.id);
-
       const lastUpdate = nu.lastLocationUpdatedAt
         ? new Date(nu.lastLocationUpdatedAt)
         : null;
@@ -355,15 +304,12 @@ export default function NearbyMap() {
         lastUpdate !== null &&
         Date.now() - lastUpdate.getTime() < ONLINE_THRESHOLD_MS;
       const profilePath = getPublicProfilePath(nu);
-
       const cfg = getCategoryConfig(nu.category);
-
       const existing = current.get(nu.id);
       if (existing) {
         existing.setLngLat([nu.lastLongitude, nu.lastLatitude]);
         return;
       }
-
       const el = createAvatarMarkerElement({
         imageUrl: nu.image,
         fallbackLabel: nu.name ?? "?",
@@ -377,20 +323,16 @@ export default function NearbyMap() {
           : undefined,
         labels: labelsRef.current,
       });
-
       el.style.pointerEvents = "auto";
       if (profilePath) el.style.cursor = "pointer";
-
       const marker = new maplibregl.Marker({
         element: el,
         anchor: "bottom",
       })
         .setLngLat([nu.lastLongitude, nu.lastLatitude])
         .addTo(map);
-
       current.set(nu.id, marker);
     });
-
     current.forEach((marker, id) => {
       if (!seen.has(id)) {
         marker.remove();
@@ -398,8 +340,6 @@ export default function NearbyMap() {
       }
     });
   }, [filteredUsers, mapLoaded]);
-
-
   useEffect(() => {
     if (!mapRef.current || !mapLoaded) return;
     const url = resolvedTheme === "dark" ? STYLES.dark : STYLES.light;
@@ -409,8 +349,6 @@ export default function NearbyMap() {
       logError("nearbyMap.setStyle", err);
     }
   }, [resolvedTheme, mapLoaded]);
-
-
   const resetView = useCallback(() => {
     const map = mapRef.current;
     const center = initialCenterRef.current;
@@ -424,7 +362,6 @@ export default function NearbyMap() {
       duration: 1000,
     });
   }, []);
-
   const handleLocate = useCallback(() => {
     requestLocation();
     const map = mapRef.current;
@@ -433,7 +370,6 @@ export default function NearbyMap() {
       map.flyTo({ center, zoom: DEFAULT_ZOOM, duration: 1000, essential: true });
     }
   }, [requestLocation]);
-
   const handleSelectCity = useCallback(
     (city: CityResult) => {
       if (!city.hasOffers || city.latitude == null || city.longitude == null) {
@@ -457,8 +393,6 @@ export default function NearbyMap() {
     },
     [mapLoaded, fetchNearby, tToolbar],
   );
-
-
   return (
     <div
       className="relative w-full h-dvh md:h-full md:min-h-125 overflow-hidden"
@@ -467,7 +401,6 @@ export default function NearbyMap() {
       <style jsx global>{`
         .maplibregl-marker { pointer-events: auto !important; }
         .maplibregl-marker > * { pointer-events: auto; }
-
         /* ⚠️ IMPORTANT : le canvas MapLibre doit rester SOUS nos toolbars */
         .maplibregl-canvas-container,
         .maplibregl-canvas {
@@ -476,7 +409,6 @@ export default function NearbyMap() {
         .maplibregl-control-container {
           z-index: 1 !important;
         }
-
         /* ✅ Zoom controls → milieu gauche (verticalement centré) */
         .maplibregl-ctrl-bottom-left {
           top: 50% !important;
@@ -494,7 +426,6 @@ export default function NearbyMap() {
         @media (min-width: 1024px) {
           .maplibregl-ctrl-bottom-left { left: 20px !important; }
         }
-
         .maplibregl-ctrl-bottom-left .maplibregl-ctrl-group {
           border-radius: 12px !important;
           overflow: hidden;
@@ -528,7 +459,6 @@ export default function NearbyMap() {
         .maplibregl-canvas { outline: none !important; touch-action: none; }
         .maplibregl-ctrl-attrib { font-size: 10px !important; }
       `}</style>
-
       {loadingPosition && (
         <div className="absolute inset-0 flex items-center justify-center z-20 bg-gray-100 dark:bg-gray-900 transition-colors">
           <div className="flex flex-col items-center gap-3 px-4">
@@ -539,7 +469,6 @@ export default function NearbyMap() {
           </div>
         </div>
       )}
-
       {mapError && (
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-red-100 dark:bg-red-900/80 text-red-700 dark:text-red-100 p-4 sm:p-5 rounded-xl shadow-lg max-w-[92vw] sm:max-w-sm border border-red-200 dark:border-red-800">
           <p className="text-sm sm:text-base">{mapError}</p>
@@ -558,8 +487,6 @@ export default function NearbyMap() {
         ref={mapContainer}
         className="absolute inset-0 w-full h-full bg-gray-200 dark:bg-gray-800 z-0"
       />
-
-      
       <div className="absolute inset-x-0 top-0 z-20 pointer-events-none">
         <div className="pointer-events-auto">
           <TopToolbar
@@ -569,16 +496,6 @@ export default function NearbyMap() {
           />
         </div>
       </div>
-
-      
-      <div className="absolute inset-x-0 bottom-0 z-30 pointer-events-none">
-        <BottomToolbar
-          activeSlug={activeCategory}
-          onSelect={setActiveCategory}
-        />
-      </div>
-
-      
       <button
   onClick={resetView}
   aria-label={t("reset3D")}
@@ -597,8 +514,6 @@ export default function NearbyMap() {
 >
   3D
 </button>
-
-     
       {aiSearchOpen && (
         <AiSearchPanel
           open={aiSearchOpen}

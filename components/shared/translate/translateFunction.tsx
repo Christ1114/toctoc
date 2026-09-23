@@ -3,19 +3,16 @@ import { useRouter, usePathname } from '@/navigation';
 import { useParams } from 'next/navigation';
 import { useTransition, useState } from 'react';
 import clsx from 'clsx';
-
 const LANGUAGES = [
     { value: 'fr', label: '🇨🇮Fr' },
     { value: 'en', label: '🇬🇧 En' },
     { value: 'ar', label: '🇸🇦 Ar' },
     { value: 'zh', label: '🇨🇳 Zh' },
 ];
-
 type Props = {
     defaultValue: string;
     label: string;
 }
-
 const TranslateFunction = ({ defaultValue, label }: Props) => {
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
@@ -23,7 +20,6 @@ const TranslateFunction = ({ defaultValue, label }: Props) => {
     const params = useParams();
     const [isOpen, setIsOpen] = useState(false);
     const [selected, setSelected] = useState(defaultValue.toUpperCase());
-
     function onSelectLanguage(value: string) {
         setSelected(value.toUpperCase());
         setIsOpen(false);
@@ -35,7 +31,6 @@ const TranslateFunction = ({ defaultValue, label }: Props) => {
             );
         });
     }
-
     return (
         <div className="relative">
             <button
@@ -56,7 +51,6 @@ const TranslateFunction = ({ defaultValue, label }: Props) => {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
             </button>
-
             {isOpen && (
                 <div className="absolute top-full right-0 translate-x-10 mt-2 w-28 bg-white dark:bg-neutral-900 border border-gray-100 dark:border-zinc-600 rounded-xl shadow-lg py-1.5 z-60">
                     {LANGUAGES.map((lang) => (
@@ -78,5 +72,4 @@ const TranslateFunction = ({ defaultValue, label }: Props) => {
         </div>
     );
 }
-
 export default TranslateFunction;

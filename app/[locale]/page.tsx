@@ -10,12 +10,10 @@ import { orbitron } from "@/fonts/font";
 import IntroTocToc from "@/animate/toctocIntro";
 import FooterComponent from "@/components/footer/footer";
 import { useTranslations, useLocale } from 'next-intl';
-
 export default function Home() {
   const t = useTranslations("home");
   const locale = useLocale();
   const isRtl = locale === 'ar';
-
   return (
     <div className="h-full w-full overflow-x-hidden bg-white dark:bg-zinc-900 px-4 sm:px-5" dir={isRtl ? 'rtl' : 'ltr'} >
       <header className="mb-4 sm:mb-6 lg:mb-8 flex w-full cursor-default">

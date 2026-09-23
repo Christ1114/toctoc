@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
@@ -38,7 +37,6 @@ import SettingsPopover from "@/components/app/utils/settingsPopover";
 import ImageCropModal from "./ImageCropModal";
 import ClientPublishOfferForm from "@/components/app/ClientPublishOfferForm";
 import { isSafeUrl } from "@/app/lib/security/url-validation";
-
 type AccountType = "CLIENT" | "PROVIDER" | "ADMIN";
 type ClientType = "INDIVIDUAL" | "AGENCY";
 type ProviderType =
@@ -48,7 +46,6 @@ type ProviderType =
   | "AIDE_PERSONNES_AGEES"
   | "RESIDENTIEL"
   | "COURT_TERME";
-
 const PROVIDER_TYPES: ProviderType[] = [
   "BABYSITTER",
   "GARDE_PERISCOLAIRE",
@@ -57,9 +54,7 @@ const PROVIDER_TYPES: ProviderType[] = [
   "RESIDENTIEL",
   "COURT_TERME",
 ];
-
 const CURRENCIES = ["XOF", "USD", "EUR"];
-
 type SocialKey =
   | "website"
   | "instagram"
@@ -68,7 +63,6 @@ type SocialKey =
   | "linkedin"
   | "youtube"
   | "twitter";
-
 type ProfileUser = {
   id: string;
   name?: string | null;
@@ -94,16 +88,13 @@ type ProfileUser = {
   youtube?: string | null;
   twitter?: string | null;
 };
-
 type Stats = {
   bookingsCount: number;
   reviewsCount: number;
   favoritesCount: number;
   averageRating: number | null;
 };
-
 type TabKey = "bookings" | "reviews" | "favorites" | "announcements";
-
 type MyAnnouncement = {
   id: string;
   type: "OFFER" | "PROFILE";
@@ -120,22 +111,18 @@ type MyAnnouncement = {
   jobType: { id: string; name: string; slug: string } | null;
   region: { id: string; name: string; slug: string } | null;
 };
-
 type AnnouncementsQuota = {
   used: number;
   max: number;
   remaining: number;
 };
-
 export default function ProfilePage() {
   const t = useTranslations("ProfilePage");
   const locale = useLocale();
   const router = useRouter();
   const isRTL = locale === "ar";
   const fileInputRef = useRef<HTMLInputElement>(null);
-
   const { user: sessionUser, loading: sessionLoading } = useSession();
-
   const [user, setUser] = useState<ProfileUser | null>(null);
   const [stats, setStats] = useState<Stats | null>(null);
   const [editing, setEditing] = useState(false);
@@ -147,7 +134,6 @@ export default function ProfilePage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [form, setForm] = useState<Partial<ProfileUser>>({});
-
   // ─── Annonces ───
   const [myAnnouncements, setMyAnnouncements] = useState<MyAnnouncement[]>([]);
   const [announcementsLoading, setAnnouncementsLoading] = useState(false);
@@ -156,12 +142,10 @@ export default function ProfilePage() {
   const [publishModalOpen, setPublishModalOpen] = useState(false);
   const [editingAnnouncement, setEditingAnnouncement] = useState<MyAnnouncement | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
-
   useEffect(() => {
     if (sessionLoading) return;
     setUser(sessionUser ? (sessionUser as unknown as ProfileUser) : null);
   }, [sessionUser, sessionLoading]);
-
   const loadStats = async () => {
     try {
       const res = await fetch("/api/profils/stats");
@@ -172,11 +156,9 @@ export default function ProfilePage() {
       console.error("Erreur chargement stats:", err);
     }
   };
-
   useEffect(() => {
     loadStats();
   }, []);
-
   // ─── Charger les annonces ───
   const loadMyAnnouncements = async () => {
     if (!user) return;
@@ -195,7 +177,6 @@ export default function ProfilePage() {
       setAnnouncementsLoading(false);
     }
   };
-
   useEffect(() => {
     if (!user) return;
     if (user.accountType === "CLIENT" || user.accountType === "PROVIDER") {
@@ -203,7 +184,6 @@ export default function ProfilePage() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]);
-
   const handleDeleteAnnouncement = async (id: string) => {
     if (!window.confirm(t("announcements.deleteConfirm"))) return;
     setDeletingId(id);
@@ -219,22 +199,18 @@ export default function ProfilePage() {
       setDeletingId(null);
     }
   };
-
   const handleOpenPublish = () => {
     setEditingAnnouncement(null);
     setPublishModalOpen(true);
   };
-
   const handleOpenEdit = (announcement: MyAnnouncement) => {
     setEditingAnnouncement(announcement);
     setPublishModalOpen(true);
   };
-
   const handleClosePublishModal = () => {
     setPublishModalOpen(false);
     setEditingAnnouncement(null);
   };
-
   const startEditing = () => {
     if (!user) return;
     setForm({
@@ -258,12 +234,10 @@ export default function ProfilePage() {
     setSuccess(null);
     setEditing(true);
   };
-
   const cancelEditing = () => {
     setEditing(false);
     setError(null);
   };
-
   const handleSave = async () => {
     setSaving(true);
     setError(null);
@@ -285,12 +259,10 @@ export default function ProfilePage() {
         youtube: form.youtube || null,
         twitter: form.twitter || null,
       });
-
       if (err) {
         setError(err.message || t("errors.saveFailed"));
         return;
       }
-
       setUser((prev) => (prev ? ({ ...prev, ...form } as ProfileUser) : prev));
       setEditing(false);
       setSuccess(t("saved"));
@@ -301,13 +273,10 @@ export default function ProfilePage() {
       setSaving(false);
     }
   };
-
   const handlePhotoClick = () => fileInputRef.current?.click();
-
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     if (!file.type.startsWith("image/")) {
       setError(t("errors.invalidImage"));
       return;
@@ -316,42 +285,33 @@ export default function ProfilePage() {
       setError(t("errors.imageTooLarge"));
       return;
     }
-
     setError(null);
     const reader = new FileReader();
     reader.onload = () => setCropImageSrc(reader.result as string);
     reader.readAsDataURL(file);
-
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
-
   const handleCropConfirm = async (blob: Blob) => {
     if (!user) return;
-
     setUploadingPhoto(true);
     setError(null);
     try {
       const formData = new FormData();
       formData.append("file", blob, "avatar.jpg");
-
       const uploadRes = await fetch("/api/profils/avatar", {
         method: "POST",
         body: formData,
       });
-
       if (!uploadRes.ok) {
         setError(t("errors.uploadFailed"));
         return;
       }
-
       const { url } = await uploadRes.json();
-
       const { error: updateError } = await updateUser({ image: url });
       if (updateError) {
         setError(t("errors.saveFailed"));
         return;
       }
-
       setUser((prev) => (prev ? { ...prev, image: url } : prev));
       setCropImageSrc(null);
     } catch (err) {
@@ -361,7 +321,6 @@ export default function ProfilePage() {
       setUploadingPhoto(false);
     }
   };
-
   const handleShare = async () => {
     const url = window.location.href;
     try {
@@ -376,7 +335,6 @@ export default function ProfilePage() {
       /* silent */
     }
   };
-
   if (sessionLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white dark:bg-zinc-900">
@@ -384,7 +342,6 @@ export default function ProfilePage() {
       </div>
     );
   }
-
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white dark:bg-zinc-900 px-4">
@@ -396,13 +353,11 @@ export default function ProfilePage() {
       </div>
     );
   }
-
   const isAgencyClient =
     user.accountType === "CLIENT" && user.clientType === "AGENCY";
   const isProvider = user.accountType === "PROVIDER";
   const canPublish =
     user.accountType === "CLIENT" || user.accountType === "PROVIDER";
-
   const TABS: {
     key: TabKey;
     icon: typeof CalendarCheckIcon;
@@ -438,7 +393,6 @@ export default function ProfilePage() {
         ]
       : []),
   ];
-
   const SOCIAL_FIELDS: {
     key: SocialKey;
     icon: React.ReactNode;
@@ -496,12 +450,10 @@ export default function ProfilePage() {
       displayLabel: t("social.twitter"),
     },
   ];
-
   const socialLinks = SOCIAL_FIELDS.map((f) => ({
     ...f,
     href: user[f.key] ?? null,
   })).filter((l) => isSafeUrl(l.href));
-
   return (
     <div
       dir={isRTL ? "rtl" : "ltr"}
@@ -515,7 +467,6 @@ export default function ProfilePage() {
           <ArrowLeftIcon size={16} className={isRTL ? "rotate-180" : ""} />
           {t("back")}
         </button>
-
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8">
           <div className="relative shrink-0 mx-auto sm:mx-0">
             <div className="h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 rounded-full overflow-hidden bg-[#432dd7]/10 flex items-center justify-center border border-black/5 dark:border-white/10">
@@ -565,7 +516,6 @@ export default function ProfilePage() {
               className="hidden"
             />
           </div>
-
           <div className="flex-1 min-w-0 text-center sm:text-start">
             <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
               {editing ? (
@@ -592,7 +542,6 @@ export default function ProfilePage() {
                 </span>
               )}
             </div>
-
             <div className="flex items-center justify-center sm:justify-start gap-3 sm:gap-5 mt-2.5 sm:mt-3 flex-wrap">
               {TABS.map(({ key, count, label }) => (
                 <button
@@ -621,7 +570,6 @@ export default function ProfilePage() {
                 </span>
               )}
             </div>
-
             <div className="flex items-center justify-center sm:justify-start gap-2 mt-3 sm:mt-4 flex-wrap">
               {!editing ? (
                 <>
@@ -690,7 +638,6 @@ export default function ProfilePage() {
                 </div>
               )}
             </div>
-
             {/* Bio */}
             <div className="mt-3 sm:mt-4">
               {editing ? (
@@ -731,7 +678,6 @@ export default function ProfilePage() {
             )}
           </div>
         </div>
-
         {/* Erreur / succès */}
         {error && (
           <p
@@ -747,7 +693,6 @@ export default function ProfilePage() {
             {success}
           </p>
         )}
-
         {/* ═══════════════ RÉSEAUX SOCIAUX (édition) ═══════════════ */}
         {editing && (
           <section className="border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6 pt-4 sm:pt-5">
@@ -782,7 +727,6 @@ export default function ProfilePage() {
             </div>
           </section>
         )}
-
         {/* ═══════════════ SECTION AGENCE ═══════════════ */}
         {editing && (isAgencyClient || form.clientType === "AGENCY") && (
           <section className="border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6 pt-4 sm:pt-5">
@@ -810,7 +754,6 @@ export default function ProfilePage() {
             </div>
           </section>
         )}
-
         {/* ═══════════════ SECTION PROVIDER ═══════════════ */}
         {editing && isProvider && (
           <section className="border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6 pt-4 sm:pt-5">
@@ -843,7 +786,6 @@ export default function ProfilePage() {
                   ))}
                 </select>
               </div>
-
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
                 <span className="text-xs sm:text-sm text-gray-500 dark:text-white/50 shrink-0">
                   {t("hourlyRate")}
@@ -882,7 +824,6 @@ export default function ProfilePage() {
             </div>
           </section>
         )}
-
         {/* ═══════════════ TABS ═══════════════ */}
         <div className="flex items-center border-t border-gray-100 dark:border-white/5 mt-5 sm:mt-6">
           {TABS.map(({ key, icon: Icon, label }) => (
@@ -903,7 +844,6 @@ export default function ProfilePage() {
             </button>
           ))}
         </div>
-
         {/* ═══════════════ CONTENU DES ONGLETS ═══════════════ */}
         {activeTab === "announcements" && canPublish ? (
           <div className="pt-4 sm:pt-5">
@@ -922,19 +862,16 @@ export default function ProfilePage() {
                 )}
               </div>
             )}
-
             {announcementsLoading && (
               <div className="flex items-center justify-center py-10">
                 <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-black/30 dark:border-white/30" />
               </div>
             )}
-
             {!announcementsLoading && announcementsError && (
               <p className={`text-sm text-red-500 dark:text-red-400/80 text-center py-8 ${orbitron.className}`}>
                 {announcementsError}
               </p>
             )}
-
             {!announcementsLoading && !announcementsError && myAnnouncements.length === 0 && (
               <div className="py-10 sm:py-14 flex flex-col items-center justify-center text-center px-4">
                 <MegaphoneIcon size={32} className="text-gray-300 dark:text-white/20 mb-2" />
@@ -950,7 +887,6 @@ export default function ProfilePage() {
                 </button>
               </div>
             )}
-
             {!announcementsLoading && !announcementsError && myAnnouncements.length > 0 && (
               <ul className="flex flex-col gap-3">
                 {myAnnouncements.map((a) => (
@@ -1064,19 +1000,16 @@ export default function ProfilePage() {
           </div>
         )}
       </div>
-
       <ClientPublishOfferForm
         open={publishModalOpen}
         onClose={handleClosePublishModal}
         onSuccess={loadMyAnnouncements}
         announcement={editingAnnouncement}
       />
-
       <SettingsPopover
         open={settingsOpen}
         onClose={() => setSettingsOpen(false)}
       />
-
       {cropImageSrc && (
         <ImageCropModal
           imageSrc={cropImageSrc}
@@ -1088,7 +1021,6 @@ export default function ProfilePage() {
     </div>
   );
 }
-
 /* ═══════════════ Field ═══════════════ */
 function Field({
   label,

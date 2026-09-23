@@ -3,7 +3,6 @@ import FooterComponent from '@/components/footer/footer';
 import FirstModuleComponent from '@/components/policy/first.module';
 import Navbar from '@/components/shared/navbar/navbar'
 import React from 'react'
-
 const policyPageComponent = () => {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center bg-white dark:bg-zinc-900">
@@ -19,5 +18,4 @@ const policyPageComponent = () => {
     </div>
   )
 }
-
 export default policyPageComponent

@@ -3,7 +3,6 @@ import FooterComponent from '@/components/footer/footer';
 import Navbar from '@/components/shared/navbar/navbar'
 import FirstModuleComponent from '@/components/warning/first.module.component';
 import React from 'react'
-
 const WarningPageComponent = () => {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center bg-white dark:bg-zinc-900">
@@ -19,5 +18,4 @@ const WarningPageComponent = () => {
     </div>
   )
 }
-
 export default WarningPageComponent

@@ -1,5 +1,3 @@
-
-
 const ALLOWED_PROTOCOLS = new Set(["http:", "https:"]);
 export function isSafeUrl(raw: string | null | undefined): boolean {
   if (!raw) return false;
@@ -14,14 +12,11 @@ export function normalizeUrl(raw: string | null | undefined): string | null {
   if (!raw) return null;
   const trimmed = raw.trim();
   if (!trimmed) return null;
-
   const withProto = /^https?:\/\//i.test(trimmed)
     ? trimmed
     : `https://${trimmed}`;
-
   return isSafeUrl(withProto) ? withProto : null;
 }
-
 export function extractYouTubeId(url: string): string | null {
   const patterns = [
     /youtu\.be\/([^?&/]+)/,
@@ -29,7 +24,6 @@ export function extractYouTubeId(url: string): string | null {
     /youtube\.com\/embed\/([^?&/]+)/,
     /youtube\.com\/shorts\/([^?&/]+)/,
   ];
-
   for (const p of patterns) {
     const m = url.match(p);
     if (m) {
@@ -54,9 +48,7 @@ export function isDirectVideoUrl(url: string): boolean {
     return false;
   }
 }
-
 export type VideoPlatform = "youtube" | "vimeo" | "direct";
-
 export type ParsedVideo =
   | {
       ok: true;
@@ -70,7 +62,6 @@ export function parseVideoUrl(raw: string): ParsedVideo {
   if (!normalized) {
     return { ok: false, reason: "URL invalide ou non sécurisée" };
   }
-
   const yt = extractYouTubeId(normalized);
   if (yt) {
     return {
@@ -80,7 +71,6 @@ export function parseVideoUrl(raw: string): ParsedVideo {
       thumbnail: `https://img.youtube.com/vi/${yt}/hqdefault.jpg`,
     };
   }
-
   const vimeo = extractVimeoId(normalized);
   if (vimeo) {
     return {
@@ -90,7 +80,6 @@ export function parseVideoUrl(raw: string): ParsedVideo {
       thumbnail: null,
     };
   }
-
   if (isDirectVideoUrl(normalized)) {
     return {
       ok: true,
@@ -99,7 +88,6 @@ export function parseVideoUrl(raw: string): ParsedVideo {
       thumbnail: null,
     };
   }
-
   return {
     ok: false,
     reason: "Format vidéo non supporté (YouTube, Vimeo, MP4, WebM)",

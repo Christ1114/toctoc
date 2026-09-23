@@ -1,5 +1,4 @@
 "use client";
-
 import {
   GlobeIcon,
   InstagramLogoIcon,
@@ -12,7 +11,6 @@ import {
 import { useTranslations } from "next-intl";
 import { orbitron } from "@/fonts/font";
 import { isSafeUrl } from "@/app/lib/security/url-validation";
-
 type SocialProvider = {
   website?: string | null;
   instagram?: string | null;
@@ -22,17 +20,14 @@ type SocialProvider = {
   youtube?: string | null;
   twitter?: string | null;
 };
-
 type LinkDef = {
   key: string;
   href: string;
   icon: typeof GlobeIcon;
   label: string;
 };
-
 export default function SocialLinks({ provider }: { provider: SocialProvider }) {
   const t = useTranslations("ProfilePage");
-
   const candidates: {
     key: string;
     href: string | null | undefined;
@@ -47,13 +42,10 @@ export default function SocialLinks({ provider }: { provider: SocialProvider }) 
     { key: "youtube",   href: provider.youtube,   icon: YoutubeLogoIcon,   label: t("social.youtube") },
     { key: "twitter",   href: provider.twitter,   icon: XLogoIcon,         label: t("social.twitter") },
   ];
-
   const links: LinkDef[] = candidates
     .filter((l): l is LinkDef => isSafeUrl(l.href))
     .map((l) => ({ key: l.key, href: l.href, icon: l.icon, label: l.label }));
-
   if (links.length === 0) return null;
-
   return (
     <div
       className={`flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-3 ${orbitron.className}`}

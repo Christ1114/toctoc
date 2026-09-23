@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect, useRef, useCallback } from "react";
 import {
   MagnifyingGlassIcon,
@@ -11,7 +10,6 @@ import { useTranslations } from "next-intl";
 import { orbitron } from "@/fonts/font";
 import { useSession } from "@/app/context/SessionContext";
 import ProfilePopover from "../utils/profilsPopover";
-
 export type CityResult = {
   id: string;
   name: string;
@@ -21,13 +19,11 @@ export type CityResult = {
   count: number;
   hasOffers: boolean;
 };
-
 type TopToolbarProps = {
   onOpenAiSearch: () => void;
   onSelectCity: (city: CityResult) => void;
   searchMessage?: string | null;
 };
-
 type UserAvatar = {
   id?: string;
   name?: string | null;
@@ -35,7 +31,6 @@ type UserAvatar = {
   image?: string | null;
   accountType?: string | null;
 };
-
 export default function TopToolbar({
   onOpenAiSearch,
   onSelectCity,
@@ -43,14 +38,12 @@ export default function TopToolbar({
 }: TopToolbarProps) {
   const t = useTranslations("TopToolbar");
   const [profileOpen, setProfileOpen] = useState(false);
-
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<CityResult[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [searching, setSearching] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
-
   const { user: sessionUser } = useSession();
   const user: UserAvatar | null = sessionUser
     ? {
@@ -61,7 +54,6 @@ export default function TopToolbar({
         accountType: (sessionUser as any).accountType,
       }
     : null;
-
   const runSearch = useCallback(async (q: string) => {
     if (!q.trim()) {
       setResults([]);
@@ -81,19 +73,16 @@ export default function TopToolbar({
       setSearching(false);
     }
   }, []);
-
   const handleInputChange = (value: string) => {
     setQuery(value);
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => runSearch(value), 300);
   };
-
   const handleSelect = (city: CityResult) => {
     setQuery(city.name);
     setDropdownOpen(false);
     onSelectCity(city);
   };
-
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
@@ -103,11 +92,8 @@ export default function TopToolbar({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
   return (
     <>
-    
-    
       <div className="absolute top-2 left-2 right-2 z-10 flex items-center gap-1.5
                       sm:top-3 sm:left-3 sm:right-3 sm:gap-2
                       lg:top-4 lg:left-4 lg:right-4  sm:px-5 lg:px-20">
@@ -134,7 +120,6 @@ export default function TopToolbar({
                           text-xs sm:text-sm ${orbitron.className}`}
             />
           </div>
-
           {dropdownOpen && (
             <div className="absolute top-full mt-1 w-full bg-black/90 backdrop-blur-sm border border-white/10 rounded-lg overflow-hidden shadow-xl overflow-y-auto
                             max-h-56 sm:max-h-64 lg:max-h-80">
@@ -179,7 +164,6 @@ export default function TopToolbar({
               )}
             </div>
           )}
-
           {searchMessage && !dropdownOpen && (
             <div className="absolute top-full mt-1 w-full bg-black/80 backdrop-blur-sm border border-white/10 rounded-lg px-3 py-2">
               <p className={`text-[11px] sm:text-xs text-white/60 ${orbitron.className}`}>
@@ -188,8 +172,6 @@ export default function TopToolbar({
             </div>
           )}
         </div>
-
-       
         <button
           onClick={onOpenAiSearch}
           aria-label={t("searchByAi")}
@@ -202,7 +184,6 @@ export default function TopToolbar({
           <SparkleIcon size={16} weight="bold" className="lg:hidden shrink-0" />
           <span className="hidden lg:inline">{t("searchByAi")}</span>
         </button>
-
         {/* Bouton profil — même taille que le bouton IA sur chaque breakpoint */}
         <button
           onClick={() => setProfileOpen(true)}
@@ -228,7 +209,6 @@ export default function TopToolbar({
           )}
         </button>
       </div>
-
       <ProfilePopover
         open={profileOpen}
         onClose={() => setProfileOpen(false)}

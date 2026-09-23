@@ -4,13 +4,11 @@ import { headers } from "next/headers";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { ProviderType, type Prisma } from "@/generated/prisma/client";
-
 // ─── Config ──────────────────────────────────────────────────────
 const MAX_LIMIT = 50;
 const DEFAULT_LIMIT = 8;
 const MIN_QUERY_LENGTH = 2;
 const MAX_QUERY_LENGTH = 100;
-
 /**
  * 🚨 FILTRE ANTI-SEED
  * On ne remonte QUE les annonces publiées depuis la plateforme
@@ -19,10 +17,8 @@ const MAX_QUERY_LENGTH = 100;
 const EXCLUDE_SEED: Prisma.AnnouncementWhereInput = {
   isUserGenerated: true,
 };
-
 // ─── Helpers ─────────────────────────────────────────────────────
 const normalize = (s: string) => s.toLowerCase().replace(/[\s-]/g, "");
-
 const clampInt = (
   v: string | null,
   fallback: number,
@@ -32,7 +28,6 @@ const clampInt = (
   const n = parseInt(v ?? "", 10);
   return Number.isNaN(n) ? fallback : Math.min(Math.max(n, min), max);
 };
-
 const buildAnnouncementSearch = (q: string): Prisma.AnnouncementWhereInput => ({
   OR: [
     { title:       { contains: q, mode: "insensitive" } },
@@ -44,7 +39,6 @@ const buildAnnouncementSearch = (q: string): Prisma.AnnouncementWhereInput => ({
     { region:      { name:     { contains: q, mode: "insensitive" } } },
   ],
 });
-
 // ─── Selects / OrderBy réutilisables ─────────────────────────────
 const ANNOUNCEMENT_SELECT = {
   id: true, type: true, title: true, description: true,userId: true, 
@@ -57,30 +51,25 @@ const ANNOUNCEMENT_SELECT = {
   jobType: { select: { id: true, name: true, slug: true, category: true } },
   region:  { select: { id: true, name: true, slug: true } },
 } satisfies Prisma.AnnouncementSelect;
-
 const PROVIDER_SELECT = {
   id: true, name: true, image: true, bio: true,
   providerType: true, hourlyRate: true, currency: true,
   verificationStatus: true, verificationLevel: true,
   lastKnownRegion: true, isActive: true, createdAt: true,
 } satisfies Prisma.UserSelect;
-
 const ANNOUNCEMENT_ORDER: Prisma.AnnouncementOrderByWithRelationInput[] = [
   { isFeatured: "desc" },
   { isUrgent: "desc" },
   { postedAt: "desc" },
 ];
-
 const PROVIDER_ORDER: Prisma.UserOrderByWithRelationInput[] = [
   { verificationLevel: "desc" },
   { isActive: "desc" },
   { createdAt: "desc" },
 ];
-
 // ─── Route ───────────────────────────────────────────────────────
 export async function GET(request: NextRequest) {
   const requestId = crypto.randomUUID();
-
   try {
     // 1. Auth
     const session = await auth.api.getSession({ headers: await headers() });
@@ -90,21 +79,18 @@ export async function GET(request: NextRequest) {
         { status: 401, headers: { "X-Request-Id": requestId } },
       );
     }
-
     // 2. Query params + validation
     const { searchParams } = request.nextUrl;
     const rawQuery = searchParams.get("q")?.trim() ?? "";
     const limit = clampInt(searchParams.get("limit"), DEFAULT_LIMIT, 1, MAX_LIMIT);
     const page  = clampInt(searchParams.get("page"),  1, 1, 10_000);
     const skip  = (page - 1) * limit;
-
     if (rawQuery.length > MAX_QUERY_LENGTH) {
       return NextResponse.json(
         { error: "Requête trop longue" },
         { status: 400, headers: { "X-Request-Id": requestId } },
       );
     }
-
     // 3. User
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
@@ -117,7 +103,6 @@ export async function GET(request: NextRequest) {
       );
     }
     const searchType = user.accountType;
-
     // 4. Query trop courte
     if (rawQuery.length < MIN_QUERY_LENGTH) {
       return NextResponse.json({
@@ -129,26 +114,21 @@ export async function GET(request: NextRequest) {
         message: `La recherche doit contenir au moins ${MIN_QUERY_LENGTH} caractères`,
       });
     }
-
     let results: unknown[] = [];
     let total = 0;
-
     // ── CLIENT ───────────────────────────────────────────────────
     // Voit : toutes les annonces user + tous les providers actifs
     if (searchType === "CLIENT") {
       const halfLimit = Math.max(Math.ceil(limit / 2), 1);
       const halfSkip  = (page - 1) * halfLimit;
-
       const normalizedQuery = normalize(rawQuery);
       const matchingProviderTypes = Object.values(ProviderType).filter(
         (type) => normalize(type).includes(normalizedQuery),
       );
-
       // ✅ AND : combine proprement anti-seed + recherche texte
       const announcementWhere: Prisma.AnnouncementWhereInput = {
         AND: [EXCLUDE_SEED, buildAnnouncementSearch(rawQuery)],
       };
-
       const providerWhere: Prisma.UserWhereInput = {
         accountType: "PROVIDER",
         isActive: true,
@@ -161,7 +141,6 @@ export async function GET(request: NextRequest) {
             : []),
         ],
       };
-
       const [announcements, providers, announcementCount, providerCount] =
         await Promise.all([
           prisma.announcement.findMany({
@@ -181,7 +160,6 @@ export async function GET(request: NextRequest) {
           prisma.announcement.count({ where: announcementWhere }),
           prisma.user.count({ where: providerWhere }),
         ]);
-
       results = [
         ...announcements.map((a) => ({ ...a, resultType: "JOB" as const })),
         ...providers.map((p) => ({ ...p, resultType: "PROFILE" as const })),
@@ -203,7 +181,6 @@ export async function GET(request: NextRequest) {
           buildAnnouncementSearch(rawQuery),
         ],
       };
-
       const [announcements, count] = await Promise.all([
         prisma.announcement.findMany({
           where,
@@ -214,17 +191,14 @@ export async function GET(request: NextRequest) {
         }),
         prisma.announcement.count({ where }),
       ]);
-
       results = announcements.map((a) => ({ ...a, resultType: "JOB" as const }));
       total = count;
     }
-
     // ── ADMIN ────────────────────────────────────────────────────
     // Voit TOUT (seed inclus) pour la modération
     else if (searchType === "ADMIN") {
       const halfLimit = Math.max(Math.ceil(limit / 2), 1);
       const halfSkip  = (page - 1) * halfLimit;
-
       const announcementWhere: Prisma.AnnouncementWhereInput = {
         OR: [
           { title:       { contains: rawQuery, mode: "insensitive" } },
@@ -233,7 +207,6 @@ export async function GET(request: NextRequest) {
           { jobType:     { name: { contains: rawQuery, mode: "insensitive" } } },
         ],
       };
-
       const userWhere: Prisma.UserWhereInput = {
         OR: [
           { name:        { contains: rawQuery, mode: "insensitive" } },
@@ -241,7 +214,6 @@ export async function GET(request: NextRequest) {
           { companyName: { contains: rawQuery, mode: "insensitive" } },
         ],
       };
-
       const [announcements, providers, aCount, pCount] = await Promise.all([
         prisma.announcement.findMany({
           where: announcementWhere,
@@ -267,18 +239,15 @@ export async function GET(request: NextRequest) {
         prisma.announcement.count({ where: announcementWhere }),
         prisma.user.count({ where: userWhere }),
       ]);
-
       results = [
         ...announcements.map((a) => ({ ...a, resultType: "JOB" as const })),
         ...providers.map((p) => ({ ...p, resultType: "PROFILE" as const })),
       ];
       total = aCount + pCount;
     }
-
     // 5. Pagination
     const totalPages = Math.ceil(total / limit);
     const hasMore = page < totalPages;
-
     // 6. Réponse (cache privé court, jamais partagé entre users)
     return NextResponse.json(
       {

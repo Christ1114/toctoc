@@ -1,5 +1,4 @@
 "use client";
-
 import {
   useState,
   useEffect,
@@ -17,37 +16,29 @@ import {
 import Popover from "../utils/Popover";
 import { orbitron } from "@/fonts/font";
 import { useTranslations, useLocale } from "next-intl";
-
 /* ═══════════════════════════════════════════════════════════
    TYPES
    ═══════════════════════════════════════════════════════════ */
-
 type SearchHistory = {
   id: string;
   query: string;
   createdAt: string;
 };
-
 type SearchResultType = "JOB" | "PROFILE";
-
 type SearchResult = {
   id: string;
   resultType: SearchResultType;
-
   // Champs JOB (annonce)
   type?: "OFFER" | "PROFILE";   // 🆕 distingue mission vs annonce provider
   userId?: string | null;        // 🆕 pour rediriger vers le profil
   title?: string;
   city?: string;
   jobType?: { name: string };
-
   // Champs PROFILE (user)
   name?: string;
   providerType?: string;
-
   [key: string]: unknown;
 };
-
 type SearchApiResponse = {
   results: SearchResult[];
   total: number;
@@ -61,31 +52,25 @@ type SearchApiResponse = {
   message?: string;
   error?: string;
 };
-
 type SearchPopoverProps = {
   open: boolean;
   onClose: () => void;
   onSearch: (query: string) => void;
   userType?: string | null;
 };
-
 /* ═══════════════════════════════════════════════════════════
    CONFIG
    ═══════════════════════════════════════════════════════════ */
-
 const DEBOUNCE_MS = 400;
 const MIN_QUERY_LENGTH = 2;
 const MAX_HISTORY_CLIENT = 10;
 const SAVE_THROTTLE_MS = 3000;
 const CACHE_MAX_SIZE = 30;
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 min
-
 type CacheEntry = { data: SearchApiResponse; at: number };
-
 /* ═══════════════════════════════════════════════════════════
    COMPOSANT
    ═══════════════════════════════════════════════════════════ */
-
 export default function SearchPopover({
   open,
   onClose,
@@ -97,7 +82,6 @@ export default function SearchPopover({
   const router = useRouter();
   const isRTL = locale === "ar";
   const isAgency = userType === "AGENCY";
-
   /* ─── State ─── */
   const [query, setQuery] = useState("");
   const [recentSearches, setRecentSearches] = useState<SearchHistory[]>([]);
@@ -107,7 +91,6 @@ export default function SearchPopover({
   const [isSearching, setIsSearching] = useState(false);
   const [searchError, setSearchError] = useState<string | null>(null);
   const [activeIndex, setActiveIndex] = useState(-1);
-
   /* ─── Refs ─── */
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -115,7 +98,6 @@ export default function SearchPopover({
   const lastSavedRef = useRef<{ q: string; at: number } | null>(null);
   const mountedRef = useRef(true);
   const inputRef = useRef<HTMLInputElement>(null);
-
   /* ─── Cleanup global ─── */
   useEffect(() => {
     mountedRef.current = true;
@@ -125,11 +107,9 @@ export default function SearchPopover({
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
   }, []);
-
   /* ═══════════════════════════════════════════════════════════
      HISTORIQUE
      ═══════════════════════════════════════════════════════════ */
-
   const loadSearches = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -151,12 +131,10 @@ export default function SearchPopover({
       if (mountedRef.current) setIsLoading(false);
     }
   }, [t]);
-
   const saveSearch = useCallback(
     async (searchQuery: string) => {
       const normalized = searchQuery.trim();
       if (!normalized) return;
-
       // Throttle : évite les POST redondants
       const last = lastSavedRef.current;
       if (
@@ -167,7 +145,6 @@ export default function SearchPopover({
         return;
       }
       lastSavedRef.current = { q: normalized, at: Date.now() };
-
       // Optimistic UI : ajoute tout de suite en tête
       const tempId = `tmp-${Date.now()}`;
       if (mountedRef.current) {
@@ -181,7 +158,6 @@ export default function SearchPopover({
           ].slice(0, MAX_HISTORY_CLIENT);
         });
       }
-
       try {
         const res = await fetch("/api/user/searches", {
           method: "POST",
@@ -200,7 +176,6 @@ export default function SearchPopover({
     },
     [loadSearches],
   );
-
   const deleteSearch = useCallback(
     async (id: string) => {
       // Optimistic update
@@ -216,7 +191,6 @@ export default function SearchPopover({
     },
     [loadSearches],
   );
-
   const clearAllSearches = useCallback(async () => {
     setRecentSearches((prev) => {
       const snapshot = prev;
@@ -228,7 +202,6 @@ export default function SearchPopover({
       });
       return [];
     });
-
     const snapshot = recentSearches;
     try {
       const res = await fetch("/api/user/searches", { method: "DELETE" });
@@ -237,11 +210,9 @@ export default function SearchPopover({
       if (mountedRef.current) setRecentSearches(snapshot);
     }
   }, [recentSearches]);
-
   /* ═══════════════════════════════════════════════════════════
      RECHERCHE LIVE (cache + abort)
      ═══════════════════════════════════════════════════════════ */
-
   const getFromCache = useCallback((key: string): SearchApiResponse | null => {
     const entry = cacheRef.current.get(key);
     if (!entry) return null;
@@ -251,7 +222,6 @@ export default function SearchPopover({
     }
     return entry.data;
   }, []);
-
   const setToCache = useCallback((key: string, data: SearchApiResponse) => {
     if (cacheRef.current.size >= CACHE_MAX_SIZE) {
       // Éviction FIFO simple
@@ -260,7 +230,6 @@ export default function SearchPopover({
     }
     cacheRef.current.set(key, { data, at: Date.now() });
   }, []);
-
   const runSearch = useCallback(
     async (searchQuery: string) => {
       const q = searchQuery.trim();
@@ -269,7 +238,6 @@ export default function SearchPopover({
         setSearchError(null);
         return;
       }
-
       // Cache hit
       const cached = getFromCache(q);
       if (cached) {
@@ -277,27 +245,21 @@ export default function SearchPopover({
         setSearchError(null);
         return;
       }
-
       // Abort la requête précédente
       abortRef.current?.abort();
       const controller = new AbortController();
       abortRef.current = controller;
-
       setIsSearching(true);
       setSearchError(null);
-
       try {
         const res = await fetch(
           `/api/search?q=${encodeURIComponent(q)}&limit=8&page=1`,
           { signal: controller.signal },
         );
-
         if (res.status === 429) throw new Error("rateLimited");
         if (!res.ok) throw new Error("searchFailed");
-
         const json: SearchApiResponse = await res.json();
         if (!mountedRef.current || controller.signal.aborted) return;
-
         setToCache(q, json);
         setSearchData(json);
       } catch (err) {
@@ -317,23 +279,19 @@ export default function SearchPopover({
     },
     [t, getFromCache, setToCache],
   );
-
   /* ─── Debounce sur la query ─── */
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
-
     if (!query.trim()) {
       setSearchData(null);
       setActiveIndex(-1);
       return;
     }
-
     debounceRef.current = setTimeout(() => runSearch(query), DEBOUNCE_MS);
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
   }, [query, runSearch]);
-
   /* ─── Reset à l'ouverture ─── */
   useEffect(() => {
     if (!open) return;
@@ -345,16 +303,13 @@ export default function SearchPopover({
     // Focus auto à l'ouverture
     requestAnimationFrame(() => inputRef.current?.focus());
   }, [open, loadSearches]);
-
   /* ─── Reset activeIndex quand les résultats changent ─── */
   useEffect(() => {
     setActiveIndex(-1);
   }, [searchData]);
-
   /* ═══════════════════════════════════════════════════════════
      NAVIGATION
      ═══════════════════════════════════════════════════════════ */
-
   const navigateToResult = useCallback(
     (item: SearchResult) => {
       // 1. Résultat PROFILE → profil public
@@ -363,7 +318,6 @@ export default function SearchPopover({
         router.push(`/app/provider/${item.id}`);
         return;
       }
-
       // 2. Résultat JOB
       //    - type === "PROFILE" → annonce publiée par un provider → son profil
       //    - type === "OFFER"   → mission client → page annonce
@@ -377,24 +331,20 @@ export default function SearchPopover({
     },
     [onClose, router],
   );
-
   /* ═══════════════════════════════════════════════════════════
      HANDLERS
      ═══════════════════════════════════════════════════════════ */
-
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
       const finalQuery = query.trim();
       if (!finalQuery) return;
-
       onSearch(finalQuery);
       await saveSearch(finalQuery);
       onClose();
     },
     [query, onSearch, saveSearch, onClose],
   );
-
   const handlePick = useCallback(
     (item: string) => {
       setQuery(item);
@@ -404,13 +354,11 @@ export default function SearchPopover({
     },
     [onSearch, onClose],
   );
-
   /* ─── Navigation clavier ─── */
   const flatResults = useMemo<SearchResult[]>(
     () => searchData?.results ?? [],
     [searchData],
   );
-
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Escape") {
@@ -418,9 +366,7 @@ export default function SearchPopover({
         onClose();
         return;
       }
-
       if (flatResults.length === 0) return;
-
       if (e.key === "ArrowDown") {
         e.preventDefault();
         setActiveIndex((i) => (i + 1) % flatResults.length);
@@ -436,7 +382,6 @@ export default function SearchPopover({
     },
     [flatResults, activeIndex, navigateToResult, onClose],
   );
-
   /* ─── Filtres (memo) ─── */
   const { jobResults, profileResults } = useMemo(() => {
     return {
@@ -444,17 +389,14 @@ export default function SearchPopover({
       profileResults: flatResults.filter((r) => r.resultType === "PROFILE"),
     };
   }, [flatResults]);
-
   /* ─── Index → id pour éviter indexOf O(n) ─── */
   const activeItemId = useMemo(
     () => (activeIndex >= 0 ? flatResults[activeIndex]?.id : null),
     [activeIndex, flatResults],
   );
-
   /* ═══════════════════════════════════════════════════════════
      RENDER
      ═══════════════════════════════════════════════════════════ */
-
   const renderResultItem = useCallback(
     (item: SearchResult) => {
       const isActive = item.id === activeItemId;
@@ -501,7 +443,6 @@ export default function SearchPopover({
     },
     [activeItemId, flatResults, navigateToResult],
   );
-
   return (
     <Popover open={open} onClose={onClose} title={t("title")}>
       <div
@@ -524,7 +465,6 @@ export default function SearchPopover({
             <XIcon size={18} className="sm:w-5 sm:h-5" />
           </button>
         </div>
-
         {/* Input */}
         <form
           onSubmit={handleSubmit}
@@ -556,7 +496,6 @@ export default function SearchPopover({
             } ${orbitron.className}`}
           />
         </form>
-
         {/* Résultats live */}
         {query.trim().length >= MIN_QUERY_LENGTH && (
           <div
@@ -569,7 +508,6 @@ export default function SearchPopover({
                 <div className="animate-spin rounded-full h-5 w-5 sm:h-6 sm:w-6 border-b-2 border-gray-300 dark:border-white/30" />
               </div>
             )}
-
             {searchError && (
               <p
                 className={`text-sm text-red-500 dark:text-red-400/70 px-2 py-2 ${orbitron.className}`}
@@ -577,7 +515,6 @@ export default function SearchPopover({
                 {searchError}
               </p>
             )}
-
             {!isSearching &&
               searchData &&
               searchData.results.length === 0 && (
@@ -594,7 +531,6 @@ export default function SearchPopover({
                   </p>
                 </div>
               )}
-
             {!isSearching &&
               searchData &&
               searchData.results.length > 0 &&
@@ -632,7 +568,6 @@ export default function SearchPopover({
               ))}
           </div>
         )}
-
         {/* Historique */}
         {query.trim().length < MIN_QUERY_LENGTH && (
           <div className="px-2 sm:px-0">
@@ -652,7 +587,6 @@ export default function SearchPopover({
                 </button>
               )}
             </div>
-
             {isLoading ? (
               <div className="flex items-center justify-center py-6 sm:py-8">
                 <div className="animate-spin rounded-full h-5 w-5 sm:h-6 sm:w-6 border-b-2 border-gray-300 dark:border-white/30" />

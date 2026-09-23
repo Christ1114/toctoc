@@ -1,12 +1,9 @@
-
 const IVORY_COAST_BOUNDS = {
     minLat: 4.1,
     maxLat: 10.8,
     minLng: -8.6,
     maxLng: -2.5,
   } as const;
-  
-
   const IVORY_COAST_POLYGON = [
     { lat: 4.1, lng: -8.6 },   // Sud-Ouest (Tabou)
     { lat: 4.4, lng: -7.5 },   // Sud (San-Pédro)
@@ -19,30 +16,23 @@ const IVORY_COAST_BOUNDS = {
     { lat: 8.5, lng: -8.6 },   // Ouest (Man)
     { lat: 6.5, lng: -8.6 },   // Sud-Ouest
   ] as const;
-  
   const EARTH_RADIUS_KM = 6371;
-  
-
   export interface LocationCheckResult {
     isValid: boolean;
     reason?: string;
     distanceToBorder?: number;
     region?: string;
   }
-  
   export interface RegionInfo {
     name: string;
     isServiceAvailable: boolean;
     centerLat: number;
     centerLng: number;
   }
-  
   // ============ CACHE ============
   const locationCache = new Map<string, { result: LocationCheckResult; timestamp: number }>();
   const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
   const MAX_CACHE_SIZE = 1000;
-  
-
   const REGIONS: Record<string, RegionInfo> = {
     "ABIDJAN": { 
       name: "Abidjan", 
@@ -87,8 +77,6 @@ const IVORY_COAST_BOUNDS = {
       centerLng: -6.4502 
     },
   };
- 
-  
   /**
    * Valide si une localisation est en Côte d'Ivoire
    * @param lat Latitude
@@ -113,32 +101,23 @@ const IVORY_COAST_BOUNDS = {
         reason: "coordonnees-invalides" 
       };
     }
-  
-   
     if (options?.useCache !== false) {
       const cachedResult = getCachedResult(lat, lng);
       if (cachedResult) {
         return cachedResult;
       }
     }
-  
     const toleranceKm = options?.toleranceKm ?? 0;
-    
-   
     const withinBounds = isWithinBounds(lat, lng, toleranceKm);
-    
     if (!withinBounds) {
       const result: LocationCheckResult = {
         isValid: false, 
         reason: "hors-zone-couverte",
         distanceToBorder: calculateDistanceToBorder(lat, lng)
       };
-      
       cacheResult(lat, lng, result);
       return result;
     }
-  
-    
     if (options?.usePolygon === true) {
       const withinPolygon = isPointInPolygon(lat, lng, IVORY_COAST_POLYGON);
       if (!withinPolygon) {
@@ -147,42 +126,32 @@ const IVORY_COAST_BOUNDS = {
           reason: "hors-frontieres-precises",
           distanceToBorder: calculateDistanceToBorder(lat, lng)
         };
-        
         cacheResult(lat, lng, result);
         return result;
       }
     }
-  
-  
     let region: string | undefined;
     if (options?.checkRegion === true) {
       region = findNearestRegion(lat, lng);
     }
-  
     const result: LocationCheckResult = {
       isValid: true,
       distanceToBorder: calculateDistanceToBorder(lat, lng),
       region
     };
-  
     cacheResult(lat, lng, result);
     return result;
   }
-  
- 
   export function validateLocationWithMinimumDistance(
     lat: number, 
     lng: number, 
     minDistanceFromBorderKm: number = 5
   ): LocationCheckResult {
     const baseValidation = validateLocation(lat, lng);
-    
     if (!baseValidation.isValid) {
       return baseValidation;
     }
-    
     const distanceToBorder = baseValidation.distanceToBorder ?? calculateDistanceToBorder(lat, lng);
-    
     if (distanceToBorder < minDistanceFromBorderKm) {
       return {
         isValid: false,
@@ -190,34 +159,23 @@ const IVORY_COAST_BOUNDS = {
         distanceToBorder
       };
     }
-    
     return {
       ...baseValidation,
       distanceToBorder
     };
   }
-  
- 
   function isValidCoordinate(lat: number, lng: number): boolean {
-   
     if (typeof lat !== "number" || typeof lng !== "number") {
       return false;
     }
-    
- 
     if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
       return false;
     }
-    
-   
     if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
       return false;
     }
-    
     return true;
   }
-  
-  
   function isWithinBounds(lat: number, lng: number, toleranceKm: number = 0): boolean {
     if (toleranceKm === 0) {
       return (
@@ -227,11 +185,8 @@ const IVORY_COAST_BOUNDS = {
         lng <= IVORY_COAST_BOUNDS.maxLng
       );
     }
-    
-
     const latTolerance = toleranceKm / 111;
     const lngTolerance = toleranceKm / (111 * Math.cos(lat * Math.PI / 180));
-    
     return (
       lat >= IVORY_COAST_BOUNDS.minLat - latTolerance &&
       lat <= IVORY_COAST_BOUNDS.maxLat + latTolerance &&
@@ -239,16 +194,11 @@ const IVORY_COAST_BOUNDS = {
       lng <= IVORY_COAST_BOUNDS.maxLng + lngTolerance
     );
   }
-  
-
   function calculateDistanceToBorder(lat: number, lng: number): number {
     const centerLat = (IVORY_COAST_BOUNDS.minLat + IVORY_COAST_BOUNDS.maxLat) / 2;
     const centerLng = (IVORY_COAST_BOUNDS.minLng + IVORY_COAST_BOUNDS.maxLng) / 2;
-    
     return calculateHaversineDistance(lat, lng, centerLat, centerLng);
   }
-  
-  
   function calculateHaversineDistance(
     lat1: number, 
     lng1: number, 
@@ -257,43 +207,32 @@ const IVORY_COAST_BOUNDS = {
   ): number {
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLng = (lng2 - lng1) * Math.PI / 180;
-    
     const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
       Math.sin(dLng / 2) * Math.sin(dLng / 2);
-    
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    
     return EARTH_RADIUS_KM * c;
   }
-
   function isPointInPolygon(
     lat: number, 
     lng: number, 
     polygon: readonly { lat: number; lng: number }[]
   ): boolean {
     let inside = false;
-    
     for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
       const xi = polygon[i].lat;
       const yi = polygon[i].lng;
       const xj = polygon[j].lat;
       const yj = polygon[j].lng;
-      
       const intersect = ((yi > lng) !== (yj > lng)) &&
         (lat < (xj - xi) * (lng - yi) / (yj - yi) + xi);
-      
       if (intersect) inside = !inside;
     }
-    
     return inside;
   }
-  
- 
   function findNearestRegion(lat: number, lng: number): string | undefined {
     let nearestRegion: string | undefined;
     let minDistance = Infinity;
-    
     for (const [regionKey, regionInfo] of Object.entries(REGIONS)) {
       const distance = calculateHaversineDistance(
         lat, 
@@ -301,38 +240,27 @@ const IVORY_COAST_BOUNDS = {
         regionInfo.centerLat, 
         regionInfo.centerLng
       );
-      
       if (distance < minDistance) {
         minDistance = distance;
         nearestRegion = regionInfo.name;
       }
     }
-    
     return nearestRegion;
   }
-  
   function getCachedResult(lat: number, lng: number): LocationCheckResult | null {
- 
     const roundedLat = Math.round(lat * 1000) / 1000;
     const roundedLng = Math.round(lng * 1000) / 1000;
     const cacheKey = `${roundedLat},${roundedLng}`;
-    
     const cached = locationCache.get(cacheKey);
     if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
       return cached.result;
     }
-    
     return null;
   }
-  
-
   function cacheResult(lat: number, lng: number, result: LocationCheckResult): void {
-   
     const roundedLat = Math.round(lat * 1000) / 1000;
     const roundedLng = Math.round(lng * 1000) / 1000;
     const cacheKey = `${roundedLat},${roundedLng}`;
-    
-    
     if (locationCache.size >= MAX_CACHE_SIZE) {
       const oldestTime = Date.now() - CACHE_TTL;
       for (const [key, value] of locationCache) {
@@ -341,24 +269,16 @@ const IVORY_COAST_BOUNDS = {
         }
       }
     }
-    
     locationCache.set(cacheKey, { result, timestamp: Date.now() });
   }
-  
-  
   export function getRegionInfo(regionName: string): RegionInfo | undefined {
     const regionKey = Object.keys(REGIONS).find(
       key => REGIONS[key].name.toUpperCase() === regionName.toUpperCase()
     );
-    
     return regionKey ? REGIONS[regionKey] : undefined;
   }
-  
-  
   export function isRegionAvailable(regionName: string): boolean {
     const region = getRegionInfo(regionName);
     return region?.isServiceAvailable ?? false;
   }
-  
-
   export { IVORY_COAST_BOUNDS, REGIONS };

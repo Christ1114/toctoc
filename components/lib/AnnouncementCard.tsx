@@ -1,9 +1,7 @@
 'use client';
-
 import { orbitron } from '@/fonts/font';
 import { Baby, Sparkles, ChefHat, Car, Shield, Flower2, Star } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-
 type Announcement = {
   id: string;
   title: string;
@@ -32,7 +30,6 @@ type Announcement = {
   region: { name: string };
   source: { name: string };
 };
-
 const JOB_ICONS: Record<string, React.ElementType> = {
   nounou: Baby,
   menagere: Sparkles,
@@ -41,21 +38,17 @@ const JOB_ICONS: Record<string, React.ElementType> = {
   gardien: Shield,
   jardinier: Flower2,
 };
-
 export default function AnnouncementCard({ announcement: a }: { announcement: Announcement | null | undefined }) {
   const t = useTranslations("announcementCard");
-
   if (!a) {
     if (process.env.NODE_ENV !== 'production') {
       console.warn('AnnouncementCard reçu sans `announcement`');
     }
     return null;
   }
-
   const Icon = JOB_ICONS[a.jobType?.slug ?? ''] ?? Sparkles;
   const isRtl = a.language === 'ar';
   const workDays = a.workDays ?? [];
-
   function formatSalary(a: Announcement): string {
     if (a.salaryRaw) return a.salaryRaw;
     if (a.salaryMin && a.salaryMax && a.salaryMin !== a.salaryMax) {
@@ -64,13 +57,11 @@ export default function AnnouncementCard({ announcement: a }: { announcement: An
     if (a.salaryMin) return `${a.salaryMin.toLocaleString('fr-FR')} FCFA/${a.salaryPeriod ?? t("salaryPeriod")}`;
     return t("salaryNegotiable");
   }
-
   function formatTransport(a: Announcement): string {
     if (a.transportAllowance === null || a.transportAllowance === undefined) return '';
     if (a.transportAllowance === 0) return t("noTransport");
     return `+${a.transportAllowance.toLocaleString('fr-FR')} FCFA transport`;
   }
-
   return (
     <div
       dir={isRtl ? 'rtl' : 'ltr'}
@@ -83,21 +74,16 @@ export default function AnnouncementCard({ announcement: a }: { announcement: An
                   transition-colors duration-200 ${orbitron.className}
                   ${a.isFeatured ? 'bg-amber-50/40 dark:bg-amber-900/10' : ''}`}
     >
-      
       <div className="hidden sm:flex w-16 lg:w-20 shrink-0 flex-col items-center gap-1.5">
         <div className="flex h-10 w-10 lg:h-12 lg:w-12 items-center justify-center rounded-full bg-gray-100 dark:bg-stone-800">
           <Icon size={20} strokeWidth={1.75} className="text-gray-500 dark:text-stone-400" />
         </div>
         <Star size={14} className="text-gray-300 dark:text-stone-600" />
       </div>
-
-     
       <div className="flex sm:w-32 lg:w-36 shrink-0 flex-row sm:flex-col items-center sm:items-start gap-2 sm:gap-0.5 text-sm">
-        
         <div className="flex sm:hidden h-8 w-8 items-center justify-center rounded-full bg-gray-100 dark:bg-stone-800 shrink-0">
           <Icon size={16} strokeWidth={1.75} className="text-gray-500 dark:text-stone-400" />
         </div>
-        
         <span className="text-xs sm:text-sm font-bold text-amber-600 dark:text-amber-400">
           {formatSalary(a)}
         </span>
@@ -113,7 +99,6 @@ export default function AnnouncementCard({ announcement: a }: { announcement: An
         )}
       </div>
       <div className="min-w-0 flex-1">
-       
         <div className="flex flex-wrap items-center gap-1.5">
           <h3 className="text-sm sm:text-[15px] font-bold text-blue-600 dark:text-blue-400 hover:underline cursor-pointer">
             {a.title}

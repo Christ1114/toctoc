@@ -3,9 +3,7 @@ import { orbitron } from '@/fonts/font';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { Mail, User, MessageSquare, Tag, Send, Loader, CheckCircle, XCircle } from 'lucide-react';
-
 const categories = ['usageQuestion', 'signupRequest', 'passwordRequest', 'paymentRequest'] as const;
-
 const ContactFormComponent = () => {
   const t = useTranslations('contact');
   const [selectedCategory, setSelectedCategory] = useState<typeof categories[number]>('usageQuestion');
@@ -16,28 +14,20 @@ const ContactFormComponent = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [emailError, setEmailError] = useState('');
   const [isValidatingEmail, setIsValidatingEmail] = useState(false);
-
-
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setEmail(value);
-    
-  
     if (value && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim())) {
       setEmailError(t('invalidEmail') || 'Email invalide');
     } else {
       setEmailError('');
     }
   };
-
-
   const validateEmailWithAPI = async (emailToValidate: string): Promise<boolean> => {
     setIsValidatingEmail(true);
     setEmailError('');
-
     try {
       console.log('🔍 Validation email avec API:', emailToValidate);
-      
       const response = await fetch('/api/validate', {
         method: 'POST',
         headers: {
@@ -45,20 +35,15 @@ const ContactFormComponent = () => {
         },
         body: JSON.stringify({ email: emailToValidate.trim() }),
       });
-
       const data = await response.json();
-
       if (!response.ok) {
         throw new Error(data.message || 'Erreur de validation');
       }
-
       console.log('📋 Résultat validation:', data);
-
       if (!data.valid) {
         setEmailError(data.message || t('invalidEmail') || 'Email invalide');
         return false;
       }
-
       return true;
     } catch (error) {
       console.error('❌ Erreur validation email:', error);
@@ -68,30 +53,22 @@ const ContactFormComponent = () => {
       setIsValidatingEmail(false);
     }
   };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('loading');
     setErrorMessage('');
-
-    
     if (!email.trim() || !name.trim() || !message.trim()) {
       setStatus('error');
       setErrorMessage(t('checkFields') || 'Veuillez remplir tous les champs');
       return;
     }
-
     try {
-      
       const emailValid = await validateEmailWithAPI(email);
-      
       if (!emailValid) {
         setStatus('error');
         setErrorMessage(t('checkEmail') || 'Veuillez vérifier votre email');
         return;
       }
-
-     
       const formData = {
         category: selectedCategory,
         email: email.trim(),
@@ -99,10 +76,7 @@ const ContactFormComponent = () => {
         message: message.trim(),
         categoryLabel: t(`categories.${selectedCategory}`),
       };
-
       console.log('📤 Envoi des données:', formData);
-
-
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
@@ -110,40 +84,30 @@ const ContactFormComponent = () => {
         },
         body: JSON.stringify(formData),
       });
-
       const data = await response.json();
-
       if (!response.ok) {
         throw new Error(data.error || 'Erreur lors de l\'envoi');
       }
-
       console.log('✅ Message envoyé avec succès:', data);
       setStatus('success');
-      
-     
       setEmail('');
       setName('');
       setMessage('');
       setSelectedCategory('usageQuestion');
       setEmailError('');
-
       setTimeout(() => setStatus('idle'), 5000);
-
     } catch (error) {
       console.error('❌ Erreur:', error);
       setStatus('error');
       setErrorMessage(error instanceof Error ? error.message : 'Erreur inconnue');
     }
   };
-
   return (
     <form
       onSubmit={handleSubmit}
       className={`w-full max-w-4xl mx-auto pt-4 sm:pt-6 md:pt-8 pb-4 sm:pb-6 md:pb-8 px-3 sm:px-6 md:px-8 border border-zinc-300 dark:border-zinc-700 text-black dark:text-zinc-300 ${orbitron.className}`}
     >
       <div className="space-y-3 sm:space-y-4">
-      
-     
         <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
           <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
             <Tag className="w-4 h-4 shrink-0" />
@@ -176,8 +140,6 @@ const ContactFormComponent = () => {
             </p>
           </div>
         </div>
-
-  
         <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
           <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
             <Mail className="w-4 h-4 shrink-0" />
@@ -218,8 +180,6 @@ const ContactFormComponent = () => {
             )}
           </div>
         </div>
-
-  
         <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
           <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
             <User className="w-4 h-4 shrink-0" />
@@ -237,8 +197,6 @@ const ContactFormComponent = () => {
             />
           </div>
         </div>
-
-      
         <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
           <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-xs sm:text-sm p-2 sm:p-3 flex items-center gap-2">
             <MessageSquare className="w-4 h-4 shrink-0" />
@@ -257,23 +215,18 @@ const ContactFormComponent = () => {
           </div>
         </div>
       </div>
-
-   
       {status === 'success' && (
         <div className="mt-4 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg flex items-center gap-2 text-green-700 dark:text-green-400">
           <CheckCircle className="w-5 h-5 shrink-0" />
           <span className="text-xs sm:text-sm">{t('successMessage')}</span>
         </div>
       )}
-
       {status === 'error' && (
         <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg flex items-center gap-2 text-red-700 dark:text-red-400">
           <XCircle className="w-5 h-5 shrink-0" />
           <span className="text-xs sm:text-sm">{errorMessage || t('errorMessage')}</span>
         </div>
       )}
-
-     
       <div className="flex justify-center mt-4 sm:mt-6 pt-4 border-t border-zinc-300 dark:border-zinc-700">
         <button
           type="submit"
@@ -296,5 +249,4 @@ const ContactFormComponent = () => {
     </form>
   );
 };
-
 export default ContactFormComponent;

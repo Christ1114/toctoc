@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect, useRef } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
@@ -20,14 +19,11 @@ import SearchPopover from "@/components/app/utils/SearchPopover";
 import VrConfirmPopover from "@/components/app/utils/VrConfirmPopover";
 import SettingsPopover from "@/components/app/utils/settingsPopover";
 import { useSession } from "@/app/context/SessionContext";
-
 type NavKey = "home" | "search" | "video" | "chat" | "phone" | "vr";
-
 type NavItem = {
   key: NavKey;
   icon: React.ComponentType<{ size?: number; weight?: "regular" | "bold" | "fill" }>;
 };
-
 const NAV_ITEMS: NavItem[] = [
   { key: "home", icon: HouseIcon },
   { key: "search", icon: MagnifyingGlassIcon },
@@ -36,39 +32,29 @@ const NAV_ITEMS: NavItem[] = [
   { key: "phone", icon: PhoneIcon },
   { key: "vr", icon: VirtualRealityIcon },
 ];
-
 const POPOVER_KEYS: (NavKey | "settings")[] = ["search", "vr", "settings"];
-
 const RTL_LOCALES = ["ar"];
-
 type Breakpoint = "mobile" | "tablet" | "desktop";
-
 const Sidebar = () => {
   const locale = useLocale();
   const t = useTranslations("Sidebar");
   const router = useRouter();
-
   // 👇 Par défaut : ouvert sur desktop.
   // On laisse `true` en init pour éviter un flash SSR (le serveur ne connaît
   // pas la largeur), puis un useEffect ajuste selon le vrai breakpoint.
   const [collapsed, setCollapsed] = useState(true);
   const [active, setActive] = useState<NavKey | "settings">("home");
   const [breakpoint, setBreakpoint] = useState<Breakpoint>("desktop");
-
   // Empêche de forcer l'ouverture/fermeture à chaque resize après la 1re détection
   const initializedRef = useRef(false);
-
   const [searchOpen, setSearchOpen] = useState(false);
   const [vrOpen, setVrOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const { user } = useSession();
-
   const isRTL = RTL_LOCALES.includes(locale);
-
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
-
       let bp: Breakpoint;
       if (width < 768) {
         bp = "mobile";
@@ -77,25 +63,20 @@ const Sidebar = () => {
       } else {
         bp = "desktop";
       }
-
       setBreakpoint(bp);
       if (!initializedRef.current) {
         setCollapsed(bp !== "desktop");
         initializedRef.current = true;
         return;
       }
-
-     
       if (bp === "tablet") {
         setCollapsed(true);
       }
     };
-
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
   const handleNavClick = (key: NavKey | "settings") => {
     if (key === "home") {
       setActive(key);
@@ -119,15 +100,12 @@ const Sidebar = () => {
     }
     setActive(key);
   };
-
   const handleSearch = (query: string) => {
     console.log("Recherche :", query);
   };
-
   const handleVrConfirm = () => {
     console.log("Casque VR confirmé, lancement de l'entretien virtuel");
   };
-
   const popovers = (
     <>
       <SearchPopover
@@ -140,7 +118,6 @@ const Sidebar = () => {
       <SettingsPopover open={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </>
   );
-
   const NavButton = ({
     navKey,
     icon: Icon,
@@ -155,7 +132,6 @@ const Sidebar = () => {
     const isActive = active === navKey;
     const label = navKey === "settings" ? t("settings") : t(navKey);
     const hasPopover = POPOVER_KEYS.includes(navKey);
-
     return (
       <button
         onClick={() => handleNavClick(navKey)}
@@ -189,7 +165,6 @@ const Sidebar = () => {
       </button>
     );
   };
-
   const renderSidebarItems = (showLabel: boolean, justifyCenter = false) => (
     <nav className="mt-2 flex flex-col gap-1 px-3" aria-label={t("navLabel")}>
       {NAV_ITEMS.map(({ key, icon }) => (
@@ -203,10 +178,8 @@ const Sidebar = () => {
       ))}
     </nav>
   );
-
   const LogoDisplay = () => {
     const [imgError, setImgError] = useState(false);
-
     if (imgError) {
       return (
         <span className="text-sm font-medium tracking-tight text-zinc-900 dark:text-white/90">
@@ -214,7 +187,6 @@ const Sidebar = () => {
         </span>
       );
     }
-
     return collapsed ? (
       <div className="flex items-center justify-center w-full">
         <Image
@@ -277,7 +249,6 @@ const Sidebar = () => {
               </button>
             );
           })}
-
           <button
             onClick={() => handleNavClick("settings")}
             aria-label={t("settings")}
@@ -297,7 +268,6 @@ const Sidebar = () => {
             )}
           </button>
         </nav>
-
         {popovers}
       </>
     );
@@ -337,12 +307,10 @@ const Sidebar = () => {
           </div>
           <div className="overflow-hidden">{renderSidebarItems(!collapsed)}</div>
         </div>
-
         <div className="flex flex-col gap-3 pb-4">
           <div className="px-3">
             <NavButton navKey="settings" icon={GearSixIcon} showLabel={!collapsed} />
           </div>
-
           <div className="border-t border-black/5 dark:border-white/5 pt-3 mx-3">
             <button
               onClick={() => setCollapsed((c) => !c)}
@@ -364,5 +332,4 @@ const Sidebar = () => {
     </>
   );
 };
-
 export default Sidebar;

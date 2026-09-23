@@ -9,20 +9,15 @@ import {
   rateLimitHeaders,
   getClientIp,
 } from "@/app/lib/security/rate-limit";
-
 /* ═══════════════ Constantes ═══════════════ */
 const READ_RATE_LIMIT_MAX = 100; // GET public
 const READ_RATE_LIMIT_WINDOW_MS = 60 * 1000;
-
 const WRITE_RATE_LIMIT_MAX = 20; // PATCH/DELETE
 const WRITE_RATE_LIMIT_WINDOW_MS = 60 * 1000;
-
 /* ═══════════════ Validation PATCH (tous les champs optionnels) ═══════════════ */
 const updateAnnouncementSchema = createAnnouncementSchema.partial();
-
 /* ═══════════════ Validation des params URL ═══════════════ */
 const idSchema = z.string().min(1).max(50);
-
 /* ═══════════════════════════════════════════════════════════
    GET — Récupérer une annonce (public, rate-limité par IP)
    ═══════════════════════════════════════════════════════════ */
@@ -44,14 +39,12 @@ export async function GET(
         { status: 429, headers: rateLimitHeaders(READ_RATE_LIMIT_MAX, rl) }
       );
     }
-
     // ── 2. Valider l'ID ──
     const { id } = await params;
     const parsedId = idSchema.safeParse(id);
     if (!parsedId.success) {
       return NextResponse.json({ error: "ID invalide" }, { status: 400 });
     }
-
     // ── 3. Récupérer l'annonce ──
     const announcement = await prisma.announcement.findUnique({
       where: { id: parsedId.data },
@@ -94,11 +87,9 @@ export async function GET(
         // et ça évite de faciliter l'énumération des users
       },
     });
-
     if (!announcement) {
       return NextResponse.json({ error: "Annonce introuvable" }, { status: 404 });
     }
-
     return NextResponse.json(
       { announcement },
       {
@@ -114,7 +105,6 @@ export async function GET(
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }
-
 /* ═══════════════════════════════════════════════════════════
    PATCH — Modifier une annonce (owner only)
    ═══════════════════════════════════════════════════════════ */
@@ -128,7 +118,6 @@ export async function PATCH(
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
-
     // ── 2. Charger user + flags ──
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
@@ -139,7 +128,6 @@ export async function PATCH(
         banExpires: true,
       },
     });
-
     if (!user) {
       return NextResponse.json({ error: "Utilisateur non trouvé" }, { status: 404 });
     }
@@ -149,7 +137,6 @@ export async function PATCH(
     if (!user.isActive) {
       return NextResponse.json({ error: "Compte désactivé" }, { status: 403 });
     }
-
     // ── 3. Rate limit par user ──
     const rl = await checkRateLimit(
       `announce:write:${user.id}`,
@@ -162,20 +149,17 @@ export async function PATCH(
         { status: 429, headers: rateLimitHeaders(WRITE_RATE_LIMIT_MAX, rl) }
       );
     }
-
     // ── 4. Valider l'ID ──
     const { id } = await params;
     const parsedId = idSchema.safeParse(id);
     if (!parsedId.success) {
       return NextResponse.json({ error: "ID invalide" }, { status: 400 });
     }
-
     // ── 5. Vérifier l'annonce + propriété ──
     const existing = await prisma.announcement.findUnique({
       where: { id: parsedId.data },
       select: { id: true, userId: true, isUserGenerated: true },
     });
-
     if (!existing) {
       return NextResponse.json({ error: "Annonce introuvable" }, { status: 404 });
     }
@@ -190,13 +174,11 @@ export async function PATCH(
         { status: 403 }
       );
     }
-
     // ── 6. Validation Zod ──
     const json = await req.json().catch(() => null);
     if (!json || typeof json !== "object") {
       return NextResponse.json({ error: "Corps de requête invalide" }, { status: 400 });
     }
-
     const parsed = updateAnnouncementSchema.safeParse(json);
     if (!parsed.success) {
       return NextResponse.json(
@@ -204,9 +186,7 @@ export async function PATCH(
         { status: 400 }
       );
     }
-
     const data = parsed.data;
-
     // ── 7. Si jobTypeId / regionId fournis, vérifier existence ──
     const [jobType, region] = await Promise.all([
       data.jobTypeId
@@ -222,7 +202,6 @@ export async function PATCH(
     if (data.regionId && !region) {
       return NextResponse.json({ error: "Localisation introuvable" }, { status: 400 });
     }
-
     // ── 8. Construire le payload de mise à jour (seulement les champs fournis) ──
     const updateData: Record<string, unknown> = {};
     if (data.title !== undefined) updateData.title = data.title;
@@ -242,7 +221,6 @@ export async function PATCH(
     if (data.isUrgent !== undefined) updateData.isUrgent = data.isUrgent;
     if (data.contactPhone !== undefined) updateData.contactPhone = data.contactPhone ?? null;
     if (data.contactWhatsapp !== undefined) updateData.contactWhatsapp = data.contactWhatsapp ?? null;
-
     // Si rien à modifier
     if (Object.keys(updateData).length === 0) {
       return NextResponse.json(
@@ -250,7 +228,6 @@ export async function PATCH(
         { status: 400 }
       );
     }
-
     // ── 9. Mise à jour ──
     const announcement = await prisma.announcement.update({
       where: { id: parsedId.data },
@@ -269,7 +246,6 @@ export async function PATCH(
         region: { select: { id: true, name: true, slug: true } },
       },
     });
-
     return NextResponse.json(
       { announcement },
       {
@@ -284,7 +260,6 @@ export async function PATCH(
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }
-
 /* ═══════════════════════════════════════════════════════════
    DELETE — Supprimer une annonce (owner only)
    ═══════════════════════════════════════════════════════════ */
@@ -298,13 +273,11 @@ export async function DELETE(
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
-
     // ── 2. Charger user + flags ──
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
       select: { id: true, isActive: true, banned: true, banExpires: true },
     });
-
     if (!user) {
       return NextResponse.json({ error: "Utilisateur non trouvé" }, { status: 404 });
     }
@@ -314,7 +287,6 @@ export async function DELETE(
     if (!user.isActive) {
       return NextResponse.json({ error: "Compte désactivé" }, { status: 403 });
     }
-
     // ── 3. Rate limit par user ──
     const rl = await checkRateLimit(
       `announce:write:${user.id}`,
@@ -327,20 +299,17 @@ export async function DELETE(
         { status: 429, headers: rateLimitHeaders(WRITE_RATE_LIMIT_MAX, rl) }
       );
     }
-
     // ── 4. Valider l'ID ──
     const { id } = await params;
     const parsedId = idSchema.safeParse(id);
     if (!parsedId.success) {
       return NextResponse.json({ error: "ID invalide" }, { status: 400 });
     }
-
     // ── 5. Vérifier l'annonce + propriété ──
     const existing = await prisma.announcement.findUnique({
       where: { id: parsedId.data },
       select: { id: true, userId: true, isUserGenerated: true },
     });
-
     if (!existing) {
       return NextResponse.json({ error: "Annonce introuvable" }, { status: 404 });
     }
@@ -353,10 +322,8 @@ export async function DELETE(
         { status: 403 }
       );
     }
-
     // ── 6. Suppression ──
     await prisma.announcement.delete({ where: { id: parsedId.data } });
-
     return NextResponse.json(
       { success: true },
       {

@@ -1,8 +1,6 @@
 "use client";
-
 import { useCallback, useEffect, useRef, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
-
 export type NotificationType =
   | "NEW_OFFER"
   | "PROFILE_VERIFIED"
@@ -10,7 +8,6 @@ export type NotificationType =
   | "BOOKING_UPDATE"
   | "REVIEW_RECEIVED"
   | "SYSTEM";
-
 export interface AppNotification {
   id: string;
   userId: string;
@@ -23,12 +20,10 @@ export interface AppNotification {
   readAt: string | null;
   createdAt: string;
 }
-
 export function useNotifications(userId: string | null | undefined) {
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
   const [loading, setLoading] = useState(true);
   const channelRef = useRef<ReturnType<typeof supabase.channel> | null>(null);
-
   const loadInitial = useCallback(async () => {
     setLoading(true);
     try {
@@ -41,7 +36,6 @@ export function useNotifications(userId: string | null | undefined) {
       setLoading(false);
     }
   }, []);
-
   const markAsRead = useCallback(async (ids: string[]) => {
     setNotifications((prev) =>
       prev.map((n) => (ids.includes(n.id) ? { ...n, read: true } : n))
@@ -56,7 +50,6 @@ export function useNotifications(userId: string | null | undefined) {
       console.error("Erreur marquage notification lue:", err);
     }
   }, []);
-
   const markAllAsRead = useCallback(async () => {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
     try {
@@ -69,21 +62,15 @@ export function useNotifications(userId: string | null | undefined) {
       console.error("Erreur marquage toutes notifications lues:", err);
     }
   }, []);
-
   useEffect(() => {
     if (!userId) return;
-
     let active = true;
-
     const setup = async () => {
       await loadInitial();
-
       const tokenRes = await fetch("/api/notifications/realtime-token");
       const { token } = await tokenRes.json();
       if (!active || !token) return;
-
       supabase.realtime.setAuth(token);
-
       const channel = supabase
         .channel(`notifications:${userId}`)
         .on(
@@ -100,12 +87,9 @@ export function useNotifications(userId: string | null | undefined) {
           }
         )
         .subscribe();
-
       channelRef.current = channel;
     };
-
     setup();
-
     return () => {
       active = false;
       if (channelRef.current) {
@@ -114,8 +98,6 @@ export function useNotifications(userId: string | null | undefined) {
       }
     };
   }, [userId, loadInitial]);
-
   const unreadCount = notifications.filter((n) => !n.read).length;
-
   return { notifications, loading, unreadCount, markAsRead, markAllAsRead, refresh: loadInitial };
 }

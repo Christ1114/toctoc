@@ -14,13 +14,11 @@ import {
   LoginFormErrors 
 } from "@/app/lib/validation/loginValidation";
 import { signInWithEmail, signInWithGoogle, signInWithTikTok } from "@/app/lib/auth-client";
-
 interface LoginData {
   email: string;
   password: string;
   rememberMe: boolean;
 }
-
 const LoginForm = () => {
   const t = useTranslations('login');
   const [loginData, setLoginData] = useState<LoginData>({
@@ -32,13 +30,10 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const validationContent = {
     emailWarning: { value: t('errors.invalidEmail') },
     passwordWarning: { value: t('errors.invalidPassword') },
   };
-
-
   const handleEmailChange = (value: string) => {
     setLoginData({ ...loginData, email: value });
     if (value.trim() === '') {
@@ -49,7 +44,6 @@ const LoginForm = () => {
       setErrors({ ...errors, email: undefined });
     }
   };
-
   const handlePasswordChange = (value: string) => {
     setLoginData({ ...loginData, password: value });
     if (value.trim() === '') {
@@ -58,35 +52,27 @@ const LoginForm = () => {
       setErrors({ ...errors, password: undefined });
     }
   };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
- 
     const submitErrors: LoginFormErrors = {};
-    
     if (!isEmailValid(loginData.email)) {
       submitErrors.email = validationContent.emailWarning.value;
     }
-    
     if (loginData.password.trim() === '') {
       submitErrors.password = validationContent.passwordWarning.value;
     }
-    
     if (Object.values(submitErrors).some(Boolean)) {
       setErrors(submitErrors);
       setIsSubmitting(false);
       return;
     }
-    
     try {
-     
       const { result, error } = await signInWithEmail({
         email: loginData.email,
         password: loginData.password,
         rememberMe: loginData.rememberMe,
       });
-      
       if (error) {
         console.error('Erreur connexion:', error.message);
         setErrors({ 
@@ -94,8 +80,6 @@ const LoginForm = () => {
           password: t('errors.invalidCredentials') 
         });
       } else {
-       
-      
         window.location.href = '/preloading';
       }
     } catch (err) {
@@ -104,26 +88,20 @@ const LoginForm = () => {
       setIsSubmitting(false);
     }
   };
-
   const handleGoogleLogin = async () => {
     setIsLoading('google');
     try {
       const { error: signInError } = await signInWithGoogle();
-     
     } catch (err) {
-     
     } finally {
       setIsLoading(null);
     }
   };
-  
   const handleTikTokLogin = async () => {
     setIsLoading('tiktok');
     try {
       const { error: signInError } = await signInWithTikTok();
-     
     } catch (err) {
-      
     } finally {
       setIsLoading(null);
     }
@@ -146,9 +124,7 @@ const LoginForm = () => {
               {t('subtitle')}
             </p>
           </div>
-
           <div className="space-y-3 sm:space-y-4 md:space-y-5">
-
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-[10px] sm:text-xs md:text-sm p-2 sm:p-2.5 md:p-3 flex items-center gap-1.5 sm:gap-2">
                 <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 text-[#432dd7]" />
@@ -174,8 +150,6 @@ const LoginForm = () => {
                 )}
               </div>
             </div>
-
-         
             <div className="border border-zinc-300 dark:border-zinc-700 rounded-lg overflow-hidden">
               <div className="bg-zinc-100 dark:bg-zinc-800 font-bold text-[10px] sm:text-xs md:text-sm p-2 sm:p-2.5 md:p-3 flex items-center gap-1.5 sm:gap-2">
                 <Lock className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 text-[#432dd7]" />
@@ -214,7 +188,6 @@ const LoginForm = () => {
                 )}
               </div>
             </div>
-
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-4 px-1">
               <label className="flex items-center gap-1.5 sm:gap-2 cursor-pointer group">
                 <input
@@ -234,8 +207,6 @@ const LoginForm = () => {
                 {t('labels.forgotPassword')}
               </Link>
             </div>
-
-
             <button
               type="submit"
               disabled={isSubmitting}
@@ -249,8 +220,6 @@ const LoginForm = () => {
               {isSubmitting ? t('buttons.loading') : t('buttons.submit')}
             </button>
           </div>
-
-  
           <div className="relative my-4 sm:my-5 md:my-6">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-zinc-300 dark:border-zinc-700"></div>
@@ -261,10 +230,7 @@ const LoginForm = () => {
               </span>
             </div>
           </div>
-
-    
           <div className="space-y-2 sm:space-y-2.5 md:space-y-3">
-          
             <button
               type="button"
               onClick={handleGoogleLogin}
@@ -285,8 +251,6 @@ const LoginForm = () => {
                 {t('providers.google')}
               </span>
             </button>
-
-  
             <button
               type="button"
               onClick={handleTikTokLogin}
@@ -305,7 +269,6 @@ const LoginForm = () => {
               </span>
             </button>
           </div>
-
           <div className="mt-4 sm:mt-5 md:mt-6 text-center">
             <p className="text-[10px] sm:text-xs md:text-sm text-zinc-600 dark:text-zinc-400">
               {t('noAccount')}{' '}
@@ -319,5 +282,4 @@ const LoginForm = () => {
     </div>
   );
 };
-
 export default LoginForm;

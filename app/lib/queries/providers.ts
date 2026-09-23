@@ -1,6 +1,4 @@
-
 import { prisma } from "@/lib/prisma";
-
 export async function getProviderById(id: string) {
   const [provider, reviewStats] = await Promise.all([
     prisma.user.findFirst({
@@ -43,11 +41,8 @@ export async function getProviderById(id: string) {
       _count: { _all: true },
     }),
   ]);
-
   if (!provider) return null;
-
   const { _count, hourlyRate, ...rest } = provider;
-
   return {
     ...rest,
     hourlyRate: hourlyRate ? Number(hourlyRate) : null,
@@ -58,11 +53,9 @@ export async function getProviderById(id: string) {
     },
   };
 }
-
 export type PublicProvider = NonNullable<
   Awaited<ReturnType<typeof getProviderById>>
 >;
-
 export async function getProviderVideos(
   providerId: string,
   page: number = 0,
@@ -71,7 +64,6 @@ export async function getProviderVideos(
   const safePage = Math.max(0, page);
   const safeSize = Math.min(50, Math.max(1, pageSize));
   const skip = safePage * safeSize;
-
   const [videos, total] = await Promise.all([
     prisma.providerVideo.findMany({
       where: { providerId, isVisible: true },
@@ -94,7 +86,6 @@ export async function getProviderVideos(
       where: { providerId, isVisible: true },
     }),
   ]);
-
   return {
     videos,
     total,
@@ -103,7 +94,6 @@ export async function getProviderVideos(
     hasMore: skip + videos.length < total,
   };
 }
-
 export type ProviderVideoPublic = Awaited<
   ReturnType<typeof getProviderVideos>
 >["videos"][number];

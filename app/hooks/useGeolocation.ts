@@ -1,14 +1,11 @@
 "use client";
-
 import { useState, useCallback } from "react";
-
 type GeolocationState = {
   latitude: number | null;
   longitude: number | null;
   loading: boolean;
   error: string | null;
 };
-
 export function useGeolocation() {
   const [state, setState] = useState<GeolocationState>({
     latitude: null,
@@ -16,21 +13,16 @@ export function useGeolocation() {
     loading: false,
     error: null,
   });
-
   const requestLocation = useCallback(() => {
     if (!navigator.geolocation) {
       setState((s) => ({ ...s, error: "Géolocalisation non supportée par ce navigateur" }));
       return;
     }
-
     setState((s) => ({ ...s, loading: true, error: null }));
-
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude } = position.coords;
-
         setState({ latitude, longitude, loading: false, error: null });
-
         try {
           await fetch("/api/user/location", {
             method: "POST",
@@ -55,6 +47,5 @@ export function useGeolocation() {
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
     );
   }, []);
-
   return { ...state, requestLocation };
 }

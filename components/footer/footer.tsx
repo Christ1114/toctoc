@@ -8,7 +8,6 @@ import img1 from "@/public/assets/pictures/number.png";
 import Img2 from "@/public/assets/pictures/codeQr.jpg";
 import Img3 from "@/public/assets/pictures/womanphone.png";
 import { ChevronDown, ChevronUp, Phone, MapPin, Clock, Download, MessageCircle } from 'lucide-react';
-
 interface FooterProps {
     id: number;
     title: string;
@@ -18,22 +17,18 @@ export default function FooterComponent() {
     const t = useTranslations("footer");
     const router = useRouter();
     const [showMore, setShowMore] = useState(false);
-
     const FooterItem: FooterProps[] = [
         { id: 1, title: t("links.heading") },
         { id: 3, title: t("links.smsWarning"), href: "/warning" },
         { id: 4, title: t("links.privacyPolicy"), href: "/policy" },
         { id: 5, title: t("links.termsofuse"), href: "/termsofuse" },
     ];
-
     const [heading, ...links] = FooterItem;
     const currentYear = new Date().getFullYear();
-
     return (
         <div className={`w-full bg-white dark:bg-neutral-900 ${orbitron.className} border-t-2 sm:border-t-3 border-zinc-400 dark:border-zinc-700`}>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-0 border-b border-zinc-300 dark:border-zinc-700">
                 <div className="flex sm:grid sm:grid-rows-[auto_auto] items-center justify-center sm:justify-items-center gap-3 sm:gap-y-2 py-3 px-2 sm:border-r border-b sm:border-b-0 border-zinc-300 dark:border-zinc-700">
-               
                     <div className="hidden lg:flex lg:flex-col items-center gap-2">
                         <Image
                             src={Img2}
@@ -47,8 +42,6 @@ export default function FooterComponent() {
                             {t("downloadApp")}
                         </p>
                     </div>
-
-                   
                     <button
                         onClick={() => router.push('/download')}
                         className="lg:hidden cursor-not-allowed bg-[#432dd7] w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 text-[10px] sm:text-xs font-bold text-white rounded-lg transition-all duration-300 hover:bg-[#3524b0] active:scale-95"
@@ -57,8 +50,6 @@ export default function FooterComponent() {
                         {t("downloadApp")}
                     </button>
                 </div>
-
-                
                 <div className="flex sm:grid sm:grid-rows-[1fr_auto] items-center justify-center sm:justify-items-center gap-3 sm:gap-y-2 py-3 px-2 sm:border-r border-b sm:border-b-0 border-zinc-300 dark:border-zinc-700">
                     <div className="flex sm:grid sm:grid-cols-[auto_1fr] items-center gap-2 sm:gap-x-3">
                         <Image
@@ -80,7 +71,6 @@ export default function FooterComponent() {
                             </p>
                         </div>
                     </div>
-
                     <button
                         onClick={() => router.push('/contact')}
                         className="w-full sm:w-auto cursor-pointer bg-zinc-500 flex items-center justify-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 text-[8px] sm:text-[9px] lg:text-[10px] font-bold text-white rounded-md transition-all duration-300 hover:bg-zinc-600 active:scale-95"
@@ -89,8 +79,6 @@ export default function FooterComponent() {
                         {t("contactBtn")}
                     </button>
                 </div>
-
-                
                 <div className="hidden sm:grid items-center justify-items-center py-3 px-2">
                     <Image
                         src={Img3}
@@ -102,8 +90,6 @@ export default function FooterComponent() {
                     />
                 </div>
             </div>
-
-            
             <button
                 onClick={() => setShowMore(!showMore)}
                 className="sm:hidden flex items-center justify-center gap-2 w-full py-2.5 text-[11px] font-bold text-zinc-600 dark:text-zinc-400 hover:text-[#432dd7] dark:hover:text-[#432dd7] transition-colors duration-200 border-b border-zinc-300 dark:border-zinc-700"
@@ -129,8 +115,6 @@ export default function FooterComponent() {
                     </div>
                 </div>
             )}
-
-         
             <div className="hidden sm:flex items-center justify-center gap-x-6 lg:gap-x-8 py-3 px-4 border-b border-zinc-300 dark:border-zinc-700">
                 <span className="font-bold text-[11px] lg:text-[12px] text-black dark:text-zinc-300">
                     {heading.title}
@@ -145,8 +129,6 @@ export default function FooterComponent() {
                     </Link>
                 ))}
             </div>
-
-           
             <div className="flex items-center justify-center p-2 sm:p-3">
                 <p className="max-w-3xl font-bold text-center text-[8px] sm:text-[9px] lg:text-[10px] leading-relaxed text-zinc-500 dark:text-zinc-400 px-4">
                     {t("copyright", { years: `2024-${currentYear}` })}

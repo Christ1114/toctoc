@@ -1,18 +1,14 @@
 "use client";
-
 import { orbitron } from '@/fonts/font';
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
-
 const ThirdModuleComponent = () => {
   const t = useTranslations("thirdModuleHome");
   const router = useRouter();
-
   return (
     <div className='w-full pt-15 xl:pt-20
                     px-3 sm:px-4 lg:px-6 xl:px-8
                     items-stretch'>
-
       <div className="flex flex-col gap-y-2 sm:gap-y-3 xl:gap-y-4 items-center justify-center 
                       border-2 border-zinc-400 p-4 sm:p-5 lg:p-6 xl:p-8
                       rounded-lg sm:rounded-xl
@@ -41,5 +37,4 @@ const ThirdModuleComponent = () => {
     </div>
   );
 }
-
 export default ThirdModuleComponent;

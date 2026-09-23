@@ -7,17 +7,14 @@ import {
   getClientIp,
 } from "@/app/lib/security/rate-limit";
 import type { ListingType } from "@/generated/prisma/client";
-
 const RATE_LIMIT_MAX = 60;
 const RATE_LIMIT_WINDOW_MS = 60 * 1000;
-
 /**
  * ⚙️ Comportement modération
  * true  → les annonces d'un compte désactivé/banni ne sont PAS exposées
  * false → elles restent visibles (utile pour l'historique)
  */
 const HIDE_ANNONCES_FROM_INACTIVE_OWNER = true;
-
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ userId: string }> }
@@ -36,13 +33,11 @@ export async function GET(
         { status: 429, headers: rateLimitHeaders(RATE_LIMIT_MAX, rl) }
       );
     }
-
     // ── Valider l'ID ──
     const { userId } = await params;
     if (!userId || userId.length > 50) {
       return NextResponse.json({ error: "ID invalide" }, { status: 400 });
     }
-
     // ── Récupérer le propriétaire (avec ses flags de modération) ──
     const owner = await prisma.user.findUnique({
       where: { id: userId },
@@ -54,14 +49,12 @@ export async function GET(
         banExpires: true,
       },
     });
-
     if (!owner) {
       return NextResponse.json(
         { error: "Utilisateur introuvable" },
         { status: 404 }
       );
     }
-
     // ── Modération : compte désactivé ou banni ──
     if (HIDE_ANNONCES_FROM_INACTIVE_OWNER) {
       const isBanned =
@@ -79,7 +72,6 @@ export async function GET(
         );
       }
     }
-
     // ── Pagination ──
     const searchParams = req.nextUrl.searchParams;
     const limit = Math.min(
@@ -88,20 +80,17 @@ export async function GET(
     );
     const page = Math.max(Number(searchParams.get("page") ?? 1), 1);
     const skip = (page - 1) * limit;
-
     // ── Type d'annonce selon le rôle ──
     // CLIENT   → OFFER   (offres de recrutement publiées)
     // PROVIDER → PROFILE (services proposés)
     // ADMIN    → PROFILE par défaut (cas rare, profil public admin)
     const type: ListingType =
       owner.accountType === "PROVIDER" ? "PROFILE" : "OFFER";
-
     const where = {
       userId,
       isUserGenerated: true,
       type,
     };
-
     // ── Requêtes en parallèle ──
     const [announcements, total] = await Promise.all([
       prisma.announcement.findMany({
@@ -128,7 +117,6 @@ export async function GET(
       }),
       prisma.announcement.count({ where }),
     ]);
-
     return NextResponse.json(
       {
         announcements,

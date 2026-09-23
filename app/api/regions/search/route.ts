@@ -3,13 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/lib/prisma";
-
 const MAX_QUERY_LENGTH = 100;
 const MAX_RESULTS = 8;
-
 export async function GET(request: NextRequest) {
   const requestId = crypto.randomUUID();
-
   try {
     const session = await auth.api.getSession({ headers: await headers() });
     if (!session?.user?.id) {
@@ -18,10 +15,8 @@ export async function GET(request: NextRequest) {
         { status: 401, headers: { "X-Request-Id": requestId } },
       );
     }
-
     const { searchParams } = new URL(request.url);
     const q = searchParams.get("q")?.trim();
-
     if (!q) {
       return NextResponse.json({ results: [] });
     }
@@ -31,7 +26,6 @@ export async function GET(request: NextRequest) {
         { status: 400 },
       );
     }
-
     const regions = await prisma.region.findMany({
       where: {
         OR: [
@@ -57,7 +51,6 @@ export async function GET(request: NextRequest) {
       orderBy: { name: "asc" },
       take: MAX_RESULTS,
     });
-
     const results = regions.map((r) => ({
       id: r.id,
       name: r.name,
@@ -67,7 +60,6 @@ export async function GET(request: NextRequest) {
       count: r._count.announcements,
       hasOffers: r._count.announcements > 0,
     }));
-
     return NextResponse.json(
       { results },
       {

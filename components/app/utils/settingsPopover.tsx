@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect, useCallback } from "react";
 import {
   GearSixIcon,
@@ -26,18 +25,14 @@ import { useRouter } from "@/i18n/navigation";   // ✅ i18n router
 import QRCode from "qrcode";
 import { signOut, authClient } from "@/app/lib/auth-client";
 import { useSession } from "@/app/context/SessionContext";
-
 /* ═══════════════════════════════════════════════════════════
    TYPES
    ═══════════════════════════════════════════════════════════ */
-
 type SettingsTab = "general" | "profile" | "download";
-
 type SettingsPopoverProps = {
   open: boolean;
   onClose: () => void;
 };
-
 type UserData = {
   id: string;
   name?: string | null;
@@ -46,58 +41,44 @@ type UserData = {
   phone?: string | null;
   phoneVerified?: boolean;
 };
-
 const PHONE_VERIFICATION_ENABLED = false;
-
 const THEMES = [
   { key: "light", icon: SunIcon },
   { key: "dark", icon: MoonIcon },
   { key: "system", icon: DesktopIcon },
 ] as const;
-
 /* ═══════════════════════════════════════════════════════════
    COMPOSANT
    ═══════════════════════════════════════════════════════════ */
-
 export default function SettingsPopover({ open, onClose }: SettingsPopoverProps) {
   const t = useTranslations("SettingsPopover");
   const locale = useLocale();
   const isRTL = locale === "ar";
   const router = useRouter();
-
   const [tab, setTab] = useState<SettingsTab>("general");
   const { theme, setTheme } = useTheme();
-
   const { user: sessionUser, loading: sessionLoading, refresh } = useSession();
-
   const user: UserData | null = sessionUser
     ? (sessionUser as unknown as UserData)
     : null;
-
   const loadingUser = sessionLoading;
-
   const [emailOtpStep, setEmailOtpStep] = useState<"idle" | "sent">("idle");
   const [emailOtpCode, setEmailOtpCode] = useState("");
   const [emailSending, setEmailSending] = useState(false);
   const [emailVerifying, setEmailVerifying] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
-
   const [loggingOut, setLoggingOut] = useState(false);
   const [logoutError, setLogoutError] = useState<string | null>(null);
-
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
-
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
   const [downloading, setDownloading] = useState(false);
-
   const TABS = [
     { key: "general" as const, icon: GearSixIcon, label: t("general") },
     { key: "profile" as const, icon: UserIcon, label: t("profile") },
     { key: "download" as const, icon: DeviceMobileIcon, label: t("download") },
   ];
-
   /* ─── Reset des états à l'ouverture ─── */
   useEffect(() => {
     if (!open) return;
@@ -108,15 +89,12 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
     setDeleteError(null);
     setShowDeleteConfirm(false);
   }, [open]);
-
   /* ─── Génération du QR code (une seule fois) ─── */
   useEffect(() => {
     if (!open || qrDataUrl) return;
-
     const placeholderData = `https://toctoc.app/download?ref=${Math.random()
       .toString(36)
       .slice(2, 10)}`;
-
     QRCode.toDataURL(placeholderData, {
       width: 256,
       margin: 1,
@@ -129,11 +107,9 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
         }
       });
   }, [open, qrDataUrl]);
-
   /* ═══════════════════════════════════════════════════════
      EMAIL OTP
      ═══════════════════════════════════════════════════════ */
-
   const handleSendEmailOtp = useCallback(async () => {
     if (!user?.email) return;
     setEmailSending(true);
@@ -154,7 +130,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
       setEmailSending(false);
     }
   }, [user?.email, t]);
-
   const handleVerifyEmailOtp = useCallback(async () => {
     if (!user?.email || !emailOtpCode.trim()) return;
     setEmailVerifying(true);
@@ -177,11 +152,9 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
       setEmailVerifying(false);
     }
   }, [user?.email, emailOtpCode, refresh, t]);
-
   /* ═══════════════════════════════════════════════════════
      LOGOUT
      ═══════════════════════════════════════════════════════ */
-
   const handleLogout = useCallback(async () => {
     setLoggingOut(true);
     setLogoutError(null);
@@ -200,20 +173,16 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
       setLoggingOut(false);
     }
   }, [refresh, onClose, router, t]);
-
   /* ═══════════════════════════════════════════════════════
      DELETE ACCOUNT — VERSION CORRIGÉE
      ═══════════════════════════════════════════════════════ */
-
   const handleDeleteAccount = useCallback(async () => {
     if (deleting) return;
     setDeleting(true);
     setDeleteError(null);
-
     try {
       // 1. Suppression via better-auth
       const { error } = await authClient.deleteUser();
-
       if (error) {
         // 🔍 Log pour diagnostiquer (404 = enabled manquant, etc.)
         if (process.env.NODE_ENV === "development") {
@@ -223,16 +192,13 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
         setShowDeleteConfirm(false);
         return;
       }
-
       // 2. ✅ Force un signOut pour purger le cookie de session
       //    (better-auth supprime la session DB mais pas toujours le cookie)
       await signOut().catch(() => {
         /* déjà déconnecté, on ignore */
       });
-
       // 3. ✅ Refresh le contexte pour vider le user
       await refresh();
-
       // 4. Ferme + redirige
       onClose();
       router.push("/");
@@ -246,11 +212,9 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
       setDeleting(false);
     }
   }, [deleting, refresh, onClose, router, t]);
-
   /* ═══════════════════════════════════════════════════════
      DOWNLOAD QR
      ═══════════════════════════════════════════════════════ */
-
   const handleDownloadQr = useCallback(async () => {
     if (!qrDataUrl) return;
     setDownloading(true);
@@ -265,11 +229,9 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
       setTimeout(() => setDownloading(false), 800);
     }
   }, [qrDataUrl]);
-
   /* ═══════════════════════════════════════════════════════
      RENDER
      ═══════════════════════════════════════════════════════ */
-
   return (
     <Popover
       open={open}
@@ -292,7 +254,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
             <XIcon size={18} />
           </button>
         </div>
-
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-6">
           {/* Tabs */}
           <nav className="w-full sm:w-36 shrink-0 flex sm:flex-col gap-1 overflow-x-auto pb-1 sm:pb-0 -mx-1 px-1">
@@ -313,7 +274,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
               </button>
             ))}
           </nav>
-
           <div className="flex-1 min-w-0">
             {/* ═══ GENERAL ═══ */}
             {tab === "general" && (
@@ -343,7 +303,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                 </div>
               </div>
             )}
-
             {/* ═══ PROFILE ═══ */}
             {tab === "profile" && (
               <div className="flex flex-col gap-3 sm:gap-4">
@@ -362,7 +321,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                         {user?.name || "-"}
                       </span>
                     </div>
-
                     {/* Email */}
                     <div className="border-b border-black/5 dark:border-white/5 pb-2.5 sm:pb-3">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-3">
@@ -392,7 +350,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                           )}
                         </div>
                       </div>
-
                       {/* OTP input */}
                       {user?.email && !user.emailVerified && emailOtpStep === "sent" && (
                         <div className="mt-2 flex flex-col gap-2">
@@ -426,7 +383,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                         </div>
                       )}
                     </div>
-
                     {emailError && (
                       <p
                         role="alert"
@@ -435,7 +391,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                         {emailError}
                       </p>
                     )}
-
                     {/* Phone */}
                     <div className="border-b border-black/5 dark:border-white/5 pb-2.5 sm:pb-3">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-3">
@@ -464,7 +419,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                         </div>
                       </div>
                     </div>
-
                     {/* Logout */}
                     <div className="pt-1">
                       <div className="flex items-center justify-between">
@@ -490,7 +444,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                         </p>
                       )}
                     </div>
-
                     {/* Delete account */}
                     <div className="rounded-lg border border-red-500/20 bg-red-500/5 p-3">
                       {!showDeleteConfirm ? (
@@ -556,7 +509,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                 )}
               </div>
             )}
-
             {/* ═══ DOWNLOAD ═══ */}
             {tab === "download" && (
               <div className="w-full max-w-full overflow-hidden">
@@ -566,7 +518,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                     {t("downloadApp")}
                   </span>
                 </div>
-
                 {qrDataUrl && (
                   <div className="flex flex-col items-center gap-4 w-full">
                     <div className="bg-white p-3 sm:p-4 rounded-lg max-w-full">
@@ -577,7 +528,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                         className="w-40 h-40 sm:w-48 sm:h-48 max-w-full"
                       />
                     </div>
-
                     <div className="flex flex-col sm:flex-row gap-2 w-full max-w-full">
                       <button
                         type="button"
@@ -590,7 +540,6 @@ export default function SettingsPopover({ open, onClose }: SettingsPopoverProps)
                           {downloading ? t("downloading") : t("downloadQr")}
                         </span>
                       </button>
-
                       <div className="flex gap-2 w-full sm:w-auto">
                         <button
                           type="button"

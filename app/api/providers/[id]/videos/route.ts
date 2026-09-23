@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from "next/server";
 import { getProviderVideos } from "@/app/lib/queries/providers";
 import {
@@ -6,12 +5,9 @@ import {
   getClientIp,
   rateLimitHeaders,
 } from "@/app/lib/security/rate-limit";
-
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
-
 const RATE_MAX = 60; 
-
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -19,7 +15,6 @@ export async function GET(
   try {
     const ip = getClientIp(req.headers);
     const limit =await  checkRateLimit(`videos:${ip}`, RATE_MAX);
-
     if (!limit.allowed) {
       return NextResponse.json(
         { error: "Trop de requêtes. Réessayez plus tard." },
@@ -27,7 +22,6 @@ export async function GET(
       );
     }
     const { id } = await params;
-
     if (!id || typeof id !== "string" || id.length > 64) {
       return NextResponse.json(
         { error: "ID invalide" },
@@ -50,7 +44,6 @@ export async function GET(
     });
   } catch (error) {
     console.error("[api/providers/videos] error:", error);
-
     return NextResponse.json(
       { error: "Erreur interne" },
       { status: 500 }

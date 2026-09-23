@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import {
@@ -10,22 +9,18 @@ import {
   XIcon,
 } from "@phosphor-icons/react";
 import { orbitron } from "@/fonts/font";
-
 /* ═══════════════ Types ═══════════════ */
-
 type JobType = {
   id: string;
   name: string;
   slug: string;
   category: string;
 };
-
 type Region = {
   id: string;
   name: string;
   slug: string;
 };
-
 type EditableService = {
   id: string;
   title: string;
@@ -36,26 +31,21 @@ type EditableService = {
   jobType: { id: string; name: string; slug: string } | null;
   region: { id: string; name: string; slug: string } | null;
 };
-
 type Props = {
   open: boolean;
   onClose: () => void;
   onSuccess?: () => void;
   service?: EditableService | null;
 };
-
 /* ═══════════════ Cache module-level ═══════════════ */
-
 let cachedJobTypes: JobType[] | null = null;
 let cachedRegions: Region[] | null = null;
 let optionsPromise: Promise<{ jobTypes: JobType[]; regions: Region[] }> | null = null;
-
 async function loadReferentials() {
   if (cachedJobTypes && cachedRegions) {
     return { jobTypes: cachedJobTypes, regions: cachedRegions };
   }
   if (optionsPromise) return optionsPromise;
-
   optionsPromise = Promise.all([
     fetch("/api/regions/job-types").then((r) => r.json()),
     fetch("/api/regions/fields").then((r) => r.json()),
@@ -69,12 +59,9 @@ async function loadReferentials() {
       optionsPromise = null;
       throw err;
     });
-
   return optionsPromise;
 }
-
 /* ═══════════════ Composant ═══════════════ */
-
 export default function ProviderPublishServiceForm({
   open,
   onClose,
@@ -83,37 +70,29 @@ export default function ProviderPublishServiceForm({
 }: Props) {
   const t = useTranslations("PublishService");
   const isEdit = !!service;
-
   const dialogRef = useRef<HTMLDivElement>(null);
   const firstFieldRef = useRef<HTMLSelectElement>(null);
   const submittingRef = useRef(false);
-
   const [jobTypes, setJobTypes] = useState<JobType[]>(cachedJobTypes ?? []);
   const [regions, setRegions] = useState<Region[]>(cachedRegions ?? []);
   const [loadingOptions, setLoadingOptions] = useState(!cachedJobTypes);
-
   const [jobTypeId, setJobTypeId] = useState("");
   const [description, setDescription] = useState("");
   const [hourlyRate, setHourlyRate] = useState<number | "">("");
   const [regionId, setRegionId] = useState("");
-
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
   /* ─── Charger les options ─── */
   useEffect(() => {
     if (!open) return;
-
     if (cachedJobTypes && cachedRegions) {
       setJobTypes(cachedJobTypes);
       setRegions(cachedRegions);
       setLoadingOptions(false);
       return;
     }
-
     let cancelled = false;
     setLoadingOptions(true);
-
     loadReferentials()
       .then(({ jobTypes: jt, regions: rg }) => {
         if (cancelled) return;
@@ -128,12 +107,10 @@ export default function ProviderPublishServiceForm({
         if (cancelled) return;
         setLoadingOptions(false);
       });
-
     return () => {
       cancelled = true;
     };
   }, [open, t]);
-
   /* ─── Préremplir / reset ─── */
   useEffect(() => {
     if (!open) return;
@@ -150,14 +127,12 @@ export default function ProviderPublishServiceForm({
       setRegionId("");
     }
   }, [open, service]);
-
   /* ─── Focus initial ─── */
   useEffect(() => {
     if (!open) return;
     const id = setTimeout(() => firstFieldRef.current?.focus(), 50);
     return () => clearTimeout(id);
   }, [open]);
-
   /* ─── Bloquer le scroll ─── */
   useEffect(() => {
     if (!open) return;
@@ -167,11 +142,9 @@ export default function ProviderPublishServiceForm({
       document.body.style.overflow = previousOverflow;
     };
   }, [open]);
-
   /* ─── Escape + focus trap ─── */
   useEffect(() => {
     if (!open) return;
-
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         if (!submittingRef.current) {
@@ -180,17 +153,14 @@ export default function ProviderPublishServiceForm({
         }
         return;
       }
-
       if (e.key === "Tab" && dialogRef.current) {
         const focusables = dialogRef.current.querySelectorAll<HTMLElement>(
           'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
         );
         if (focusables.length === 0) return;
-
         const first = focusables[0];
         const last = focusables[focusables.length - 1];
         const active = document.activeElement;
-
         if (e.shiftKey && active === first) {
           e.preventDefault();
           last.focus();
@@ -200,36 +170,28 @@ export default function ProviderPublishServiceForm({
         }
       }
     };
-
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [open, onClose]);
-
   /* ─── Soumission ─── */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (submittingRef.current) return;
-
     setError(null);
-
     if (!jobTypeId) return setError(t("errors.jobTypeRequired"));
     if (!regionId) return setError(t("errors.regionRequired"));
     if (typeof hourlyRate !== "number" || hourlyRate < 500) {
       return setError(t("errors.hourlyRateMin"));
     }
-
     const selectedJobType = jobTypes.find((j) => j.id === jobTypeId);
     const selectedRegion = regions.find((r) => r.id === regionId);
-
     submittingRef.current = true;
     setSubmitting(true);
-
     try {
       const url = isEdit
         ? `/api/announcements/${service!.id}`
         : "/api/announcements";
       const method = isEdit ? "PATCH" : "POST";
-
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
@@ -243,12 +205,10 @@ export default function ProviderPublishServiceForm({
           city: selectedRegion?.name || "",
         }),
       });
-
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error || t("errors.submitFailed"));
       }
-
       onClose();
       onSuccess?.();
     } catch (err) {
@@ -258,15 +218,12 @@ export default function ProviderPublishServiceForm({
       setSubmitting(false);
     }
   };
-
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget && !submittingRef.current) {
       onClose();
     }
   };
-
   if (!open) return null;
-
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-3 sm:px-4"
@@ -299,7 +256,6 @@ export default function ProviderPublishServiceForm({
             <XIcon size={18} />
           </button>
         </div>
-
         {/* Form */}
         <form
           onSubmit={handleSubmit}
@@ -331,7 +287,6 @@ export default function ProviderPublishServiceForm({
               ))}
             </select>
           </div>
-
           {/* Description */}
           <div>
             <label
@@ -355,7 +310,6 @@ export default function ProviderPublishServiceForm({
               {description.length} / 5000
             </p>
           </div>
-
           {/* Tarif horaire + Localisation */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
@@ -393,7 +347,6 @@ export default function ProviderPublishServiceForm({
                 {t("fields.hourlyRateHint")}
               </p>
             </div>
-
             <div>
               <label
                 htmlFor="publish-service-region"
@@ -418,7 +371,6 @@ export default function ProviderPublishServiceForm({
               </select>
             </div>
           </div>
-
           {/* Erreur */}
           {error && (
             <p
@@ -428,7 +380,6 @@ export default function ProviderPublishServiceForm({
               {error}
             </p>
           )}
-
           {/* Actions */}
           <div className="flex items-center justify-end gap-2 pt-2">
             <button
