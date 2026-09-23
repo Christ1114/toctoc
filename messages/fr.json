@@ -314,6 +314,10 @@
   },
 
   "NearbyMap": {
+    "loading": "Chargement de la carte…",
+    "retry": "Réessayer",
+    "locateMe": "Me localiser",
+    "reset3D": "Réinitialiser la vue 3D",
     "online": "En ligne",
     "offline": "Hors ligne",
     "justNow": "À l'instant",
@@ -327,10 +331,10 @@
     "noOffersInCity": "Aucune offre disponible à {city} pour le moment.",
     "me": "Moi",
     "youAreHere": "Vous êtes ici",
-    "locateMe": "Me localiser",
-    "retry": "Réessayer"
+    "errors": {
+      "initFailed": "Erreur d'initialisation de la carte"
+    }
   },
-
   "VrConfirmPopover": {
     "title": "Confirmation entretien VR",
     "description": "Voulez-vous vraiment passer un entretien en réalité virtuelle ?",

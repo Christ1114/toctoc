@@ -282,7 +282,11 @@
     "mockResponse": "وجدت ملفاً يطابق بحثك:"
   },
 
-  "NearbyMap": {
+ "NearbyMap": {
+    "loading": "جارٍ تحميل الخريطة…",
+    "retry": "إعادة المحاولة",
+    "locateMe": "حدد موقعي",
+    "reset3D": "إعادة تعيين عرض 3D",
     "online": "متصل",
     "offline": "غير متصل",
     "justNow": "الآن",
@@ -293,11 +297,12 @@
     "noCityFound": "لم يتم العثور على مدينة",
     "offersCount": "{count} عرض/عروض",
     "noOffers": "لا توجد عروض",
-    "noOffersInCity": "لا توجد عروض متاحة في {city} في الوقت الحالي.",
+    "noOffersInCity": "لا توجد عروض متاحة في {city} حاليًا.",
     "me": "أنا",
     "youAreHere": "أنت هنا",
-    "locateMe": "تحديد موقعي",
-    "retry": "إعادة المحاولة"
+    "errors": {
+      "initFailed": "فشل تهيئة الخريطة"
+    }
   },
 
   "ProfilePopover": {

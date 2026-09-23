@@ -282,24 +282,28 @@
     "mockResponse": "我找到了一个与您搜索匹配的档案："
   },
 
-  "NearbyMap": {
+ "NearbyMap": {
+    "loading": "地图加载中…",
+    "retry": "重试",
+    "locateMe": "定位我",
+    "reset3D": "重置 3D 视图",
     "online": "在线",
     "offline": "离线",
     "justNow": "刚刚",
-    "minutesAgo": "{n} 分钟前",
-    "hoursAgo": "{n} 小时前",
-    "daysAgo": "{n} 天前",
+    "minutesAgo": "{n} 分钟前在线",
+    "hoursAgo": "{n} 小时前在线",
+    "daysAgo": "{n} 天前在线",
     "searching": "搜索中...",
     "noCityFound": "未找到城市",
-    "offersCount": "{count} 个优惠",
-    "noOffers": "暂无优惠",
-    "noOffersInCity": "目前 {city} 暂无可用优惠。",
+    "offersCount": "{count} 个职位",
+    "noOffers": "暂无职位",
+    "noOffersInCity": "目前 {city} 暂无可用职位。",
     "me": "我",
-    "youAreHere": "您在这里",
-    "locateMe": "定位我",
-    "retry": "重试"
+    "youAreHere": "你在这里",
+    "errors": {
+      "initFailed": "地图初始化失败"
+    }
   },
-
   "ProfilePopover": {
     "title": "我的账户",
     "profileTab": "个人资料",

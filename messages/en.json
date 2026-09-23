@@ -296,6 +296,10 @@
   },
 
   "NearbyMap": {
+    "loading": "Loading map…",
+    "retry": "Retry",
+    "locateMe": "Locate me",
+    "reset3D": "Reset 3D view",
     "online": "Online",
     "offline": "Offline",
     "justNow": "Just now",
@@ -306,11 +310,12 @@
     "noCityFound": "No city found",
     "offersCount": "{count} offer(s)",
     "noOffers": "No offers",
-    "noOffersInCity": "No offers available in {city} at the moment.",
+    "noOffersInCity": "No offers available in {city} right now.",
     "me": "Me",
     "youAreHere": "You are here",
-    "locateMe": "Locate me",
-    "retry": "Retry"
+    "errors": {
+      "initFailed": "Failed to initialize map"
+    }
   },
 
   "VrConfirmPopover": {
