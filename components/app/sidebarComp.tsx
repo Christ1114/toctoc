@@ -19,6 +19,7 @@ import SearchPopover from "@/components/app/utils/SearchPopover";
 import VrConfirmPopover from "@/components/app/utils/VrConfirmPopover";
 import SettingsPopover from "@/components/app/utils/settingsPopover";
 import { useSession } from "@/app/context/SessionContext";
+import { id } from "zod/v4/locales";
 type NavKey = "home" | "search" | "video" | "chat" | "phone" | "vr";
 type NavItem = {
   key: NavKey;
@@ -39,13 +40,10 @@ const Sidebar = () => {
   const locale = useLocale();
   const t = useTranslations("Sidebar");
   const router = useRouter();
-  // 👇 Par défaut : ouvert sur desktop.
-  // On laisse `true` en init pour éviter un flash SSR (le serveur ne connaît
-  // pas la largeur), puis un useEffect ajuste selon le vrai breakpoint.
+  
   const [collapsed, setCollapsed] = useState(true);
   const [active, setActive] = useState<NavKey | "settings">("home");
   const [breakpoint, setBreakpoint] = useState<Breakpoint>("desktop");
-  // Empêche de forcer l'ouverture/fermeture à chaque resize après la 1re détection
   const initializedRef = useRef(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [vrOpen, setVrOpen] = useState(false);
@@ -83,6 +81,11 @@ const Sidebar = () => {
       router.push(`/${locale}/app`);
       return;
     }
+    if (key === "video") {
+    setActive(key);
+    router.push(`/${locale}/app/videos/${id}`);
+    return;
+  }
     if (key === "search") {
       setActive(key);
       setSearchOpen(true);
