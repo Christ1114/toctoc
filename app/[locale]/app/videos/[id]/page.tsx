@@ -1,5 +1,4 @@
-import VideoCompApp from "@/components/app/videos/[id]/compApp";
-
+import VideoComp from "@/components/app/videos/[id]/Comp";
 export default function VideoPage() {
-    return <div> <VideoCompApp/></div>
+    return <div> <VideoComp/></div>
 }
