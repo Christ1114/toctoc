@@ -1,7 +1,7 @@
 const VideoCompApp = () => {
     return (
-        <div className="bg-white dark:bg-zinc-900 w-full h-screen flex">
-           yeah
+        <div className="flex items-center justify-center h-full">
+         part1
         </div>
     );
 }
